@@ -1,0 +1,76 @@
+{
+	"easycom": {
+	        "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	   },
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+		    "path" : "pages/index/index",
+		    "style" :                                                                                    
+		    {
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+			"path": "pages/login/login", 
+			"style": {
+				"navigationBarTitleText": "登录",
+				"backgroundColorTop":"#f4030a"
+			}
+		},
+		{
+		    "path" : "pages/mine/mine",
+		    "style" :                                                                                    
+		    {
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/register/register",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "注册",
+		        "enablePullDownRefresh": false 
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/individual_infor/individual_infor",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "党员认证",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/release/release",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "智 慧 · 党 建",
+		"navigationBarBackgroundColor": "#f4030a",
+		"enablePullDownRefresh":true
+	},
+	"tabBar":{
+		"selectedColor":"#f4030a",
+		"list":[{
+			"pagePath":"pages/index/index"
+		},
+		{
+			"pagePath":"pages/release/release"
+		},
+		{
+			"pagePath":"pages/mine/mine"
+		}
+		]
+	}
+}

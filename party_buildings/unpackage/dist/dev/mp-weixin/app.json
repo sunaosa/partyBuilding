@@ -1,0 +1,32 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/mine/mine",
+    "pages/register/register",
+    "pages/individual_infor/individual_infor",
+    "pages/release/release"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "智 慧 · 党 建",
+    "navigationBarBackgroundColor": "#f4030a",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "selectedColor": "#f4030a",
+    "list": [
+      {
+        "pagePath": "pages/index/index"
+      },
+      {
+        "pagePath": "pages/release/release"
+      },
+      {
+        "pagePath": "pages/mine/mine"
+      }
+    ]
+  },
+  "usingComponents": {}
+}
