@@ -165,7 +165,7 @@
 				if(this.identify === '游客'){
 					return '/static/guest.png'
 				} else if(this.identify === '党员') {
-					return '/static/administer.png'
+					return '/static/party_member.png'
 				}
 				else {
 					return '/static/applicant.png'

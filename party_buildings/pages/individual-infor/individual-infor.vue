@@ -15,36 +15,49 @@
 		<view class="content">
 			<u-form :model="valicateForm" ref="valicateForm" :label-width='400'>
 				<u-form-item label="学号" prop="studentNumber">
-					<u-input v-model="valicateForm.studentNumber" :border="true" />
+					<u-input v-model="valicateForm.studentNumber" :border="true" placeholder="默认为您学号" disabled="true"/>
 				</u-form-item>
 				<u-line color="#e5e5e5"></u-line>
 				<u-form-item label="姓名" prop="name">
-					<u-input v-model="valicateForm.name" :border="true"/>
+					<u-input v-model="valicateForm.name" :border="true" :disabled="identify === '游客' ? false : true"/>
 				</u-form-item>
 				<u-line color="#e5e5e5"></u-line>
 				<u-form-item label="手机号码" prop="phoneNumber">
 					<u-input v-model="valicateForm.phoneNumber" :border="true"/>
 				</u-form-item>
 				<u-line color="#e5e5e5" prop='sex'></u-line>
-				<u-form-item label="性别">
+				<u-form-item label="班级" prop="class">
+					<u-input v-model="valicateForm.class" :border="true" placeholder="年级-专业-班级"/>
+				</u-form-item>
+				<u-line color="#e5e5e5"></u-line>
+				<u-form-item label="性别" prop='sex'>
 					<u-input v-model="valicateForm.sex" :border="true" type="select" @click='show = true'/>
 					<u-action-sheet :list="sexList" v-model="show" @click="actionSheetCallback"></u-action-sheet>
 				</u-form-item>
 				<u-line color="#e5e5e5"></u-line>
+				
 			</u-form>
 			<view class="button">
-				<u-button type='primary' shape="circle" size="medium" @click="valicateMember">{{identify==='游客'?'认证':'保存'}}</u-button>
+				<u-button type='primary' shape="circle" size="medium" @click="valicateMember" :loading='loading'>{{identify==='游客'?'认证':'保存'}}</u-button>
 			</view>
 			<u-top-tips ref="uTips"></u-top-tips>
+			<u-modal v-model="ifshow" :content="content"></u-modal>
+			<u-toast ref="uToast" />
 		</view>
 	</view>
 </template>
 
 <script>
 	export default {
-		onLoad(data) {
-			console.log(data)
-			this.identify = data.identify
+		async onLoad(identity) {
+			console.log(identity)
+			this.identify = identity.identify
+			let { data } = await this.$myRequest({
+				url: '/valicate/initialize',
+				method: 'post',
+				data:{id: uni.getStorageSync('idVerification')}
+			})
+			this.valicateForm = data
 		},
 		onReady() {
 			this.$refs.valicateForm.setRules(this.rules);
@@ -57,8 +70,12 @@
 					name: '',
 					studentNumber: '',
 					phoneNumber: '',
-					sex: ''
+					sex: '',
+					class: ''
 				},
+				ifshow: false,
+				content: '',
+				loading: false,
 				sexList: [
 					{text: '男'},
 					{text: '女'}
@@ -108,7 +125,21 @@
 						{
 							required: true,
 							message: '请选择性别',
-							trigger: ['click']
+							min: 1,
+							trigger: ['blur']
+						}
+					],
+					class: [
+						{
+							required: true,
+							message: '请输入班级',
+							trigger: ['blur']
+						},
+						{
+							required: true,
+							message: '请按照格式 例：17-计科-2',
+							pattern: /^\d{2}\-[\u4e00-\u9fa5]*\-\d{1,2}/,
+							trigger: ['change']
 						}
 					]
 				},
@@ -120,19 +151,29 @@
 				this.valicateForm.sex = this.sexList[index].text
 			},
 			async valicateMember() {
-				if (this.valicateForm.name === '' ||this.valicateForm.studentNumber === '' || this.valicateForm.sex === '' || this.valicateForm.phoneNumber === ''){
-					this.$refs.uTips.show({
-						title: '请填写完整信息',
-						type: 'error',
-						duration: '2300'
-					})
-					return
-				}
+				this.loading = true
+				this.$refs.valicateForm.validate(valid => {
+					if(!valid){
+						return
+					}
+				})
 				let {data} = await this.$myRequest({
 					url: '/valicate/valicate-member',
 					method: 'post',
 					data: {valicateForm: this.valicateForm,id:uni.getStorageSync('idVerification')}
 				})
+				console.log(data)
+				if(data === 1) {
+					this.loading = false
+					
+				} else{
+					this.$refs.uToast.show({
+						title: '登录成功',
+						type: 'error',
+						url: '/pages/user/index'
+					})
+					this.loading = false
+				}
 			}
 		}
 	}

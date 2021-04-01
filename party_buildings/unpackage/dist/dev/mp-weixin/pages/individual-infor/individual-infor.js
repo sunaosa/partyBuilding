@@ -118,6 +118,12 @@ try {
     },
     uTopTips: function() {
       return __webpack_require__.e(/*! import() | uview-ui/components/u-top-tips/u-top-tips */ "uview-ui/components/u-top-tips/u-top-tips").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-top-tips/u-top-tips.vue */ 294))
+    },
+    uModal: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-modal/u-modal */ "uview-ui/components/u-modal/u-modal").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-modal/u-modal.vue */ 191))
+    },
+    uToast: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-toast/u-toast */ "uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-toast/u-toast.vue */ 184))
     }
   }
 } catch (e) {
@@ -221,11 +227,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
-  onLoad: function onLoad(data) {
-    console.log(data);
-    this.identify = data.identify;
+  onLoad: function onLoad(identity) {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var _yield$_this$$myReque, data;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+              console.log(identity);
+              _this.identify = identity.identify;_context.next = 4;return (
+                _this.$myRequest({
+                  url: '/valicate/initialize',
+                  method: 'post',
+                  data: { id: uni.getStorageSync('idVerification') } }));case 4:_yield$_this$$myReque = _context.sent;data = _yield$_this$$myReque.data;
+
+              _this.valicateForm = data;case 7:case "end":return _context.stop();}}}, _callee);}))();
   },
   onReady: function onReady() {
     this.$refs.valicateForm.setRules(this.rules);
@@ -238,8 +257,12 @@ var _default =
         name: '',
         studentNumber: '',
         phoneNumber: '',
-        sex: '' },
+        sex: '',
+        class: '' },
 
+      ifshow: false,
+      content: '',
+      loading: false,
       sexList: [
       { text: '男' },
       { text: '女' }],
@@ -289,7 +312,21 @@ var _default =
         {
           required: true,
           message: '请选择性别',
-          trigger: ['click'] }] } };
+          min: 1,
+          trigger: ['blur'] }],
+
+
+        class: [
+        {
+          required: true,
+          message: '请输入班级',
+          trigger: ['blur'] },
+
+        {
+          required: true,
+          message: '请按照格式 例：17-计科-2',
+          pattern: /^\d{2}\-[\u4e00-\u9fa5]*\-\d{1,2}/,
+          trigger: ['change'] }] } };
 
 
 
@@ -300,20 +337,30 @@ var _default =
     actionSheetCallback: function actionSheetCallback(index) {
       this.valicateForm.sex = this.sexList[index].text;
     },
-    valicateMember: function valicateMember() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var _yield$_this$$myReque, data;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:if (!(
-                _this.valicateForm.name === '' || _this.valicateForm.studentNumber === '' || _this.valicateForm.sex === '' || _this.valicateForm.phoneNumber === '')) {_context.next = 3;break;}
-                _this.$refs.uTips.show({
-                  title: '请填写完整信息',
-                  type: 'error',
-                  duration: '2300' });return _context.abrupt("return");case 3:_context.next = 5;return (
-
-
-
-                  _this.$myRequest({
+    valicateMember: function valicateMember() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var _yield$_this2$$myRequ, data;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                _this2.loading = true;
+                _this2.$refs.valicateForm.validate(function (valid) {
+                  if (!valid) {
+                    return;
+                  }
+                });_context2.next = 4;return (
+                  _this2.$myRequest({
                     url: '/valicate/valicate-member',
                     method: 'post',
-                    data: { valicateForm: _this.valicateForm, id: uni.getStorageSync('idVerification') } }));case 5:_yield$_this$$myReque = _context.sent;data = _yield$_this$$myReque.data;case 7:case "end":return _context.stop();}}}, _callee);}))();
+                    data: { valicateForm: _this2.valicateForm, id: uni.getStorageSync('idVerification') } }));case 4:_yield$_this2$$myRequ = _context2.sent;data = _yield$_this2$$myRequ.data;
 
+                console.log(data);
+                if (data === 1) {
+                  _this2.loading = false;
+
+                } else {
+                  _this2.$refs.uToast.show({
+                    title: '登录成功',
+                    type: 'error',
+                    url: '/pages/user/index' });
+
+                  _this2.loading = false;
+                }case 8:case "end":return _context2.stop();}}}, _callee2);}))();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

@@ -9,6 +9,8 @@
     "u-line": "/uview-ui/components/u-line/u-line",
     "u-action-sheet": "/uview-ui/components/u-action-sheet/u-action-sheet",
     "u-button": "/uview-ui/components/u-button/u-button",
-    "u-top-tips": "/uview-ui/components/u-top-tips/u-top-tips"
+    "u-top-tips": "/uview-ui/components/u-top-tips/u-top-tips",
+    "u-modal": "/uview-ui/components/u-modal/u-modal",
+    "u-toast": "/uview-ui/components/u-toast/u-toast"
   }
 }
