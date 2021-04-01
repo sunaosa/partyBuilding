@@ -4,8 +4,11 @@
     "pages/login/login",
     "pages/mine/mine",
     "pages/register/register",
-    "pages/individual_infor/individual_infor",
-    "pages/release/release"
+    "pages/individual-infor/individual-infor",
+    "pages/release/release",
+    "pages/selected/selected",
+    "pages/insert/insert",
+    "pages/change/change"
   ],
   "subPackages": [],
   "window": {
@@ -28,5 +31,6 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap43.json"
 }

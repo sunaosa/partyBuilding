@@ -36,7 +36,7 @@
 		    
 		}
         ,{
-            "path" : "pages/individual_infor/individual_infor",
+            "path" : "pages/individual-infor/individual-infor",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "党员认证",
@@ -52,6 +52,33 @@
                 "enablePullDownRefresh": false
             }
             
+        }
+        ,{
+            "path" : "pages/selected/selected",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "党员信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/insert/insert",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/change/change",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+             
         }
     ],
 	"globalStyle": {

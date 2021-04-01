@@ -1,7 +1,18 @@
 <template>
 	<view>
 		<view class="">
-			
+			<!-- <video 
+				id="myVideo" 
+				src="https://v.youku.com/v_show/id_XNTEwMDU5NzIwMA==.html"
+				@error="videoErrorCallback" 
+				:danmu-list="danmuList" 
+				nable-danmu 
+				danmu-btn 
+				controls>
+			</video> -->
+			<!-- <view class="video">
+				<web-view src="https://v.youku.com/v_show/id_XNTEzMDgxOTU0MA==.html" @message="meg"></web-view>
+			</view> -->
 		</view>
 		<u-tabbar v-model="current" :list="list" :mid-button="true" ></u-tabbar>
 	</view>
@@ -41,5 +52,8 @@
 </script>
 
 <style>
-
+.video {
+	width: 200rpx;
+	height: 200rpx;
+}
 </style>
