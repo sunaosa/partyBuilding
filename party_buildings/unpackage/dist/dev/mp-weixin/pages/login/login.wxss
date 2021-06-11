@@ -28,29 +28,17 @@ page {
   height: 100%;
   margin: 0;
   padding: 0;
-  position: absolute;
+  background-image: url(https://www.yik.ink/sockets/union/uploadFile/607eec0092bea.png);
+  background-size: 100% 100%;
 }
 .content {
   height: 100%;
   width: 100%;
 }
-.content .bg {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  overflow: hidden;
-  z-index: -9999;
-}
-.content .bg .background {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-}
 .content .login {
   width: 600rpx;
-  height: 500rpx;
-  margin-top: 400rpx;
+  height: 600rpx;
+  margin-top: 200rpx;
   margin-left: 50%;
   left: -300rpx;
   position: absolute;
@@ -63,7 +51,8 @@ page {
   width: 500rpx;
   margin: auto;
   margin-top: 65rpx;
-  border-radius: 30rpx;
+  -webkit-border-radius: 30rpx;
+          border-radius: 30rpx;
   background-color: #FFFFFF;
 }
 .content .login .text input[type="text"],
@@ -108,5 +97,30 @@ page {
   left: 50rpx;
   bottom: 6rpx;
   z-index: 1000;
+}
+.valicate {
+  display: inline-block;
+  width: 200rpx;
+  margin-left: 50rpx;
+  height: 80rpx;
+  margin-top: 65rpx;
+  -webkit-border-radius: 30rpx;
+          border-radius: 30rpx;
+  background-color: #FFFFFF;
+}
+.valicate input[type="text"] {
+  height: 100%;
+  width: 75%;
+  margin-left: 30rpx;
+}
+image {
+  display: inline-block;
+  margin-left: 20rpx;
+  right: 0rpx;
+  height: 80rpx;
+  width: 200rpx;
+}
+.all-valivate {
+  position: relative;
 }
 

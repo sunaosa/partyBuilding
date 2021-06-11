@@ -24,6 +24,9 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+page {
+  background-color: #fda73d;
+}
 .table {
   width: 750rpx;
 }
@@ -31,7 +34,7 @@
   width: 750rpx;
 }
 .search {
-  margin-top: 20rpx;
+  margin-top: 10rpx;
 }
 .search-name {
   display: inline-block;
@@ -39,7 +42,10 @@
   margin-left: 15rpx;
 }
 .search-identify {
+  background-color: #f1f1f1;
   display: inline-block;
+  -webkit-border-radius: 15rpx;
+          border-radius: 15rpx;
   width: 200rpx;
   margin-left: 20rpx;
 }
@@ -64,7 +70,8 @@ image {
           flex: 0 0 120rpx;
   height: 100rpx;
   margin-right: 20rpx;
-  border-radius: 12rpx;
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
 }
 .title,
 .title1 {

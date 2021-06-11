@@ -14,4 +14,7 @@
 	margin: 50rpx 0;
 	text-align: center;
 }
+.logout {
+	margin-top: 300rpx;
+}
 

@@ -503,7 +503,7 @@ function processArgs(methodName, fromArgs) {var argsOption = arguments.length > 
           keyOption = keyOption(fromArgs[key], fromArgs, toArgs);
         }
         if (!keyOption) {// 不支持的参数
-          console.warn("\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F ".concat(methodName, "\u6682\u4E0D\u652F\u6301").concat(key));
+          console.warn("The '".concat(methodName, "' method of platform '\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F' does not support option '").concat(key, "'"));
         } else if (isStr(keyOption)) {// 重写参数 key
           toArgs[keyOption] = fromArgs[key];
         } else if (isPlainObject(keyOption)) {// {name:newName,value:value}可重新指定参数 key:value
@@ -538,7 +538,7 @@ function wrapper(methodName, method) {
     var protocol = protocols[methodName];
     if (!protocol) {// 暂不支持的 api
       return function () {
-        console.error("\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F \u6682\u4E0D\u652F\u6301".concat(methodName));
+        console.error("Platform '\u5FAE\u4FE1\u5C0F\u7A0B\u5E8F' does not support '".concat(methodName, "'."));
       };
     }
     return function (arg1, arg2) {// 目前 api 最多两个参数
@@ -585,7 +585,7 @@ function createTodoApi(name) {
 
   {var fail = _ref.fail,complete = _ref.complete;
     var res = {
-      errMsg: "".concat(name, ":fail:\u6682\u4E0D\u652F\u6301 ").concat(name, " \u65B9\u6CD5") };
+      errMsg: "".concat(name, ":fail method '").concat(name, "' not supported") };
 
     isFn(fail) && fail(res);
     isFn(complete) && complete(res);
@@ -619,7 +619,7 @@ function getProvider(_ref2)
     isFn(success) && success(res);
   } else {
     res = {
-      errMsg: 'getProvider:fail:服务[' + service + ']不存在' };
+      errMsg: 'getProvider:fail service not found' };
 
     isFn(fail) && fail(res);
   }
@@ -1323,7 +1323,12 @@ function parseBaseApp(vm, _ref3)
 
       delete this.$options.mpType;
       delete this.$options.mpInstance;
-
+      if (this.mpType === 'page') {// hack vue-i18n
+        var app = getApp();
+        if (app.$vm && app.$vm.$i18n) {
+          this._i18n = app.$vm.$i18n;
+        }
+      }
       if (this.mpType !== 'app') {
         initRefs(this);
         initMocks(this, mocks);
@@ -2655,26 +2660,22 @@ function normalizeComponent (
 /***/ }),
 
 /***/ 14:
-/*!**************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/unit/api.js ***!
-  \**************************************************************************/
+/*!***************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/unit/api.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.myRequest = void 0;var BASIC_PATH = "http://localhost:3000";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.myRequest = void 0;var BASIC_PATH = "http://192.168.137.1:3000";
 var myRequest = function myRequest(options) {
   return new Promise(function (resolve, reject) {
     uni.request({
       url: BASIC_PATH + options.url,
       method: options.method || 'GET',
+      header: { Auhorization: uni.getStorageSync("myToken") },
       data: options.data || {},
       success: function success(res) {
-        if (res.statusCode !== 200) {
-          uni.showToast({
-            title: '获取数据失败' });
-
-        }
         resolve(res);
       },
       fail: function fail(err) {
@@ -2690,9 +2691,9 @@ var myRequest = function myRequest(options) {
 /***/ }),
 
 /***/ 15:
-/*!********************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/index.js ***!
-  \********************************************************************************/
+/*!*********************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/index.js ***!
+  \*********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2841,10 +2842,21 @@ var install = function install(Vue) {
 
 /***/ }),
 
+/***/ 156:
+/*!****************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/components/map/qqmap-wx-jssdk.min.js ***!
+  \****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var ERROR_CONF = { KEY_ERR: 311, KEY_ERR_MSG: 'key格式错误', PARAM_ERR: 310, PARAM_ERR_MSG: '请求参数信息有误', SYSTEM_ERR: 600, SYSTEM_ERR_MSG: '系统错误', WX_ERR_CODE: 1000, WX_OK_CODE: 200 };var BASE_URL = 'https://apis.map.qq.com/ws/';var URL_SEARCH = BASE_URL + 'place/v1/search';var URL_SUGGESTION = BASE_URL + 'place/v1/suggestion';var URL_GET_GEOCODER = BASE_URL + 'geocoder/v1/';var URL_CITY_LIST = BASE_URL + 'district/v1/list';var URL_AREA_LIST = BASE_URL + 'district/v1/getchildren';var URL_DISTANCE = BASE_URL + 'distance/v1/';var URL_DIRECTION = BASE_URL + 'direction/v1/';var MODE = { driving: 'driving', transit: 'transit' };var EARTH_RADIUS = 6378136.49;var Utils = { safeAdd: function safeAdd(x, y) {var lsw = (x & 0xffff) + (y & 0xffff);var msw = (x >> 16) + (y >> 16) + (lsw >> 16);return msw << 16 | lsw & 0xffff;}, bitRotateLeft: function bitRotateLeft(num, cnt) {return num << cnt | num >>> 32 - cnt;}, md5cmn: function md5cmn(q, a, b, x, s, t) {return this.safeAdd(this.bitRotateLeft(this.safeAdd(this.safeAdd(a, q), this.safeAdd(x, t)), s), b);}, md5ff: function md5ff(a, b, c, d, x, s, t) {return this.md5cmn(b & c | ~b & d, a, b, x, s, t);}, md5gg: function md5gg(a, b, c, d, x, s, t) {return this.md5cmn(b & d | c & ~d, a, b, x, s, t);}, md5hh: function md5hh(a, b, c, d, x, s, t) {return this.md5cmn(b ^ c ^ d, a, b, x, s, t);}, md5ii: function md5ii(a, b, c, d, x, s, t) {return this.md5cmn(c ^ (b | ~d), a, b, x, s, t);}, binlMD5: function binlMD5(x, len) {x[len >> 5] |= 0x80 << len % 32;x[(len + 64 >>> 9 << 4) + 14] = len;var i;var olda;var oldb;var oldc;var oldd;var a = 1732584193;var b = -271733879;var c = -1732584194;var d = 271733878;for (i = 0; i < x.length; i += 16) {olda = a;oldb = b;oldc = c;oldd = d;a = this.md5ff(a, b, c, d, x[i], 7, -680876936);d = this.md5ff(d, a, b, c, x[i + 1], 12, -389564586);c = this.md5ff(c, d, a, b, x[i + 2], 17, 606105819);b = this.md5ff(b, c, d, a, x[i + 3], 22, -1044525330);a = this.md5ff(a, b, c, d, x[i + 4], 7, -176418897);d = this.md5ff(d, a, b, c, x[i + 5], 12, 1200080426);c = this.md5ff(c, d, a, b, x[i + 6], 17, -1473231341);b = this.md5ff(b, c, d, a, x[i + 7], 22, -45705983);a = this.md5ff(a, b, c, d, x[i + 8], 7, 1770035416);d = this.md5ff(d, a, b, c, x[i + 9], 12, -1958414417);c = this.md5ff(c, d, a, b, x[i + 10], 17, -42063);b = this.md5ff(b, c, d, a, x[i + 11], 22, -1990404162);a = this.md5ff(a, b, c, d, x[i + 12], 7, 1804603682);d = this.md5ff(d, a, b, c, x[i + 13], 12, -40341101);c = this.md5ff(c, d, a, b, x[i + 14], 17, -1502002290);b = this.md5ff(b, c, d, a, x[i + 15], 22, 1236535329);a = this.md5gg(a, b, c, d, x[i + 1], 5, -165796510);d = this.md5gg(d, a, b, c, x[i + 6], 9, -1069501632);c = this.md5gg(c, d, a, b, x[i + 11], 14, 643717713);b = this.md5gg(b, c, d, a, x[i], 20, -373897302);a = this.md5gg(a, b, c, d, x[i + 5], 5, -701558691);d = this.md5gg(d, a, b, c, x[i + 10], 9, 38016083);c = this.md5gg(c, d, a, b, x[i + 15], 14, -660478335);b = this.md5gg(b, c, d, a, x[i + 4], 20, -405537848);a = this.md5gg(a, b, c, d, x[i + 9], 5, 568446438);d = this.md5gg(d, a, b, c, x[i + 14], 9, -1019803690);c = this.md5gg(c, d, a, b, x[i + 3], 14, -187363961);b = this.md5gg(b, c, d, a, x[i + 8], 20, 1163531501);a = this.md5gg(a, b, c, d, x[i + 13], 5, -1444681467);d = this.md5gg(d, a, b, c, x[i + 2], 9, -51403784);c = this.md5gg(c, d, a, b, x[i + 7], 14, 1735328473);b = this.md5gg(b, c, d, a, x[i + 12], 20, -1926607734);a = this.md5hh(a, b, c, d, x[i + 5], 4, -378558);d = this.md5hh(d, a, b, c, x[i + 8], 11, -2022574463);c = this.md5hh(c, d, a, b, x[i + 11], 16, 1839030562);b = this.md5hh(b, c, d, a, x[i + 14], 23, -35309556);a = this.md5hh(a, b, c, d, x[i + 1], 4, -1530992060);d = this.md5hh(d, a, b, c, x[i + 4], 11, 1272893353);c = this.md5hh(c, d, a, b, x[i + 7], 16, -155497632);b = this.md5hh(b, c, d, a, x[i + 10], 23, -1094730640);a = this.md5hh(a, b, c, d, x[i + 13], 4, 681279174);d = this.md5hh(d, a, b, c, x[i], 11, -358537222);c = this.md5hh(c, d, a, b, x[i + 3], 16, -722521979);b = this.md5hh(b, c, d, a, x[i + 6], 23, 76029189);a = this.md5hh(a, b, c, d, x[i + 9], 4, -640364487);d = this.md5hh(d, a, b, c, x[i + 12], 11, -421815835);c = this.md5hh(c, d, a, b, x[i + 15], 16, 530742520);b = this.md5hh(b, c, d, a, x[i + 2], 23, -995338651);a = this.md5ii(a, b, c, d, x[i], 6, -198630844);d = this.md5ii(d, a, b, c, x[i + 7], 10, 1126891415);c = this.md5ii(c, d, a, b, x[i + 14], 15, -1416354905);b = this.md5ii(b, c, d, a, x[i + 5], 21, -57434055);a = this.md5ii(a, b, c, d, x[i + 12], 6, 1700485571);d = this.md5ii(d, a, b, c, x[i + 3], 10, -1894986606);c = this.md5ii(c, d, a, b, x[i + 10], 15, -1051523);b = this.md5ii(b, c, d, a, x[i + 1], 21, -2054922799);a = this.md5ii(a, b, c, d, x[i + 8], 6, 1873313359);d = this.md5ii(d, a, b, c, x[i + 15], 10, -30611744);c = this.md5ii(c, d, a, b, x[i + 6], 15, -1560198380);b = this.md5ii(b, c, d, a, x[i + 13], 21, 1309151649);a = this.md5ii(a, b, c, d, x[i + 4], 6, -145523070);d = this.md5ii(d, a, b, c, x[i + 11], 10, -1120210379);c = this.md5ii(c, d, a, b, x[i + 2], 15, 718787259);b = this.md5ii(b, c, d, a, x[i + 9], 21, -343485551);a = this.safeAdd(a, olda);b = this.safeAdd(b, oldb);c = this.safeAdd(c, oldc);d = this.safeAdd(d, oldd);}return [a, b, c, d];}, binl2rstr: function binl2rstr(input) {var i;var output = '';var length32 = input.length * 32;for (i = 0; i < length32; i += 8) {output += String.fromCharCode(input[i >> 5] >>> i % 32 & 0xff);}return output;}, rstr2binl: function rstr2binl(input) {var i;var output = [];output[(input.length >> 2) - 1] = undefined;for (i = 0; i < output.length; i += 1) {output[i] = 0;}var length8 = input.length * 8;for (i = 0; i < length8; i += 8) {output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << i % 32;}return output;}, rstrMD5: function rstrMD5(s) {return this.binl2rstr(this.binlMD5(this.rstr2binl(s), s.length * 8));}, rstrHMACMD5: function rstrHMACMD5(key, data) {var i;var bkey = this.rstr2binl(key);var ipad = [];var opad = [];var hash;ipad[15] = opad[15] = undefined;if (bkey.length > 16) {bkey = this.binlMD5(bkey, key.length * 8);}for (i = 0; i < 16; i += 1) {ipad[i] = bkey[i] ^ 0x36363636;opad[i] = bkey[i] ^ 0x5c5c5c5c;}hash = this.binlMD5(ipad.concat(this.rstr2binl(data)), 512 + data.length * 8);return this.binl2rstr(this.binlMD5(opad.concat(hash), 512 + 128));}, rstr2hex: function rstr2hex(input) {var hexTab = '0123456789abcdef';var output = '';var x;var i;for (i = 0; i < input.length; i += 1) {x = input.charCodeAt(i);output += hexTab.charAt(x >>> 4 & 0x0f) + hexTab.charAt(x & 0x0f);}return output;}, str2rstrUTF8: function str2rstrUTF8(input) {return unescape(encodeURIComponent(input));}, rawMD5: function rawMD5(s) {return this.rstrMD5(this.str2rstrUTF8(s));}, hexMD5: function hexMD5(s) {return this.rstr2hex(this.rawMD5(s));}, rawHMACMD5: function rawHMACMD5(k, d) {return this.rstrHMACMD5(this.str2rstrUTF8(k), str2rstrUTF8(d));}, hexHMACMD5: function hexHMACMD5(k, d) {return this.rstr2hex(this.rawHMACMD5(k, d));}, md5: function md5(string, key, raw) {if (!key) {if (!raw) {return this.hexMD5(string);}return this.rawMD5(string);}if (!raw) {return this.hexHMACMD5(key, string);}return this.rawHMACMD5(key, string);}, getSig: function getSig(requestParam, sk, feature, mode) {var sig = null;var requestArr = [];Object.keys(requestParam).sort().forEach(function (key) {requestArr.push(key + '=' + requestParam[key]);});if (feature == 'search') {sig = '/ws/place/v1/search?' + requestArr.join('&') + sk;}if (feature == 'suggest') {sig = '/ws/place/v1/suggestion?' + requestArr.join('&') + sk;}if (feature == 'reverseGeocoder') {sig = '/ws/geocoder/v1/?' + requestArr.join('&') + sk;}if (feature == 'geocoder') {sig = '/ws/geocoder/v1/?' + requestArr.join('&') + sk;}if (feature == 'getCityList') {sig = '/ws/district/v1/list?' + requestArr.join('&') + sk;}if (feature == 'getDistrictByCityId') {sig = '/ws/district/v1/getchildren?' + requestArr.join('&') + sk;}if (feature == 'calculateDistance') {sig = '/ws/distance/v1/?' + requestArr.join('&') + sk;}if (feature == 'direction') {sig = '/ws/direction/v1/' + mode + '?' + requestArr.join('&') + sk;}sig = this.md5(sig);return sig;}, location2query: function location2query(data) {if (typeof data == 'string') {return data;}var query = '';for (var i = 0; i < data.length; i++) {var d = data[i];if (!!query) {query += ';';}if (d.location) {query = query + d.location.lat + ',' + d.location.lng;}if (d.latitude && d.longitude) {query = query + d.latitude + ',' + d.longitude;}}return query;}, rad: function rad(d) {return d * Math.PI / 180.0;}, getEndLocation: function getEndLocation(location) {var to = location.split(';');var endLocation = [];for (var i = 0; i < to.length; i++) {endLocation.push({ lat: parseFloat(to[i].split(',')[0]), lng: parseFloat(to[i].split(',')[1]) });}return endLocation;}, getDistance: function getDistance(latFrom, lngFrom, latTo, lngTo) {var radLatFrom = this.rad(latFrom);var radLatTo = this.rad(latTo);var a = radLatFrom - radLatTo;var b = this.rad(lngFrom) - this.rad(lngTo);var distance = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLatFrom) * Math.cos(radLatTo) * Math.pow(Math.sin(b / 2), 2)));distance = distance * EARTH_RADIUS;distance = Math.round(distance * 10000) / 10000;return parseFloat(distance.toFixed(0));}, getWXLocation: function getWXLocation(success, fail, complete) {wx.getLocation({ type: 'gcj02', success: success, fail: fail, complete: complete });}, getLocationParam: function getLocationParam(location) {if (typeof location == 'string') {var locationArr = location.split(',');if (locationArr.length === 2) {location = { latitude: location.split(',')[0], longitude: location.split(',')[1] };} else {location = {};}}return location;}, polyfillParam: function polyfillParam(param) {param.success = param.success || function () {};param.fail = param.fail || function () {};param.complete = param.complete || function () {};}, checkParamKeyEmpty: function checkParamKeyEmpty(param, key) {if (!param[key]) {var errconf = this.buildErrorConfig(ERROR_CONF.PARAM_ERR, ERROR_CONF.PARAM_ERR_MSG + key + '参数格式有误');param.fail(errconf);param.complete(errconf);return true;}return false;}, checkKeyword: function checkKeyword(param) {return !this.checkParamKeyEmpty(param, 'keyword');}, checkLocation: function checkLocation(param) {var location = this.getLocationParam(param.location);if (!location || !location.latitude || !location.longitude) {var errconf = this.buildErrorConfig(ERROR_CONF.PARAM_ERR, ERROR_CONF.PARAM_ERR_MSG + ' location参数格式有误');param.fail(errconf);param.complete(errconf);return false;}return true;}, buildErrorConfig: function buildErrorConfig(errCode, errMsg) {return { status: errCode, message: errMsg };}, handleData: function handleData(param, data, feature) {if (feature == 'search') {var searchResult = data.data;var searchSimplify = [];for (var i = 0; i < searchResult.length; i++) {searchSimplify.push({ id: searchResult[i].id || null, title: searchResult[i].title || null, latitude: searchResult[i].location && searchResult[i].location.lat || null, longitude: searchResult[i].location && searchResult[i].location.lng || null, address: searchResult[i].address || null, category: searchResult[i].category || null, tel: searchResult[i].tel || null, adcode: searchResult[i].ad_info && searchResult[i].ad_info.adcode || null, city: searchResult[i].ad_info && searchResult[i].ad_info.city || null, district: searchResult[i].ad_info && searchResult[i].ad_info.district || null, province: searchResult[i].ad_info && searchResult[i].ad_info.province || null });}param.success(data, { searchResult: searchResult, searchSimplify: searchSimplify });} else if (feature == 'suggest') {var suggestResult = data.data;var suggestSimplify = [];for (var i = 0; i < suggestResult.length; i++) {suggestSimplify.push({ adcode: suggestResult[i].adcode || null, address: suggestResult[i].address || null, category: suggestResult[i].category || null, city: suggestResult[i].city || null, district: suggestResult[i].district || null, id: suggestResult[i].id || null, latitude: suggestResult[i].location && suggestResult[i].location.lat || null, longitude: suggestResult[i].location && suggestResult[i].location.lng || null, province: suggestResult[i].province || null, title: suggestResult[i].title || null, type: suggestResult[i].type || null });}param.success(data, { suggestResult: suggestResult, suggestSimplify: suggestSimplify });} else if (feature == 'reverseGeocoder') {var reverseGeocoderResult = data.result;var reverseGeocoderSimplify = { address: reverseGeocoderResult.address || null, latitude: reverseGeocoderResult.location && reverseGeocoderResult.location.lat || null, longitude: reverseGeocoderResult.location && reverseGeocoderResult.location.lng || null, adcode: reverseGeocoderResult.ad_info && reverseGeocoderResult.ad_info.adcode || null, city: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.city || null, district: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.district || null, nation: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.nation || null, province: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.province || null, street: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.street || null, street_number: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.street_number || null, recommend: reverseGeocoderResult.formatted_addresses && reverseGeocoderResult.formatted_addresses.recommend || null, rough: reverseGeocoderResult.formatted_addresses && reverseGeocoderResult.formatted_addresses.rough || null };if (reverseGeocoderResult.pois) {var pois = reverseGeocoderResult.pois;var poisSimplify = [];for (var i = 0; i < pois.length; i++) {poisSimplify.push({ id: pois[i].id || null, title: pois[i].title || null, latitude: pois[i].location && pois[i].location.lat || null, longitude: pois[i].location && pois[i].location.lng || null, address: pois[i].address || null, category: pois[i].category || null, adcode: pois[i].ad_info && pois[i].ad_info.adcode || null, city: pois[i].ad_info && pois[i].ad_info.city || null, district: pois[i].ad_info && pois[i].ad_info.district || null, province: pois[i].ad_info && pois[i].ad_info.province || null });}param.success(data, { reverseGeocoderResult: reverseGeocoderResult, reverseGeocoderSimplify: reverseGeocoderSimplify, pois: pois, poisSimplify: poisSimplify });} else {param.success(data, { reverseGeocoderResult: reverseGeocoderResult, reverseGeocoderSimplify: reverseGeocoderSimplify });}} else if (feature == 'geocoder') {var geocoderResult = data.result;var geocoderSimplify = { title: geocoderResult.title || null, latitude: geocoderResult.location && geocoderResult.location.lat || null, longitude: geocoderResult.location && geocoderResult.location.lng || null, adcode: geocoderResult.ad_info && geocoderResult.ad_info.adcode || null, province: geocoderResult.address_components && geocoderResult.address_components.province || null, city: geocoderResult.address_components && geocoderResult.address_components.city || null, district: geocoderResult.address_components && geocoderResult.address_components.district || null, street: geocoderResult.address_components && geocoderResult.address_components.street || null, street_number: geocoderResult.address_components && geocoderResult.address_components.street_number || null, level: geocoderResult.level || null };param.success(data, { geocoderResult: geocoderResult, geocoderSimplify: geocoderSimplify });} else if (feature == 'getCityList') {var provinceResult = data.result[0];var cityResult = data.result[1];var districtResult = data.result[2];param.success(data, { provinceResult: provinceResult, cityResult: cityResult, districtResult: districtResult });} else if (feature == 'getDistrictByCityId') {var districtByCity = data.result[0];param.success(data, districtByCity);} else if (feature == 'calculateDistance') {var calculateDistanceResult = data.result.elements;var distance = [];for (var i = 0; i < calculateDistanceResult.length; i++) {distance.push(calculateDistanceResult[i].distance);}param.success(data, { calculateDistanceResult: calculateDistanceResult, distance: distance });} else if (feature == 'direction') {var direction = data.result.routes;param.success(data, direction);} else {param.success(data);}}, buildWxRequestConfig: function buildWxRequestConfig(param, options, feature) {var that = this;options.header = { "content-type": "application/json" };options.method = 'GET';options.success = function (res) {var data = res.data;if (data.status === 0) {that.handleData(param, data, feature);} else {param.fail(data);}};options.fail = function (res) {res.statusCode = ERROR_CONF.WX_ERR_CODE;param.fail(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));};options.complete = function (res) {var statusCode = +res.statusCode;switch (statusCode) {case ERROR_CONF.WX_ERR_CODE:{param.complete(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));break;}case ERROR_CONF.WX_OK_CODE:{var data = res.data;if (data.status === 0) {param.complete(data);} else {param.complete(that.buildErrorConfig(data.status, data.message));}break;}default:{param.complete(that.buildErrorConfig(ERROR_CONF.SYSTEM_ERR, ERROR_CONF.SYSTEM_ERR_MSG));}}};return options;}, locationProcess: function locationProcess(param, locationsuccess, locationfail, locationcomplete) {var that = this;locationfail = locationfail || function (res) {res.statusCode = ERROR_CONF.WX_ERR_CODE;param.fail(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));};locationcomplete = locationcomplete || function (res) {if (res.statusCode == ERROR_CONF.WX_ERR_CODE) {param.complete(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));}};if (!param.location) {that.getWXLocation(locationsuccess, locationfail, locationcomplete);} else if (that.checkLocation(param)) {var location = Utils.getLocationParam(param.location);locationsuccess(location);}} };var QQMapWX = /*#__PURE__*/function () {"use strict";function QQMapWX(options) {_classCallCheck(this, QQMapWX);if (!options.key) {throw Error('key值不能为空');}this.key = options.key;}_createClass(QQMapWX, [{ key: "search", value: function search(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (!Utils.checkKeyword(options)) {return;}var requestParam = { keyword: options.keyword, orderby: options.orderby || '_distance', page_size: options.page_size || 10, page_index: options.page_index || 1, output: 'json', key: that.key };if (options.address_format) {requestParam.address_format = options.address_format;}if (options.filter) {requestParam.filter = options.filter;}var distance = options.distance || "1000";var auto_extend = options.auto_extend || 1;var region = null;var rectangle = null;if (options.region) {region = options.region;}if (options.rectangle) {rectangle = options.rectangle;}var locationsuccess = function locationsuccess(result) {if (region && !rectangle) {requestParam.boundary = "region(" + region + "," + auto_extend + "," + result.latitude + "," + result.longitude + ")";if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'search');}} else if (rectangle && !region) {requestParam.boundary = "rectangle(" + rectangle + ")";if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'search');}} else {requestParam.boundary = "nearby(" + result.latitude + "," + result.longitude + "," + distance + "," + auto_extend + ")";if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'search');}}wx.request(Utils.buildWxRequestConfig(options, { url: URL_SEARCH, data: requestParam }, 'search'));};Utils.locationProcess(options, locationsuccess);} }, { key: "getSuggestion", value: function getSuggestion(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (!Utils.checkKeyword(options)) {return;}var requestParam = { keyword: options.keyword, region: options.region || '全国', region_fix: options.region_fix || 0, policy: options.policy || 0, page_size: options.page_size || 10, page_index: options.page_index || 1, get_subpois: options.get_subpois || 0, output: 'json', key: that.key };if (options.address_format) {requestParam.address_format = options.address_format;}if (options.filter) {requestParam.filter = options.filter;}if (options.location) {var locationsuccess = function locationsuccess(result) {requestParam.location = result.latitude + ',' + result.longitude;if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'suggest');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_SUGGESTION, data: requestParam }, "suggest"));};Utils.locationProcess(options, locationsuccess);} else {if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'suggest');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_SUGGESTION, data: requestParam }, "suggest"));}} }, { key: "reverseGeocoder", value: function reverseGeocoder(options) {var that = this;options = options || {};Utils.polyfillParam(options);var requestParam = { coord_type: options.coord_type || 5, get_poi: options.get_poi || 0, output: 'json', key: that.key };if (options.poi_options) {requestParam.poi_options = options.poi_options;}var locationsuccess = function locationsuccess(result) {requestParam.location = result.latitude + ',' + result.longitude;if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'reverseGeocoder');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_GET_GEOCODER, data: requestParam }, 'reverseGeocoder'));};Utils.locationProcess(options, locationsuccess);} }, { key: "geocoder", value: function geocoder(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (Utils.checkParamKeyEmpty(options, 'address')) {return;}var requestParam = { address: options.address, output: 'json', key: that.key };if (options.region) {requestParam.region = options.region;}if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'geocoder');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_GET_GEOCODER, data: requestParam }, 'geocoder'));} }, { key: "getCityList", value: function getCityList(options) {var that = this;options = options || {};Utils.polyfillParam(options);var requestParam = { output: 'json', key: that.key };if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'getCityList');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_CITY_LIST, data: requestParam }, 'getCityList'));} }, { key: "getDistrictByCityId", value: function getDistrictByCityId(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (Utils.checkParamKeyEmpty(options, 'id')) {return;}var requestParam = { id: options.id || '', output: 'json', key: that.key };if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'getDistrictByCityId');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_AREA_LIST, data: requestParam }, 'getDistrictByCityId'));} }, { key: "calculateDistance", value: function calculateDistance(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (Utils.checkParamKeyEmpty(options, 'to')) {return;}var requestParam = { mode: options.mode || 'walking', to: Utils.location2query(options.to), output: 'json', key: that.key };if (options.from) {options.location = options.from;}if (requestParam.mode == 'straight') {var locationsuccess = function locationsuccess(result) {var locationTo = Utils.getEndLocation(requestParam.to);var data = { message: "query ok", result: { elements: [] }, status: 0 };for (var i = 0; i < locationTo.length; i++) {data.result.elements.push({ distance: Utils.getDistance(result.latitude, result.longitude, locationTo[i].lat, locationTo[i].lng), duration: 0, from: { lat: result.latitude, lng: result.longitude }, to: { lat: locationTo[i].lat, lng: locationTo[i].lng } });}var calculateResult = data.result.elements;var distanceResult = [];for (var i = 0; i < calculateResult.length; i++) {distanceResult.push(calculateResult[i].distance);}return options.success(data, { calculateResult: calculateResult, distanceResult: distanceResult });};Utils.locationProcess(options, locationsuccess);} else {var locationsuccess = function locationsuccess(result) {requestParam.from = result.latitude + ',' + result.longitude;if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'calculateDistance');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_DISTANCE, data: requestParam }, 'calculateDistance'));};Utils.locationProcess(options, locationsuccess);}} }, { key: "direction", value: function direction(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (Utils.checkParamKeyEmpty(options, 'to')) {return;}var requestParam = { output: 'json', key: that.key };if (typeof options.to == 'string') {requestParam.to = options.to;} else {requestParam.to = options.to.latitude + ',' + options.to.longitude;}var SET_URL_DIRECTION = null;options.mode = options.mode || MODE.driving;SET_URL_DIRECTION = URL_DIRECTION + options.mode;if (options.from) {options.location = options.from;}if (options.mode == MODE.driving) {if (options.from_poi) {requestParam.from_poi = options.from_poi;}if (options.heading) {requestParam.heading = options.heading;}if (options.speed) {requestParam.speed = options.speed;}if (options.accuracy) {requestParam.accuracy = options.accuracy;}if (options.road_type) {requestParam.road_type = options.road_type;}if (options.to_poi) {requestParam.to_poi = options.to_poi;}if (options.from_track) {requestParam.from_track = options.from_track;}if (options.waypoints) {requestParam.waypoints = options.waypoints;}if (options.policy) {requestParam.policy = options.policy;}if (options.plate_number) {requestParam.plate_number = options.plate_number;}}if (options.mode == MODE.transit) {if (options.departure_time) {requestParam.departure_time = options.departure_time;}if (options.policy) {requestParam.policy = options.policy;}}var locationsuccess = function locationsuccess(result) {requestParam.from = result.latitude + ',' + result.longitude;if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'direction', options.mode);}wx.request(Utils.buildWxRequestConfig(options, { url: SET_URL_DIRECTION, data: requestParam }, 'direction'));};Utils.locationProcess(options, locationsuccess);} }]);return QQMapWX;}();;module.exports = QQMapWX;
+
+/***/ }),
+
 /***/ 16:
-/*!*******************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/mixin/mixin.js ***!
-  \*******************************************************************************************/
+/*!********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/mixin/mixin.js ***!
+  \********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2915,1796 +2927,10 @@ var install = function install(Vue) {
 
 /***/ }),
 
-/***/ 164:
-/*!********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/util/emitter.js ***!
-  \********************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /**
-                                                                                                      * 递归使用 call 方式this指向
-                                                                                                      * @param componentName // 需要找的组件的名称
-                                                                                                      * @param eventName // 事件名称
-                                                                                                      * @param params // 需要传递的参数
-                                                                                                      */
-function _broadcast(componentName, eventName, params) {
-  // 循环子节点找到名称一样的子节点 否则 递归 当前子节点
-  this.$children.map(function (child) {
-    if (componentName === child.$options.name) {
-      child.$emit.apply(child, [eventName].concat(params));
-    } else {
-      _broadcast.apply(child, [componentName, eventName].concat(params));
-    }
-  });
-}var _default =
-{
-  methods: {
-    /**
-              * 派发 (向上查找) (一个)
-              * @param componentName // 需要找的组件的名称
-              * @param eventName // 事件名称
-              * @param params // 需要传递的参数
-              */
-    dispatch: function dispatch(componentName, eventName, params) {
-      var parent = this.$parent || this.$root; //$parent 找到最近的父节点 $root 根节点
-      var name = parent.$options.name; // 获取当前组件实例的name
-      // 如果当前有节点 && 当前没名称 且 当前名称等于需要传进来的名称的时候就去查找当前的节点
-      // 循环出当前名称的一样的组件实例
-      while (parent && (!name || name !== componentName)) {
-        parent = parent.$parent;
-        if (parent) {
-          name = parent.$options.name;
-        }
-      }
-      // 有节点表示当前找到了name一样的实例
-      if (parent) {
-        parent.$emit.apply(parent, [eventName].concat(params));
-      }
-    },
-    /**
-        * 广播 (向下查找) (广播多个)
-        * @param componentName // 需要找的组件的名称
-        * @param eventName // 事件名称
-        * @param params // 需要传递的参数
-        */
-    broadcast: function broadcast(componentName, eventName, params) {
-      _broadcast.call(this, componentName, eventName, params);
-    } } };exports.default = _default;
-
-/***/ }),
-
-/***/ 165:
-/*!****************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/util/async-validator.js ***!
-  \****************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
-
-/* eslint no-console:0 */
-var formatRegExp = /%[sdj%]/g;
-var warning = function warning() {}; // don't print warning message when in production env or node runtime
-
-if (typeof process !== 'undefined' && Object({"NODE_ENV":"development","VUE_APP_NAME":"party_building","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}) && "development" !== 'production' && typeof window !==
-'undefined' && typeof document !== 'undefined') {
-  warning = function warning(type, errors) {
-    if (typeof console !== 'undefined' && console.warn) {
-      if (errors.every(function (e) {
-        return typeof e === 'string';
-      })) {
-        console.warn(type, errors);
-      }
-    }
-  };
-}
-
-function convertFieldsError(errors) {
-  if (!errors || !errors.length) return null;
-  var fields = {};
-  errors.forEach(function (error) {
-    var field = error.field;
-    fields[field] = fields[field] || [];
-    fields[field].push(error);
-  });
-  return fields;
-}
-
-function format() {
-  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-
-  var i = 1;
-  var f = args[0];
-  var len = args.length;
-
-  if (typeof f === 'function') {
-    return f.apply(null, args.slice(1));
-  }
-
-  if (typeof f === 'string') {
-    var str = String(f).replace(formatRegExp, function (x) {
-      if (x === '%%') {
-        return '%';
-      }
-
-      if (i >= len) {
-        return x;
-      }
-
-      switch (x) {
-        case '%s':
-          return String(args[i++]);
-
-        case '%d':
-          return Number(args[i++]);
-
-        case '%j':
-          try {
-            return JSON.stringify(args[i++]);
-          } catch (_) {
-            return '[Circular]';
-          }
-
-          break;
-
-        default:
-          return x;}
-
-    });
-
-    for (var arg = args[i]; i < len; arg = args[++i]) {
-      str += " " + arg;
-    }
-
-    return str;
-  }
-
-  return f;
-}
-
-function isNativeStringType(type) {
-  return type === 'string' || type === 'url' || type === 'hex' || type === 'email' || type === 'pattern';
-}
-
-function isEmptyValue(value, type) {
-  if (value === undefined || value === null) {
-    return true;
-  }
-
-  if (type === 'array' && Array.isArray(value) && !value.length) {
-    return true;
-  }
-
-  if (isNativeStringType(type) && typeof value === 'string' && !value) {
-    return true;
-  }
-
-  return false;
-}
-
-function asyncParallelArray(arr, func, callback) {
-  var results = [];
-  var total = 0;
-  var arrLength = arr.length;
-
-  function count(errors) {
-    results.push.apply(results, errors);
-    total++;
-
-    if (total === arrLength) {
-      callback(results);
-    }
-  }
-
-  arr.forEach(function (a) {
-    func(a, count);
-  });
-}
-
-function asyncSerialArray(arr, func, callback) {
-  var index = 0;
-  var arrLength = arr.length;
-
-  function next(errors) {
-    if (errors && errors.length) {
-      callback(errors);
-      return;
-    }
-
-    var original = index;
-    index = index + 1;
-
-    if (original < arrLength) {
-      func(arr[original], next);
-    } else {
-      callback([]);
-    }
-  }
-
-  next([]);
-}
-
-function flattenObjArr(objArr) {
-  var ret = [];
-  Object.keys(objArr).forEach(function (k) {
-    ret.push.apply(ret, objArr[k]);
-  });
-  return ret;
-}
-
-function asyncMap(objArr, option, func, callback) {
-  if (option.first) {
-    var _pending = new Promise(function (resolve, reject) {
-      var next = function next(errors) {
-        callback(errors);
-        return errors.length ? reject({
-          errors: errors,
-          fields: convertFieldsError(errors) }) :
-        resolve();
-      };
-
-      var flattenArr = flattenObjArr(objArr);
-      asyncSerialArray(flattenArr, func, next);
-    });
-
-    _pending["catch"](function (e) {
-      return e;
-    });
-
-    return _pending;
-  }
-
-  var firstFields = option.firstFields || [];
-
-  if (firstFields === true) {
-    firstFields = Object.keys(objArr);
-  }
-
-  var objArrKeys = Object.keys(objArr);
-  var objArrLength = objArrKeys.length;
-  var total = 0;
-  var results = [];
-  var pending = new Promise(function (resolve, reject) {
-    var next = function next(errors) {
-      results.push.apply(results, errors);
-      total++;
-
-      if (total === objArrLength) {
-        callback(results);
-        return results.length ? reject({
-          errors: results,
-          fields: convertFieldsError(results) }) :
-        resolve();
-      }
-    };
-
-    if (!objArrKeys.length) {
-      callback(results);
-      resolve();
-    }
-
-    objArrKeys.forEach(function (key) {
-      var arr = objArr[key];
-
-      if (firstFields.indexOf(key) !== -1) {
-        asyncSerialArray(arr, func, next);
-      } else {
-        asyncParallelArray(arr, func, next);
-      }
-    });
-  });
-  pending["catch"](function (e) {
-    return e;
-  });
-  return pending;
-}
-
-function complementError(rule) {
-  return function (oe) {
-    if (oe && oe.message) {
-      oe.field = oe.field || rule.fullField;
-      return oe;
-    }
-
-    return {
-      message: typeof oe === 'function' ? oe() : oe,
-      field: oe.field || rule.fullField };
-
-  };
-}
-
-function deepMerge(target, source) {
-  if (source) {
-    for (var s in source) {
-      if (source.hasOwnProperty(s)) {
-        var value = source[s];
-
-        if (typeof value === 'object' && typeof target[s] === 'object') {
-          target[s] = _extends({}, target[s], {}, value);
-        } else {
-          target[s] = value;
-        }
-      }
-    }
-  }
-
-  return target;
-}
-
-/**
-   *  Rule for validating required fields.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param source The source object being validated.
-   *  @param errors An array of errors that this rule may add
-   *  validation errors to.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function required(rule, value, source, errors, options, type) {
-  if (rule.required && (!source.hasOwnProperty(rule.field) || isEmptyValue(value, type || rule.type))) {
-    errors.push(format(options.messages.required, rule.fullField));
-  }
-}
-
-/**
-   *  Rule for validating whitespace.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param source The source object being validated.
-   *  @param errors An array of errors that this rule may add
-   *  validation errors to.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function whitespace(rule, value, source, errors, options) {
-  if (/^\s+$/.test(value) || value === '') {
-    errors.push(format(options.messages.whitespace, rule.fullField));
-  }
-}
-
-/* eslint max-len:0 */
-
-var pattern = {
-  // http://emailregex.com/
-  email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-  url: new RegExp(
-  "^(?!mailto:)(?:(?:http|https|ftp)://|//)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$",
-  'i'),
-  hex: /^#?([a-f0-9]{6}|[a-f0-9]{3})$/i };
-
-var types = {
-  integer: function integer(value) {
-    return types.number(value) && parseInt(value, 10) === value;
-  },
-  "float": function _float(value) {
-    return types.number(value) && !types.integer(value);
-  },
-  array: function array(value) {
-    return Array.isArray(value);
-  },
-  regexp: function regexp(value) {
-    if (value instanceof RegExp) {
-      return true;
-    }
-
-    try {
-      return !!new RegExp(value);
-    } catch (e) {
-      return false;
-    }
-  },
-  date: function date(value) {
-    return typeof value.getTime === 'function' && typeof value.getMonth === 'function' && typeof value.getYear ===
-    'function';
-  },
-  number: function number(value) {
-    if (isNaN(value)) {
-      return false;
-    }
-
-    // 修改源码，将字符串数值先转为数值
-    return typeof +value === 'number';
-  },
-  object: function object(value) {
-    return typeof value === 'object' && !types.array(value);
-  },
-  method: function method(value) {
-    return typeof value === 'function';
-  },
-  email: function email(value) {
-    return typeof value === 'string' && !!value.match(pattern.email) && value.length < 255;
-  },
-  url: function url(value) {
-    return typeof value === 'string' && !!value.match(pattern.url);
-  },
-  hex: function hex(value) {
-    return typeof value === 'string' && !!value.match(pattern.hex);
-  } };
-
-/**
-        *  Rule for validating the type of a value.
-        *
-        *  @param rule The validation rule.
-        *  @param value The value of the field on the source object.
-        *  @param source The source object being validated.
-        *  @param errors An array of errors that this rule may add
-        *  validation errors to.
-        *  @param options The validation options.
-        *  @param options.messages The validation messages.
-        */
-
-function type(rule, value, source, errors, options) {
-  if (rule.required && value === undefined) {
-    required(rule, value, source, errors, options);
-    return;
-  }
-
-  var custom = ['integer', 'float', 'array', 'regexp', 'object', 'method', 'email', 'number', 'date', 'url', 'hex'];
-  var ruleType = rule.type;
-
-  if (custom.indexOf(ruleType) > -1) {
-    if (!types[ruleType](value)) {
-      errors.push(format(options.messages.types[ruleType], rule.fullField, rule.type));
-    } // straight typeof check
-
-  } else if (ruleType && typeof value !== rule.type) {
-    errors.push(format(options.messages.types[ruleType], rule.fullField, rule.type));
-  }
-}
-
-/**
-   *  Rule for validating minimum and maximum allowed values.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param source The source object being validated.
-   *  @param errors An array of errors that this rule may add
-   *  validation errors to.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function range(rule, value, source, errors, options) {
-  var len = typeof rule.len === 'number';
-  var min = typeof rule.min === 'number';
-  var max = typeof rule.max === 'number'; // 正则匹配码点范围从U+010000一直到U+10FFFF的文字（补充平面Supplementary Plane）
-
-  var spRegexp = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
-  var val = value;
-  var key = null;
-  var num = typeof value === 'number';
-  var str = typeof value === 'string';
-  var arr = Array.isArray(value);
-
-  if (num) {
-    key = 'number';
-  } else if (str) {
-    key = 'string';
-  } else if (arr) {
-    key = 'array';
-  } // if the value is not of a supported type for range validation
-  // the validation rule rule should use the
-  // type property to also test for a particular type
-
-
-  if (!key) {
-    return false;
-  }
-
-  if (arr) {
-    val = value.length;
-  }
-
-  if (str) {
-    // 处理码点大于U+010000的文字length属性不准确的bug，如"𠮷𠮷𠮷".lenght !== 3
-    val = value.replace(spRegexp, '_').length;
-  }
-
-  if (len) {
-    if (val !== rule.len) {
-      errors.push(format(options.messages[key].len, rule.fullField, rule.len));
-    }
-  } else if (min && !max && val < rule.min) {
-    errors.push(format(options.messages[key].min, rule.fullField, rule.min));
-  } else if (max && !min && val > rule.max) {
-    errors.push(format(options.messages[key].max, rule.fullField, rule.max));
-  } else if (min && max && (val < rule.min || val > rule.max)) {
-    errors.push(format(options.messages[key].range, rule.fullField, rule.min, rule.max));
-  }
-}
-
-var ENUM = 'enum';
-/**
-                    *  Rule for validating a value exists in an enumerable list.
-                    *
-                    *  @param rule The validation rule.
-                    *  @param value The value of the field on the source object.
-                    *  @param source The source object being validated.
-                    *  @param errors An array of errors that this rule may add
-                    *  validation errors to.
-                    *  @param options The validation options.
-                    *  @param options.messages The validation messages.
-                    */
-
-function enumerable(rule, value, source, errors, options) {
-  rule[ENUM] = Array.isArray(rule[ENUM]) ? rule[ENUM] : [];
-
-  if (rule[ENUM].indexOf(value) === -1) {
-    errors.push(format(options.messages[ENUM], rule.fullField, rule[ENUM].join(', ')));
-  }
-}
-
-/**
-   *  Rule for validating a regular expression pattern.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param source The source object being validated.
-   *  @param errors An array of errors that this rule may add
-   *  validation errors to.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function pattern$1(rule, value, source, errors, options) {
-  if (rule.pattern) {
-    if (rule.pattern instanceof RegExp) {
-      // if a RegExp instance is passed, reset `lastIndex` in case its `global`
-      // flag is accidentally set to `true`, which in a validation scenario
-      // is not necessary and the result might be misleading
-      rule.pattern.lastIndex = 0;
-
-      if (!rule.pattern.test(value)) {
-        errors.push(format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
-      }
-    } else if (typeof rule.pattern === 'string') {
-      var _pattern = new RegExp(rule.pattern);
-
-      if (!_pattern.test(value)) {
-        errors.push(format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
-      }
-    }
-  }
-}
-
-var rules = {
-  required: required,
-  whitespace: whitespace,
-  type: type,
-  range: range,
-  "enum": enumerable,
-  pattern: pattern$1 };
-
-
-/**
-                         *  Performs validation for string types.
-                         *
-                         *  @param rule The validation rule.
-                         *  @param value The value of the field on the source object.
-                         *  @param callback The callback function.
-                         *  @param source The source object being validated.
-                         *  @param options The validation options.
-                         *  @param options.messages The validation messages.
-                         */
-
-function string(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value, 'string') && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options, 'string');
-
-    if (!isEmptyValue(value, 'string')) {
-      rules.type(rule, value, source, errors, options);
-      rules.range(rule, value, source, errors, options);
-      rules.pattern(rule, value, source, errors, options);
-
-      if (rule.whitespace === true) {
-        rules.whitespace(rule, value, source, errors, options);
-      }
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a function.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function method(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a number.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function number(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (value === '') {
-      value = undefined;
-    }
-
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-      rules.range(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a boolean.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function _boolean(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates the regular expression type.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function regexp(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (!isEmptyValue(value)) {
-      rules.type(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a number is an integer.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function integer(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-      rules.range(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a number is a floating point number.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function floatFn(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-      rules.range(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates an array.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function array(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value, 'array') && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options, 'array');
-
-    if (!isEmptyValue(value, 'array')) {
-      rules.type(rule, value, source, errors, options);
-      rules.range(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates an object.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function object(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-var ENUM$1 = 'enum';
-/**
-                      *  Validates an enumerable list.
-                      *
-                      *  @param rule The validation rule.
-                      *  @param value The value of the field on the source object.
-                      *  @param callback The callback function.
-                      *  @param source The source object being validated.
-                      *  @param options The validation options.
-                      *  @param options.messages The validation messages.
-                      */
-
-function enumerable$1(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules[ENUM$1](rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a regular expression pattern.
-   *
-   *  Performs validation when a rule only contains
-   *  a pattern property but is not declared as a string type.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function pattern$2(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value, 'string') && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (!isEmptyValue(value, 'string')) {
-      rules.pattern(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-function date(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (!isEmptyValue(value)) {
-      var dateObject;
-
-      if (typeof value === 'number') {
-        dateObject = new Date(value);
-      } else {
-        dateObject = value;
-      }
-
-      rules.type(rule, dateObject, source, errors, options);
-
-      if (dateObject) {
-        rules.range(rule, dateObject.getTime(), source, errors, options);
-      }
-    }
-  }
-
-  callback(errors);
-}
-
-function required$1(rule, value, callback, source, options) {
-  var errors = [];
-  var type = Array.isArray(value) ? 'array' : typeof value;
-  rules.required(rule, value, source, errors, options, type);
-  callback(errors);
-}
-
-function type$1(rule, value, callback, source, options) {
-  var ruleType = rule.type;
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value, ruleType) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options, ruleType);
-
-    if (!isEmptyValue(value, ruleType)) {
-      rules.type(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Performs validation for any type.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function any(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-  }
-
-  callback(errors);
-}
-
-var validators = {
-  string: string,
-  method: method,
-  number: number,
-  "boolean": _boolean,
-  regexp: regexp,
-  integer: integer,
-  "float": floatFn,
-  array: array,
-  object: object,
-  "enum": enumerable$1,
-  pattern: pattern$2,
-  date: date,
-  url: type$1,
-  hex: type$1,
-  email: type$1,
-  required: required$1,
-  any: any };
-
-
-function newMessages() {
-  return {
-    "default": 'Validation error on field %s',
-    required: '%s is required',
-    "enum": '%s must be one of %s',
-    whitespace: '%s cannot be empty',
-    date: {
-      format: '%s date %s is invalid for format %s',
-      parse: '%s date could not be parsed, %s is invalid ',
-      invalid: '%s date %s is invalid' },
-
-    types: {
-      string: '%s is not a %s',
-      method: '%s is not a %s (function)',
-      array: '%s is not an %s',
-      object: '%s is not an %s',
-      number: '%s is not a %s',
-      date: '%s is not a %s',
-      "boolean": '%s is not a %s',
-      integer: '%s is not an %s',
-      "float": '%s is not a %s',
-      regexp: '%s is not a valid %s',
-      email: '%s is not a valid %s',
-      url: '%s is not a valid %s',
-      hex: '%s is not a valid %s' },
-
-    string: {
-      len: '%s must be exactly %s characters',
-      min: '%s must be at least %s characters',
-      max: '%s cannot be longer than %s characters',
-      range: '%s must be between %s and %s characters' },
-
-    number: {
-      len: '%s must equal %s',
-      min: '%s cannot be less than %s',
-      max: '%s cannot be greater than %s',
-      range: '%s must be between %s and %s' },
-
-    array: {
-      len: '%s must be exactly %s in length',
-      min: '%s cannot be less than %s in length',
-      max: '%s cannot be greater than %s in length',
-      range: '%s must be between %s and %s in length' },
-
-    pattern: {
-      mismatch: '%s value %s does not match pattern %s' },
-
-    clone: function clone() {
-      var cloned = JSON.parse(JSON.stringify(this));
-      cloned.clone = this.clone;
-      return cloned;
-    } };
-
-}
-var messages = newMessages();
-
-/**
-                               *  Encapsulates a validation schema.
-                               *
-                               *  @param descriptor An object declaring validation rules
-                               *  for this schema.
-                               */
-
-function Schema(descriptor) {
-  this.rules = null;
-  this._messages = messages;
-  this.define(descriptor);
-}
-
-Schema.prototype = {
-  messages: function messages(_messages) {
-    if (_messages) {
-      this._messages = deepMerge(newMessages(), _messages);
-    }
-
-    return this._messages;
-  },
-  define: function define(rules) {
-    if (!rules) {
-      throw new Error('Cannot configure a schema with no rules');
-    }
-
-    if (typeof rules !== 'object' || Array.isArray(rules)) {
-      throw new Error('Rules must be an object');
-    }
-
-    this.rules = {};
-    var z;
-    var item;
-
-    for (z in rules) {
-      if (rules.hasOwnProperty(z)) {
-        item = rules[z];
-        this.rules[z] = Array.isArray(item) ? item : [item];
-      }
-    }
-  },
-  validate: function validate(source_, o, oc) {
-    var _this = this;
-
-    if (o === void 0) {
-      o = {};
-    }
-
-    if (oc === void 0) {
-      oc = function oc() {};
-    }
-
-    var source = source_;
-    var options = o;
-    var callback = oc;
-
-    if (typeof options === 'function') {
-      callback = options;
-      options = {};
-    }
-
-    if (!this.rules || Object.keys(this.rules).length === 0) {
-      if (callback) {
-        callback();
-      }
-
-      return Promise.resolve();
-    }
-
-    function complete(results) {
-      var i;
-      var errors = [];
-      var fields = {};
-
-      function add(e) {
-        if (Array.isArray(e)) {
-          var _errors;
-
-          errors = (_errors = errors).concat.apply(_errors, e);
-        } else {
-          errors.push(e);
-        }
-      }
-
-      for (i = 0; i < results.length; i++) {
-        add(results[i]);
-      }
-
-      if (!errors.length) {
-        errors = null;
-        fields = null;
-      } else {
-        fields = convertFieldsError(errors);
-      }
-
-      callback(errors, fields);
-    }
-
-    if (options.messages) {
-      var messages$1 = this.messages();
-
-      if (messages$1 === messages) {
-        messages$1 = newMessages();
-      }
-
-      deepMerge(messages$1, options.messages);
-      options.messages = messages$1;
-    } else {
-      options.messages = this.messages();
-    }
-
-    var arr;
-    var value;
-    var series = {};
-    var keys = options.keys || Object.keys(this.rules);
-    keys.forEach(function (z) {
-      arr = _this.rules[z];
-      value = source[z];
-      arr.forEach(function (r) {
-        var rule = r;
-
-        if (typeof rule.transform === 'function') {
-          if (source === source_) {
-            source = _extends({}, source);
-          }
-
-          value = source[z] = rule.transform(value);
-        }
-
-        if (typeof rule === 'function') {
-          rule = {
-            validator: rule };
-
-        } else {
-          rule = _extends({}, rule);
-        }
-
-        rule.validator = _this.getValidationMethod(rule);
-        rule.field = z;
-        rule.fullField = rule.fullField || z;
-        rule.type = _this.getType(rule);
-
-        if (!rule.validator) {
-          return;
-        }
-
-        series[z] = series[z] || [];
-        series[z].push({
-          rule: rule,
-          value: value,
-          source: source,
-          field: z });
-
-      });
-    });
-    var errorFields = {};
-    return asyncMap(series, options, function (data, doIt) {
-      var rule = data.rule;
-      var deep = (rule.type === 'object' || rule.type === 'array') && (typeof rule.fields === 'object' || typeof rule.defaultField ===
-      'object');
-      deep = deep && (rule.required || !rule.required && data.value);
-      rule.field = data.field;
-
-      function addFullfield(key, schema) {
-        return _extends({}, schema, {
-          fullField: rule.fullField + "." + key });
-
-      }
-
-      function cb(e) {
-        if (e === void 0) {
-          e = [];
-        }
-
-        var errors = e;
-
-        if (!Array.isArray(errors)) {
-          errors = [errors];
-        }
-
-        if (!options.suppressWarning && errors.length) {
-          Schema.warning('async-validator:', errors);
-        }
-
-        if (errors.length && rule.message) {
-          errors = [].concat(rule.message);
-        }
-
-        errors = errors.map(complementError(rule));
-
-        if (options.first && errors.length) {
-          errorFields[rule.field] = 1;
-          return doIt(errors);
-        }
-
-        if (!deep) {
-          doIt(errors);
-        } else {
-          // if rule is required but the target object
-          // does not exist fail at the rule level and don't
-          // go deeper
-          if (rule.required && !data.value) {
-            if (rule.message) {
-              errors = [].concat(rule.message).map(complementError(rule));
-            } else if (options.error) {
-              errors = [options.error(rule, format(options.messages.required, rule.field))];
-            } else {
-              errors = [];
-            }
-
-            return doIt(errors);
-          }
-
-          var fieldsSchema = {};
-
-          if (rule.defaultField) {
-            for (var k in data.value) {
-              if (data.value.hasOwnProperty(k)) {
-                fieldsSchema[k] = rule.defaultField;
-              }
-            }
-          }
-
-          fieldsSchema = _extends({}, fieldsSchema, {}, data.rule.fields);
-
-          for (var f in fieldsSchema) {
-            if (fieldsSchema.hasOwnProperty(f)) {
-              var fieldSchema = Array.isArray(fieldsSchema[f]) ? fieldsSchema[f] : [fieldsSchema[f]];
-              fieldsSchema[f] = fieldSchema.map(addFullfield.bind(null, f));
-            }
-          }
-
-          var schema = new Schema(fieldsSchema);
-          schema.messages(options.messages);
-
-          if (data.rule.options) {
-            data.rule.options.messages = options.messages;
-            data.rule.options.error = options.error;
-          }
-
-          schema.validate(data.value, data.rule.options || options, function (errs) {
-            var finalErrors = [];
-
-            if (errors && errors.length) {
-              finalErrors.push.apply(finalErrors, errors);
-            }
-
-            if (errs && errs.length) {
-              finalErrors.push.apply(finalErrors, errs);
-            }
-
-            doIt(finalErrors.length ? finalErrors : null);
-          });
-        }
-      }
-
-      var res;
-
-      if (rule.asyncValidator) {
-        res = rule.asyncValidator(rule, data.value, cb, data.source, options);
-      } else if (rule.validator) {
-        res = rule.validator(rule, data.value, cb, data.source, options);
-
-        if (res === true) {
-          cb();
-        } else if (res === false) {
-          cb(rule.message || rule.field + " fails");
-        } else if (res instanceof Array) {
-          cb(res);
-        } else if (res instanceof Error) {
-          cb(res.message);
-        }
-      }
-
-      if (res && res.then) {
-        res.then(function () {
-          return cb();
-        }, function (e) {
-          return cb(e);
-        });
-      }
-    }, function (results) {
-      complete(results);
-    });
-  },
-  getType: function getType(rule) {
-    if (rule.type === undefined && rule.pattern instanceof RegExp) {
-      rule.type = 'pattern';
-    }
-
-    if (typeof rule.validator !== 'function' && rule.type && !validators.hasOwnProperty(rule.type)) {
-      throw new Error(format('Unknown rule type %s', rule.type));
-    }
-
-    return rule.type || 'string';
-  },
-  getValidationMethod: function getValidationMethod(rule) {
-    if (typeof rule.validator === 'function') {
-      return rule.validator;
-    }
-
-    var keys = Object.keys(rule);
-    var messageIndex = keys.indexOf('message');
-
-    if (messageIndex !== -1) {
-      keys.splice(messageIndex, 1);
-    }
-
-    if (keys.length === 1 && keys[0] === 'required') {
-      return validators.required;
-    }
-
-    return validators[this.getType(rule)] || false;
-  } };
-
-
-Schema.register = function register(type, validator) {
-  if (typeof validator !== 'function') {
-    throw new Error('Cannot register a validator by type, validator is not a function');
-  }
-
-  validators[type] = validator;
-};
-
-Schema.warning = warning;
-Schema.messages = messages;var _default =
-
-Schema;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/node-libs-browser/mock/process.js */ 166)))
-
-/***/ }),
-
-/***/ 166:
-/*!********************************************************!*\
-  !*** ./node_modules/node-libs-browser/mock/process.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports.nextTick = function nextTick(fn) {
-    var args = Array.prototype.slice.call(arguments);
-    args.shift();
-    setTimeout(function () {
-        fn.apply(null, args);
-    }, 0);
-};
-
-exports.platform = exports.arch = 
-exports.execPath = exports.title = 'browser';
-exports.pid = 1;
-exports.browser = true;
-exports.env = {};
-exports.argv = [];
-
-exports.binding = function (name) {
-	throw new Error('No such module. (Possibly not yet loaded)')
-};
-
-(function () {
-    var cwd = '/';
-    var path;
-    exports.cwd = function () { return cwd };
-    exports.chdir = function (dir) {
-        if (!path) path = __webpack_require__(/*! path */ 167);
-        cwd = path.resolve(dir, cwd);
-    };
-})();
-
-exports.exit = exports.kill = 
-exports.umask = exports.dlopen = 
-exports.uptime = exports.memoryUsage = 
-exports.uvCounters = function() {};
-exports.features = {};
-
-
-/***/ }),
-
-/***/ 167:
-/*!***********************************************!*\
-  !*** ./node_modules/path-browserify/index.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {// .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
-// backported and transplited with Babel, with backwards-compat fixes
-
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
-
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
-
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
-
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
-
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
-
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
-
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-
-  return (isAbsolute ? '/' : '') + path;
-};
-
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
-
-
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function (path) {
-  if (typeof path !== 'string') path = path + '';
-  if (path.length === 0) return '.';
-  var code = path.charCodeAt(0);
-  var hasRoot = code === 47 /*/*/;
-  var end = -1;
-  var matchedSlash = true;
-  for (var i = path.length - 1; i >= 1; --i) {
-    code = path.charCodeAt(i);
-    if (code === 47 /*/*/) {
-        if (!matchedSlash) {
-          end = i;
-          break;
-        }
-      } else {
-      // We saw the first non-path separator
-      matchedSlash = false;
-    }
-  }
-
-  if (end === -1) return hasRoot ? '/' : '.';
-  if (hasRoot && end === 1) {
-    // return '//';
-    // Backwards-compat fix:
-    return '/';
-  }
-  return path.slice(0, end);
-};
-
-function basename(path) {
-  if (typeof path !== 'string') path = path + '';
-
-  var start = 0;
-  var end = -1;
-  var matchedSlash = true;
-  var i;
-
-  for (i = path.length - 1; i >= 0; --i) {
-    if (path.charCodeAt(i) === 47 /*/*/) {
-        // If we reached a path separator that was not part of a set of path
-        // separators at the end of the string, stop now
-        if (!matchedSlash) {
-          start = i + 1;
-          break;
-        }
-      } else if (end === -1) {
-      // We saw the first non-path separator, mark this as the end of our
-      // path component
-      matchedSlash = false;
-      end = i + 1;
-    }
-  }
-
-  if (end === -1) return '';
-  return path.slice(start, end);
-}
-
-// Uses a mixed approach for backwards-compatibility, as ext behavior changed
-// in new Node.js versions, so only basename() above is backported here
-exports.basename = function (path, ext) {
-  var f = basename(path);
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-exports.extname = function (path) {
-  if (typeof path !== 'string') path = path + '';
-  var startDot = -1;
-  var startPart = 0;
-  var end = -1;
-  var matchedSlash = true;
-  // Track the state of characters (if any) we see before our first dot and
-  // after any path separator we find
-  var preDotState = 0;
-  for (var i = path.length - 1; i >= 0; --i) {
-    var code = path.charCodeAt(i);
-    if (code === 47 /*/*/) {
-        // If we reached a path separator that was not part of a set of path
-        // separators at the end of the string, stop now
-        if (!matchedSlash) {
-          startPart = i + 1;
-          break;
-        }
-        continue;
-      }
-    if (end === -1) {
-      // We saw the first non-path separator, mark this as the end of our
-      // extension
-      matchedSlash = false;
-      end = i + 1;
-    }
-    if (code === 46 /*.*/) {
-        // If this is our first dot, mark it as the start of our extension
-        if (startDot === -1)
-          startDot = i;
-        else if (preDotState !== 1)
-          preDotState = 1;
-    } else if (startDot !== -1) {
-      // We saw a non-dot and non-path separator before our dot, so we should
-      // have a good chance at having a non-empty extension
-      preDotState = -1;
-    }
-  }
-
-  if (startDot === -1 || end === -1 ||
-      // We saw a non-dot character immediately before the dot
-      preDotState === 0 ||
-      // The (right-most) trimmed path component is exactly '..'
-      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-    return '';
-  }
-  return path.slice(startDot, end);
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node-libs-browser/mock/process.js */ 166)))
-
-/***/ }),
-
 /***/ 17:
-/*!*********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/request/index.js ***!
-  \*********************************************************************************************/
+/*!**********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/request/index.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4883,9 +3109,9 @@ new Request();exports.default = _default;
 /***/ }),
 
 /***/ 18:
-/*!**************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/deepMerge.js ***!
-  \**************************************************************************************************/
+/*!***************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/deepMerge.js ***!
+  \***************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4924,9 +3150,9 @@ deepMerge;exports.default = _default;
 /***/ }),
 
 /***/ 19:
-/*!**************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/deepClone.js ***!
-  \**************************************************************************************************/
+/*!***************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/deepClone.js ***!
+  \***************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11006,9 +9232,9 @@ internalMixin(Vue);
 /***/ }),
 
 /***/ 20:
-/*!*********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/test.js ***!
-  \*********************************************************************************************/
+/*!**********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/test.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11248,9 +9474,9 @@ function code(value) {var len = arguments.length > 1 && arguments[1] !== undefin
 /***/ }),
 
 /***/ 21:
-/*!****************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/queryParams.js ***!
-  \****************************************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/queryParams.js ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11317,9 +9543,9 @@ queryParams;exports.default = _default;
 /***/ }),
 
 /***/ 22:
-/*!**********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/route.js ***!
-  \**********************************************************************************************/
+/*!***********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/route.js ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11450,10 +9676,70 @@ new Router().route;exports.default = _default;
 
 /***/ }),
 
+/***/ 229:
+/*!*********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/util/emitter.js ***!
+  \*********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /**
+                                                                                                      * 递归使用 call 方式this指向
+                                                                                                      * @param componentName // 需要找的组件的名称
+                                                                                                      * @param eventName // 事件名称
+                                                                                                      * @param params // 需要传递的参数
+                                                                                                      */
+function _broadcast(componentName, eventName, params) {
+  // 循环子节点找到名称一样的子节点 否则 递归 当前子节点
+  this.$children.map(function (child) {
+    if (componentName === child.$options.name) {
+      child.$emit.apply(child, [eventName].concat(params));
+    } else {
+      _broadcast.apply(child, [componentName, eventName].concat(params));
+    }
+  });
+}var _default =
+{
+  methods: {
+    /**
+              * 派发 (向上查找) (一个)
+              * @param componentName // 需要找的组件的名称
+              * @param eventName // 事件名称
+              * @param params // 需要传递的参数
+              */
+    dispatch: function dispatch(componentName, eventName, params) {
+      var parent = this.$parent || this.$root; //$parent 找到最近的父节点 $root 根节点
+      var name = parent.$options.name; // 获取当前组件实例的name
+      // 如果当前有节点 && 当前没名称 且 当前名称等于需要传进来的名称的时候就去查找当前的节点
+      // 循环出当前名称的一样的组件实例
+      while (parent && (!name || name !== componentName)) {
+        parent = parent.$parent;
+        if (parent) {
+          name = parent.$options.name;
+        }
+      }
+      // 有节点表示当前找到了name一样的实例
+      if (parent) {
+        parent.$emit.apply(parent, [eventName].concat(params));
+      }
+    },
+    /**
+        * 广播 (向下查找) (广播多个)
+        * @param componentName // 需要找的组件的名称
+        * @param eventName // 事件名称
+        * @param params // 需要传递的参数
+        */
+    broadcast: function broadcast(componentName, eventName, params) {
+      _broadcast.call(this, componentName, eventName, params);
+    } } };exports.default = _default;
+
+/***/ }),
+
 /***/ 23:
-/*!***************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/timeFormat.js ***!
-  \***************************************************************************************************/
+/*!****************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/timeFormat.js ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11513,9 +9799,9 @@ timeFormat;exports.default = _default;
 /***/ }),
 
 /***/ 24:
-/*!*************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/timeFrom.js ***!
-  \*************************************************************************************************/
+/*!**************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/timeFrom.js ***!
+  \**************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11571,9 +9857,9 @@ timeFrom;exports.default = _default;
 /***/ }),
 
 /***/ 25:
-/*!******************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/colorGradient.js ***!
-  \******************************************************************************************************/
+/*!*******************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/colorGradient.js ***!
+  \*******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11715,9 +10001,9 @@ function colorToRgba(color) {var alpha = arguments.length > 1 && arguments[1] !=
 /***/ }),
 
 /***/ 26:
-/*!*********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/guid.js ***!
-  \*********************************************************************************************/
+/*!**********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/guid.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11767,9 +10053,9 @@ guid;exports.default = _default;
 /***/ }),
 
 /***/ 27:
-/*!**********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/color.js ***!
-  \**********************************************************************************************/
+/*!***********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/color.js ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11815,9 +10101,9 @@ color;exports.default = _default;
 /***/ }),
 
 /***/ 28:
-/*!**************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/type2icon.js ***!
-  \**************************************************************************************************/
+/*!***************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/type2icon.js ***!
+  \***************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11861,9 +10147,9 @@ type2icon;exports.default = _default;
 /***/ }),
 
 /***/ 29:
-/*!****************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/randomArray.js ***!
-  \****************************************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/randomArray.js ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11910,9 +10196,9 @@ module.exports = g;
 /***/ }),
 
 /***/ 30:
-/*!************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/addUnit.js ***!
-  \************************************************************************************************/
+/*!*************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/addUnit.js ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11929,9 +10215,9 @@ function addUnit() {var value = arguments.length > 0 && arguments[0] !== undefin
 /***/ }),
 
 /***/ 31:
-/*!***********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/random.js ***!
-  \***********************************************************************************************/
+/*!************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/random.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11949,10 +10235,1736 @@ random;exports.default = _default;
 
 /***/ }),
 
+/***/ 314:
+/*!*****************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/util/async-validator.js ***!
+  \*****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+/* eslint no-console:0 */
+var formatRegExp = /%[sdj%]/g;
+var warning = function warning() {}; // don't print warning message when in production env or node runtime
+
+if (typeof process !== 'undefined' && Object({"NODE_ENV":"development","VUE_APP_NAME":"party_building","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}) && "development" !== 'production' && typeof window !==
+'undefined' && typeof document !== 'undefined') {
+  warning = function warning(type, errors) {
+    if (typeof console !== 'undefined' && console.warn) {
+      if (errors.every(function (e) {
+        return typeof e === 'string';
+      })) {
+        console.warn(type, errors);
+      }
+    }
+  };
+}
+
+function convertFieldsError(errors) {
+  if (!errors || !errors.length) return null;
+  var fields = {};
+  errors.forEach(function (error) {
+    var field = error.field;
+    fields[field] = fields[field] || [];
+    fields[field].push(error);
+  });
+  return fields;
+}
+
+function format() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  var i = 1;
+  var f = args[0];
+  var len = args.length;
+
+  if (typeof f === 'function') {
+    return f.apply(null, args.slice(1));
+  }
+
+  if (typeof f === 'string') {
+    var str = String(f).replace(formatRegExp, function (x) {
+      if (x === '%%') {
+        return '%';
+      }
+
+      if (i >= len) {
+        return x;
+      }
+
+      switch (x) {
+        case '%s':
+          return String(args[i++]);
+
+        case '%d':
+          return Number(args[i++]);
+
+        case '%j':
+          try {
+            return JSON.stringify(args[i++]);
+          } catch (_) {
+            return '[Circular]';
+          }
+
+          break;
+
+        default:
+          return x;}
+
+    });
+
+    for (var arg = args[i]; i < len; arg = args[++i]) {
+      str += " " + arg;
+    }
+
+    return str;
+  }
+
+  return f;
+}
+
+function isNativeStringType(type) {
+  return type === 'string' || type === 'url' || type === 'hex' || type === 'email' || type === 'pattern';
+}
+
+function isEmptyValue(value, type) {
+  if (value === undefined || value === null) {
+    return true;
+  }
+
+  if (type === 'array' && Array.isArray(value) && !value.length) {
+    return true;
+  }
+
+  if (isNativeStringType(type) && typeof value === 'string' && !value) {
+    return true;
+  }
+
+  return false;
+}
+
+function asyncParallelArray(arr, func, callback) {
+  var results = [];
+  var total = 0;
+  var arrLength = arr.length;
+
+  function count(errors) {
+    results.push.apply(results, errors);
+    total++;
+
+    if (total === arrLength) {
+      callback(results);
+    }
+  }
+
+  arr.forEach(function (a) {
+    func(a, count);
+  });
+}
+
+function asyncSerialArray(arr, func, callback) {
+  var index = 0;
+  var arrLength = arr.length;
+
+  function next(errors) {
+    if (errors && errors.length) {
+      callback(errors);
+      return;
+    }
+
+    var original = index;
+    index = index + 1;
+
+    if (original < arrLength) {
+      func(arr[original], next);
+    } else {
+      callback([]);
+    }
+  }
+
+  next([]);
+}
+
+function flattenObjArr(objArr) {
+  var ret = [];
+  Object.keys(objArr).forEach(function (k) {
+    ret.push.apply(ret, objArr[k]);
+  });
+  return ret;
+}
+
+function asyncMap(objArr, option, func, callback) {
+  if (option.first) {
+    var _pending = new Promise(function (resolve, reject) {
+      var next = function next(errors) {
+        callback(errors);
+        return errors.length ? reject({
+          errors: errors,
+          fields: convertFieldsError(errors) }) :
+        resolve();
+      };
+
+      var flattenArr = flattenObjArr(objArr);
+      asyncSerialArray(flattenArr, func, next);
+    });
+
+    _pending["catch"](function (e) {
+      return e;
+    });
+
+    return _pending;
+  }
+
+  var firstFields = option.firstFields || [];
+
+  if (firstFields === true) {
+    firstFields = Object.keys(objArr);
+  }
+
+  var objArrKeys = Object.keys(objArr);
+  var objArrLength = objArrKeys.length;
+  var total = 0;
+  var results = [];
+  var pending = new Promise(function (resolve, reject) {
+    var next = function next(errors) {
+      results.push.apply(results, errors);
+      total++;
+
+      if (total === objArrLength) {
+        callback(results);
+        return results.length ? reject({
+          errors: results,
+          fields: convertFieldsError(results) }) :
+        resolve();
+      }
+    };
+
+    if (!objArrKeys.length) {
+      callback(results);
+      resolve();
+    }
+
+    objArrKeys.forEach(function (key) {
+      var arr = objArr[key];
+
+      if (firstFields.indexOf(key) !== -1) {
+        asyncSerialArray(arr, func, next);
+      } else {
+        asyncParallelArray(arr, func, next);
+      }
+    });
+  });
+  pending["catch"](function (e) {
+    return e;
+  });
+  return pending;
+}
+
+function complementError(rule) {
+  return function (oe) {
+    if (oe && oe.message) {
+      oe.field = oe.field || rule.fullField;
+      return oe;
+    }
+
+    return {
+      message: typeof oe === 'function' ? oe() : oe,
+      field: oe.field || rule.fullField };
+
+  };
+}
+
+function deepMerge(target, source) {
+  if (source) {
+    for (var s in source) {
+      if (source.hasOwnProperty(s)) {
+        var value = source[s];
+
+        if (typeof value === 'object' && typeof target[s] === 'object') {
+          target[s] = _extends({}, target[s], {}, value);
+        } else {
+          target[s] = value;
+        }
+      }
+    }
+  }
+
+  return target;
+}
+
+/**
+   *  Rule for validating required fields.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param source The source object being validated.
+   *  @param errors An array of errors that this rule may add
+   *  validation errors to.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function required(rule, value, source, errors, options, type) {
+  if (rule.required && (!source.hasOwnProperty(rule.field) || isEmptyValue(value, type || rule.type))) {
+    errors.push(format(options.messages.required, rule.fullField));
+  }
+}
+
+/**
+   *  Rule for validating whitespace.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param source The source object being validated.
+   *  @param errors An array of errors that this rule may add
+   *  validation errors to.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function whitespace(rule, value, source, errors, options) {
+  if (/^\s+$/.test(value) || value === '') {
+    errors.push(format(options.messages.whitespace, rule.fullField));
+  }
+}
+
+/* eslint max-len:0 */
+
+var pattern = {
+  // http://emailregex.com/
+  email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  url: new RegExp(
+  "^(?!mailto:)(?:(?:http|https|ftp)://|//)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|192.168.137.1:d{2,5})?(?:(/|\\?|#)[^\\s]*)?$",
+  'i'),
+  hex: /^#?([a-f0-9]{6}|[a-f0-9]{3})$/i };
+
+var types = {
+  integer: function integer(value) {
+    return types.number(value) && parseInt(value, 10) === value;
+  },
+  "float": function _float(value) {
+    return types.number(value) && !types.integer(value);
+  },
+  array: function array(value) {
+    return Array.isArray(value);
+  },
+  regexp: function regexp(value) {
+    if (value instanceof RegExp) {
+      return true;
+    }
+
+    try {
+      return !!new RegExp(value);
+    } catch (e) {
+      return false;
+    }
+  },
+  date: function date(value) {
+    return typeof value.getTime === 'function' && typeof value.getMonth === 'function' && typeof value.getYear ===
+    'function';
+  },
+  number: function number(value) {
+    if (isNaN(value)) {
+      return false;
+    }
+
+    // 修改源码，将字符串数值先转为数值
+    return typeof +value === 'number';
+  },
+  object: function object(value) {
+    return typeof value === 'object' && !types.array(value);
+  },
+  method: function method(value) {
+    return typeof value === 'function';
+  },
+  email: function email(value) {
+    return typeof value === 'string' && !!value.match(pattern.email) && value.length < 255;
+  },
+  url: function url(value) {
+    return typeof value === 'string' && !!value.match(pattern.url);
+  },
+  hex: function hex(value) {
+    return typeof value === 'string' && !!value.match(pattern.hex);
+  } };
+
+/**
+        *  Rule for validating the type of a value.
+        *
+        *  @param rule The validation rule.
+        *  @param value The value of the field on the source object.
+        *  @param source The source object being validated.
+        *  @param errors An array of errors that this rule may add
+        *  validation errors to.
+        *  @param options The validation options.
+        *  @param options.messages The validation messages.
+        */
+
+function type(rule, value, source, errors, options) {
+  if (rule.required && value === undefined) {
+    required(rule, value, source, errors, options);
+    return;
+  }
+
+  var custom = ['integer', 'float', 'array', 'regexp', 'object', 'method', 'email', 'number', 'date', 'url', 'hex'];
+  var ruleType = rule.type;
+
+  if (custom.indexOf(ruleType) > -1) {
+    if (!types[ruleType](value)) {
+      errors.push(format(options.messages.types[ruleType], rule.fullField, rule.type));
+    } // straight typeof check
+
+  } else if (ruleType && typeof value !== rule.type) {
+    errors.push(format(options.messages.types[ruleType], rule.fullField, rule.type));
+  }
+}
+
+/**
+   *  Rule for validating minimum and maximum allowed values.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param source The source object being validated.
+   *  @param errors An array of errors that this rule may add
+   *  validation errors to.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function range(rule, value, source, errors, options) {
+  var len = typeof rule.len === 'number';
+  var min = typeof rule.min === 'number';
+  var max = typeof rule.max === 'number'; // 正则匹配码点范围从U+010000一直到U+10FFFF的文字（补充平面Supplementary Plane）
+
+  var spRegexp = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+  var val = value;
+  var key = null;
+  var num = typeof value === 'number';
+  var str = typeof value === 'string';
+  var arr = Array.isArray(value);
+
+  if (num) {
+    key = 'number';
+  } else if (str) {
+    key = 'string';
+  } else if (arr) {
+    key = 'array';
+  } // if the value is not of a supported type for range validation
+  // the validation rule rule should use the
+  // type property to also test for a particular type
+
+
+  if (!key) {
+    return false;
+  }
+
+  if (arr) {
+    val = value.length;
+  }
+
+  if (str) {
+    // 处理码点大于U+010000的文字length属性不准确的bug，如"𠮷𠮷𠮷".lenght !== 3
+    val = value.replace(spRegexp, '_').length;
+  }
+
+  if (len) {
+    if (val !== rule.len) {
+      errors.push(format(options.messages[key].len, rule.fullField, rule.len));
+    }
+  } else if (min && !max && val < rule.min) {
+    errors.push(format(options.messages[key].min, rule.fullField, rule.min));
+  } else if (max && !min && val > rule.max) {
+    errors.push(format(options.messages[key].max, rule.fullField, rule.max));
+  } else if (min && max && (val < rule.min || val > rule.max)) {
+    errors.push(format(options.messages[key].range, rule.fullField, rule.min, rule.max));
+  }
+}
+
+var ENUM = 'enum';
+/**
+                    *  Rule for validating a value exists in an enumerable list.
+                    *
+                    *  @param rule The validation rule.
+                    *  @param value The value of the field on the source object.
+                    *  @param source The source object being validated.
+                    *  @param errors An array of errors that this rule may add
+                    *  validation errors to.
+                    *  @param options The validation options.
+                    *  @param options.messages The validation messages.
+                    */
+
+function enumerable(rule, value, source, errors, options) {
+  rule[ENUM] = Array.isArray(rule[ENUM]) ? rule[ENUM] : [];
+
+  if (rule[ENUM].indexOf(value) === -1) {
+    errors.push(format(options.messages[ENUM], rule.fullField, rule[ENUM].join(', ')));
+  }
+}
+
+/**
+   *  Rule for validating a regular expression pattern.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param source The source object being validated.
+   *  @param errors An array of errors that this rule may add
+   *  validation errors to.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function pattern$1(rule, value, source, errors, options) {
+  if (rule.pattern) {
+    if (rule.pattern instanceof RegExp) {
+      // if a RegExp instance is passed, reset `lastIndex` in case its `global`
+      // flag is accidentally set to `true`, which in a validation scenario
+      // is not necessary and the result might be misleading
+      rule.pattern.lastIndex = 0;
+
+      if (!rule.pattern.test(value)) {
+        errors.push(format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
+      }
+    } else if (typeof rule.pattern === 'string') {
+      var _pattern = new RegExp(rule.pattern);
+
+      if (!_pattern.test(value)) {
+        errors.push(format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
+      }
+    }
+  }
+}
+
+var rules = {
+  required: required,
+  whitespace: whitespace,
+  type: type,
+  range: range,
+  "enum": enumerable,
+  pattern: pattern$1 };
+
+
+/**
+                         *  Performs validation for string types.
+                         *
+                         *  @param rule The validation rule.
+                         *  @param value The value of the field on the source object.
+                         *  @param callback The callback function.
+                         *  @param source The source object being validated.
+                         *  @param options The validation options.
+                         *  @param options.messages The validation messages.
+                         */
+
+function string(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value, 'string') && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options, 'string');
+
+    if (!isEmptyValue(value, 'string')) {
+      rules.type(rule, value, source, errors, options);
+      rules.range(rule, value, source, errors, options);
+      rules.pattern(rule, value, source, errors, options);
+
+      if (rule.whitespace === true) {
+        rules.whitespace(rule, value, source, errors, options);
+      }
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a function.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function method(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a number.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function number(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (value === '') {
+      value = undefined;
+    }
+
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+      rules.range(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a boolean.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function _boolean(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates the regular expression type.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function regexp(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (!isEmptyValue(value)) {
+      rules.type(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a number is an integer.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function integer(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+      rules.range(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a number is a floating point number.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function floatFn(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+      rules.range(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates an array.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function array(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value, 'array') && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options, 'array');
+
+    if (!isEmptyValue(value, 'array')) {
+      rules.type(rule, value, source, errors, options);
+      rules.range(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates an object.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function object(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+var ENUM$1 = 'enum';
+/**
+                      *  Validates an enumerable list.
+                      *
+                      *  @param rule The validation rule.
+                      *  @param value The value of the field on the source object.
+                      *  @param callback The callback function.
+                      *  @param source The source object being validated.
+                      *  @param options The validation options.
+                      *  @param options.messages The validation messages.
+                      */
+
+function enumerable$1(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules[ENUM$1](rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a regular expression pattern.
+   *
+   *  Performs validation when a rule only contains
+   *  a pattern property but is not declared as a string type.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function pattern$2(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value, 'string') && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (!isEmptyValue(value, 'string')) {
+      rules.pattern(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+function date(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (!isEmptyValue(value)) {
+      var dateObject;
+
+      if (typeof value === 'number') {
+        dateObject = new Date(value);
+      } else {
+        dateObject = value;
+      }
+
+      rules.type(rule, dateObject, source, errors, options);
+
+      if (dateObject) {
+        rules.range(rule, dateObject.getTime(), source, errors, options);
+      }
+    }
+  }
+
+  callback(errors);
+}
+
+function required$1(rule, value, callback, source, options) {
+  var errors = [];
+  var type = Array.isArray(value) ? 'array' : typeof value;
+  rules.required(rule, value, source, errors, options, type);
+  callback(errors);
+}
+
+function type$1(rule, value, callback, source, options) {
+  var ruleType = rule.type;
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value, ruleType) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options, ruleType);
+
+    if (!isEmptyValue(value, ruleType)) {
+      rules.type(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Performs validation for any type.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function any(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+  }
+
+  callback(errors);
+}
+
+var validators = {
+  string: string,
+  method: method,
+  number: number,
+  "boolean": _boolean,
+  regexp: regexp,
+  integer: integer,
+  "float": floatFn,
+  array: array,
+  object: object,
+  "enum": enumerable$1,
+  pattern: pattern$2,
+  date: date,
+  url: type$1,
+  hex: type$1,
+  email: type$1,
+  required: required$1,
+  any: any };
+
+
+function newMessages() {
+  return {
+    "default": 'Validation error on field %s',
+    required: '%s is required',
+    "enum": '%s must be one of %s',
+    whitespace: '%s cannot be empty',
+    date: {
+      format: '%s date %s is invalid for format %s',
+      parse: '%s date could not be parsed, %s is invalid ',
+      invalid: '%s date %s is invalid' },
+
+    types: {
+      string: '%s is not a %s',
+      method: '%s is not a %s (function)',
+      array: '%s is not an %s',
+      object: '%s is not an %s',
+      number: '%s is not a %s',
+      date: '%s is not a %s',
+      "boolean": '%s is not a %s',
+      integer: '%s is not an %s',
+      "float": '%s is not a %s',
+      regexp: '%s is not a valid %s',
+      email: '%s is not a valid %s',
+      url: '%s is not a valid %s',
+      hex: '%s is not a valid %s' },
+
+    string: {
+      len: '%s must be exactly %s characters',
+      min: '%s must be at least %s characters',
+      max: '%s cannot be longer than %s characters',
+      range: '%s must be between %s and %s characters' },
+
+    number: {
+      len: '%s must equal %s',
+      min: '%s cannot be less than %s',
+      max: '%s cannot be greater than %s',
+      range: '%s must be between %s and %s' },
+
+    array: {
+      len: '%s must be exactly %s in length',
+      min: '%s cannot be less than %s in length',
+      max: '%s cannot be greater than %s in length',
+      range: '%s must be between %s and %s in length' },
+
+    pattern: {
+      mismatch: '%s value %s does not match pattern %s' },
+
+    clone: function clone() {
+      var cloned = JSON.parse(JSON.stringify(this));
+      cloned.clone = this.clone;
+      return cloned;
+    } };
+
+}
+var messages = newMessages();
+
+/**
+                               *  Encapsulates a validation schema.
+                               *
+                               *  @param descriptor An object declaring validation rules
+                               *  for this schema.
+                               */
+
+function Schema(descriptor) {
+  this.rules = null;
+  this._messages = messages;
+  this.define(descriptor);
+}
+
+Schema.prototype = {
+  messages: function messages(_messages) {
+    if (_messages) {
+      this._messages = deepMerge(newMessages(), _messages);
+    }
+
+    return this._messages;
+  },
+  define: function define(rules) {
+    if (!rules) {
+      throw new Error('Cannot configure a schema with no rules');
+    }
+
+    if (typeof rules !== 'object' || Array.isArray(rules)) {
+      throw new Error('Rules must be an object');
+    }
+
+    this.rules = {};
+    var z;
+    var item;
+
+    for (z in rules) {
+      if (rules.hasOwnProperty(z)) {
+        item = rules[z];
+        this.rules[z] = Array.isArray(item) ? item : [item];
+      }
+    }
+  },
+  validate: function validate(source_, o, oc) {
+    var _this = this;
+
+    if (o === void 0) {
+      o = {};
+    }
+
+    if (oc === void 0) {
+      oc = function oc() {};
+    }
+
+    var source = source_;
+    var options = o;
+    var callback = oc;
+
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+
+    if (!this.rules || Object.keys(this.rules).length === 0) {
+      if (callback) {
+        callback();
+      }
+
+      return Promise.resolve();
+    }
+
+    function complete(results) {
+      var i;
+      var errors = [];
+      var fields = {};
+
+      function add(e) {
+        if (Array.isArray(e)) {
+          var _errors;
+
+          errors = (_errors = errors).concat.apply(_errors, e);
+        } else {
+          errors.push(e);
+        }
+      }
+
+      for (i = 0; i < results.length; i++) {
+        add(results[i]);
+      }
+
+      if (!errors.length) {
+        errors = null;
+        fields = null;
+      } else {
+        fields = convertFieldsError(errors);
+      }
+
+      callback(errors, fields);
+    }
+
+    if (options.messages) {
+      var messages$1 = this.messages();
+
+      if (messages$1 === messages) {
+        messages$1 = newMessages();
+      }
+
+      deepMerge(messages$1, options.messages);
+      options.messages = messages$1;
+    } else {
+      options.messages = this.messages();
+    }
+
+    var arr;
+    var value;
+    var series = {};
+    var keys = options.keys || Object.keys(this.rules);
+    keys.forEach(function (z) {
+      arr = _this.rules[z];
+      value = source[z];
+      arr.forEach(function (r) {
+        var rule = r;
+
+        if (typeof rule.transform === 'function') {
+          if (source === source_) {
+            source = _extends({}, source);
+          }
+
+          value = source[z] = rule.transform(value);
+        }
+
+        if (typeof rule === 'function') {
+          rule = {
+            validator: rule };
+
+        } else {
+          rule = _extends({}, rule);
+        }
+
+        rule.validator = _this.getValidationMethod(rule);
+        rule.field = z;
+        rule.fullField = rule.fullField || z;
+        rule.type = _this.getType(rule);
+
+        if (!rule.validator) {
+          return;
+        }
+
+        series[z] = series[z] || [];
+        series[z].push({
+          rule: rule,
+          value: value,
+          source: source,
+          field: z });
+
+      });
+    });
+    var errorFields = {};
+    return asyncMap(series, options, function (data, doIt) {
+      var rule = data.rule;
+      var deep = (rule.type === 'object' || rule.type === 'array') && (typeof rule.fields === 'object' || typeof rule.defaultField ===
+      'object');
+      deep = deep && (rule.required || !rule.required && data.value);
+      rule.field = data.field;
+
+      function addFullfield(key, schema) {
+        return _extends({}, schema, {
+          fullField: rule.fullField + "." + key });
+
+      }
+
+      function cb(e) {
+        if (e === void 0) {
+          e = [];
+        }
+
+        var errors = e;
+
+        if (!Array.isArray(errors)) {
+          errors = [errors];
+        }
+
+        if (!options.suppressWarning && errors.length) {
+          Schema.warning('async-validator:', errors);
+        }
+
+        if (errors.length && rule.message) {
+          errors = [].concat(rule.message);
+        }
+
+        errors = errors.map(complementError(rule));
+
+        if (options.first && errors.length) {
+          errorFields[rule.field] = 1;
+          return doIt(errors);
+        }
+
+        if (!deep) {
+          doIt(errors);
+        } else {
+          // if rule is required but the target object
+          // does not exist fail at the rule level and don't
+          // go deeper
+          if (rule.required && !data.value) {
+            if (rule.message) {
+              errors = [].concat(rule.message).map(complementError(rule));
+            } else if (options.error) {
+              errors = [options.error(rule, format(options.messages.required, rule.field))];
+            } else {
+              errors = [];
+            }
+
+            return doIt(errors);
+          }
+
+          var fieldsSchema = {};
+
+          if (rule.defaultField) {
+            for (var k in data.value) {
+              if (data.value.hasOwnProperty(k)) {
+                fieldsSchema[k] = rule.defaultField;
+              }
+            }
+          }
+
+          fieldsSchema = _extends({}, fieldsSchema, {}, data.rule.fields);
+
+          for (var f in fieldsSchema) {
+            if (fieldsSchema.hasOwnProperty(f)) {
+              var fieldSchema = Array.isArray(fieldsSchema[f]) ? fieldsSchema[f] : [fieldsSchema[f]];
+              fieldsSchema[f] = fieldSchema.map(addFullfield.bind(null, f));
+            }
+          }
+
+          var schema = new Schema(fieldsSchema);
+          schema.messages(options.messages);
+
+          if (data.rule.options) {
+            data.rule.options.messages = options.messages;
+            data.rule.options.error = options.error;
+          }
+
+          schema.validate(data.value, data.rule.options || options, function (errs) {
+            var finalErrors = [];
+
+            if (errors && errors.length) {
+              finalErrors.push.apply(finalErrors, errors);
+            }
+
+            if (errs && errs.length) {
+              finalErrors.push.apply(finalErrors, errs);
+            }
+
+            doIt(finalErrors.length ? finalErrors : null);
+          });
+        }
+      }
+
+      var res;
+
+      if (rule.asyncValidator) {
+        res = rule.asyncValidator(rule, data.value, cb, data.source, options);
+      } else if (rule.validator) {
+        res = rule.validator(rule, data.value, cb, data.source, options);
+
+        if (res === true) {
+          cb();
+        } else if (res === false) {
+          cb(rule.message || rule.field + " fails");
+        } else if (res instanceof Array) {
+          cb(res);
+        } else if (res instanceof Error) {
+          cb(res.message);
+        }
+      }
+
+      if (res && res.then) {
+        res.then(function () {
+          return cb();
+        }, function (e) {
+          return cb(e);
+        });
+      }
+    }, function (results) {
+      complete(results);
+    });
+  },
+  getType: function getType(rule) {
+    if (rule.type === undefined && rule.pattern instanceof RegExp) {
+      rule.type = 'pattern';
+    }
+
+    if (typeof rule.validator !== 'function' && rule.type && !validators.hasOwnProperty(rule.type)) {
+      throw new Error(format('Unknown rule type %s', rule.type));
+    }
+
+    return rule.type || 'string';
+  },
+  getValidationMethod: function getValidationMethod(rule) {
+    if (typeof rule.validator === 'function') {
+      return rule.validator;
+    }
+
+    var keys = Object.keys(rule);
+    var messageIndex = keys.indexOf('message');
+
+    if (messageIndex !== -1) {
+      keys.splice(messageIndex, 1);
+    }
+
+    if (keys.length === 1 && keys[0] === 'required') {
+      return validators.required;
+    }
+
+    return validators[this.getType(rule)] || false;
+  } };
+
+
+Schema.register = function register(type, validator) {
+  if (typeof validator !== 'function') {
+    throw new Error('Cannot register a validator by type, validator is not a function');
+  }
+
+  validators[type] = validator;
+};
+
+Schema.warning = warning;
+Schema.messages = messages;var _default =
+
+Schema;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/node-libs-browser/mock/process.js */ 315)))
+
+/***/ }),
+
+/***/ 315:
+/*!********************************************************!*\
+  !*** ./node_modules/node-libs-browser/mock/process.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports.nextTick = function nextTick(fn) {
+    var args = Array.prototype.slice.call(arguments);
+    args.shift();
+    setTimeout(function () {
+        fn.apply(null, args);
+    }, 0);
+};
+
+exports.platform = exports.arch = 
+exports.execPath = exports.title = 'browser';
+exports.pid = 1;
+exports.browser = true;
+exports.env = {};
+exports.argv = [];
+
+exports.binding = function (name) {
+	throw new Error('No such module. (Possibly not yet loaded)')
+};
+
+(function () {
+    var cwd = '/';
+    var path;
+    exports.cwd = function () { return cwd };
+    exports.chdir = function (dir) {
+        if (!path) path = __webpack_require__(/*! path */ 316);
+        cwd = path.resolve(dir, cwd);
+    };
+})();
+
+exports.exit = exports.kill = 
+exports.umask = exports.dlopen = 
+exports.uptime = exports.memoryUsage = 
+exports.uvCounters = function() {};
+exports.features = {};
+
+
+/***/ }),
+
+/***/ 316:
+/*!***********************************************!*\
+  !*** ./node_modules/path-browserify/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process) {// .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
+// backported and transplited with Babel, with backwards-compat fixes
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
+  }
+
+  // if the path is allowed to go above the root, restore leading ..s
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
+}
+
+// path.resolve([from ...], to)
+// posix version
+exports.resolve = function() {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
+
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = (i >= 0) ? arguments[i] : process.cwd();
+
+    // Skip empty and invalid entries
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
+      continue;
+    }
+
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
+  }
+
+  // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
+
+  // Normalize the path
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
+
+  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+};
+
+// path.normalize(path)
+// posix version
+exports.normalize = function(path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/';
+
+  // Normalize the path
+  path = normalizeArray(filter(path.split('/'), function(p) {
+    return !!p;
+  }), !isAbsolute).join('/');
+
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+  if (path && trailingSlash) {
+    path += '/';
+  }
+
+  return (isAbsolute ? '/' : '') + path;
+};
+
+// posix version
+exports.isAbsolute = function(path) {
+  return path.charAt(0) === '/';
+};
+
+// posix version
+exports.join = function() {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function(p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+    return p;
+  }).join('/'));
+};
+
+
+// path.relative(from, to)
+// posix version
+exports.relative = function(from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
+    }
+
+    var end = arr.length - 1;
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
+    }
+
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
+      break;
+    }
+  }
+
+  var outputParts = [];
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
+  }
+
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+
+  return outputParts.join('/');
+};
+
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function (path) {
+  if (typeof path !== 'string') path = path + '';
+  if (path.length === 0) return '.';
+  var code = path.charCodeAt(0);
+  var hasRoot = code === 47 /*/*/;
+  var end = -1;
+  var matchedSlash = true;
+  for (var i = path.length - 1; i >= 1; --i) {
+    code = path.charCodeAt(i);
+    if (code === 47 /*/*/) {
+        if (!matchedSlash) {
+          end = i;
+          break;
+        }
+      } else {
+      // We saw the first non-path separator
+      matchedSlash = false;
+    }
+  }
+
+  if (end === -1) return hasRoot ? '/' : '.';
+  if (hasRoot && end === 1) {
+    // return '//';
+    // Backwards-compat fix:
+    return '/';
+  }
+  return path.slice(0, end);
+};
+
+function basename(path) {
+  if (typeof path !== 'string') path = path + '';
+
+  var start = 0;
+  var end = -1;
+  var matchedSlash = true;
+  var i;
+
+  for (i = path.length - 1; i >= 0; --i) {
+    if (path.charCodeAt(i) === 47 /*/*/) {
+        // If we reached a path separator that was not part of a set of path
+        // separators at the end of the string, stop now
+        if (!matchedSlash) {
+          start = i + 1;
+          break;
+        }
+      } else if (end === -1) {
+      // We saw the first non-path separator, mark this as the end of our
+      // path component
+      matchedSlash = false;
+      end = i + 1;
+    }
+  }
+
+  if (end === -1) return '';
+  return path.slice(start, end);
+}
+
+// Uses a mixed approach for backwards-compatibility, as ext behavior changed
+// in new Node.js versions, so only basename() above is backported here
+exports.basename = function (path, ext) {
+  var f = basename(path);
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+  return f;
+};
+
+exports.extname = function (path) {
+  if (typeof path !== 'string') path = path + '';
+  var startDot = -1;
+  var startPart = 0;
+  var end = -1;
+  var matchedSlash = true;
+  // Track the state of characters (if any) we see before our first dot and
+  // after any path separator we find
+  var preDotState = 0;
+  for (var i = path.length - 1; i >= 0; --i) {
+    var code = path.charCodeAt(i);
+    if (code === 47 /*/*/) {
+        // If we reached a path separator that was not part of a set of path
+        // separators at the end of the string, stop now
+        if (!matchedSlash) {
+          startPart = i + 1;
+          break;
+        }
+        continue;
+      }
+    if (end === -1) {
+      // We saw the first non-path separator, mark this as the end of our
+      // extension
+      matchedSlash = false;
+      end = i + 1;
+    }
+    if (code === 46 /*.*/) {
+        // If this is our first dot, mark it as the start of our extension
+        if (startDot === -1)
+          startDot = i;
+        else if (preDotState !== 1)
+          preDotState = 1;
+    } else if (startDot !== -1) {
+      // We saw a non-dot and non-path separator before our dot, so we should
+      // have a good chance at having a non-empty extension
+      preDotState = -1;
+    }
+  }
+
+  if (startDot === -1 || end === -1 ||
+      // We saw a non-dot character immediately before the dot
+      preDotState === 0 ||
+      // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+    return '';
+  }
+  return path.slice(startDot, end);
+};
+
+function filter (xs, f) {
+    if (xs.filter) return xs.filter(f);
+    var res = [];
+    for (var i = 0; i < xs.length; i++) {
+        if (f(xs[i], i, xs)) res.push(xs[i]);
+    }
+    return res;
+}
+
+// String.prototype.substr - negative index don't work in IE8
+var substr = 'ab'.substr(-1) === 'b'
+    ? function (str, start, len) { return str.substr(start, len) }
+    : function (str, start, len) {
+        if (start < 0) start = str.length + start;
+        return str.substr(start, len);
+    }
+;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node-libs-browser/mock/process.js */ 315)))
+
+/***/ }),
+
 /***/ 32:
-/*!*********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/trim.js ***!
-  \*********************************************************************************************/
+/*!**********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/trim.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11976,9 +11988,9 @@ trim;exports.default = _default;
 /***/ }),
 
 /***/ 33:
-/*!**********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/toast.js ***!
-  \**********************************************************************************************/
+/*!***********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/toast.js ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11997,9 +12009,9 @@ toast;exports.default = _default;
 /***/ }),
 
 /***/ 34:
-/*!**************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/getParent.js ***!
-  \**************************************************************************************************/
+/*!***************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/getParent.js ***!
+  \***************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12055,9 +12067,9 @@ function getParent(name, keys) {
 /***/ }),
 
 /***/ 35:
-/*!************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/$parent.js ***!
-  \************************************************************************************************/
+/*!*************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/$parent.js ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12084,9 +12096,9 @@ function $parent() {var name = arguments.length > 0 && arguments[0] !== undefine
 /***/ }),
 
 /***/ 36:
-/*!********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/sys.js ***!
-  \********************************************************************************************/
+/*!*********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/sys.js ***!
+  \*********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12103,9 +12115,9 @@ function sys() {
 /***/ }),
 
 /***/ 37:
-/*!*************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/debounce.js ***!
-  \*************************************************************************************************/
+/*!**************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/debounce.js ***!
+  \**************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12143,9 +12155,9 @@ debounce;exports.default = _default;
 /***/ }),
 
 /***/ 38:
-/*!*************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/function/throttle.js ***!
-  \*************************************************************************************************/
+/*!**************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/function/throttle.js ***!
+  \**************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12186,9 +12198,9 @@ throttle;exports.default = _default;
 /***/ }),
 
 /***/ 39:
-/*!*********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/config/config.js ***!
-  \*********************************************************************************************/
+/*!**********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/config/config.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12210,9 +12222,9 @@ var version = '1.8.4';var _default =
 /***/ }),
 
 /***/ 4:
-/*!*************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages.json ***!
-  \*************************************************************************/
+/*!**************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages.json ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -12221,9 +12233,9 @@ var version = '1.8.4';var _default =
 /***/ }),
 
 /***/ 40:
-/*!*********************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/uview-ui/libs/config/zIndex.js ***!
-  \*********************************************************************************************/
+/*!**********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/config/zIndex.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12250,10 +12262,325 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 
+/***/ 401:
+/*!************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js ***!
+  \************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global, uni, process) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 8));var _uniI18n = __webpack_require__(/*! @dcloudio/uni-i18n */ 402);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _createForOfIteratorHelper(o, allowArrayLike) {var it;if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e22) {throw _e22;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e23) {didErr = true;err = _e23;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function");}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } });if (superClass) _setPrototypeOf(subClass, superClass);}function _createSuper(Derived) {var hasNativeReflectConstruct = _isNativeReflectConstruct();return function _createSuperInternal() {var Super = _getPrototypeOf(Derived),result;if (hasNativeReflectConstruct) {var NewTarget = _getPrototypeOf(this).constructor;result = Reflect.construct(Super, arguments, NewTarget);} else {result = Super.apply(this, arguments);}return _possibleConstructorReturn(this, result);};}function _possibleConstructorReturn(self, call) {if (call && (typeof call === "object" || typeof call === "function")) {return call;}return _assertThisInitialized(self);}function _assertThisInitialized(self) {if (self === void 0) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return self;}function _wrapNativeSuper(Class) {var _cache = typeof Map === "function" ? new Map() : undefined;_wrapNativeSuper = function _wrapNativeSuper(Class) {if (Class === null || !_isNativeFunction(Class)) return Class;if (typeof Class !== "function") {throw new TypeError("Super expression must either be null or a function");}if (typeof _cache !== "undefined") {if (_cache.has(Class)) return _cache.get(Class);_cache.set(Class, Wrapper);}function Wrapper() {return _construct(Class, arguments, _getPrototypeOf(this).constructor);}Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } });return _setPrototypeOf(Wrapper, Class);};return _wrapNativeSuper(Class);}function _construct(Parent, args, Class) {if (_isNativeReflectConstruct()) {_construct = Reflect.construct;} else {_construct = function _construct(Parent, args, Class) {var a = [null];a.push.apply(a, args);var Constructor = Function.bind.apply(Parent, a);var instance = new Constructor();if (Class) _setPrototypeOf(instance, Class.prototype);return instance;};}return _construct.apply(null, arguments);}function _isNativeReflectConstruct() {if (typeof Reflect === "undefined" || !Reflect.construct) return false;if (Reflect.construct.sham) return false;if (typeof Proxy === "function") return true;try {Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));return true;} catch (e) {return false;}}function _isNativeFunction(fn) {return Function.toString.call(fn).indexOf("[native code]") !== -1;}function _setPrototypeOf(o, p) {_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {o.__proto__ = p;return o;};return _setPrototypeOf(o, p);}function _getPrototypeOf(o) {_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {return o.__proto__ || Object.getPrototypeOf(o);};return _getPrototypeOf(o);}"undefined" != typeof globalThis ? globalThis : "undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self && self;function t(e) {return e && e.__esModule && Object.prototype.hasOwnProperty.call(e, "default") ? e.default : e;}function s(e, t, s) {return e(s = { path: t, exports: {}, require: function require(e, t) {return function () {throw new Error("Dynamic requires are not currently supported by @rollup/plugin-commonjs");}(null == t && s.path);} }, s.exports), s.exports;}var n = s(function (e, t) {var s;e.exports = (s = s || function (e, t) {var s = Object.create || function () {function e() {}return function (t) {var s;return e.prototype = t, s = new e(), e.prototype = null, s;};}(),n = {},r = n.lib = {},o = r.Base = { extend: function extend(e) {var t = s(this);return e && t.mixIn(e), t.hasOwnProperty("init") && this.init !== t.init || (t.init = function () {t.$super.init.apply(this, arguments);}), t.init.prototype = t, t.$super = this, t;}, create: function create() {var e = this.extend();return e.init.apply(e, arguments), e;}, init: function init() {}, mixIn: function mixIn(e) {for (var t in e) {e.hasOwnProperty(t) && (this[t] = e[t]);}e.hasOwnProperty("toString") && (this.toString = e.toString);}, clone: function clone() {return this.init.prototype.extend(this);} },i = r.WordArray = o.extend({ init: function init(e, t) {e = this.words = e || [], this.sigBytes = null != t ? t : 4 * e.length;}, toString: function toString(e) {return (e || c).stringify(this);}, concat: function concat(e) {var t = this.words,s = e.words,n = this.sigBytes,r = e.sigBytes;if (this.clamp(), n % 4) for (var o = 0; o < r; o++) {var i = s[o >>> 2] >>> 24 - o % 4 * 8 & 255;t[n + o >>> 2] |= i << 24 - (n + o) % 4 * 8;} else for (o = 0; o < r; o += 4) {t[n + o >>> 2] = s[o >>> 2];}return this.sigBytes += r, this;}, clamp: function clamp() {var t = this.words,s = this.sigBytes;t[s >>> 2] &= 4294967295 << 32 - s % 4 * 8, t.length = e.ceil(s / 4);}, clone: function clone() {var e = o.clone.call(this);return e.words = this.words.slice(0), e;}, random: function random(t) {for (var s, n = [], r = function r(t) {t = t;var s = 987654321,n = 4294967295;return function () {var r = ((s = 36969 * (65535 & s) + (s >> 16) & n) << 16) + (t = 18e3 * (65535 & t) + (t >> 16) & n) & n;return r /= 4294967296, (r += .5) * (e.random() > .5 ? 1 : -1);};}, o = 0; o < t; o += 4) {var a = r(4294967296 * (s || e.random()));s = 987654071 * a(), n.push(4294967296 * a() | 0);}return new i.init(n, t);} }),a = n.enc = {},c = a.Hex = { stringify: function stringify(e) {for (var t = e.words, s = e.sigBytes, n = [], r = 0; r < s; r++) {var o = t[r >>> 2] >>> 24 - r % 4 * 8 & 255;n.push((o >>> 4).toString(16)), n.push((15 & o).toString(16));}return n.join("");}, parse: function parse(e) {for (var t = e.length, s = [], n = 0; n < t; n += 2) {s[n >>> 3] |= parseInt(e.substr(n, 2), 16) << 24 - n % 8 * 4;}return new i.init(s, t / 2);} },u = a.Latin1 = { stringify: function stringify(e) {for (var t = e.words, s = e.sigBytes, n = [], r = 0; r < s; r++) {var o = t[r >>> 2] >>> 24 - r % 4 * 8 & 255;n.push(String.fromCharCode(o));}return n.join("");}, parse: function parse(e) {for (var t = e.length, s = [], n = 0; n < t; n++) {s[n >>> 2] |= (255 & e.charCodeAt(n)) << 24 - n % 4 * 8;}return new i.init(s, t);} },h = a.Utf8 = { stringify: function stringify(e) {try {return decodeURIComponent(escape(u.stringify(e)));} catch (e) {throw new Error("Malformed UTF-8 data");}}, parse: function parse(e) {return u.parse(unescape(encodeURIComponent(e)));} },l = r.BufferedBlockAlgorithm = o.extend({ reset: function reset() {this._data = new i.init(), this._nDataBytes = 0;}, _append: function _append(e) {"string" == typeof e && (e = h.parse(e)), this._data.concat(e), this._nDataBytes += e.sigBytes;}, _process: function _process(t) {var s = this._data,n = s.words,r = s.sigBytes,o = this.blockSize,a = r / (4 * o),c = (a = t ? e.ceil(a) : e.max((0 | a) - this._minBufferSize, 0)) * o,u = e.min(4 * c, r);if (c) {for (var h = 0; h < c; h += o) {this._doProcessBlock(n, h);}var l = n.splice(0, c);s.sigBytes -= u;}return new i.init(l, u);}, clone: function clone() {var e = o.clone.call(this);return e._data = this._data.clone(), e;}, _minBufferSize: 0 }),d = (r.Hasher = l.extend({ cfg: o.extend(), init: function init(e) {this.cfg = this.cfg.extend(e), this.reset();}, reset: function reset() {l.reset.call(this), this._doReset();}, update: function update(e) {return this._append(e), this._process(), this;}, finalize: function finalize(e) {return e && this._append(e), this._doFinalize();}, blockSize: 16, _createHelper: function _createHelper(e) {return function (t, s) {return new e.init(s).finalize(t);};}, _createHmacHelper: function _createHmacHelper(e) {return function (t, s) {return new d.HMAC.init(e, s).finalize(t);};} }), n.algo = {});return n;}(Math), s);}),r = (s(function (e, t) {var s;e.exports = (s = n, function (e) {var t = s,n = t.lib,r = n.WordArray,o = n.Hasher,i = t.algo,a = [];!function () {for (var t = 0; t < 64; t++) {a[t] = 4294967296 * e.abs(e.sin(t + 1)) | 0;}}();var c = i.MD5 = o.extend({ _doReset: function _doReset() {this._hash = new r.init([1732584193, 4023233417, 2562383102, 271733878]);}, _doProcessBlock: function _doProcessBlock(e, t) {for (var s = 0; s < 16; s++) {var n = t + s,r = e[n];e[n] = 16711935 & (r << 8 | r >>> 24) | 4278255360 & (r << 24 | r >>> 8);}var o = this._hash.words,i = e[t + 0],c = e[t + 1],f = e[t + 2],p = e[t + 3],g = e[t + 4],m = e[t + 5],y = e[t + 6],_ = e[t + 7],v = e[t + 8],w = e[t + 9],S = e[t + 10],k = e[t + 11],T = e[t + 12],A = e[t + 13],I = e[t + 14],P = e[t + 15],E = o[0],O = o[1],U = o[2],b = o[3];E = u(E, O, U, b, i, 7, a[0]), b = u(b, E, O, U, c, 12, a[1]), U = u(U, b, E, O, f, 17, a[2]), O = u(O, U, b, E, p, 22, a[3]), E = u(E, O, U, b, g, 7, a[4]), b = u(b, E, O, U, m, 12, a[5]), U = u(U, b, E, O, y, 17, a[6]), O = u(O, U, b, E, _, 22, a[7]), E = u(E, O, U, b, v, 7, a[8]), b = u(b, E, O, U, w, 12, a[9]), U = u(U, b, E, O, S, 17, a[10]), O = u(O, U, b, E, k, 22, a[11]), E = u(E, O, U, b, T, 7, a[12]), b = u(b, E, O, U, A, 12, a[13]), U = u(U, b, E, O, I, 17, a[14]), E = h(E, O = u(O, U, b, E, P, 22, a[15]), U, b, c, 5, a[16]), b = h(b, E, O, U, y, 9, a[17]), U = h(U, b, E, O, k, 14, a[18]), O = h(O, U, b, E, i, 20, a[19]), E = h(E, O, U, b, m, 5, a[20]), b = h(b, E, O, U, S, 9, a[21]), U = h(U, b, E, O, P, 14, a[22]), O = h(O, U, b, E, g, 20, a[23]), E = h(E, O, U, b, w, 5, a[24]), b = h(b, E, O, U, I, 9, a[25]), U = h(U, b, E, O, p, 14, a[26]), O = h(O, U, b, E, v, 20, a[27]), E = h(E, O, U, b, A, 5, a[28]), b = h(b, E, O, U, f, 9, a[29]), U = h(U, b, E, O, _, 14, a[30]), E = l(E, O = h(O, U, b, E, T, 20, a[31]), U, b, m, 4, a[32]), b = l(b, E, O, U, v, 11, a[33]), U = l(U, b, E, O, k, 16, a[34]), O = l(O, U, b, E, I, 23, a[35]), E = l(E, O, U, b, c, 4, a[36]), b = l(b, E, O, U, g, 11, a[37]), U = l(U, b, E, O, _, 16, a[38]), O = l(O, U, b, E, S, 23, a[39]), E = l(E, O, U, b, A, 4, a[40]), b = l(b, E, O, U, i, 11, a[41]), U = l(U, b, E, O, p, 16, a[42]), O = l(O, U, b, E, y, 23, a[43]), E = l(E, O, U, b, w, 4, a[44]), b = l(b, E, O, U, T, 11, a[45]), U = l(U, b, E, O, P, 16, a[46]), E = d(E, O = l(O, U, b, E, f, 23, a[47]), U, b, i, 6, a[48]), b = d(b, E, O, U, _, 10, a[49]), U = d(U, b, E, O, I, 15, a[50]), O = d(O, U, b, E, m, 21, a[51]), E = d(E, O, U, b, T, 6, a[52]), b = d(b, E, O, U, p, 10, a[53]), U = d(U, b, E, O, S, 15, a[54]), O = d(O, U, b, E, c, 21, a[55]), E = d(E, O, U, b, v, 6, a[56]), b = d(b, E, O, U, P, 10, a[57]), U = d(U, b, E, O, y, 15, a[58]), O = d(O, U, b, E, A, 21, a[59]), E = d(E, O, U, b, g, 6, a[60]), b = d(b, E, O, U, k, 10, a[61]), U = d(U, b, E, O, f, 15, a[62]), O = d(O, U, b, E, w, 21, a[63]), o[0] = o[0] + E | 0, o[1] = o[1] + O | 0, o[2] = o[2] + U | 0, o[3] = o[3] + b | 0;}, _doFinalize: function _doFinalize() {var t = this._data,s = t.words,n = 8 * this._nDataBytes,r = 8 * t.sigBytes;s[r >>> 5] |= 128 << 24 - r % 32;var o = e.floor(n / 4294967296),i = n;s[15 + (r + 64 >>> 9 << 4)] = 16711935 & (o << 8 | o >>> 24) | 4278255360 & (o << 24 | o >>> 8), s[14 + (r + 64 >>> 9 << 4)] = 16711935 & (i << 8 | i >>> 24) | 4278255360 & (i << 24 | i >>> 8), t.sigBytes = 4 * (s.length + 1), this._process();for (var a = this._hash, c = a.words, u = 0; u < 4; u++) {var h = c[u];c[u] = 16711935 & (h << 8 | h >>> 24) | 4278255360 & (h << 24 | h >>> 8);}return a;}, clone: function clone() {var e = o.clone.call(this);return e._hash = this._hash.clone(), e;} });function u(e, t, s, n, r, o, i) {var a = e + (t & s | ~t & n) + r + i;return (a << o | a >>> 32 - o) + t;}function h(e, t, s, n, r, o, i) {var a = e + (t & n | s & ~n) + r + i;return (a << o | a >>> 32 - o) + t;}function l(e, t, s, n, r, o, i) {var a = e + (t ^ s ^ n) + r + i;return (a << o | a >>> 32 - o) + t;}function d(e, t, s, n, r, o, i) {var a = e + (s ^ (t | ~n)) + r + i;return (a << o | a >>> 32 - o) + t;}t.MD5 = o._createHelper(c), t.HmacMD5 = o._createHmacHelper(c);}(Math), s.MD5);}), s(function (e, t) {var s, r, o;e.exports = (r = (s = n).lib.Base, o = s.enc.Utf8, void (s.algo.HMAC = r.extend({ init: function init(e, t) {e = this._hasher = new e.init(), "string" == typeof t && (t = o.parse(t));var s = e.blockSize,n = 4 * s;t.sigBytes > n && (t = e.finalize(t)), t.clamp();for (var r = this._oKey = t.clone(), i = this._iKey = t.clone(), a = r.words, c = i.words, u = 0; u < s; u++) {a[u] ^= 1549556828, c[u] ^= 909522486;}r.sigBytes = i.sigBytes = n, this.reset();}, reset: function reset() {var e = this._hasher;e.reset(), e.update(this._iKey);}, update: function update(e) {return this._hasher.update(e), this;}, finalize: function finalize(e) {var t = this._hasher,s = t.finalize(e);return t.reset(), t.finalize(this._oKey.clone().concat(s));} })));}), s(function (e, t) {e.exports = n.HmacMD5;}));function o(e) {return function (t) {if (!((t = t || {}).success || t.fail || t.complete)) return e.call(this, t);e.call(this, t).then(function (e) {t.success && t.success(e), t.complete && t.complete(e);}, function (e) {t.fail && t.fail(e), t.complete && t.complete(e);});};}var i = /*#__PURE__*/function (_Error) {_inherits(i, _Error);var _super = _createSuper(i);function i(e) {var _this;_classCallCheck(this, i);_this = _super.call(this, e.message), _this.errMsg = e.message || "", Object.defineProperties(_assertThisInitialized(_this), { code: { get: function get() {return e.code;} }, requestId: { get: function get() {return e.requestId;} }, message: { get: function get() {return this.errMsg;}, set: function set(e) {this.errMsg = e;} } });return _this;}return i;}( /*#__PURE__*/_wrapNativeSuper(Error));var _e2 = (0, _uniI18n.initVueI18n)({ "zh-Hans": { "uniCloud.init.paramRequired": "缺少参数：{param}", "uniCloud.uploadFile.fileError": "filePath应为File对象" }, "zh-Hant": { "uniCloud.init.paramRequired": "缺少参数：{param}", "uniCloud.uploadFile.fileError": "filePath应为File对象" }, en: { "uniCloud.init.paramRequired": "{param} required", "uniCloud.uploadFile.fileError": "filePath should be instance of File" }, fr: { "uniCloud.init.paramRequired": "{param} required", "uniCloud.uploadFile.fileError": "filePath should be instance of File" }, es: { "uniCloud.init.paramRequired": "{param} required", "uniCloud.uploadFile.fileError": "filePath should be instance of File" } }, "zh-Hans"),a = _e2.t,c = _e2.setLocale,u = _e2.getLocale;var h, l, d;try {h = __webpack_require__(/*! uni-stat-config */ 403).default || __webpack_require__(/*! uni-stat-config */ 403);} catch (e) {h = { appid: "" };}function f() {var e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 8;var t = "";for (; t.length < e;) {t += Math.random().toString(32).substring(2);}return t.substring(0, e);}function p() {if ("n" === g()) {try {l = plus.runtime.getDCloudId();} catch (e) {l = "";}return l;}return l || (l = f(32), uni.setStorage({ key: "__DC_CLOUD_UUID", data: l })), l;}function g() {var _appPlus$h5$mpWeixi;return (_appPlus$h5$mpWeixi = { "app-plus": "n", h5: "h5", "mp-weixin": "wx" }, _defineProperty(_appPlus$h5$mpWeixi, ["y", "a", "p", "mp-ali"].reverse().join(""), "ali"), _defineProperty(_appPlus$h5$mpWeixi, "mp-baidu", "bd"), _defineProperty(_appPlus$h5$mpWeixi, "mp-toutiao", "tt"), _defineProperty(_appPlus$h5$mpWeixi, "mp-qq", "qq"), _defineProperty(_appPlus$h5$mpWeixi, "quickapp-native", "qn"), _appPlus$h5$mpWeixi)["mp-weixin"];}var m = { sign: function sign(e, t) {var s = "";return Object.keys(e).sort().forEach(function (t) {e[t] && (s = s + "&" + t + "=" + e[t]);}), s = s.slice(1), r(s, t).toString();}, wrappedRequest: function wrappedRequest(e, t) {return new Promise(function (s, n) {t(Object.assign(e, { complete: function complete(e) {e || (e = {}),  false && false;var t = e.data && e.data.header && e.data.header["x-serverless-request-id"] || e.header && e.header["request-id"];if (!e.statusCode || e.statusCode >= 400) return n(new i({ code: "SYS_ERR", message: e.errMsg || "request:fail", requestId: t }));var r = e.data;if (r.error) return n(new i({ code: r.error.code, message: r.error.message, requestId: t }));r.result = r.data, r.requestId = t, delete r.data, s(r);} }));});} };var y = { request: function request(e) {return uni.request(e);}, uploadFile: function uploadFile(e) {return uni.uploadFile(e);}, setStorageSync: function setStorageSync(e, t) {return uni.setStorageSync(e, t);}, getStorageSync: function getStorageSync(e) {return uni.getStorageSync(e);}, removeStorageSync: function removeStorageSync(e) {return uni.removeStorageSync(e);}, clearStorageSync: function clearStorageSync() {return uni.clearStorageSync();} };var _ = /*#__PURE__*/function () {function _(e) {_classCallCheck(this, _);["spaceId", "clientSecret"].forEach(function (t) {if (!Object.prototype.hasOwnProperty.call(e, t)) throw new Error(a("uniCloud.init.paramRequired", { param: t }));}), this.config = Object.assign({}, { endpoint: "https://api.bspapp.com" }, e), this.config.provider = "aliyun", this.config.requestUrl = this.config.endpoint + "/client", this.config.envType = this.config.envType || "public", this.config.accessTokenKey = "access_token_" + this.config.spaceId, this.adapter = y;}_createClass(_, [{ key: "setAccessToken", value: function setAccessToken(e) {this.accessToken = e;} }, { key: "requestWrapped", value: function requestWrapped(e) {return m.wrappedRequest(e, this.adapter.request);} }, { key: "requestAuth", value: function requestAuth(e) {return this.requestWrapped(e);} }, { key: "request", value: function request(e, t) {var _this2 = this;return Promise.resolve().then(function () {return _this2.hasAccessToken ? t ? _this2.requestWrapped(e) : _this2.requestWrapped(e).catch(function (t) {return new Promise(function (e, s) {!t || "GATEWAY_INVALID_TOKEN" !== t.code && "InvalidParameter.InvalidToken" !== t.code ? s(t) : e();}).then(function () {return _this2.getAccessToken();}).then(function () {var t = _this2.rebuildRequest(e);return _this2.request(t, !0);});}) : _this2.getAccessToken().then(function () {var t = _this2.rebuildRequest(e);return _this2.request(t, !0);});});} }, { key: "rebuildRequest", value: function rebuildRequest(e) {var t = Object.assign({}, e);return t.data.token = this.accessToken, t.header["x-basement-token"] = this.accessToken, t.header["x-serverless-sign"] = m.sign(t.data, this.config.clientSecret), t;} }, { key: "setupRequest", value: function setupRequest(e, t) {var s = Object.assign({}, e, { spaceId: this.config.spaceId, timestamp: Date.now() }),n = { "Content-Type": "application/json" };return "auth" !== t && (s.token = this.accessToken, n["x-basement-token"] = this.accessToken), n["x-serverless-sign"] = m.sign(s, this.config.clientSecret), { url: this.config.requestUrl, method: "POST", data: s, dataType: "json", header: n };} }, { key: "getAccessToken", value: function getAccessToken() {var _this3 = this;return this.requestAuth(this.setupRequest({ method: "serverless.auth.user.anonymousAuthorize", params: "{}" }, "auth")).then(function (e) {return new Promise(function (t, s) {e.result && e.result.accessToken ? (_this3.setAccessToken(e.result.accessToken), t(_this3.accessToken)) : s(new i({ code: "AUTH_FAILED", message: "获取accessToken失败" }));});});} }, { key: "authorize", value: function authorize() {this.getAccessToken();} }, { key: "callFunction", value: function callFunction(e) {var t = { method: "serverless.function.runtime.invoke", params: JSON.stringify({ functionTarget: e.name, functionArgs: e.data || {} }) };return this.request(this.setupRequest(t));} }, { key: "getOSSUploadOptionsFromPath", value: function getOSSUploadOptionsFromPath(e) {var t = { method: "serverless.file.resource.generateProximalSign", params: JSON.stringify(e) };return this.request(this.setupRequest(t));} }, { key: "uploadFileToOSS", value: function uploadFileToOSS(_ref) {var _this4 = this;var e = _ref.url,t = _ref.formData,s = _ref.name,n = _ref.filePath,r = _ref.fileType,o = _ref.onUploadProgress;return new Promise(function (a, c) {var u = _this4.adapter.uploadFile({ url: e, formData: t, name: s, filePath: n, fileType: r, header: { "X-OSS-server-side-encrpytion": "AES256" }, success: function success(e) {e && e.statusCode < 400 ? a(e) : c(new i({ code: "UPLOAD_FAILED", message: "文件上传失败" }));}, fail: function fail(e) {c(new i({ code: e.code || "UPLOAD_FAILED", message: e.message || e.errMsg || "文件上传失败" }));} });"function" == typeof o && u && "function" == typeof u.onProgressUpdate && u.onProgressUpdate(function (e) {o({ loaded: e.totalBytesSent, total: e.totalBytesExpectedToSend });});});} }, { key: "reportOSSUpload", value: function reportOSSUpload(e) {var t = { method: "serverless.file.resource.report", params: JSON.stringify(e) };return this.request(this.setupRequest(t));} }, { key: "uploadFile", value: function uploadFile(_ref2) {var _this5 = this;var e = _ref2.filePath,t = _ref2.cloudPath,_ref2$fileType = _ref2.fileType,s = _ref2$fileType === void 0 ? "image" : _ref2$fileType,n = _ref2.onUploadProgress,r = _ref2.config;if (!t) throw new i({ code: "CLOUDPATH_REQUIRED", message: "cloudPath不可为空" });var o = r && r.envType || this.config.envType;var a, c;return this.getOSSUploadOptionsFromPath({ env: o, filename: t }).then(function (t) {var r = t.result;a = r.id, c = "https://" + r.cdnDomain + "/" + r.ossPath;var o = { url: "https://" + r.host, formData: { "Cache-Control": "max-age=2592000", "Content-Disposition": "attachment", OSSAccessKeyId: r.accessKeyId, Signature: r.signature, host: r.host, id: a, key: r.ossPath, policy: r.policy, success_action_status: 200 }, fileName: "file", name: "file", filePath: e, fileType: s };return _this5.uploadFileToOSS(Object.assign({}, o, { onUploadProgress: n }));}).then(function () {return _this5.reportOSSUpload({ id: a });}).then(function (t) {return new Promise(function (s, n) {t.success ? s({ success: !0, filePath: e, fileID: c }) : n(new i({ code: "UPLOAD_FAILED", message: "文件上传失败" }));});});} }, { key: "deleteFile", value: function deleteFile(_ref3) {var e = _ref3.fileList;var t = { method: "serverless.file.resource.delete", params: JSON.stringify({ id: e[0] }) };return this.request(this.setupRequest(t));} }, { key: "getTempFileURL", value: function getTempFileURL() {var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},e = _ref4.fileList;return new Promise(function (t, s) {Array.isArray(e) && 0 !== e.length || s(new i({ code: "INVALID_PARAM", message: "fileList的元素必须是非空的字符串" })), t({ fileList: e.map(function (e) {return { fileID: e, tempFileURL: e };}) });});} }, { key: "hasAccessToken", get: function get() {return !!this.accessToken;} }]);return _;}();var v = { init: function init(e) {var t = new _(e);["deleteFile", "getTempFileURL"].forEach(function (e) {t[e] = o(t[e]).bind(t);});var s = { signInAnonymously: function signInAnonymously() {return t.authorize();}, getLoginState: function getLoginState() {return Promise.resolve(!1);} };return t.auth = function () {return s;}, t.customAuth = t.auth, t;} },w = "undefined" != typeof location && "http:" === location.protocol ? "http:" : "https:",S = "undefined" != typeof process && "e2e" === "development" && "pre" === Object({"NODE_ENV":"development","VUE_APP_NAME":"party_building","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).END_POINT ? "//tcb-pre.tencentcloudapi.com/web" : "//tcb-api.tencentcloudapi.com/web";var k;!function (e) {e.local = "local", e.none = "none", e.session = "session";}(k || (k = {}));var T = function T() {};s(function (e, t) {var s;e.exports = (s = n, function (e) {var t = s,n = t.lib,r = n.WordArray,o = n.Hasher,i = t.algo,a = [],c = [];!function () {function t(t) {for (var s = e.sqrt(t), n = 2; n <= s; n++) {if (!(t % n)) return !1;}return !0;}function s(e) {return 4294967296 * (e - (0 | e)) | 0;}for (var n = 2, r = 0; r < 64;) {t(n) && (r < 8 && (a[r] = s(e.pow(n, .5))), c[r] = s(e.pow(n, 1 / 3)), r++), n++;}}();var u = [],h = i.SHA256 = o.extend({ _doReset: function _doReset() {this._hash = new r.init(a.slice(0));}, _doProcessBlock: function _doProcessBlock(e, t) {for (var s = this._hash.words, n = s[0], r = s[1], o = s[2], i = s[3], a = s[4], h = s[5], l = s[6], d = s[7], f = 0; f < 64; f++) {if (f < 16) u[f] = 0 | e[t + f];else {var p = u[f - 15],g = (p << 25 | p >>> 7) ^ (p << 14 | p >>> 18) ^ p >>> 3,m = u[f - 2],y = (m << 15 | m >>> 17) ^ (m << 13 | m >>> 19) ^ m >>> 10;u[f] = g + u[f - 7] + y + u[f - 16];}var _ = n & r ^ n & o ^ r & o,v = (n << 30 | n >>> 2) ^ (n << 19 | n >>> 13) ^ (n << 10 | n >>> 22),w = d + ((a << 26 | a >>> 6) ^ (a << 21 | a >>> 11) ^ (a << 7 | a >>> 25)) + (a & h ^ ~a & l) + c[f] + u[f];d = l, l = h, h = a, a = i + w | 0, i = o, o = r, r = n, n = w + (v + _) | 0;}s[0] = s[0] + n | 0, s[1] = s[1] + r | 0, s[2] = s[2] + o | 0, s[3] = s[3] + i | 0, s[4] = s[4] + a | 0, s[5] = s[5] + h | 0, s[6] = s[6] + l | 0, s[7] = s[7] + d | 0;}, _doFinalize: function _doFinalize() {var t = this._data,s = t.words,n = 8 * this._nDataBytes,r = 8 * t.sigBytes;return s[r >>> 5] |= 128 << 24 - r % 32, s[14 + (r + 64 >>> 9 << 4)] = e.floor(n / 4294967296), s[15 + (r + 64 >>> 9 << 4)] = n, t.sigBytes = 4 * s.length, this._process(), this._hash;}, clone: function clone() {var e = o.clone.call(this);return e._hash = this._hash.clone(), e;} });t.SHA256 = o._createHelper(h), t.HmacSHA256 = o._createHmacHelper(h);}(Math), s.SHA256);}), s(function (e, t) {e.exports = n.HmacSHA256;}), s(function (e, t) {var s, r, o;e.exports = (r = (s = o = n).lib.WordArray, s.enc.Base64 = { stringify: function stringify(e) {var t = e.words,s = e.sigBytes,n = this._map;e.clamp();for (var r = [], o = 0; o < s; o += 3) {for (var i = (t[o >>> 2] >>> 24 - o % 4 * 8 & 255) << 16 | (t[o + 1 >>> 2] >>> 24 - (o + 1) % 4 * 8 & 255) << 8 | t[o + 2 >>> 2] >>> 24 - (o + 2) % 4 * 8 & 255, a = 0; a < 4 && o + .75 * a < s; a++) {r.push(n.charAt(i >>> 6 * (3 - a) & 63));}}var c = n.charAt(64);if (c) for (; r.length % 4;) {r.push(c);}return r.join("");}, parse: function parse(e) {var t = e.length,s = this._map,n = this._reverseMap;if (!n) {n = this._reverseMap = [];for (var o = 0; o < s.length; o++) {n[s.charCodeAt(o)] = o;}}var i = s.charAt(64);if (i) {var a = e.indexOf(i);-1 !== a && (t = a);}return function (e, t, s) {for (var n = [], o = 0, i = 0; i < t; i++) {if (i % 4) {var a = s[e.charCodeAt(i - 1)] << i % 4 * 2,c = s[e.charCodeAt(i)] >>> 6 - i % 4 * 2;n[o >>> 2] |= (a | c) << 24 - o % 4 * 8, o++;}}return r.create(n, o);}(e, t, n);}, _map: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=" }, o.enc.Base64);}), s(function (e, t) {e.exports = n.enc.Utf8;});var A = function A() {var e;if (!Promise) {e = function e() {}, e.promise = {};var _t = function _t() {throw new Error('Your Node runtime does support ES6 Promises. Set "global.Promise" to your preferred implementation of promises.');};return Object.defineProperty(e.promise, "then", { get: _t }), Object.defineProperty(e.promise, "catch", { get: _t }), e;}var t = new Promise(function (t, s) {e = function e(_e3, n) {return _e3 ? s(_e3) : t(n);};});return e.promise = t, e;};function I(e) {return void 0 === e;}function P(e) {return "[object Null]" === Object.prototype.toString.call(e);}var E;function O(e) {var t = (s = e, "[object Array]" === Object.prototype.toString.call(s) ? e : [e]);var s;var _iterator = _createForOfIteratorHelper(t),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var _e4 = _step.value;var _t2 = _e4.isMatch,_s = _e4.genAdapter,_n = _e4.runtime;if (_t2()) return { adapter: _s(), runtime: _n };}} catch (err) {_iterator.e(err);} finally {_iterator.f();}}!function (e) {e.WEB = "web", e.WX_MP = "wx_mp";}(E || (E = {}));var U = { adapter: null, runtime: void 0 },b = ["anonymousUuidKey"];var C = /*#__PURE__*/function (_T) {_inherits(C, _T);var _super2 = _createSuper(C);function C() {var _this6;_classCallCheck(this, C);_this6 = _super2.call(this), U.adapter.root.tcbObject || (U.adapter.root.tcbObject = {});return _this6;}_createClass(C, [{ key: "setItem", value: function setItem(e, t) {U.adapter.root.tcbObject[e] = t;} }, { key: "getItem", value: function getItem(e) {return U.adapter.root.tcbObject[e];} }, { key: "removeItem", value: function removeItem(e) {delete U.adapter.root.tcbObject[e];} }, { key: "clear", value: function clear() {delete U.adapter.root.tcbObject;} }]);return C;}(T);function D(e, t) {switch (e) {case "local":return t.localStorage || new C();case "none":return new C();default:return t.sessionStorage || new C();}}var R = /*#__PURE__*/function () {function R(e) {_classCallCheck(this, R);if (!this._storage) {this._persistence = U.adapter.primaryStorage || e.persistence, this._storage = D(this._persistence, U.adapter);var _t3 = "access_token_" + e.env,_s2 = "access_token_expire_" + e.env,_n2 = "refresh_token_" + e.env,_r = "anonymous_uuid_" + e.env,_o = "login_type_" + e.env,_i = "user_info_" + e.env;this.keys = { accessTokenKey: _t3, accessTokenExpireKey: _s2, refreshTokenKey: _n2, anonymousUuidKey: _r, loginTypeKey: _o, userInfoKey: _i };}}_createClass(R, [{ key: "updatePersistence", value: function updatePersistence(e) {if (e === this._persistence) return;var t = "local" === this._persistence;this._persistence = e;var s = D(e, U.adapter);for (var _e5 in this.keys) {var _n3 = this.keys[_e5];if (t && b.includes(_e5)) continue;var _r2 = this._storage.getItem(_n3);I(_r2) || P(_r2) || (s.setItem(_n3, _r2), this._storage.removeItem(_n3));}this._storage = s;} }, { key: "setStore", value: function setStore(e, t, s) {if (!this._storage) return;var n = { version: s || "localCachev1", content: t },r = JSON.stringify(n);try {this._storage.setItem(e, r);} catch (e) {throw e;}} }, { key: "getStore", value: function getStore(e, t) {try {if (!this._storage) return;} catch (e) {return "";}t = t || "localCachev1";var s = this._storage.getItem(e);if (!s) return "";if (s.indexOf(t) >= 0) {return JSON.parse(s).content;}return "";} }, { key: "removeStore", value: function removeStore(e) {this._storage.removeItem(e);} }]);return R;}();var x = {},q = {};function F(e) {return x[e];}var L = function L(e, t) {_classCallCheck(this, L);this.data = t || null, this.name = e;};var N = /*#__PURE__*/function (_L) {_inherits(N, _L);var _super3 = _createSuper(N);function N(e, t) {var _this7;_classCallCheck(this, N);_this7 = _super3.call(this, "error", { error: e, data: t }), _this7.error = e;return _this7;}return N;}(L);var M = new ( /*#__PURE__*/function () {function _class() {_classCallCheck(this, _class);this._listeners = {};}_createClass(_class, [{ key: "on", value: function on(e, t) {return function (e, t, s) {s[e] = s[e] || [], s[e].push(t);}(e, t, this._listeners), this;} }, { key: "off", value: function off(e, t) {return function (e, t, s) {if (s && s[e]) {var _n4 = s[e].indexOf(t);-1 !== _n4 && s[e].splice(_n4, 1);}}(e, t, this._listeners), this;} }, { key: "fire", value: function fire(e, t) {if (e instanceof N) return console.error(e.error), this;var s = "string" == typeof e ? new L(e, t || {}) : e;var n = s.name;if (this._listens(n)) {s.target = this;var _e6 = this._listeners[n] ? _toConsumableArray(this._listeners[n]) : [];var _iterator2 = _createForOfIteratorHelper(_e6),_step2;try {for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {var _t4 = _step2.value;_t4.call(this, s);}} catch (err) {_iterator2.e(err);} finally {_iterator2.f();}}return this;} }, { key: "_listens", value: function _listens(e) {return this._listeners[e] && this._listeners[e].length > 0;} }]);return _class;}())();function $(e, t) {M.on(e, t);}function K(e) {var t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};M.fire(e, t);}function B(e, t) {M.off(e, t);}var j = "loginStateChanged",H = "loginStateExpire",W = "loginTypeChanged",V = "anonymousConverted",z = "refreshAccessToken";var Y;!function (e) {e.ANONYMOUS = "ANONYMOUS", e.WECHAT = "WECHAT", e.WECHAT_PUBLIC = "WECHAT-PUBLIC", e.WECHAT_OPEN = "WECHAT-OPEN", e.CUSTOM = "CUSTOM", e.EMAIL = "EMAIL", e.USERNAME = "USERNAME", e.NULL = "NULL";}(Y || (Y = {}));var J = ["auth.getJwt", "auth.logout", "auth.signInWithTicket", "auth.signInAnonymously", "auth.signIn", "auth.fetchAccessTokenWithRefreshToken", "auth.signUpWithEmailAndPassword", "auth.activateEndUserMail", "auth.sendPasswordResetEmail", "auth.resetPasswordWithToken", "auth.isUsernameRegistered"],X = { "X-SDK-Version": "1.3.5" };function G(e, t, s) {var n = e[t];e[t] = function (t) {var r = {},o = {};s.forEach(function (s) {var _s$call = s.call(e, t),n = _s$call.data,i = _s$call.headers;Object.assign(r, n), Object.assign(o, i);});var i = t.data;return i && function () {var e;if (e = i, "[object FormData]" !== Object.prototype.toString.call(e)) t.data = _objectSpread(_objectSpread({}, i), r);else for (var _e7 in r) {i.append(_e7, r[_e7]);}}(), t.headers = _objectSpread(_objectSpread({}, t.headers || {}), o), n.call(e, t);};}function Q() {var e = Math.random().toString(16).slice(2);return { data: { seqId: e }, headers: _objectSpread(_objectSpread({}, X), {}, { "x-seqid": e }) };}var Z = /*#__PURE__*/function () {function Z() {var e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};_classCallCheck(this, Z);var t;this.config = e, this._reqClass = new U.adapter.reqClass({ timeout: this.config.timeout, timeoutMsg: "\u8BF7\u6C42\u5728".concat(this.config.timeout / 1e3, "s\u5185\u672A\u5B8C\u6210\uFF0C\u5DF2\u4E2D\u65AD"), restrictedMethods: ["post"] }), this._cache = F(this.config.env), this._localCache = (t = this.config.env, q[t]), G(this._reqClass, "post", [Q]), G(this._reqClass, "upload", [Q]), G(this._reqClass, "download", [Q]);}_createClass(Z, [{ key: "post", value: function () {var _post = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(e) {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return this._reqClass.post(e);case 2:return _context.abrupt("return", _context.sent);case 3:case "end":return _context.stop();}}}, _callee, this);}));function post(_x) {return _post.apply(this, arguments);}return post;}() }, { key: "upload", value: function () {var _upload = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(e) {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return this._reqClass.upload(e);case 2:return _context2.abrupt("return", _context2.sent);case 3:case "end":return _context2.stop();}}}, _callee2, this);}));function upload(_x2) {return _upload.apply(this, arguments);}return upload;}() }, { key: "download", value: function () {var _download = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(e) {return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.next = 2;return this._reqClass.download(e);case 2:return _context3.abrupt("return", _context3.sent);case 3:case "end":return _context3.stop();}}}, _callee3, this);}));function download(_x3) {return _download.apply(this, arguments);}return download;}() }, { key: "refreshAccessToken", value: function () {var _refreshAccessToken2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var e, t;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:this._refreshAccessTokenPromise || (this._refreshAccessTokenPromise = this._refreshAccessToken());_context4.prev = 1;_context4.next = 4;return this._refreshAccessTokenPromise;case 4:e = _context4.sent;_context4.next = 10;break;case 7:_context4.prev = 7;_context4.t0 = _context4["catch"](1);t = _context4.t0;case 10:if (!(this._refreshAccessTokenPromise = null, this._shouldRefreshAccessTokenHook = null, t)) {_context4.next = 12;break;}throw t;case 12:return _context4.abrupt("return", e);case 13:case "end":return _context4.stop();}}}, _callee4, this, [[1, 7]]);}));function refreshAccessToken() {return _refreshAccessToken2.apply(this, arguments);}return refreshAccessToken;}() }, { key: "_refreshAccessToken", value: function () {var _refreshAccessToken3 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5() {var _this$_cache$keys, e, t, s, n, r, o, i, a, _e8, _e9, _t5, _n5;return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:_this$_cache$keys = this._cache.keys, e = _this$_cache$keys.accessTokenKey, t = _this$_cache$keys.accessTokenExpireKey, s = _this$_cache$keys.refreshTokenKey, n = _this$_cache$keys.loginTypeKey, r = _this$_cache$keys.anonymousUuidKey;this._cache.removeStore(e), this._cache.removeStore(t);o = this._cache.getStore(s);if (o) {_context5.next = 5;break;}throw new Error("未登录CloudBase");case 5:i = { refresh_token: o };_context5.next = 8;return this.request("auth.fetchAccessTokenWithRefreshToken", i);case 8:a = _context5.sent;if (!a.data.code) {_context5.next = 21;break;}_e8 = a.data.code;if (!("SIGN_PARAM_INVALID" === _e8 || "REFRESH_TOKEN_EXPIRED" === _e8 || "INVALID_REFRESH_TOKEN" === _e8)) {_context5.next = 20;break;}if (!(this._cache.getStore(n) === Y.ANONYMOUS && "INVALID_REFRESH_TOKEN" === _e8)) {_context5.next = 19;break;}_e9 = this._cache.getStore(r);_t5 = this._cache.getStore(s);_context5.next = 17;return this.send("auth.signInAnonymously", { anonymous_uuid: _e9, refresh_token: _t5 });case 17:_n5 = _context5.sent;return _context5.abrupt("return", (this.setRefreshToken(_n5.refresh_token), this._refreshAccessToken()));case 19:K(H), this._cache.removeStore(s);case 20:throw new Error("刷新access token失败：" + a.data.code);case 21:if (!a.data.access_token) {_context5.next = 23;break;}return _context5.abrupt("return", (K(z), this._cache.setStore(e, a.data.access_token), this._cache.setStore(t, a.data.access_token_expire + Date.now()), { accessToken: a.data.access_token, accessTokenExpire: a.data.access_token_expire }));case 23:a.data.refresh_token && (this._cache.removeStore(s), this._cache.setStore(s, a.data.refresh_token), this._refreshAccessToken());case 24:case "end":return _context5.stop();}}}, _callee5, this);}));function _refreshAccessToken() {return _refreshAccessToken3.apply(this, arguments);}return _refreshAccessToken;}() }, { key: "getAccessToken", value: function () {var _getAccessToken = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6() {var _this$_cache$keys2, e, t, s, n, r, o;return _regenerator.default.wrap(function _callee6$(_context6) {while (1) {switch (_context6.prev = _context6.next) {case 0:_this$_cache$keys2 = this._cache.keys, e = _this$_cache$keys2.accessTokenKey, t = _this$_cache$keys2.accessTokenExpireKey, s = _this$_cache$keys2.refreshTokenKey;if (this._cache.getStore(s)) {_context6.next = 3;break;}throw new Error("refresh token不存在，登录状态异常");case 3:n = this._cache.getStore(e), r = this._cache.getStore(t), o = !0;_context6.t0 = this._shouldRefreshAccessTokenHook;if (!_context6.t0) {_context6.next = 9;break;}_context6.next = 8;return this._shouldRefreshAccessTokenHook(n, r);case 8:_context6.t0 = !_context6.sent;case 9:_context6.t1 = _context6.t0;if (!_context6.t1) {_context6.next = 12;break;}o = !1;case 12:return _context6.abrupt("return", (!n || !r || r < Date.now()) && o ? this.refreshAccessToken() : { accessToken: n, accessTokenExpire: r });case 13:case "end":return _context6.stop();}}}, _callee6, this);}));function getAccessToken() {return _getAccessToken.apply(this, arguments);}return getAccessToken;}() }, { key: "request", value: function () {var _request = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee7(e, t, s) {var n, r, o, _e10, i, _e11, _e12, a, c, u, h, l, d, f, p, g;return _regenerator.default.wrap(function _callee7$(_context7) {while (1) {switch (_context7.prev = _context7.next) {case 0:n = "x-tcb-trace_" + this.config.env;r = "application/x-www-form-urlencoded";o = _objectSpread({ action: e, env: this.config.env, dataVersion: "2019-08-16" }, t);if (!(-1 === J.indexOf(e))) {_context7.next = 10;break;}_e10 = this._cache.keys.refreshTokenKey;_context7.t0 = this._cache.getStore(_e10);if (!_context7.t0) {_context7.next = 10;break;}_context7.next = 9;return this.getAccessToken();case 9:o.access_token = _context7.sent.accessToken;case 10:if ("storage.uploadFile" === e) {i = new FormData();for (_e11 in i) {i.hasOwnProperty(_e11) && void 0 !== i[_e11] && i.append(_e11, o[_e11]);}r = "multipart/form-data";} else {r = "application/json;charset=UTF-8", i = {};for (_e12 in o) {void 0 !== o[_e12] && (i[_e12] = o[_e12]);}}a = { headers: { "content-type": r } };s && s.onUploadProgress && (a.onUploadProgress = s.onUploadProgress);c = this._localCache.getStore(n);c && (a.headers["X-TCB-Trace"] = c);u = t.parse, h = t.inQuery, l = t.search;d = { env: this.config.env };u && (d.parse = !0), h && (d = _objectSpread(_objectSpread({}, h), d));f = function (e, t) {var s = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};var n = /\?/.test(t);var r = "";for (var _e13 in s) {"" === r ? !n && (t += "?") : r += "&", r += "".concat(_e13, "=").concat(encodeURIComponent(s[_e13]));}return /^http(s)?\:\/\//.test(t += r) ? t : "".concat(e).concat(t);}(w, S, d);l && (f += l);_context7.next = 22;return this.post(_objectSpread({ url: f, data: i }, a));case 22:p = _context7.sent;g = p.header && p.header["x-tcb-trace"];if (!(g && this._localCache.setStore(n, g), 200 !== Number(p.status) && 200 !== Number(p.statusCode) || !p.data)) {_context7.next = 26;break;}throw new Error("network request error");case 26:return _context7.abrupt("return", p);case 27:case "end":return _context7.stop();}}}, _callee7, this);}));function request(_x4, _x5, _x6) {return _request.apply(this, arguments);}return request;}() }, { key: "send", value: function () {var _send = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee8(e) {var t,s,_s3,_args8 = arguments;return _regenerator.default.wrap(function _callee8$(_context8) {while (1) {switch (_context8.prev = _context8.next) {case 0:t = _args8.length > 1 && _args8[1] !== undefined ? _args8[1] : {};_context8.next = 3;return this.request(e, t, { onUploadProgress: t.onUploadProgress });case 3:s = _context8.sent;if (!("ACCESS_TOKEN_EXPIRED" === s.data.code && -1 === J.indexOf(e))) {_context8.next = 13;break;}_context8.next = 7;return this.refreshAccessToken();case 7:_context8.next = 9;return this.request(e, t, { onUploadProgress: t.onUploadProgress });case 9:_s3 = _context8.sent;if (!_s3.data.code) {_context8.next = 12;break;}throw new Error("[".concat(_s3.data.code, "] ").concat(_s3.data.message));case 12:return _context8.abrupt("return", _s3.data);case 13:if (!s.data.code) {_context8.next = 15;break;}throw new Error("[".concat(s.data.code, "] ").concat(s.data.message));case 15:return _context8.abrupt("return", s.data);case 16:case "end":return _context8.stop();}}}, _callee8, this);}));function send(_x7) {return _send.apply(this, arguments);}return send;}() }, { key: "setRefreshToken", value: function setRefreshToken(e) {var _this$_cache$keys3 = this._cache.keys,t = _this$_cache$keys3.accessTokenKey,s = _this$_cache$keys3.accessTokenExpireKey,n = _this$_cache$keys3.refreshTokenKey;this._cache.removeStore(t), this._cache.removeStore(s), this._cache.setStore(n, e);} }]);return Z;}();var ee = {};function te(e) {return ee[e];}var se = /*#__PURE__*/function () {function se(e) {_classCallCheck(this, se);this.config = e, this._cache = F(e.env), this._request = te(e.env);}_createClass(se, [{ key: "setRefreshToken", value: function setRefreshToken(e) {var _this$_cache$keys4 = this._cache.keys,t = _this$_cache$keys4.accessTokenKey,s = _this$_cache$keys4.accessTokenExpireKey,n = _this$_cache$keys4.refreshTokenKey;this._cache.removeStore(t), this._cache.removeStore(s), this._cache.setStore(n, e);} }, { key: "setAccessToken", value: function setAccessToken(e, t) {var _this$_cache$keys5 = this._cache.keys,s = _this$_cache$keys5.accessTokenKey,n = _this$_cache$keys5.accessTokenExpireKey;this._cache.setStore(s, e), this._cache.setStore(n, t);} }, { key: "refreshUserInfo", value: function () {var _refreshUserInfo = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee9() {var _yield$this$_request$, e;return _regenerator.default.wrap(function _callee9$(_context9) {while (1) {switch (_context9.prev = _context9.next) {case 0:_context9.next = 2;return this._request.send("auth.getUserInfo", {});case 2:_yield$this$_request$ = _context9.sent;e = _yield$this$_request$.data;return _context9.abrupt("return", (this.setLocalUserInfo(e), e));case 5:case "end":return _context9.stop();}}}, _callee9, this);}));function refreshUserInfo() {return _refreshUserInfo.apply(this, arguments);}return refreshUserInfo;}() }, { key: "setLocalUserInfo", value: function setLocalUserInfo(e) {var t = this._cache.keys.userInfoKey;this._cache.setStore(t, e);} }]);return se;}();var ne = /*#__PURE__*/function () {function ne(e) {_classCallCheck(this, ne);if (!e) throw new Error("envId is not defined");this._envId = e, this._cache = F(this._envId), this._request = te(this._envId), this.setUserInfo();}_createClass(ne, [{ key: "linkWithTicket", value: function linkWithTicket(e) {if ("string" != typeof e) throw new Error("ticket must be string");return this._request.send("auth.linkWithTicket", { ticket: e });} }, { key: "linkWithRedirect", value: function linkWithRedirect(e) {e.signInWithRedirect();} }, { key: "updatePassword", value: function updatePassword(e, t) {return this._request.send("auth.updatePassword", { oldPassword: t, newPassword: e });} }, { key: "updateEmail", value: function updateEmail(e) {return this._request.send("auth.updateEmail", { newEmail: e });} }, { key: "updateUsername", value: function updateUsername(e) {if ("string" != typeof e) throw new Error("username must be a string");return this._request.send("auth.updateUsername", { username: e });} }, { key: "getLinkedUidList", value: function () {var _getLinkedUidList = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee10() {var _yield$this$_request$2, e, t, s;return _regenerator.default.wrap(function _callee10$(_context10) {while (1) {switch (_context10.prev = _context10.next) {case 0:_context10.next = 2;return this._request.send("auth.getLinkedUidList", {});case 2:_yield$this$_request$2 = _context10.sent;e = _yield$this$_request$2.data;t = !1;s = e.users;return _context10.abrupt("return", (s.forEach(function (e) {e.wxOpenId && e.wxPublicId && (t = !0);}), { users: s, hasPrimaryUid: t }));case 7:case "end":return _context10.stop();}}}, _callee10, this);}));function getLinkedUidList() {return _getLinkedUidList.apply(this, arguments);}return getLinkedUidList;}() }, { key: "setPrimaryUid", value: function setPrimaryUid(e) {return this._request.send("auth.setPrimaryUid", { uid: e });} }, { key: "unlink", value: function unlink(e) {return this._request.send("auth.unlink", { platform: e });} }, { key: "update", value: function () {var _update = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee11(e) {var t, s, n, r, o, i, _yield$this$_request$3, a;return _regenerator.default.wrap(function _callee11$(_context11) {while (1) {switch (_context11.prev = _context11.next) {case 0:t = e.nickName;s = e.gender;n = e.avatarUrl;r = e.province;o = e.country;i = e.city;_context11.next = 8;return this._request.send("auth.updateUserInfo", { nickName: t, gender: s, avatarUrl: n, province: r, country: o, city: i });case 8:_yield$this$_request$3 = _context11.sent;a = _yield$this$_request$3.data;this.setLocalUserInfo(a);case 11:case "end":return _context11.stop();}}}, _callee11, this);}));function update(_x8) {return _update.apply(this, arguments);}return update;}() }, { key: "refresh", value: function () {var _refresh = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee12() {var _yield$this$_request$4, e;return _regenerator.default.wrap(function _callee12$(_context12) {while (1) {switch (_context12.prev = _context12.next) {case 0:_context12.next = 2;return this._request.send("auth.getUserInfo", {});case 2:_yield$this$_request$4 = _context12.sent;e = _yield$this$_request$4.data;return _context12.abrupt("return", (this.setLocalUserInfo(e), e));case 5:case "end":return _context12.stop();}}}, _callee12, this);}));function refresh() {return _refresh.apply(this, arguments);}return refresh;}() }, { key: "setUserInfo", value: function setUserInfo() {var _this8 = this;var e = this._cache.keys.userInfoKey,t = this._cache.getStore(e);["uid", "loginType", "openid", "wxOpenId", "wxPublicId", "unionId", "qqMiniOpenId", "email", "hasPassword", "customUserId", "nickName", "gender", "avatarUrl"].forEach(function (e) {_this8[e] = t[e];}), this.location = { country: t.country, province: t.province, city: t.city };} }, { key: "setLocalUserInfo", value: function setLocalUserInfo(e) {var t = this._cache.keys.userInfoKey;this._cache.setStore(t, e), this.setUserInfo();} }]);return ne;}();var re = /*#__PURE__*/function () {function re(e) {_classCallCheck(this, re);if (!e) throw new Error("envId is not defined");this._cache = F(e);var _this$_cache$keys6 = this._cache.keys,t = _this$_cache$keys6.refreshTokenKey,s = _this$_cache$keys6.accessTokenKey,n = _this$_cache$keys6.accessTokenExpireKey,r = this._cache.getStore(t),o = this._cache.getStore(s),i = this._cache.getStore(n);this.credential = { refreshToken: r, accessToken: o, accessTokenExpire: i }, this.user = new ne(e);}_createClass(re, [{ key: "isAnonymousAuth", get: function get() {return this.loginType === Y.ANONYMOUS;} }, { key: "isCustomAuth", get: function get() {return this.loginType === Y.CUSTOM;} }, { key: "isWeixinAuth", get: function get() {return this.loginType === Y.WECHAT || this.loginType === Y.WECHAT_OPEN || this.loginType === Y.WECHAT_PUBLIC;} }, { key: "loginType", get: function get() {return this._cache.getStore(this._cache.keys.loginTypeKey);} }]);return re;}();var oe = /*#__PURE__*/function (_se) {_inherits(oe, _se);var _super4 = _createSuper(oe);function oe() {_classCallCheck(this, oe);return _super4.apply(this, arguments);}_createClass(oe, [{ key: "signIn", value: function () {var _signIn = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee13() {var _this$_cache$keys7, e, t, s, n, r, _e14;return _regenerator.default.wrap(function _callee13$(_context13) {while (1) {switch (_context13.prev = _context13.next) {case 0:this._cache.updatePersistence("local");_this$_cache$keys7 = this._cache.keys;e = _this$_cache$keys7.anonymousUuidKey;t = _this$_cache$keys7.refreshTokenKey;s = this._cache.getStore(e) || void 0;n = this._cache.getStore(t) || void 0;_context13.next = 8;return this._request.send("auth.signInAnonymously", { anonymous_uuid: s, refresh_token: n });case 8:r = _context13.sent;if (!(r.uuid && r.refresh_token)) {_context13.next = 20;break;}this._setAnonymousUUID(r.uuid);this.setRefreshToken(r.refresh_token);_context13.next = 14;return this._request.refreshAccessToken();case 14:K(j);K(W, { env: this.config.env, loginType: Y.ANONYMOUS, persistence: "local" });_e14 = new re(this.config.env);_context13.next = 19;return _e14.user.refresh();case 19:return _context13.abrupt("return", _e14);case 20:throw new Error("匿名登录失败");case 21:case "end":return _context13.stop();}}}, _callee13, this);}));function signIn() {return _signIn.apply(this, arguments);}return signIn;}() }, { key: "linkAndRetrieveDataWithTicket", value: function () {var _linkAndRetrieveDataWithTicket = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee14(e) {var _this$_cache$keys8, t, s, n, r, o;return _regenerator.default.wrap(function _callee14$(_context14) {while (1) {switch (_context14.prev = _context14.next) {case 0:_this$_cache$keys8 = this._cache.keys;t = _this$_cache$keys8.anonymousUuidKey;s = _this$_cache$keys8.refreshTokenKey;n = this._cache.getStore(t);r = this._cache.getStore(s);_context14.next = 7;return this._request.send("auth.linkAndRetrieveDataWithTicket", { anonymous_uuid: n, refresh_token: r, ticket: e });case 7:o = _context14.sent;if (!o.refresh_token) {_context14.next = 16;break;}this._clearAnonymousUUID();this.setRefreshToken(o.refresh_token);_context14.next = 13;return this._request.refreshAccessToken();case 13:K(V, { env: this.config.env });K(W, { loginType: Y.CUSTOM, persistence: "local" });return _context14.abrupt("return", { credential: { refreshToken: o.refresh_token } });case 16:throw new Error("匿名转化失败");case 17:case "end":return _context14.stop();}}}, _callee14, this);}));function linkAndRetrieveDataWithTicket(_x9) {return _linkAndRetrieveDataWithTicket.apply(this, arguments);}return linkAndRetrieveDataWithTicket;}() }, { key: "_setAnonymousUUID", value: function _setAnonymousUUID(e) {var _this$_cache$keys9 = this._cache.keys,t = _this$_cache$keys9.anonymousUuidKey,s = _this$_cache$keys9.loginTypeKey;this._cache.removeStore(t), this._cache.setStore(t, e), this._cache.setStore(s, Y.ANONYMOUS);} }, { key: "_clearAnonymousUUID", value: function _clearAnonymousUUID() {this._cache.removeStore(this._cache.keys.anonymousUuidKey);} }]);return oe;}(se);var ie = /*#__PURE__*/function (_se2) {_inherits(ie, _se2);var _super5 = _createSuper(ie);function ie() {_classCallCheck(this, ie);return _super5.apply(this, arguments);}_createClass(ie, [{ key: "signIn", value: function () {var _signIn2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee15(e) {var t, s;return _regenerator.default.wrap(function _callee15$(_context15) {while (1) {switch (_context15.prev = _context15.next) {case 0:if (!("string" != typeof e)) {_context15.next = 2;break;}throw new Error("ticket must be a string");case 2:t = this._cache.keys.refreshTokenKey;_context15.next = 5;return this._request.send("auth.signInWithTicket", { ticket: e, refresh_token: this._cache.getStore(t) || "" });case 5:s = _context15.sent;if (!s.refresh_token) {_context15.next = 15;break;}this.setRefreshToken(s.refresh_token);_context15.next = 10;return this._request.refreshAccessToken();case 10:K(j);K(W, { env: this.config.env, loginType: Y.CUSTOM, persistence: this.config.persistence });_context15.next = 14;return this.refreshUserInfo();case 14:return _context15.abrupt("return", new re(this.config.env));case 15:throw new Error("自定义登录失败");case 16:case "end":return _context15.stop();}}}, _callee15, this);}));function signIn(_x10) {return _signIn2.apply(this, arguments);}return signIn;}() }]);return ie;}(se);var ae = /*#__PURE__*/function (_se3) {_inherits(ae, _se3);var _super6 = _createSuper(ae);function ae() {_classCallCheck(this, ae);return _super6.apply(this, arguments);}_createClass(ae, [{ key: "signIn", value: function () {var _signIn3 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee16(e, t) {var s, n, r, o, i;return _regenerator.default.wrap(function _callee16$(_context16) {while (1) {switch (_context16.prev = _context16.next) {case 0:if (!("string" != typeof e)) {_context16.next = 2;break;}throw new Error("email must be a string");case 2:s = this._cache.keys.refreshTokenKey;_context16.next = 5;return this._request.send("auth.signIn", { loginType: "EMAIL", email: e, password: t, refresh_token: this._cache.getStore(s) || "" });case 5:n = _context16.sent;r = n.refresh_token;o = n.access_token;i = n.access_token_expire;if (!r) {_context16.next = 22;break;}this.setRefreshToken(r);if (!(o && i)) {_context16.next = 15;break;}this.setAccessToken(o, i);_context16.next = 17;break;case 15:_context16.next = 17;return this._request.refreshAccessToken();case 17:_context16.next = 19;return this.refreshUserInfo();case 19:K(j);K(W, { env: this.config.env, loginType: Y.EMAIL, persistence: this.config.persistence });return _context16.abrupt("return", new re(this.config.env));case 22:throw n.code ? new Error("\u90AE\u7BB1\u767B\u5F55\u5931\u8D25: [".concat(n.code, "] ").concat(n.message)) : new Error("邮箱登录失败");case 23:case "end":return _context16.stop();}}}, _callee16, this);}));function signIn(_x11, _x12) {return _signIn3.apply(this, arguments);}return signIn;}() }, { key: "activate", value: function () {var _activate = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee17(e) {return _regenerator.default.wrap(function _callee17$(_context17) {while (1) {switch (_context17.prev = _context17.next) {case 0:return _context17.abrupt("return", this._request.send("auth.activateEndUserMail", { token: e }));case 1:case "end":return _context17.stop();}}}, _callee17, this);}));function activate(_x13) {return _activate.apply(this, arguments);}return activate;}() }, { key: "resetPasswordWithToken", value: function () {var _resetPasswordWithToken = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee18(e, t) {return _regenerator.default.wrap(function _callee18$(_context18) {while (1) {switch (_context18.prev = _context18.next) {case 0:return _context18.abrupt("return", this._request.send("auth.resetPasswordWithToken", { token: e, newPassword: t }));case 1:case "end":return _context18.stop();}}}, _callee18, this);}));function resetPasswordWithToken(_x14, _x15) {return _resetPasswordWithToken.apply(this, arguments);}return resetPasswordWithToken;}() }]);return ae;}(se);var ce = /*#__PURE__*/function (_se4) {_inherits(ce, _se4);var _super7 = _createSuper(ce);function ce() {_classCallCheck(this, ce);return _super7.apply(this, arguments);}_createClass(ce, [{ key: "signIn", value: function () {var _signIn4 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee19(e, t) {var s, n, r, o, i;return _regenerator.default.wrap(function _callee19$(_context19) {while (1) {switch (_context19.prev = _context19.next) {case 0:if (!("string" != typeof e)) {_context19.next = 2;break;}throw new Error("username must be a string");case 2:"string" != typeof t && (t = "", console.warn("password is empty"));s = this._cache.keys.refreshTokenKey;_context19.next = 6;return this._request.send("auth.signIn", { loginType: Y.USERNAME, username: e, password: t, refresh_token: this._cache.getStore(s) || "" });case 6:n = _context19.sent;r = n.refresh_token;o = n.access_token_expire;i = n.access_token;if (!r) {_context19.next = 23;break;}this.setRefreshToken(r);if (!(i && o)) {_context19.next = 16;break;}this.setAccessToken(i, o);_context19.next = 18;break;case 16:_context19.next = 18;return this._request.refreshAccessToken();case 18:_context19.next = 20;return this.refreshUserInfo();case 20:K(j);K(W, { env: this.config.env, loginType: Y.USERNAME, persistence: this.config.persistence });return _context19.abrupt("return", new re(this.config.env));case 23:throw n.code ? new Error("\u7528\u6237\u540D\u5BC6\u7801\u767B\u5F55\u5931\u8D25: [".concat(n.code, "] ").concat(n.message)) : new Error("用户名密码登录失败");case 24:case "end":return _context19.stop();}}}, _callee19, this);}));function signIn(_x16, _x17) {return _signIn4.apply(this, arguments);}return signIn;}() }]);return ce;}(se);var ue = /*#__PURE__*/function () {function ue(e) {_classCallCheck(this, ue);this.config = e, this._cache = F(e.env), this._request = te(e.env), this._onAnonymousConverted = this._onAnonymousConverted.bind(this), this._onLoginTypeChanged = this._onLoginTypeChanged.bind(this), $(W, this._onLoginTypeChanged);}_createClass(ue, [{ key: "anonymousAuthProvider", value: function anonymousAuthProvider() {return new oe(this.config);} }, { key: "customAuthProvider", value: function customAuthProvider() {return new ie(this.config);} }, { key: "emailAuthProvider", value: function emailAuthProvider() {return new ae(this.config);} }, { key: "usernameAuthProvider", value: function usernameAuthProvider() {return new ce(this.config);} }, { key: "signInAnonymously", value: function () {var _signInAnonymously = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee20() {return _regenerator.default.wrap(function _callee20$(_context20) {while (1) {switch (_context20.prev = _context20.next) {case 0:return _context20.abrupt("return", new oe(this.config).signIn());case 1:case "end":return _context20.stop();}}}, _callee20, this);}));function signInAnonymously() {return _signInAnonymously.apply(this, arguments);}return signInAnonymously;}() }, { key: "signInWithEmailAndPassword", value: function () {var _signInWithEmailAndPassword = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee21(e, t) {return _regenerator.default.wrap(function _callee21$(_context21) {while (1) {switch (_context21.prev = _context21.next) {case 0:return _context21.abrupt("return", new ae(this.config).signIn(e, t));case 1:case "end":return _context21.stop();}}}, _callee21, this);}));function signInWithEmailAndPassword(_x18, _x19) {return _signInWithEmailAndPassword.apply(this, arguments);}return signInWithEmailAndPassword;}() }, { key: "signInWithUsernameAndPassword", value: function signInWithUsernameAndPassword(e, t) {return new ce(this.config).signIn(e, t);} }, { key: "linkAndRetrieveDataWithTicket", value: function () {var _linkAndRetrieveDataWithTicket2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee22(e) {return _regenerator.default.wrap(function _callee22$(_context22) {while (1) {switch (_context22.prev = _context22.next) {case 0:this._anonymousAuthProvider || (this._anonymousAuthProvider = new oe(this.config)), $(V, this._onAnonymousConverted);_context22.next = 3;return this._anonymousAuthProvider.linkAndRetrieveDataWithTicket(e);case 3:return _context22.abrupt("return", _context22.sent);case 4:case "end":return _context22.stop();}}}, _callee22, this);}));function linkAndRetrieveDataWithTicket(_x20) {return _linkAndRetrieveDataWithTicket2.apply(this, arguments);}return linkAndRetrieveDataWithTicket;}() }, { key: "signOut", value: function () {var _signOut = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee23() {var _this$_cache$keys10, e, t, s, n, r;return _regenerator.default.wrap(function _callee23$(_context23) {while (1) {switch (_context23.prev = _context23.next) {case 0:if (!(this.loginType === Y.ANONYMOUS)) {_context23.next = 2;break;}throw new Error("匿名用户不支持登出操作");case 2:_this$_cache$keys10 = this._cache.keys, e = _this$_cache$keys10.refreshTokenKey, t = _this$_cache$keys10.accessTokenKey, s = _this$_cache$keys10.accessTokenExpireKey, n = this._cache.getStore(e);if (n) {_context23.next = 5;break;}return _context23.abrupt("return");case 5:_context23.next = 7;return this._request.send("auth.logout", { refresh_token: n });case 7:r = _context23.sent;return _context23.abrupt("return", (this._cache.removeStore(e), this._cache.removeStore(t), this._cache.removeStore(s), K(j), K(W, { env: this.config.env, loginType: Y.NULL, persistence: this.config.persistence }), r));case 9:case "end":return _context23.stop();}}}, _callee23, this);}));function signOut() {return _signOut.apply(this, arguments);}return signOut;}() }, { key: "signUpWithEmailAndPassword", value: function () {var _signUpWithEmailAndPassword = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee24(e, t) {return _regenerator.default.wrap(function _callee24$(_context24) {while (1) {switch (_context24.prev = _context24.next) {case 0:return _context24.abrupt("return", this._request.send("auth.signUpWithEmailAndPassword", { email: e, password: t }));case 1:case "end":return _context24.stop();}}}, _callee24, this);}));function signUpWithEmailAndPassword(_x21, _x22) {return _signUpWithEmailAndPassword.apply(this, arguments);}return signUpWithEmailAndPassword;}() }, { key: "sendPasswordResetEmail", value: function () {var _sendPasswordResetEmail = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee25(e) {return _regenerator.default.wrap(function _callee25$(_context25) {while (1) {switch (_context25.prev = _context25.next) {case 0:return _context25.abrupt("return", this._request.send("auth.sendPasswordResetEmail", { email: e }));case 1:case "end":return _context25.stop();}}}, _callee25, this);}));function sendPasswordResetEmail(_x23) {return _sendPasswordResetEmail.apply(this, arguments);}return sendPasswordResetEmail;}() }, { key: "onLoginStateChanged", value: function onLoginStateChanged(e) {var _this9 = this;$(j, function () {var t = _this9.hasLoginState();e.call(_this9, t);});var t = this.hasLoginState();e.call(this, t);} }, { key: "onLoginStateExpired", value: function onLoginStateExpired(e) {$(H, e.bind(this));} }, { key: "onAccessTokenRefreshed", value: function onAccessTokenRefreshed(e) {$(z, e.bind(this));} }, { key: "onAnonymousConverted", value: function onAnonymousConverted(e) {$(V, e.bind(this));} }, { key: "onLoginTypeChanged", value: function onLoginTypeChanged(e) {var _this10 = this;$(W, function () {var t = _this10.hasLoginState();e.call(_this10, t);});} }, { key: "getAccessToken", value: function () {var _getAccessToken2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee26() {return _regenerator.default.wrap(function _callee26$(_context26) {while (1) {switch (_context26.prev = _context26.next) {case 0:_context26.next = 2;return this._request.getAccessToken();case 2:_context26.t0 = _context26.sent.accessToken;_context26.t1 = this.config.env;return _context26.abrupt("return", { accessToken: _context26.t0, env: _context26.t1 });case 5:case "end":return _context26.stop();}}}, _callee26, this);}));function getAccessToken() {return _getAccessToken2.apply(this, arguments);}return getAccessToken;}() }, { key: "hasLoginState", value: function hasLoginState() {var e = this._cache.keys.refreshTokenKey;return this._cache.getStore(e) ? new re(this.config.env) : null;} }, { key: "isUsernameRegistered", value: function () {var _isUsernameRegistered = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee27(e) {var _yield$this$_request$5, t;return _regenerator.default.wrap(function _callee27$(_context27) {while (1) {switch (_context27.prev = _context27.next) {case 0:if (!("string" != typeof e)) {_context27.next = 2;break;}throw new Error("username must be a string");case 2:_context27.next = 4;return this._request.send("auth.isUsernameRegistered", { username: e });case 4:_yield$this$_request$5 = _context27.sent;t = _yield$this$_request$5.data;return _context27.abrupt("return", t && t.isRegistered);case 7:case "end":return _context27.stop();}}}, _callee27, this);}));function isUsernameRegistered(_x24) {return _isUsernameRegistered.apply(this, arguments);}return isUsernameRegistered;}() }, { key: "getLoginState", value: function getLoginState() {return Promise.resolve(this.hasLoginState());} }, { key: "signInWithTicket", value: function () {var _signInWithTicket = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee28(e) {return _regenerator.default.wrap(function _callee28$(_context28) {while (1) {switch (_context28.prev = _context28.next) {case 0:return _context28.abrupt("return", new ie(this.config).signIn(e));case 1:case "end":return _context28.stop();}}}, _callee28, this);}));function signInWithTicket(_x25) {return _signInWithTicket.apply(this, arguments);}return signInWithTicket;}() }, { key: "shouldRefreshAccessToken", value: function shouldRefreshAccessToken(e) {this._request._shouldRefreshAccessTokenHook = e.bind(this);} }, { key: "getUserInfo", value: function getUserInfo() {return this._request.send("auth.getUserInfo", {}).then(function (e) {return e.code ? e : _objectSpread(_objectSpread({}, e.data), {}, { requestId: e.seqId });});} }, { key: "getAuthHeader", value: function getAuthHeader() {var _this$_cache$keys11 = this._cache.keys,e = _this$_cache$keys11.refreshTokenKey,t = _this$_cache$keys11.accessTokenKey,s = this._cache.getStore(e);return { "x-cloudbase-credentials": this._cache.getStore(t) + "/@@/" + s };} }, { key: "_onAnonymousConverted", value: function _onAnonymousConverted(e) {var t = e.data.env;t === this.config.env && this._cache.updatePersistence(this.config.persistence);} }, { key: "_onLoginTypeChanged", value: function _onLoginTypeChanged(e) {var _e$data = e.data,t = _e$data.loginType,s = _e$data.persistence,n = _e$data.env;n === this.config.env && (this._cache.updatePersistence(s), this._cache.setStore(this._cache.keys.loginTypeKey, t));} }, { key: "currentUser", get: function get() {var e = this.hasLoginState();return e && e.user || null;} }, { key: "loginType", get: function get() {return this._cache.getStore(this._cache.keys.loginTypeKey);} }]);return ue;}();var he = function he(e, t) {t = t || A();var s = te(this.config.env),n = e.cloudPath,r = e.filePath,o = e.onUploadProgress,_e$fileType = e.fileType,i = _e$fileType === void 0 ? "image" : _e$fileType;return s.send("storage.getUploadMetadata", { path: n }).then(function (e) {var _e$data2 = e.data,a = _e$data2.url,c = _e$data2.authorization,u = _e$data2.token,h = _e$data2.fileId,l = _e$data2.cosFileId,d = e.requestId,f = { key: n, signature: c, "x-cos-meta-fileid": l, success_action_status: "201", "x-cos-security-token": u };s.upload({ url: a, data: f, file: r, name: n, fileType: i, onUploadProgress: o }).then(function (e) {201 === e.statusCode ? t(null, { fileID: h, requestId: d }) : t(new Error("STORAGE_REQUEST_FAIL: " + e.data));}).catch(function (e) {t(e);});}).catch(function (e) {t(e);}), t.promise;},le = function le(e, t) {t = t || A();var s = te(this.config.env),n = e.cloudPath;return s.send("storage.getUploadMetadata", { path: n }).then(function (e) {t(null, e);}).catch(function (e) {t(e);}), t.promise;},de = function de(_ref5, t) {var e = _ref5.fileList;if (t = t || A(), !e || !Array.isArray(e)) return { code: "INVALID_PARAM", message: "fileList必须是非空的数组" };var _iterator3 = _createForOfIteratorHelper(e),_step3;try {for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {var _t6 = _step3.value;if (!_t6 || "string" != typeof _t6) return { code: "INVALID_PARAM", message: "fileList的元素必须是非空的字符串" };}} catch (err) {_iterator3.e(err);} finally {_iterator3.f();}var s = { fileid_list: e };return te(this.config.env).send("storage.batchDeleteFile", s).then(function (e) {e.code ? t(null, e) : t(null, { fileList: e.data.delete_list, requestId: e.requestId });}).catch(function (e) {t(e);}), t.promise;},fe = function fe(_ref6, t) {var e = _ref6.fileList;t = t || A(), e && Array.isArray(e) || t(null, { code: "INVALID_PARAM", message: "fileList必须是非空的数组" });var s = [];var _iterator4 = _createForOfIteratorHelper(e),_step4;try {for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {var _n6 = _step4.value;"object" == typeof _n6 ? (_n6.hasOwnProperty("fileID") && _n6.hasOwnProperty("maxAge") || t(null, { code: "INVALID_PARAM", message: "fileList的元素必须是包含fileID和maxAge的对象" }), s.push({ fileid: _n6.fileID, max_age: _n6.maxAge })) : "string" == typeof _n6 ? s.push({ fileid: _n6 }) : t(null, { code: "INVALID_PARAM", message: "fileList的元素必须是字符串" });}} catch (err) {_iterator4.e(err);} finally {_iterator4.f();}var n = { file_list: s };return te(this.config.env).send("storage.batchGetDownloadUrl", n).then(function (e) {e.code ? t(null, e) : t(null, { fileList: e.data.download_list, requestId: e.requestId });}).catch(function (e) {t(e);}), t.promise;},pe = /*#__PURE__*/function () {var _ref8 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee29(_ref7, t) {var e, s, n, r;return _regenerator.default.wrap(function _callee29$(_context29) {while (1) {switch (_context29.prev = _context29.next) {case 0:e = _ref7.fileID;_context29.next = 3;return fe.call(this, { fileList: [{ fileID: e, maxAge: 600 }] });case 3:s = _context29.sent.fileList[0];if (!("SUCCESS" !== s.code)) {_context29.next = 6;break;}return _context29.abrupt("return", t ? t(s) : new Promise(function (e) {e(s);}));case 6:n = te(this.config.env);r = s.download_url;if (!(r = encodeURI(r), !t)) {_context29.next = 10;break;}return _context29.abrupt("return", n.download({ url: r }));case 10:_context29.t0 = t;_context29.next = 13;return n.download({ url: r });case 13:_context29.t1 = _context29.sent;(0, _context29.t0)(_context29.t1);case 15:case "end":return _context29.stop();}}}, _callee29, this);}));return function pe(_x26, _x27) {return _ref8.apply(this, arguments);};}(),ge = function ge(_ref9, o) {var e = _ref9.name,t = _ref9.data,s = _ref9.query,n = _ref9.parse,r = _ref9.search;var i = o || A();var a;try {a = t ? JSON.stringify(t) : "";} catch (e) {return Promise.reject(e);}if (!e) return Promise.reject(new Error("函数名不能为空"));var c = { inQuery: s, parse: n, search: r, function_name: e, request_data: a };return te(this.config.env).send("functions.invokeFunction", c).then(function (e) {if (e.code) i(null, e);else {var _t7 = e.data.response_data;if (n) i(null, { result: _t7, requestId: e.requestId });else try {_t7 = JSON.parse(e.data.response_data), i(null, { result: _t7, requestId: e.requestId });} catch (e) {i(new Error("response data must be json"));}}return i.promise;}).catch(function (e) {i(e);}), i.promise;},me = { timeout: 15e3, persistence: "session" },ye = {};var _e = /*#__PURE__*/function () {function _e(e) {_classCallCheck(this, _e);this.config = e || this.config, this.authObj = void 0;}_createClass(_e, [{ key: "init", value: function init(e) {switch (U.adapter || (this.requestClient = new U.adapter.reqClass({ timeout: e.timeout || 5e3, timeoutMsg: "\u8BF7\u6C42\u5728".concat((e.timeout || 5e3) / 1e3, "s\u5185\u672A\u5B8C\u6210\uFF0C\u5DF2\u4E2D\u65AD") })), this.config = _objectSpread(_objectSpread({}, me), e), !0) {case this.config.timeout > 6e5:console.warn("timeout大于可配置上限[10分钟]，已重置为上限数值"), this.config.timeout = 6e5;break;case this.config.timeout < 100:console.warn("timeout小于可配置下限[100ms]，已重置为下限数值"), this.config.timeout = 100;}return new _e(this.config);} }, { key: "auth", value: function auth() {var _ref10 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},e = _ref10.persistence;if (this.authObj) return this.authObj;var t = e || U.adapter.primaryStorage || me.persistence;var s;return t !== this.config.persistence && (this.config.persistence = t), function (e) {var t = e.env;x[t] = new R(e), q[t] = new R(_objectSpread(_objectSpread({}, e), {}, { persistence: "local" }));}(this.config), s = this.config, ee[s.env] = new Z(s), this.authObj = new ue(this.config), this.authObj;} }, { key: "on", value: function on(e, t) {return $.apply(this, [e, t]);} }, { key: "off", value: function off(e, t) {return B.apply(this, [e, t]);} }, { key: "callFunction", value: function callFunction(e, t) {return ge.apply(this, [e, t]);} }, { key: "deleteFile", value: function deleteFile(e, t) {return de.apply(this, [e, t]);} }, { key: "getTempFileURL", value: function getTempFileURL(e, t) {return fe.apply(this, [e, t]);} }, { key: "downloadFile", value: function downloadFile(e, t) {return pe.apply(this, [e, t]);} }, { key: "uploadFile", value: function uploadFile(e, t) {return he.apply(this, [e, t]);} }, { key: "getUploadMetadata", value: function getUploadMetadata(e, t) {return le.apply(this, [e, t]);} }, { key: "registerExtension", value: function registerExtension(e) {ye[e.name] = e;} }, { key: "invokeExtension", value: function () {var _invokeExtension = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee30(e, t) {var s;return _regenerator.default.wrap(function _callee30$(_context30) {while (1) {switch (_context30.prev = _context30.next) {case 0:s = ye[e];if (s) {_context30.next = 3;break;}throw Error("\u6269\u5C55".concat(e, " \u5FC5\u987B\u5148\u6CE8\u518C"));case 3:_context30.next = 5;return s.invoke(t, this);case 5:return _context30.abrupt("return", _context30.sent);case 6:case "end":return _context30.stop();}}}, _callee30, this);}));function invokeExtension(_x28, _x29) {return _invokeExtension.apply(this, arguments);}return invokeExtension;}() }, { key: "useAdapters", value: function useAdapters(e) {var _ref11 = O(e) || {},t = _ref11.adapter,s = _ref11.runtime;t && (U.adapter = t), s && (U.runtime = s);} }]);return _e;}();var ve = new _e();function we(e, t, s) {void 0 === s && (s = {});var n = /\?/.test(t),r = "";for (var o in s) {"" === r ? !n && (t += "?") : r += "&", r += o + "=" + encodeURIComponent(s[o]);}return /^http(s)?:\/\//.test(t += r) ? t : "" + e + t;}var Se = /*#__PURE__*/function () {function Se() {_classCallCheck(this, Se);}_createClass(Se, [{ key: "post", value: function post(e) {var t = e.url,s = e.data,n = e.headers;return new Promise(function (e, r) {y.request({ url: we("https:", t), data: s, method: "POST", header: n, success: function success(t) {e(t);}, fail: function fail(e) {r(e);} });});} }, { key: "upload", value: function upload(e) {return new Promise(function (t, s) {var n = e.url,r = e.file,o = e.data,i = e.headers,a = e.fileType,c = y.uploadFile({ url: we("https:", n), name: "file", formData: Object.assign({}, o), filePath: r, fileType: a, header: i, success: function success(e) {var s = { statusCode: e.statusCode, data: e.data || {} };200 === e.statusCode && o.success_action_status && (s.statusCode = parseInt(o.success_action_status, 10)), t(s);}, fail: function fail(e) { false && false, s(new Error(e.errMsg || "uploadFile:fail"));} });"function" == typeof e.onUploadProgress && c && "function" == typeof c.onProgressUpdate && c.onProgressUpdate(function (t) {e.onUploadProgress({ loaded: t.totalBytesSent, total: t.totalBytesExpectedToSend });});});} }]);return Se;}();var ke = { setItem: function setItem(e, t) {y.setStorageSync(e, t);}, getItem: function getItem(e) {return y.getStorageSync(e);}, removeItem: function removeItem(e) {y.removeStorageSync(e);}, clear: function clear() {y.clearStorageSync();} };var Te = { genAdapter: function genAdapter() {return { root: {}, reqClass: Se, localStorage: ke, primaryStorage: "local" };}, isMatch: function isMatch() {return !0;}, runtime: "uni_app" };ve.useAdapters(Te);var Ae = ve,Ie = Ae.init;var Pe, Ee;function Oe(_ref12) {var e = _ref12.name,t = _ref12.data,s = _ref12.spaceId,n = _ref12.provider;Pe || (Pe = function () {var _uni$getSystemInfoSyn = uni.getSystemInfoSync(),e = _uni$getSystemInfoSyn.deviceId;return { PLATFORM: "mp-weixin", OS: d, APPID: h.appid, LOCALE: u(), DEVICEID: e, CLIENT_SDK_VERSION: "1.0.0" };}(), Ee = { ak: h.appid, p: "android" === d ? "a" : "i", ut: g(), uuid: p() });var r = JSON.parse(JSON.stringify(t || {})),o = e,i = s,a = { tencent: "t", aliyun: "a" }[n];{var _e15 = Object.assign({}, Ee, { fn: o, sid: i, pvd: a });Object.assign(r, { clientInfo: Pe, uniCloudClientInfo: encodeURIComponent(JSON.stringify(_e15)) });var _uni$getSystemInfoSyn2 = uni.getSystemInfoSync(),_t8 = _uni$getSystemInfoSyn2.deviceId;r.uniCloudDeviceId = _t8;}if (!r.uniIdToken) {var _e16 = y.getStorageSync("uni_id_token") || y.getStorageSync("uniIdToken");_e16 && (r.uniIdToken = _e16);}return r;}function Ue(_ref13) {var _this11 = this;var e = _ref13.name,t = _ref13.data;var s = this.localAddress,n = this.localPort,r = { aliyun: "aliyun", tencent: "tcb" }[this.config.provider],o = this.config.spaceId,a = "http://".concat(s, ":").concat(n, "/system/check-function"),c = "http://".concat(s, ":").concat(n, "/cloudfunctions/").concat(e);return new Promise(function (t, s) {y.request({ method: "POST", url: a, data: { name: e, platform: "mp-weixin", provider: r, spaceId: o }, timeout: 3e3, success: function success(e) {t(e);}, fail: function fail() {t({ data: { code: "NETWORK_ERROR", message: "连接本地调试服务失败，请检查客户端是否和主机在同一局域网下，自动切换为已部署的云函数。" } });} });}).then(function () {var _ref14 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},e = _ref14.data;var _ref15 = e || {},t = _ref15.code,s = _ref15.message;return { code: 0 === t ? 0 : t || "SYS_ERR", message: s || "SYS_ERR" };}).then(function (_ref16) {var s = _ref16.code,n = _ref16.message;if (0 !== s) {switch (s) {case "MODULE_ENCRYPTED":console.error("\u6B64\u4E91\u51FD\u6570\uFF08".concat(e, "\uFF09\u4F9D\u8D56\u52A0\u5BC6\u516C\u5171\u6A21\u5757\u4E0D\u53EF\u672C\u5730\u8C03\u8BD5\uFF0C\u81EA\u52A8\u5207\u6362\u4E3A\u4E91\u7AEF\u5DF2\u90E8\u7F72\u7684\u4E91\u51FD\u6570"));break;case "FUNCTION_ENCRYPTED":console.error("\u6B64\u4E91\u51FD\u6570\uFF08".concat(e, "\uFF09\u5DF2\u52A0\u5BC6\u4E0D\u53EF\u672C\u5730\u8C03\u8BD5\uFF0C\u81EA\u52A8\u5207\u6362\u4E3A\u4E91\u7AEF\u5DF2\u90E8\u7F72\u7684\u4E91\u51FD\u6570"));break;case "ACTION_ENCRYPTED":console.error(n || "需要访问加密的uni-clientDB-action，自动切换为云端环境");break;case "NETWORK_ERROR":{var _e17 = "连接本地调试服务失败，请检查客户端是否和主机在同一局域网下";throw console.error(_e17), new Error(_e17);}case "SWITCH_TO_CLOUD":break;default:{var _e18 = "\u68C0\u6D4B\u672C\u5730\u8C03\u8BD5\u670D\u52A1\u51FA\u73B0\u9519\u8BEF\uFF1A".concat(n, "\uFF0C\u8BF7\u68C0\u67E5\u7F51\u7EDC\u73AF\u5883\u6216\u91CD\u542F\u5BA2\u6237\u7AEF\u518D\u8BD5");throw console.error(_e18), new Error(_e18);}}return _this11.originCallFunction({ name: e, data: t });}return new Promise(function (s, n) {var a = Oe({ name: e, data: t, provider: _this11.config.provider, spaceId: o });y.request({ method: "POST", url: c, data: { provider: r, platform: "mp-weixin", param: a }, success: function success() {var _ref17 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},e = _ref17.statusCode,t = _ref17.data;return !e || e >= 400 ? n(new i({ code: t.code || "SYS_ERR", message: t.message || "request:fail" })) : s({ result: t });}, fail: function fail(e) {n(new i({ code: e.code || e.errCode || "SYS_ERR", message: e.message || e.errMsg || "request:fail" }));} });});});}function be(e) {var t = e.callFunction;e.callFunction = function (e) {var _this12 = this;var s;return s = this.isReady ? Promise.resolve() : this.initUniCloud, s.then(function () {e.data = Oe({ name: e.name, data: e.data, provider: _this12.config.provider, spaceId: _this12.config.spaceId });var s = { aliyun: "aliyun", tencent: "tcb" }[_this12.config.provider];return new Promise(function (n, r) {t.call(_this12, e).then(function (t) {if (_this12.config.useDebugFunction && t && t.requestId) {var _n7 = JSON.stringify({ spaceId: _this12.config.spaceId, functionName: e.name, requestId: t.requestId });console.log("[".concat(s, "-request]").concat(_n7, "[/").concat(s, "-request]"));}n(t);}).catch(function (t) {if (_this12.config.useDebugFunction && t && t.requestId) {var _n8 = JSON.stringify({ spaceId: _this12.config.spaceId, functionName: e.name, requestId: t.requestId });console.log("[".concat(s, "-request]").concat(_n8, "[/").concat(s, "-request]"));}t && t.message && (t.message = "[".concat(e.name, "]: ").concat(t.message)), r(t);});});});};var s = e.callFunction;e.originCallFunction = e.callFunction, e.callFunction = function (t) {return o(function (t) {var _this13 = this;var n;return n = e.isReady ? Promise.resolve() : e.initUniCloud, n.then(function () {return  true && e.debugInfo && !e.debugInfo.forceRemote && [] ? Ue.call(_this13, t) : s.call(_this13, t);});}).call(this, t);};}Ae.init = function (e) {e.env = e.spaceId;var t = Ie.call(this, e);t.config.provider = "tencent", t.config.spaceId = e.spaceId;var s = t.auth;t.auth = function (e) {var t = s.call(this, e);return ["linkAndRetrieveDataWithTicket", "signInAnonymously", "signOut", "getAccessToken", "getLoginState", "signInWithTicket", "getUserInfo"].forEach(function (e) {t[e] = o(t[e]).bind(t);}), t;}, t.customAuth = t.auth;return ["deleteFile", "getTempFileURL", "downloadFile"].forEach(function (e) {t[e] = o(t[e]).bind(t);}), t;};var Ce = Symbol("CLIENT_DB_INTERNAL");function De(e, t) {return e.then = "DoNotReturnProxyWithAFunctionNamedThen", e._internalType = Ce, new Proxy(e, { get: function get(e, s, n) {return function (e, t) {return Object.prototype.hasOwnProperty.call(e, t);}(e, s) || e[s] || "string" != typeof s ? e[s] : t.get(e, s, n);} });}var Re = /*#__PURE__*/function (_Error2) {_inherits(Re, _Error2);var _super8 = _createSuper(Re);function Re(e, t) {var _this14;_classCallCheck(this, Re);_this14 = _super8.call(this, e), _this14.code = t;return _this14;}return Re;}( /*#__PURE__*/_wrapNativeSuper(Error));function xe(e) {switch (t = e, Object.prototype.toString.call(t).slice(8, -1).toLowerCase()) {case "array":return e.map(function (e) {return xe(e);});case "object":return e._internalType === Ce || Object.keys(e).forEach(function (t) {e[t] = xe(e[t]);}), e;case "regexp":return { $regexp: { source: e.source, flags: e.flags } };case "date":return { $date: e.toISOString() };default:return e;}var t;}function qe() {var e = y.getStorageSync("uni_id_token") || "",t = e.split(".");if (!e || 3 !== t.length) return { uid: null, role: [], permission: [] };var s;try {s = JSON.parse((n = t[1], decodeURIComponent(atob(n).split("").map(function (e) {return "%" + ("00" + e.charCodeAt(0).toString(16)).slice(-2);}).join(""))));} catch (e) {throw new Error("获取当前用户信息出错，详细错误信息为：" + e.message);}var n;return s;}var Fe = t(s(function (e, t) {Object.defineProperty(t, "__esModule", { value: !0 });var s = "chooseAndUploadFile:fail";function n(e, t) {return e.tempFiles.forEach(function (e, s) {e.name || (e.name = e.path.substring(e.path.lastIndexOf("/") + 1)), t && (e.fileType = t), e.cloudPath = Date.now() + "_" + s + e.name.substring(e.name.lastIndexOf("."));}), e.tempFilePaths || (e.tempFilePaths = e.tempFiles.map(function (e) {return e.path;})), e;}function r(e, t, _ref18) {var s = _ref18.onChooseFile,n = _ref18.onUploadProgress;return t.then(function (e) {if (s) {var _t9 = s(e);if (void 0 !== _t9) return Promise.resolve(_t9).then(function (t) {return void 0 === t ? e : t;});}return e;}).then(function (t) {return !1 === t ? { errMsg: "chooseAndUploadFile:ok", tempFilePaths: [], tempFiles: [] } : function (e, t) {var s = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5;var n = arguments.length > 3 ? arguments[3] : undefined;(t = Object.assign({}, t)).errMsg = "chooseAndUploadFile:ok";var r = t.tempFiles,o = r.length;var i = 0;return new Promise(function (a) {for (; i < s;) {c();}function c() {var s = i++;if (s >= o) return void (!r.find(function (e) {return !e.url && !e.errMsg;}) && a(t));var u = r[s];e.uploadFile({ filePath: u.path, cloudPath: u.cloudPath, fileType: u.fileType, onUploadProgress: function onUploadProgress(e) {e.index = s, e.tempFile = u, e.tempFilePath = u.path, n && n(e);} }).then(function (e) {u.url = e.fileID, s < o && c();}).catch(function (e) {u.errMsg = e.errMsg || e.message, s < o && c();});}});}(e, t, 5, n);});}t.initChooseAndUploadFile = function (e) {return function () {var t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { type: "all" };return "image" === t.type ? r(e, function (e) {var t = e.count,r = e.sizeType,o = e.sourceType,i = e.extension;return new Promise(function (e, a) {uni.chooseImage({ count: t, sizeType: r, sourceType: o, extension: i, success: function success(t) {e(n(t, "image"));}, fail: function fail(e) {a({ errMsg: e.errMsg.replace("chooseImage:fail", s) });} });});}(t), t) : "video" === t.type ? r(e, function (e) {var t = e.camera,r = e.compressed,o = e.maxDuration,i = e.sourceType,a = e.extension;return new Promise(function (e, c) {uni.chooseVideo({ camera: t, compressed: r, maxDuration: o, sourceType: i, extension: a, success: function success(t) {var s = t.tempFilePath,r = t.duration,o = t.size,i = t.height,a = t.width;e(n({ errMsg: "chooseVideo:ok", tempFilePaths: [s], tempFiles: [{ name: t.tempFile && t.tempFile.name || "", path: s, size: o, type: t.tempFile && t.tempFile.type || "", width: a, height: i, duration: r, fileType: "video", cloudPath: "" }] }, "video"));}, fail: function fail(e) {c({ errMsg: e.errMsg.replace("chooseVideo:fail", s) });} });});}(t), t) : r(e, function (e) {var t = e.count,r = e.extension;return new Promise(function (e, o) {var i = uni.chooseFile;if ("undefined" != typeof wx && "function" == typeof wx.chooseMessageFile && (i = wx.chooseMessageFile), "function" != typeof i) return o({ errMsg: s + " 请指定 type 类型，该平台仅支持选择 image 或 video。" });i({ type: "all", count: t, extension: r, success: function success(t) {e(n(t));}, fail: function fail(e) {o({ errMsg: e.errMsg.replace("chooseFile:fail", s) });} });});}(t), t);};};}));function Le(_x30, _x31) {return _Le.apply(this, arguments);}function _Le() {_Le = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee32(e, t) {var s, _e24, n;return _regenerator.default.wrap(function _callee32$(_context32) {while (1) {switch (_context32.prev = _context32.next) {case 0:s = "http://".concat(e, ":").concat(t, "/system/ping");_context32.prev = 1;_context32.next = 4;return n = { url: s, timeout: 500 }, new Promise(function (e, t) {y.request(_objectSpread(_objectSpread({}, n), {}, { success: function success(t) {e(t);}, fail: function fail(e) {t(e);} }));});case 4:_e24 = _context32.sent;return _context32.abrupt("return", !(!_e24.data || 0 !== _e24.data.code));case 8:_context32.prev = 8;_context32.t0 = _context32["catch"](1);return _context32.abrupt("return", !1);case 11:case "end":return _context32.stop();}}}, _callee32, null, [[1, 8]]);}));return _Le.apply(this, arguments);}var Ne = new ( /*#__PURE__*/function () {function _class2() {_classCallCheck(this, _class2);}_createClass(_class2, [{ key: "init", value: function init(e) {var t = {};var s = !1 !== e.debugFunction && "development" === "development" && ( false || "app-plus" === "mp-weixin");switch (e.provider) {case "tencent":t = Ae.init(Object.assign(e, { useDebugFunction: s }));break;case "aliyun":t = v.init(Object.assign(e, { useDebugFunction: s }));break;default:throw new Error("未提供正确的provider参数");}var n = undefined; true && n && !n.code && (t.debugInfo = n), t.isReady = !1;var r = t.auth();return t.initUniCloud = r.getLoginState().then(function (e) {return e ? Promise.resolve() : r.signInAnonymously();}).then(function () {if ( true && t.debugInfo) {var _t$debugInfo = t.debugInfo,_e19 = _t$debugInfo.address,_s4 = _t$debugInfo.servePort;return function () {var _ref19 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee31(e, t) {var s, _n9, _r3;return _regenerator.default.wrap(function _callee31$(_context31) {while (1) {switch (_context31.prev = _context31.next) {case 0:_n9 = 0;case 1:if (!(_n9 < e.length)) {_context31.next = 11;break;}_r3 = e[_n9];_context31.next = 5;return Le(_r3, t);case 5:if (!_context31.sent) {_context31.next = 8;break;}s = _r3;return _context31.abrupt("break", 11);case 8:_n9++;_context31.next = 1;break;case 11:return _context31.abrupt("return", { address: s, port: t });case 12:case "end":return _context31.stop();}}}, _callee31);}));return function (_x32, _x33) {return _ref19.apply(this, arguments);};}()(_e19, _s4);}return Promise.resolve();}).then(function () {var _ref20 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},e = _ref20.address,s = _ref20.port;if (e) t.localAddress = e, t.localPort = s;else if (t.debugInfo) {var _e20 =  false ? undefined : "warn",_s5 = console[_e20];"remote" === t.debugInfo.initialLaunchType ? (t.debugInfo.forceRemote = !0, _s5("当前客户端和HBuilderX不在同一局域网下（或其他网络原因无法连接HBuilderX），uniCloud本地调试服务不对当前客户端生效。\n- 如果不使用uniCloud本地调试服务，请直接忽略此信息。\n- 如需使用uniCloud本地调试服务，请将客户端与主机连接到同一局域网下并重新运行到客户端。\n- 如果在HBuilderX开启的状态下切换过网络环境，请重启HBuilderX后再试")) : _s5("无法连接uniCloud本地调试服务，请检查当前客户端是否与主机在同一局域网下。\n- 如需使用uniCloud本地调试服务，请将客户端与主机连接到同一局域网下并重新运行到客户端。\n- 如果在HBuilderX开启的状态下切换过网络环境，请重启HBuilderX后再试");}}).then(function () {return function () {if (true) return;if (uni.getStorageSync("__LAST_DCLOUD_APPID") === h.appid) return;uni.setStorageSync("__LAST_DCLOUD_APPID", h.appid), uni.removeStorageSync("uni_id_token") && (console.warn("检测到当前项目与上次运行到此端口的项目不一致，自动清理uni-id保存的token信息（仅开发调试时生效）"), uni.removeStorageSync("uni_id_token"), uni.removeStorageSync("uni_id_token_expired"));}(), new Promise(function (e) { false ? (undefined) : setTimeout(function () {d = uni.getSystemInfoSync().platform, l = uni.getStorageSync("__DC_CLOUD_UUID") || f(32), e();}, 0);});}).then(function () {t.isReady = !0;}), be(t), function (e) {var t = e.uploadFile;e.uploadFile = function (e) {var _this15 = this;var s;return s = this.isReady ? Promise.resolve() : this.initUniCloud, s.then(function () {return t.call(_this15, e);});};var s = e.uploadFile;e.uploadFile = function (e) {return o(s).call(this, e);};}(t), function (e) {e.database = function () {if (this._database) return this._database;var t = {},s = {};var n = /*#__PURE__*/function () {function n(e, t, s) {_classCallCheck(this, n);this.content = e, this.prevStage = t, this.actionName = s;}_createClass(n, [{ key: "toJSON", value: function toJSON() {var e = this;var t = [e.content];for (; e.prevStage;) {e = e.prevStage, t.push(e.content);}return { $db: t.reverse().map(function (e) {return { $method: e.$method, $param: e.$param };}) };} }, { key: "get", value: function get() {return this._send("get", Array.from(arguments));} }, { key: "add", value: function add() {return this._send("add", Array.from(arguments));} }, { key: "remove", value: function remove() {return this._send("remove", Array.from(arguments));} }, { key: "update", value: function update() {return this._send("update", Array.from(arguments));} }, { key: "end", value: function end() {return this._send("end", Array.from(arguments));} }, { key: "set", value: function set() {throw new Error("clientDB禁止使用set方法");} }, { key: "_send", value: function _send(n, r) {var o = this.toJSON();return o.$db.push({ $method: n, $param: r }), e.callFunction({ name: "DCloud-clientDB", data: { action: this.actionName, command: o } }).then(function (e) {var _e$result = e.result,n = _e$result.code,r = _e$result.message,o = _e$result.token,i = _e$result.tokenExpired;return n ? Promise.reject(new Re(r, n)) : (o && i && t.refreshToken && t.refreshToken.forEach(function (e) {e({ token: o, tokenExpired: i });}), o && i && s.refreshToken && s.refreshToken.forEach(function (e) {e({ token: o, tokenExpired: i });}), Promise.resolve(e));}).catch(function (e) {var t = new Re(e.message, e.code || "SYSTEM_ERROR");return s.error && s.error.forEach(function (e) {e(t);}), /fc_function_not_found|FUNCTION_NOT_FOUND/g.test(e.message) && console.warn("clientDB未初始化，请在web控制台保存一次schema以开启clientDB"), Promise.reject(e);});} }, { key: "useAggregate", get: function get() {var e = this,t = !1;for (; e.prevStage;) {e = e.prevStage;var _s6 = e.content.$method;if ("aggregate" === _s6 || "pipeline" === _s6) {t = !0;break;}}return t;} }, { key: "count", get: function get() {if (!this.useAggregate) return function () {return this._send("count", Array.from(arguments));};var e = this;return function () {return i({ $method: "count", $param: xe(Array.from(arguments)) }, e, e.actionName);};} }]);return n;}();var r = ["db.Geo", "db.command", "command.aggregate"];function o(e, t) {return r.indexOf("".concat(e, ".").concat(t)) > -1;}function i(e, t, s) {return De(new n(e, t, s), { get: function get(e, t) {var n = "db";return e && e.content && (n = e.content.$method), o(n, t) ? i({ $method: t }, e, s) : function () {return i({ $method: t, $param: xe(Array.from(arguments)) }, e, s);};} });}function a(_ref21) {var e = _ref21.path,t = _ref21.method;return /*#__PURE__*/function () {function _class3() {_classCallCheck(this, _class3);this.param = Array.from(arguments);}_createClass(_class3, [{ key: "toJSON", value: function toJSON() {return { $newDb: [].concat(_toConsumableArray(e.map(function (e) {return { $method: e };})), [{ $method: t, $param: this.param }]) };} }]);return _class3;}();}var c = { auth: { on: function on(e, s) {t[e] = t[e] || [], t[e].indexOf(s) > -1 || t[e].push(s);}, off: function off(e, s) {t[e] = t[e] || [];var n = t[e].indexOf(s);-1 !== n && t[e].splice(n, 1);} }, on: function on(e, t) {s[e] = s[e] || [], s[e].indexOf(t) > -1 || s[e].push(t);}, off: function off(e, t) {s[e] = s[e] || [];var n = s[e].indexOf(t);-1 !== n && s[e].splice(n, 1);}, env: De({}, { get: function get(e, t) {return { $env: t };} }), action: function action(e) {return De({}, { get: function get(t, s) {return o("db", s) ? i({ $method: s }, null, e) : function () {return i({ $method: s, $param: xe(Array.from(arguments)) }, null, e);};} });}, Geo: De({}, { get: function get(e, t) {return a({ path: ["Geo"], method: t });} }), getCloudEnv: function getCloudEnv(e) {if ("string" != typeof e || !e.trim()) throw new Error("getCloudEnv参数错误");return { $env: e.replace("$cloudEnv_", "") };}, get serverDate() {return a({ path: [], method: "serverDate" });}, get RegExp() {return a({ path: [], method: "RegExp" });} },u = De(c, { get: function get(e, t) {return o("db", t) ? i({ $method: t }) : function () {return i({ $method: t, $param: xe(Array.from(arguments)) });};} });return this._database = u, u;};}(t), function (e) {e.getCurrentUserInfo = qe, e.chooseAndUploadFile = o(Fe.initChooseAndUploadFile(e));}(t), t.init = this.init, t;} }]);return _class2;}())();(function () {{var e = {};if (1 === [].length) e = [][0], Ne = Ne.init(e);else {var _e21 = ["auth", "callFunction", "uploadFile", "deleteFile", "getTempFileURL", "downloadFile", "database", "getCurrentUSerInfo"],t = [].length > 0 ? "应用有多个服务空间，请通过uniCloud.init方法指定要使用的服务空间" : "应用未关联服务空间，请在cloudfunctions目录右键关联服务空间";_e21.forEach(function (e) {Ne[e] = function () {return console.error(t), Promise.reject(new i({ code: "SYS_ERR", message: t }));};});}Object.assign(Ne, { get mixinDatacom() {return e = Ne, { props: { localdata: { type: Array, default: function _default() {return [];} }, options: { type: [Object, Array], default: function _default() {return {};} }, collection: { type: String, default: "" }, action: { type: String, default: "" }, field: { type: String, default: "" }, orderby: { type: String, default: "" }, where: { type: [String, Object], default: "" }, pageData: { type: String, default: "add" }, pageCurrent: { type: Number, default: 1 }, pageSize: { type: Number, default: 20 }, getcount: { type: [Boolean, String], default: !1 }, gettree: { type: [Boolean, String], default: !1 }, gettreepath: { type: [Boolean, String], default: !1 }, startwith: { type: String, default: "" }, limitlevel: { type: Number, default: 10 }, groupby: { type: String, default: "" }, groupField: { type: String, default: "" }, distinct: { type: [Boolean, String], default: !1 }, manual: { type: Boolean, default: !1 } }, data: function data() {return { mixinDatacomLoading: !1, mixinDatacomHasMore: !1, mixinDatacomResData: [], mixinDatacomErrorMessage: "", mixinDatacomPage: {} };}, created: function created() {var _this16 = this;this.mixinDatacomPage = { current: this.pageCurrent, size: this.pageSize, count: 0 }, this.$watch(function () {var e = [];return ["pageCurrent", "pageSize", "localdata", "collection", "action", "field", "orderby", "where", "getont", "getcount", "gettree", "groupby", "groupField", "distinct"].forEach(function (t) {e.push(_this16[t]);}), e;}, function (e, t) {var s = !1;var n = [];for (var _r4 = 2; _r4 < e.length; _r4++) {e[_r4] !== t[_r4] && (n.push(e[_r4]), s = !0);}e[0] !== t[0] && (_this16.mixinDatacomPage.current = _this16.pageCurrent), _this16.mixinDatacomPage.size = _this16.pageSize, _this16.onMixinDatacomPropsChange(s, n);});}, methods: { onMixinDatacomPropsChange: function onMixinDatacomPropsChange(e, t) {}, mixinDatacomEasyGet: function mixinDatacomEasyGet() {var _this17 = this;var _ref22 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},_ref22$getone = _ref22.getone,e = _ref22$getone === void 0 ? !1 : _ref22$getone,t = _ref22.success,s = _ref22.fail;this.mixinDatacomLoading || (this.mixinDatacomLoading = !0, this.mixinDatacomErrorMessage = "", this.mixinDatacomGet().then(function (s) {_this17.mixinDatacomLoading = !1;var _s$result = s.result,n = _s$result.data,r = _s$result.count;_this17.getcount && (_this17.mixinDatacomPage.count = r), _this17.mixinDatacomHasMore = n.length < _this17.pageSize;var o = e ? n.length ? n[0] : void 0 : n;_this17.mixinDatacomResData = o, t && t(o);}).catch(function (e) {_this17.mixinDatacomLoading = !1, _this17.mixinDatacomErrorMessage = e, s && s(e);}));}, mixinDatacomGet: function mixinDatacomGet() {var t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};var s = e.database();var n = t.action || this.action;n && (s = s.action(n));var r = t.collection || this.collection;s = s.collection(r);var o = t.where || this.where;o && Object.keys(o).length && (s = s.where(o));var i = t.field || this.field;i && (s = s.field(i));var a = t.groupby || this.groupby;a && (s = s.groupBy(a));var c = t.groupField || this.groupField;c && (s = s.groupField(c)), !0 === (void 0 !== t.distinct ? t.distinct : this.distinct) && (s = s.distinct());var u = t.orderby || this.orderby;u && (s = s.orderBy(u));var h = void 0 !== t.pageCurrent ? t.pageCurrent : this.mixinDatacomPage.current,l = void 0 !== t.pageSize ? t.pageSize : this.mixinDatacomPage.size,d = void 0 !== t.getcount ? t.getcount : this.getcount,f = void 0 !== t.gettree ? t.gettree : this.gettree,p = void 0 !== t.gettreepath ? t.gettreepath : this.gettreepath,g = { getCount: d },m = { limitLevel: void 0 !== t.limitlevel ? t.limitlevel : this.limitlevel, startWith: void 0 !== t.startwith ? t.startwith : this.startwith };return f && (g.getTree = m), p && (g.getTreePath = m), s = s.skip(l * (h - 1)).limit(l).get(g), s;} } };var e;} });}})();var Me = Ne;var _default2 = Me;exports.default = _default2;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ 3), __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"], __webpack_require__(/*! ./../../../../../node-libs-browser/mock/process.js */ 315)))
+
+/***/ }),
+
+/***/ 402:
+/*!**************************************************************!*\
+  !*** ./node_modules/@dcloudio/uni-i18n/dist/uni-i18n.esm.js ***!
+  \**************************************************************/
+/*! exports provided: I18n, initVueI18n */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(uni) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "I18n", function() { return I18n; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initVueI18n", function() { return initVueI18n; });
+const isObject = (val) => val !== null && typeof val === 'object';
+class BaseFormatter {
+    constructor() {
+        this._caches = Object.create(null);
+    }
+    interpolate(message, values) {
+        if (!values) {
+            return [message];
+        }
+        let tokens = this._caches[message];
+        if (!tokens) {
+            tokens = parse(message);
+            this._caches[message] = tokens;
+        }
+        return compile(tokens, values);
+    }
+}
+const RE_TOKEN_LIST_VALUE = /^(?:\d)+/;
+const RE_TOKEN_NAMED_VALUE = /^(?:\w)+/;
+function parse(format) {
+    const tokens = [];
+    let position = 0;
+    let text = '';
+    while (position < format.length) {
+        let char = format[position++];
+        if (char === '{') {
+            if (text) {
+                tokens.push({ type: 'text', value: text });
+            }
+            text = '';
+            let sub = '';
+            char = format[position++];
+            while (char !== undefined && char !== '}') {
+                sub += char;
+                char = format[position++];
+            }
+            const isClosed = char === '}';
+            const type = RE_TOKEN_LIST_VALUE.test(sub)
+                ? 'list'
+                : isClosed && RE_TOKEN_NAMED_VALUE.test(sub)
+                    ? 'named'
+                    : 'unknown';
+            tokens.push({ value: sub, type });
+        }
+        else if (char === '%') {
+            // when found rails i18n syntax, skip text capture
+            if (format[position] !== '{') {
+                text += char;
+            }
+        }
+        else {
+            text += char;
+        }
+    }
+    text && tokens.push({ type: 'text', value: text });
+    return tokens;
+}
+function compile(tokens, values) {
+    const compiled = [];
+    let index = 0;
+    const mode = Array.isArray(values)
+        ? 'list'
+        : isObject(values)
+            ? 'named'
+            : 'unknown';
+    if (mode === 'unknown') {
+        return compiled;
+    }
+    while (index < tokens.length) {
+        const token = tokens[index];
+        switch (token.type) {
+            case 'text':
+                compiled.push(token.value);
+                break;
+            case 'list':
+                compiled.push(values[parseInt(token.value, 10)]);
+                break;
+            case 'named':
+                if (mode === 'named') {
+                    compiled.push(values[token.value]);
+                }
+                else {
+                    if (true) {
+                        console.warn(`Type of token '${token.type}' and format of value '${mode}' don't match!`);
+                    }
+                }
+                break;
+            case 'unknown':
+                if (true) {
+                    console.warn(`Detect 'unknown' type of token!`);
+                }
+                break;
+        }
+        index++;
+    }
+    return compiled;
+}
+
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+const hasOwn = (val, key) => hasOwnProperty.call(val, key);
+const defaultFormatter = new BaseFormatter();
+function include(str, parts) {
+    return !!parts.find((part) => str.indexOf(part) !== -1);
+}
+function startsWith(str, parts) {
+    return parts.find((part) => str.indexOf(part) === 0);
+}
+function normalizeLocale(locale, messages) {
+    if (!locale) {
+        return;
+    }
+    locale = locale.trim().replace(/_/g, '-');
+    if (messages[locale]) {
+        return locale;
+    }
+    locale = locale.toLowerCase();
+    if (locale.indexOf('zh') === 0) {
+        if (locale.indexOf('-hans') !== -1) {
+            return 'zh-Hans';
+        }
+        if (locale.indexOf('-hant') !== -1) {
+            return 'zh-Hant';
+        }
+        if (include(locale, ['-tw', '-hk', '-mo', '-cht'])) {
+            return 'zh-Hant';
+        }
+        return 'zh-Hans';
+    }
+    const lang = startsWith(locale, ['en', 'fr', 'es']);
+    if (lang) {
+        return lang;
+    }
+}
+class I18n {
+    constructor({ locale, fallbackLocale, messages, watcher, formater, }) {
+        this.locale = 'en';
+        this.fallbackLocale = 'en';
+        this.message = {};
+        this.messages = {};
+        this.watchers = [];
+        if (fallbackLocale) {
+            this.fallbackLocale = fallbackLocale;
+        }
+        this.formater = formater || defaultFormatter;
+        this.messages = messages;
+        this.setLocale(locale);
+        if (watcher) {
+            this.watchLocale(watcher);
+        }
+    }
+    setLocale(locale) {
+        const oldLocale = this.locale;
+        this.locale = normalizeLocale(locale, this.messages) || this.fallbackLocale;
+        this.message = this.messages[this.locale];
+        this.watchers.forEach((watcher) => {
+            watcher(this.locale, oldLocale);
+        });
+    }
+    getLocale() {
+        return this.locale;
+    }
+    watchLocale(fn) {
+        const index = this.watchers.push(fn) - 1;
+        return () => {
+            this.watchers.splice(index, 1);
+        };
+    }
+    t(key, locale, values) {
+        let message = this.message;
+        if (typeof locale === 'string') {
+            locale = normalizeLocale(locale, this.messages);
+            locale && (message = this.messages[locale]);
+        }
+        else {
+            values = locale;
+        }
+        if (!hasOwn(message, key)) {
+            console.warn(`Cannot translate the value of keypath ${key}. Use the value of keypath as default.`);
+            return key;
+        }
+        return this.formater.interpolate(message[key], values).join('');
+    }
+}
+
+function initLocaleWatcher(appVm, i18n) {
+    appVm.$i18n &&
+        appVm.$i18n.vm.$watch('locale', (newLocale) => {
+            i18n.setLocale(newLocale);
+        }, {
+            immediate: true,
+        });
+}
+function getDefaultLocale() {
+    if (typeof navigator !== 'undefined') {
+        return navigator.userLanguage || navigator.language;
+    }
+    if (typeof plus !== 'undefined') {
+        // TODO 待调整为最新的获取语言代码
+        return plus.os.language;
+    }
+    return uni.getSystemInfoSync().language;
+}
+function initVueI18n(messages, fallbackLocale = 'en', locale) {
+    const i18n = new I18n({
+        locale: locale || fallbackLocale,
+        fallbackLocale,
+        messages,
+    });
+    let t = (key, values) => {
+        if (typeof getApp !== 'function') {
+            // app-plus view
+            /* eslint-disable no-func-assign */
+            t = function (key, values) {
+                return i18n.t(key, values);
+            };
+        }
+        else {
+            const appVm = getApp().$vm;
+            if (!appVm.$t || !appVm.$i18n) {
+                if (!locale) {
+                    i18n.setLocale(getDefaultLocale());
+                }
+                /* eslint-disable no-func-assign */
+                t = function (key, values) {
+                    return i18n.t(key, values);
+                };
+            }
+            else {
+                initLocaleWatcher(appVm, i18n);
+                /* eslint-disable no-func-assign */
+                t = function (key, values) {
+                    const $i18n = appVm.$i18n;
+                    const silentTranslationWarn = $i18n.silentTranslationWarn;
+                    $i18n.silentTranslationWarn = true;
+                    const msg = appVm.$t(key, values);
+                    $i18n.silentTranslationWarn = silentTranslationWarn;
+                    if (msg !== key) {
+                        return msg;
+                    }
+                    return i18n.t(key, $i18n.locale, values);
+                };
+            }
+        }
+        return t(key, values);
+    };
+    return {
+        t(key, values) {
+            return t(key, values);
+        },
+        getLocale() {
+            return i18n.getLocale();
+        },
+        setLocale(newLocale) {
+            return i18n.setLocale(newLocale);
+        },
+        mixin: {
+            beforeCreate() {
+                const unwatch = i18n.watchLocale(() => {
+                    this.$forceUpdate();
+                });
+                this.$once('hook:beforeDestroy', function () {
+                    unwatch();
+                });
+            },
+            methods: {
+                $$t(key, values) {
+                    return t(key, values);
+                },
+            },
+        },
+    };
+}
+
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 403:
+/*!******************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages.json?{"type":"stat"} ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "appid": "__UNI__4A0B53D" };exports.default = _default;
+
+/***/ }),
+
 /***/ 41:
-/*!*****************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/store/index.js ***!
-  \*****************************************************************************/
+/*!******************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/store/index.js ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13390,9 +13717,9 @@ var index = {
 /***/ }),
 
 /***/ 43:
-/*!******************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/store/common.js ***!
-  \******************************************************************************/
+/*!*******************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/store/common.js ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13402,13 +13729,23 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   iconPath: "home",
   selectedIconPath: "home-fill",
   text: '首页',
+  midButton: false,
+  customIcon: false,
   pagePath: '/pages/index/index' },
 
 {
-  iconPath: "https://cdn.uviewui.com/uview/common/min_button.png",
-  selectedIconPath: "https://cdn.uviewui.com/uview/common/min_button_select.png",
-  text: '发布',
-  midButton: true,
+  iconPath: "file-text",
+  selectedIconPath: "file-text-fill",
+  text: '题库',
+  midButton: false,
+  customIcon: false,
+  pagePath: '/pages/questionLibrary/questionLibrary' },
+
+{
+  iconPath: "moments",
+  selectedIconPath: "moments",
+  text: '活动圈',
+  midButton: false,
   customIcon: false,
   pagePath: '/pages/release/release' },
 
@@ -13416,12 +13753,7722 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   iconPath: "account",
   selectedIconPath: "account-fill",
   text: '我的',
-  isDot: false,
+  midButton: false,
   customIcon: false,
   pagePath: '/pages/mine/mine' }];var _default =
 
 
 list;exports.default = _default;
+
+/***/ }),
+
+/***/ 432:
+/*!**********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/util/province.js ***!
+  \**********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var provinceData = [{ "label": "北京市", "value": "11" }, { "label": "天津市", "value": "12" }, { "label": "河北省", "value": "13" }, { "label": "山西省", "value": "14" }, { "label": "内蒙古自治区", "value": "15" }, { "label": "辽宁省", "value": "21" }, { "label": "吉林省", "value": "22" }, { "label": "黑龙江省", "value": "23" }, { "label": "上海市", "value": "31" }, { "label": "江苏省", "value": "32" }, { "label": "浙江省", "value": "33" }, { "label": "安徽省", "value": "34" }, { "label": "福建省", "value": "35" }, { "label": "江西省", "value": "36" }, { "label": "山东省", "value": "37" }, { "label": "河南省", "value": "41" }, { "label": "湖北省", "value": "42" }, { "label": "湖南省", "value": "43" }, { "label": "广东省", "value": "44" }, { "label": "广西壮族自治区", "value": "45" }, { "label": "海南省", "value": "46" }, { "label": "重庆市", "value": "50" }, { "label": "四川省", "value": "51" }, { "label": "贵州省", "value": "52" }, { "label": "云南省", "value": "53" }, { "label": "西藏自治区", "value": "54" }, { "label": "陕西省", "value": "61" }, { "label": "甘肃省", "value": "62" }, { "label": "青海省", "value": "63" }, { "label": "宁夏回族自治区", "value": "64" }, { "label": "新疆维吾尔自治区", "value": "65" }, { "label": "台湾", "value": "66" }, { "label": "香港", "value": "67" }, { "label": "澳门", "value": "68" }];var _default = provinceData;exports.default = _default;
+
+/***/ }),
+
+/***/ 433:
+/*!******************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/util/city.js ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var cityData = [[{ "label": "市辖区", "value": "1101" }], [{ "label": "市辖区", "value": "1201" }], [{ "label": "石家庄市", "value": "1301" }, { "label": "唐山市", "value": "1302" }, { "label": "秦皇岛市", "value": "1303" }, { "label": "邯郸市", "value": "1304" }, { "label": "邢台市", "value": "1305" }, { "label": "保定市", "value": "1306" }, { "label": "张家口市", "value": "1307" }, { "label": "承德市", "value": "1308" }, { "label": "沧州市", "value": "1309" }, { "label": "廊坊市", "value": "1310" }, { "label": "衡水市", "value": "1311" }], [{ "label": "太原市", "value": "1401" }, { "label": "大同市", "value": "1402" }, { "label": "阳泉市", "value": "1403" }, { "label": "长治市", "value": "1404" }, { "label": "晋城市", "value": "1405" }, { "label": "朔州市", "value": "1406" }, { "label": "晋中市", "value": "1407" }, { "label": "运城市", "value": "1408" }, { "label": "忻州市", "value": "1409" }, { "label": "临汾市", "value": "1410" }, { "label": "吕梁市", "value": "1411" }], [{ "label": "呼和浩特市", "value": "1501" }, { "label": "包头市", "value": "1502" }, { "label": "乌海市", "value": "1503" }, { "label": "赤峰市", "value": "1504" }, { "label": "通辽市", "value": "1505" }, { "label": "鄂尔多斯市", "value": "1506" }, { "label": "呼伦贝尔市", "value": "1507" }, { "label": "巴彦淖尔市", "value": "1508" }, { "label": "乌兰察布市", "value": "1509" }, { "label": "兴安盟", "value": "1522" }, { "label": "锡林郭勒盟", "value": "1525" }, { "label": "阿拉善盟", "value": "1529" }], [{ "label": "沈阳市", "value": "2101" }, { "label": "大连市", "value": "2102" }, { "label": "鞍山市", "value": "2103" }, { "label": "抚顺市", "value": "2104" }, { "label": "本溪市", "value": "2105" }, { "label": "丹东市", "value": "2106" }, { "label": "锦州市", "value": "2107" }, { "label": "营口市", "value": "2108" }, { "label": "阜新市", "value": "2109" }, { "label": "辽阳市", "value": "2110" }, { "label": "盘锦市", "value": "2111" }, { "label": "铁岭市", "value": "2112" }, { "label": "朝阳市", "value": "2113" }, { "label": "葫芦岛市", "value": "2114" }], [{ "label": "长春市", "value": "2201" }, { "label": "吉林市", "value": "2202" }, { "label": "四平市", "value": "2203" }, { "label": "辽源市", "value": "2204" }, { "label": "通化市", "value": "2205" }, { "label": "白山市", "value": "2206" }, { "label": "松原市", "value": "2207" }, { "label": "白城市", "value": "2208" }, { "label": "延边朝鲜族自治州", "value": "2224" }], [{ "label": "哈尔滨市", "value": "2301" }, { "label": "齐齐哈尔市", "value": "2302" }, { "label": "鸡西市", "value": "2303" }, { "label": "鹤岗市", "value": "2304" }, { "label": "双鸭山市", "value": "2305" }, { "label": "大庆市", "value": "2306" }, { "label": "伊春市", "value": "2307" }, { "label": "佳木斯市", "value": "2308" }, { "label": "七台河市", "value": "2309" }, { "label": "牡丹江市", "value": "2310" }, { "label": "黑河市", "value": "2311" }, { "label": "绥化市", "value": "2312" }, { "label": "大兴安岭地区", "value": "2327" }], [{ "label": "市辖区", "value": "3101" }], [{ "label": "南京市", "value": "3201" }, { "label": "无锡市", "value": "3202" }, { "label": "徐州市", "value": "3203" }, { "label": "常州市", "value": "3204" }, { "label": "苏州市", "value": "3205" }, { "label": "南通市", "value": "3206" }, { "label": "连云港市", "value": "3207" }, { "label": "淮安市", "value": "3208" }, { "label": "盐城市", "value": "3209" }, { "label": "扬州市", "value": "3210" }, { "label": "镇江市", "value": "3211" }, { "label": "泰州市", "value": "3212" }, { "label": "宿迁市", "value": "3213" }], [{ "label": "杭州市", "value": "3301" }, { "label": "宁波市", "value": "3302" }, { "label": "温州市", "value": "3303" }, { "label": "嘉兴市", "value": "3304" }, { "label": "湖州市", "value": "3305" }, { "label": "绍兴市", "value": "3306" }, { "label": "金华市", "value": "3307" }, { "label": "衢州市", "value": "3308" }, { "label": "舟山市", "value": "3309" }, { "label": "台州市", "value": "3310" }, { "label": "丽水市", "value": "3311" }], [{ "label": "合肥市", "value": "3401" }, { "label": "芜湖市", "value": "3402" }, { "label": "蚌埠市", "value": "3403" }, { "label": "淮南市", "value": "3404" }, { "label": "马鞍山市", "value": "3405" }, { "label": "淮北市", "value": "3406" }, { "label": "铜陵市", "value": "3407" }, { "label": "安庆市", "value": "3408" }, { "label": "黄山市", "value": "3410" }, { "label": "滁州市", "value": "3411" }, { "label": "阜阳市", "value": "3412" }, { "label": "宿州市", "value": "3413" }, { "label": "六安市", "value": "3415" }, { "label": "亳州市", "value": "3416" }, { "label": "池州市", "value": "3417" }, { "label": "宣城市", "value": "3418" }], [{ "label": "福州市", "value": "3501" }, { "label": "厦门市", "value": "3502" }, { "label": "莆田市", "value": "3503" }, { "label": "三明市", "value": "3504" }, { "label": "泉州市", "value": "3505" }, { "label": "漳州市", "value": "3506" }, { "label": "南平市", "value": "3507" }, { "label": "龙岩市", "value": "3508" }, { "label": "宁德市", "value": "3509" }], [{ "label": "南昌市", "value": "3601" }, { "label": "景德镇市", "value": "3602" }, { "label": "萍乡市", "value": "3603" }, { "label": "九江市", "value": "3604" }, { "label": "新余市", "value": "3605" }, { "label": "鹰潭市", "value": "3606" }, { "label": "赣州市", "value": "3607" }, { "label": "吉安市", "value": "3608" }, { "label": "宜春市", "value": "3609" }, { "label": "抚州市", "value": "3610" }, { "label": "上饶市", "value": "3611" }], [{ "label": "济南市", "value": "3701" }, { "label": "青岛市", "value": "3702" }, { "label": "淄博市", "value": "3703" }, { "label": "枣庄市", "value": "3704" }, { "label": "东营市", "value": "3705" }, { "label": "烟台市", "value": "3706" }, { "label": "潍坊市", "value": "3707" }, { "label": "济宁市", "value": "3708" }, { "label": "泰安市", "value": "3709" }, { "label": "威海市", "value": "3710" }, { "label": "日照市", "value": "3711" }, { "label": "莱芜市", "value": "3712" }, { "label": "临沂市", "value": "3713" }, { "label": "德州市", "value": "3714" }, { "label": "聊城市", "value": "3715" }, { "label": "滨州市", "value": "3716" }, { "label": "菏泽市", "value": "3717" }], [{ "label": "郑州市", "value": "4101" }, { "label": "开封市", "value": "4102" }, { "label": "洛阳市", "value": "4103" }, { "label": "平顶山市", "value": "4104" }, { "label": "安阳市", "value": "4105" }, { "label": "鹤壁市", "value": "4106" }, { "label": "新乡市", "value": "4107" }, { "label": "焦作市", "value": "4108" }, { "label": "濮阳市", "value": "4109" }, { "label": "许昌市", "value": "4110" }, { "label": "漯河市", "value": "4111" }, { "label": "三门峡市", "value": "4112" }, { "label": "南阳市", "value": "4113" }, { "label": "商丘市", "value": "4114" }, { "label": "信阳市", "value": "4115" }, { "label": "周口市", "value": "4116" }, { "label": "驻马店市", "value": "4117" }, { "label": "省直辖县级行政区划", "value": "4190" }], [{ "label": "武汉市", "value": "4201" }, { "label": "黄石市", "value": "4202" }, { "label": "十堰市", "value": "4203" }, { "label": "宜昌市", "value": "4205" }, { "label": "襄阳市", "value": "4206" }, { "label": "鄂州市", "value": "4207" }, { "label": "荆门市", "value": "4208" }, { "label": "孝感市", "value": "4209" }, { "label": "荆州市", "value": "4210" }, { "label": "黄冈市", "value": "4211" }, { "label": "咸宁市", "value": "4212" }, { "label": "随州市", "value": "4213" }, { "label": "恩施土家族苗族自治州", "value": "4228" }, { "label": "省直辖县级行政区划", "value": "4290" }], [{ "label": "长沙市", "value": "4301" }, { "label": "株洲市", "value": "4302" }, { "label": "湘潭市", "value": "4303" }, { "label": "衡阳市", "value": "4304" }, { "label": "邵阳市", "value": "4305" }, { "label": "岳阳市", "value": "4306" }, { "label": "常德市", "value": "4307" }, { "label": "张家界市", "value": "4308" }, { "label": "益阳市", "value": "4309" }, { "label": "郴州市", "value": "4310" }, { "label": "永州市", "value": "4311" }, { "label": "怀化市", "value": "4312" }, { "label": "娄底市", "value": "4313" }, { "label": "湘西土家族苗族自治州", "value": "4331" }], [{ "label": "广州市", "value": "4401" }, { "label": "韶关市", "value": "4402" }, { "label": "深圳市", "value": "4403" }, { "label": "珠海市", "value": "4404" }, { "label": "汕头市", "value": "4405" }, { "label": "佛山市", "value": "4406" }, { "label": "江门市", "value": "4407" }, { "label": "湛江市", "value": "4408" }, { "label": "茂名市", "value": "4409" }, { "label": "肇庆市", "value": "4412" }, { "label": "惠州市", "value": "4413" }, { "label": "梅州市", "value": "4414" }, { "label": "汕尾市", "value": "4415" }, { "label": "河源市", "value": "4416" }, { "label": "阳江市", "value": "4417" }, { "label": "清远市", "value": "4418" }, { "label": "东莞市", "value": "4419" }, { "label": "中山市", "value": "4420" }, { "label": "潮州市", "value": "4451" }, { "label": "揭阳市", "value": "4452" }, { "label": "云浮市", "value": "4453" }], [{ "label": "南宁市", "value": "4501" }, { "label": "柳州市", "value": "4502" }, { "label": "桂林市", "value": "4503" }, { "label": "梧州市", "value": "4504" }, { "label": "北海市", "value": "4505" }, { "label": "防城港市", "value": "4506" }, { "label": "钦州市", "value": "4507" }, { "label": "贵港市", "value": "4508" }, { "label": "玉林市", "value": "4509" }, { "label": "百色市", "value": "4510" }, { "label": "贺州市", "value": "4511" }, { "label": "河池市", "value": "4512" }, { "label": "来宾市", "value": "4513" }, { "label": "崇左市", "value": "4514" }], [{ "label": "海口市", "value": "4601" }, { "label": "三亚市", "value": "4602" }, { "label": "三沙市", "value": "4603" }, { "label": "儋州市", "value": "4604" }, { "label": "省直辖县级行政区划", "value": "4690" }], [{ "label": "市辖区", "value": "5001" }, { "label": "县", "value": "5002" }], [{ "label": "成都市", "value": "5101" }, { "label": "自贡市", "value": "5103" }, { "label": "攀枝花市", "value": "5104" }, { "label": "泸州市", "value": "5105" }, { "label": "德阳市", "value": "5106" }, { "label": "绵阳市", "value": "5107" }, { "label": "广元市", "value": "5108" }, { "label": "遂宁市", "value": "5109" }, { "label": "内江市", "value": "5110" }, { "label": "乐山市", "value": "5111" }, { "label": "南充市", "value": "5113" }, { "label": "眉山市", "value": "5114" }, { "label": "宜宾市", "value": "5115" }, { "label": "广安市", "value": "5116" }, { "label": "达州市", "value": "5117" }, { "label": "雅安市", "value": "5118" }, { "label": "巴中市", "value": "5119" }, { "label": "资阳市", "value": "5120" }, { "label": "阿坝藏族羌族自治州", "value": "5132" }, { "label": "甘孜藏族自治州", "value": "5133" }, { "label": "凉山彝族自治州", "value": "5134" }], [{ "label": "贵阳市", "value": "5201" }, { "label": "六盘水市", "value": "5202" }, { "label": "遵义市", "value": "5203" }, { "label": "安顺市", "value": "5204" }, { "label": "毕节市", "value": "5205" }, { "label": "铜仁市", "value": "5206" }, { "label": "黔西南布依族苗族自治州", "value": "5223" }, { "label": "黔东南苗族侗族自治州", "value": "5226" }, { "label": "黔南布依族苗族自治州", "value": "5227" }], [{ "label": "昆明市", "value": "5301" }, { "label": "曲靖市", "value": "5303" }, { "label": "玉溪市", "value": "5304" }, { "label": "保山市", "value": "5305" }, { "label": "昭通市", "value": "5306" }, { "label": "丽江市", "value": "5307" }, { "label": "普洱市", "value": "5308" }, { "label": "临沧市", "value": "5309" }, { "label": "楚雄彝族自治州", "value": "5323" }, { "label": "红河哈尼族彝族自治州", "value": "5325" }, { "label": "文山壮族苗族自治州", "value": "5326" }, { "label": "西双版纳傣族自治州", "value": "5328" }, { "label": "大理白族自治州", "value": "5329" }, { "label": "德宏傣族景颇族自治州", "value": "5331" }, { "label": "怒江傈僳族自治州", "value": "5333" }, { "label": "迪庆藏族自治州", "value": "5334" }], [{ "label": "拉萨市", "value": "5401" }, { "label": "日喀则市", "value": "5402" }, { "label": "昌都市", "value": "5403" }, { "label": "林芝市", "value": "5404" }, { "label": "山南市", "value": "5405" }, { "label": "那曲地区", "value": "5424" }, { "label": "阿里地区", "value": "5425" }], [{ "label": "西安市", "value": "6101" }, { "label": "铜川市", "value": "6102" }, { "label": "宝鸡市", "value": "6103" }, { "label": "咸阳市", "value": "6104" }, { "label": "渭南市", "value": "6105" }, { "label": "延安市", "value": "6106" }, { "label": "汉中市", "value": "6107" }, { "label": "榆林市", "value": "6108" }, { "label": "安康市", "value": "6109" }, { "label": "商洛市", "value": "6110" }], [{ "label": "兰州市", "value": "6201" }, { "label": "嘉峪关市", "value": "6202" }, { "label": "金昌市", "value": "6203" }, { "label": "白银市", "value": "6204" }, { "label": "天水市", "value": "6205" }, { "label": "武威市", "value": "6206" }, { "label": "张掖市", "value": "6207" }, { "label": "平凉市", "value": "6208" }, { "label": "酒泉市", "value": "6209" }, { "label": "庆阳市", "value": "6210" }, { "label": "定西市", "value": "6211" }, { "label": "陇南市", "value": "6212" }, { "label": "临夏回族自治州", "value": "6229" }, { "label": "甘南藏族自治州", "value": "6230" }], [{ "label": "西宁市", "value": "6301" }, { "label": "海东市", "value": "6302" }, { "label": "海北藏族自治州", "value": "6322" }, { "label": "黄南藏族自治州", "value": "6323" }, { "label": "海南藏族自治州", "value": "6325" }, { "label": "果洛藏族自治州", "value": "6326" }, { "label": "玉树藏族自治州", "value": "6327" }, { "label": "海西蒙古族藏族自治州", "value": "6328" }], [{ "label": "银川市", "value": "6401" }, { "label": "石嘴山市", "value": "6402" }, { "label": "吴忠市", "value": "6403" }, { "label": "固原市", "value": "6404" }, { "label": "中卫市", "value": "6405" }], [{ "label": "乌鲁木齐市", "value": "6501" }, { "label": "克拉玛依市", "value": "6502" }, { "label": "吐鲁番市", "value": "6504" }, { "label": "哈密市", "value": "6505" }, { "label": "昌吉回族自治州", "value": "6523" }, { "label": "博尔塔拉蒙古自治州", "value": "6527" }, { "label": "巴音郭楞蒙古自治州", "value": "6528" }, { "label": "阿克苏地区", "value": "6529" }, { "label": "克孜勒苏柯尔克孜自治州", "value": "6530" }, { "label": "喀什地区", "value": "6531" }, { "label": "和田地区", "value": "6532" }, { "label": "伊犁哈萨克自治州", "value": "6540" }, { "label": "塔城地区", "value": "6542" }, { "label": "阿勒泰地区", "value": "6543" }, { "label": "自治区直辖县级行政区划", "value": "6590" }], [{ "label": "台北", "value": "6601" }, { "label": "高雄", "value": "6602" }, { "label": "基隆", "value": "6603" }, { "label": "台中", "value": "6604" }, { "label": "台南", "value": "6605" }, { "label": "新竹", "value": "6606" }, { "label": "嘉义", "value": "6607" }, { "label": "宜兰", "value": "6608" }, { "label": "桃园", "value": "6609" }, { "label": "苗栗", "value": "6610" }, { "label": "彰化", "value": "6611" }, { "label": "南投", "value": "6612" }, { "label": "云林", "value": "6613" }, { "label": "屏东", "value": "6614" }, { "label": "台东", "value": "6615" }, { "label": "花莲", "value": "6616" }, { "label": "澎湖", "value": "6617" }], [{ "label": "香港岛", "value": "6701" }, { "label": "九龙", "value": "6702" }, { "label": "新界", "value": "6703" }], [{ "label": "澳门半岛", "value": "6801" }, { "label": "氹仔岛", "value": "6802" }, { "label": "路环岛", "value": "6803" }, { "label": "路氹城", "value": "6804" }]];var _default = cityData;exports.default = _default;
+
+/***/ }),
+
+/***/ 434:
+/*!******************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uview-ui/libs/util/area.js ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var areaData = [[[{ "label": "东城区", "value": "110101" }, { "label": "西城区", "value": "110102" }, { "label": "朝阳区", "value": "110105" }, { "label": "丰台区", "value": "110106" }, { "label": "石景山区", "value": "110107" }, { "label": "海淀区", "value": "110108" }, { "label": "门头沟区", "value": "110109" }, { "label": "房山区", "value": "110111" }, { "label": "通州区", "value": "110112" }, { "label": "顺义区", "value": "110113" }, { "label": "昌平区", "value": "110114" }, { "label": "大兴区", "value": "110115" }, { "label": "怀柔区", "value": "110116" }, { "label": "平谷区", "value": "110117" }, { "label": "密云区", "value": "110118" }, { "label": "延庆区", "value": "110119" }]], [[{ "label": "和平区", "value": "120101" }, { "label": "河东区", "value": "120102" }, { "label": "河西区", "value": "120103" }, { "label": "南开区", "value": "120104" }, { "label": "河北区", "value": "120105" }, { "label": "红桥区", "value": "120106" }, { "label": "东丽区", "value": "120110" }, { "label": "西青区", "value": "120111" }, { "label": "津南区", "value": "120112" }, { "label": "北辰区", "value": "120113" }, { "label": "武清区", "value": "120114" }, { "label": "宝坻区", "value": "120115" }, { "label": "滨海新区", "value": "120116" }, { "label": "宁河区", "value": "120117" }, { "label": "静海区", "value": "120118" }, { "label": "蓟州区", "value": "120119" }]], [[{ "label": "长安区", "value": "130102" }, { "label": "桥西区", "value": "130104" }, { "label": "新华区", "value": "130105" }, { "label": "井陉矿区", "value": "130107" }, { "label": "裕华区", "value": "130108" }, { "label": "藁城区", "value": "130109" }, { "label": "鹿泉区", "value": "130110" }, { "label": "栾城区", "value": "130111" }, { "label": "井陉县", "value": "130121" }, { "label": "正定县", "value": "130123" }, { "label": "行唐县", "value": "130125" }, { "label": "灵寿县", "value": "130126" }, { "label": "高邑县", "value": "130127" }, { "label": "深泽县", "value": "130128" }, { "label": "赞皇县", "value": "130129" }, { "label": "无极县", "value": "130130" }, { "label": "平山县", "value": "130131" }, { "label": "元氏县", "value": "130132" }, { "label": "赵县", "value": "130133" }, { "label": "石家庄高新技术产业开发区", "value": "130171" }, { "label": "石家庄循环化工园区", "value": "130172" }, { "label": "辛集市", "value": "130181" }, { "label": "晋州市", "value": "130183" }, { "label": "新乐市", "value": "130184" }], [{ "label": "路南区", "value": "130202" }, { "label": "路北区", "value": "130203" }, { "label": "古冶区", "value": "130204" }, { "label": "开平区", "value": "130205" }, { "label": "丰南区", "value": "130207" }, { "label": "丰润区", "value": "130208" }, { "label": "曹妃甸区", "value": "130209" }, { "label": "滦县", "value": "130223" }, { "label": "滦南县", "value": "130224" }, { "label": "乐亭县", "value": "130225" }, { "label": "迁西县", "value": "130227" }, { "label": "玉田县", "value": "130229" }, { "label": "唐山市芦台经济技术开发区", "value": "130271" }, { "label": "唐山市汉沽管理区", "value": "130272" }, { "label": "唐山高新技术产业开发区", "value": "130273" }, { "label": "河北唐山海港经济开发区", "value": "130274" }, { "label": "遵化市", "value": "130281" }, { "label": "迁安市", "value": "130283" }], [{ "label": "海港区", "value": "130302" }, { "label": "山海关区", "value": "130303" }, { "label": "北戴河区", "value": "130304" }, { "label": "抚宁区", "value": "130306" }, { "label": "青龙满族自治县", "value": "130321" }, { "label": "昌黎县", "value": "130322" }, { "label": "卢龙县", "value": "130324" }, { "label": "秦皇岛市经济技术开发区", "value": "130371" }, { "label": "北戴河新区", "value": "130372" }], [{ "label": "邯山区", "value": "130402" }, { "label": "丛台区", "value": "130403" }, { "label": "复兴区", "value": "130404" }, { "label": "峰峰矿区", "value": "130406" }, { "label": "肥乡区", "value": "130407" }, { "label": "永年区", "value": "130408" }, { "label": "临漳县", "value": "130423" }, { "label": "成安县", "value": "130424" }, { "label": "大名县", "value": "130425" }, { "label": "涉县", "value": "130426" }, { "label": "磁县", "value": "130427" }, { "label": "邱县", "value": "130430" }, { "label": "鸡泽县", "value": "130431" }, { "label": "广平县", "value": "130432" }, { "label": "馆陶县", "value": "130433" }, { "label": "魏县", "value": "130434" }, { "label": "曲周县", "value": "130435" }, { "label": "邯郸经济技术开发区", "value": "130471" }, { "label": "邯郸冀南新区", "value": "130473" }, { "label": "武安市", "value": "130481" }], [{ "label": "桥东区", "value": "130502" }, { "label": "桥西区", "value": "130503" }, { "label": "邢台县", "value": "130521" }, { "label": "临城县", "value": "130522" }, { "label": "内丘县", "value": "130523" }, { "label": "柏乡县", "value": "130524" }, { "label": "隆尧县", "value": "130525" }, { "label": "任县", "value": "130526" }, { "label": "南和县", "value": "130527" }, { "label": "宁晋县", "value": "130528" }, { "label": "巨鹿县", "value": "130529" }, { "label": "新河县", "value": "130530" }, { "label": "广宗县", "value": "130531" }, { "label": "平乡县", "value": "130532" }, { "label": "威县", "value": "130533" }, { "label": "清河县", "value": "130534" }, { "label": "临西县", "value": "130535" }, { "label": "河北邢台经济开发区", "value": "130571" }, { "label": "南宫市", "value": "130581" }, { "label": "沙河市", "value": "130582" }], [{ "label": "竞秀区", "value": "130602" }, { "label": "莲池区", "value": "130606" }, { "label": "满城区", "value": "130607" }, { "label": "清苑区", "value": "130608" }, { "label": "徐水区", "value": "130609" }, { "label": "涞水县", "value": "130623" }, { "label": "阜平县", "value": "130624" }, { "label": "定兴县", "value": "130626" }, { "label": "唐县", "value": "130627" }, { "label": "高阳县", "value": "130628" }, { "label": "容城县", "value": "130629" }, { "label": "涞源县", "value": "130630" }, { "label": "望都县", "value": "130631" }, { "label": "安新县", "value": "130632" }, { "label": "易县", "value": "130633" }, { "label": "曲阳县", "value": "130634" }, { "label": "蠡县", "value": "130635" }, { "label": "顺平县", "value": "130636" }, { "label": "博野县", "value": "130637" }, { "label": "雄县", "value": "130638" }, { "label": "保定高新技术产业开发区", "value": "130671" }, { "label": "保定白沟新城", "value": "130672" }, { "label": "涿州市", "value": "130681" }, { "label": "定州市", "value": "130682" }, { "label": "安国市", "value": "130683" }, { "label": "高碑店市", "value": "130684" }], [{ "label": "桥东区", "value": "130702" }, { "label": "桥西区", "value": "130703" }, { "label": "宣化区", "value": "130705" }, { "label": "下花园区", "value": "130706" }, { "label": "万全区", "value": "130708" }, { "label": "崇礼区", "value": "130709" }, { "label": "张北县", "value": "130722" }, { "label": "康保县", "value": "130723" }, { "label": "沽源县", "value": "130724" }, { "label": "尚义县", "value": "130725" }, { "label": "蔚县", "value": "130726" }, { "label": "阳原县", "value": "130727" }, { "label": "怀安县", "value": "130728" }, { "label": "怀来县", "value": "130730" }, { "label": "涿鹿县", "value": "130731" }, { "label": "赤城县", "value": "130732" }, { "label": "张家口市高新技术产业开发区", "value": "130771" }, { "label": "张家口市察北管理区", "value": "130772" }, { "label": "张家口市塞北管理区", "value": "130773" }], [{ "label": "双桥区", "value": "130802" }, { "label": "双滦区", "value": "130803" }, { "label": "鹰手营子矿区", "value": "130804" }, { "label": "承德县", "value": "130821" }, { "label": "兴隆县", "value": "130822" }, { "label": "滦平县", "value": "130824" }, { "label": "隆化县", "value": "130825" }, { "label": "丰宁满族自治县", "value": "130826" }, { "label": "宽城满族自治县", "value": "130827" }, { "label": "围场满族蒙古族自治县", "value": "130828" }, { "label": "承德高新技术产业开发区", "value": "130871" }, { "label": "平泉市", "value": "130881" }], [{ "label": "新华区", "value": "130902" }, { "label": "运河区", "value": "130903" }, { "label": "沧县", "value": "130921" }, { "label": "青县", "value": "130922" }, { "label": "东光县", "value": "130923" }, { "label": "海兴县", "value": "130924" }, { "label": "盐山县", "value": "130925" }, { "label": "肃宁县", "value": "130926" }, { "label": "南皮县", "value": "130927" }, { "label": "吴桥县", "value": "130928" }, { "label": "献县", "value": "130929" }, { "label": "孟村回族自治县", "value": "130930" }, { "label": "河北沧州经济开发区", "value": "130971" }, { "label": "沧州高新技术产业开发区", "value": "130972" }, { "label": "沧州渤海新区", "value": "130973" }, { "label": "泊头市", "value": "130981" }, { "label": "任丘市", "value": "130982" }, { "label": "黄骅市", "value": "130983" }, { "label": "河间市", "value": "130984" }], [{ "label": "安次区", "value": "131002" }, { "label": "广阳区", "value": "131003" }, { "label": "固安县", "value": "131022" }, { "label": "永清县", "value": "131023" }, { "label": "香河县", "value": "131024" }, { "label": "大城县", "value": "131025" }, { "label": "文安县", "value": "131026" }, { "label": "大厂回族自治县", "value": "131028" }, { "label": "廊坊经济技术开发区", "value": "131071" }, { "label": "霸州市", "value": "131081" }, { "label": "三河市", "value": "131082" }], [{ "label": "桃城区", "value": "131102" }, { "label": "冀州区", "value": "131103" }, { "label": "枣强县", "value": "131121" }, { "label": "武邑县", "value": "131122" }, { "label": "武强县", "value": "131123" }, { "label": "饶阳县", "value": "131124" }, { "label": "安平县", "value": "131125" }, { "label": "故城县", "value": "131126" }, { "label": "景县", "value": "131127" }, { "label": "阜城县", "value": "131128" }, { "label": "河北衡水经济开发区", "value": "131171" }, { "label": "衡水滨湖新区", "value": "131172" }, { "label": "深州市", "value": "131182" }]], [[{ "label": "小店区", "value": "140105" }, { "label": "迎泽区", "value": "140106" }, { "label": "杏花岭区", "value": "140107" }, { "label": "尖草坪区", "value": "140108" }, { "label": "万柏林区", "value": "140109" }, { "label": "晋源区", "value": "140110" }, { "label": "清徐县", "value": "140121" }, { "label": "阳曲县", "value": "140122" }, { "label": "娄烦县", "value": "140123" }, { "label": "山西转型综合改革示范区", "value": "140171" }, { "label": "古交市", "value": "140181" }], [{ "label": "城区", "value": "140202" }, { "label": "矿区", "value": "140203" }, { "label": "南郊区", "value": "140211" }, { "label": "新荣区", "value": "140212" }, { "label": "阳高县", "value": "140221" }, { "label": "天镇县", "value": "140222" }, { "label": "广灵县", "value": "140223" }, { "label": "灵丘县", "value": "140224" }, { "label": "浑源县", "value": "140225" }, { "label": "左云县", "value": "140226" }, { "label": "大同县", "value": "140227" }, { "label": "山西大同经济开发区", "value": "140271" }], [{ "label": "城区", "value": "140302" }, { "label": "矿区", "value": "140303" }, { "label": "郊区", "value": "140311" }, { "label": "平定县", "value": "140321" }, { "label": "盂县", "value": "140322" }, { "label": "山西阳泉经济开发区", "value": "140371" }], [{ "label": "城区", "value": "140402" }, { "label": "郊区", "value": "140411" }, { "label": "长治县", "value": "140421" }, { "label": "襄垣县", "value": "140423" }, { "label": "屯留县", "value": "140424" }, { "label": "平顺县", "value": "140425" }, { "label": "黎城县", "value": "140426" }, { "label": "壶关县", "value": "140427" }, { "label": "长子县", "value": "140428" }, { "label": "武乡县", "value": "140429" }, { "label": "沁县", "value": "140430" }, { "label": "沁源县", "value": "140431" }, { "label": "山西长治高新技术产业园区", "value": "140471" }, { "label": "潞城市", "value": "140481" }], [{ "label": "城区", "value": "140502" }, { "label": "沁水县", "value": "140521" }, { "label": "阳城县", "value": "140522" }, { "label": "陵川县", "value": "140524" }, { "label": "泽州县", "value": "140525" }, { "label": "高平市", "value": "140581" }], [{ "label": "朔城区", "value": "140602" }, { "label": "平鲁区", "value": "140603" }, { "label": "山阴县", "value": "140621" }, { "label": "应县", "value": "140622" }, { "label": "右玉县", "value": "140623" }, { "label": "怀仁县", "value": "140624" }, { "label": "山西朔州经济开发区", "value": "140671" }], [{ "label": "榆次区", "value": "140702" }, { "label": "榆社县", "value": "140721" }, { "label": "左权县", "value": "140722" }, { "label": "和顺县", "value": "140723" }, { "label": "昔阳县", "value": "140724" }, { "label": "寿阳县", "value": "140725" }, { "label": "太谷县", "value": "140726" }, { "label": "祁县", "value": "140727" }, { "label": "平遥县", "value": "140728" }, { "label": "灵石县", "value": "140729" }, { "label": "介休市", "value": "140781" }], [{ "label": "盐湖区", "value": "140802" }, { "label": "临猗县", "value": "140821" }, { "label": "万荣县", "value": "140822" }, { "label": "闻喜县", "value": "140823" }, { "label": "稷山县", "value": "140824" }, { "label": "新绛县", "value": "140825" }, { "label": "绛县", "value": "140826" }, { "label": "垣曲县", "value": "140827" }, { "label": "夏县", "value": "140828" }, { "label": "平陆县", "value": "140829" }, { "label": "芮城县", "value": "140830" }, { "label": "永济市", "value": "140881" }, { "label": "河津市", "value": "140882" }], [{ "label": "忻府区", "value": "140902" }, { "label": "定襄县", "value": "140921" }, { "label": "五台县", "value": "140922" }, { "label": "代县", "value": "140923" }, { "label": "繁峙县", "value": "140924" }, { "label": "宁武县", "value": "140925" }, { "label": "静乐县", "value": "140926" }, { "label": "神池县", "value": "140927" }, { "label": "五寨县", "value": "140928" }, { "label": "岢岚县", "value": "140929" }, { "label": "河曲县", "value": "140930" }, { "label": "保德县", "value": "140931" }, { "label": "偏关县", "value": "140932" }, { "label": "五台山风景名胜区", "value": "140971" }, { "label": "原平市", "value": "140981" }], [{ "label": "尧都区", "value": "141002" }, { "label": "曲沃县", "value": "141021" }, { "label": "翼城县", "value": "141022" }, { "label": "襄汾县", "value": "141023" }, { "label": "洪洞县", "value": "141024" }, { "label": "古县", "value": "141025" }, { "label": "安泽县", "value": "141026" }, { "label": "浮山县", "value": "141027" }, { "label": "吉县", "value": "141028" }, { "label": "乡宁县", "value": "141029" }, { "label": "大宁县", "value": "141030" }, { "label": "隰县", "value": "141031" }, { "label": "永和县", "value": "141032" }, { "label": "蒲县", "value": "141033" }, { "label": "汾西县", "value": "141034" }, { "label": "侯马市", "value": "141081" }, { "label": "霍州市", "value": "141082" }], [{ "label": "离石区", "value": "141102" }, { "label": "文水县", "value": "141121" }, { "label": "交城县", "value": "141122" }, { "label": "兴县", "value": "141123" }, { "label": "临县", "value": "141124" }, { "label": "柳林县", "value": "141125" }, { "label": "石楼县", "value": "141126" }, { "label": "岚县", "value": "141127" }, { "label": "方山县", "value": "141128" }, { "label": "中阳县", "value": "141129" }, { "label": "交口县", "value": "141130" }, { "label": "孝义市", "value": "141181" }, { "label": "汾阳市", "value": "141182" }]], [[{ "label": "新城区", "value": "150102" }, { "label": "回民区", "value": "150103" }, { "label": "玉泉区", "value": "150104" }, { "label": "赛罕区", "value": "150105" }, { "label": "土默特左旗", "value": "150121" }, { "label": "托克托县", "value": "150122" }, { "label": "和林格尔县", "value": "150123" }, { "label": "清水河县", "value": "150124" }, { "label": "武川县", "value": "150125" }, { "label": "呼和浩特金海工业园区", "value": "150171" }, { "label": "呼和浩特经济技术开发区", "value": "150172" }], [{ "label": "东河区", "value": "150202" }, { "label": "昆都仑区", "value": "150203" }, { "label": "青山区", "value": "150204" }, { "label": "石拐区", "value": "150205" }, { "label": "白云鄂博矿区", "value": "150206" }, { "label": "九原区", "value": "150207" }, { "label": "土默特右旗", "value": "150221" }, { "label": "固阳县", "value": "150222" }, { "label": "达尔罕茂明安联合旗", "value": "150223" }, { "label": "包头稀土高新技术产业开发区", "value": "150271" }], [{ "label": "海勃湾区", "value": "150302" }, { "label": "海南区", "value": "150303" }, { "label": "乌达区", "value": "150304" }], [{ "label": "红山区", "value": "150402" }, { "label": "元宝山区", "value": "150403" }, { "label": "松山区", "value": "150404" }, { "label": "阿鲁科尔沁旗", "value": "150421" }, { "label": "巴林左旗", "value": "150422" }, { "label": "巴林右旗", "value": "150423" }, { "label": "林西县", "value": "150424" }, { "label": "克什克腾旗", "value": "150425" }, { "label": "翁牛特旗", "value": "150426" }, { "label": "喀喇沁旗", "value": "150428" }, { "label": "宁城县", "value": "150429" }, { "label": "敖汉旗", "value": "150430" }], [{ "label": "科尔沁区", "value": "150502" }, { "label": "科尔沁左翼中旗", "value": "150521" }, { "label": "科尔沁左翼后旗", "value": "150522" }, { "label": "开鲁县", "value": "150523" }, { "label": "库伦旗", "value": "150524" }, { "label": "奈曼旗", "value": "150525" }, { "label": "扎鲁特旗", "value": "150526" }, { "label": "通辽经济技术开发区", "value": "150571" }, { "label": "霍林郭勒市", "value": "150581" }], [{ "label": "东胜区", "value": "150602" }, { "label": "康巴什区", "value": "150603" }, { "label": "达拉特旗", "value": "150621" }, { "label": "准格尔旗", "value": "150622" }, { "label": "鄂托克前旗", "value": "150623" }, { "label": "鄂托克旗", "value": "150624" }, { "label": "杭锦旗", "value": "150625" }, { "label": "乌审旗", "value": "150626" }, { "label": "伊金霍洛旗", "value": "150627" }], [{ "label": "海拉尔区", "value": "150702" }, { "label": "扎赉诺尔区", "value": "150703" }, { "label": "阿荣旗", "value": "150721" }, { "label": "莫力达瓦达斡尔族自治旗", "value": "150722" }, { "label": "鄂伦春自治旗", "value": "150723" }, { "label": "鄂温克族自治旗", "value": "150724" }, { "label": "陈巴尔虎旗", "value": "150725" }, { "label": "新巴尔虎左旗", "value": "150726" }, { "label": "新巴尔虎右旗", "value": "150727" }, { "label": "满洲里市", "value": "150781" }, { "label": "牙克石市", "value": "150782" }, { "label": "扎兰屯市", "value": "150783" }, { "label": "额尔古纳市", "value": "150784" }, { "label": "根河市", "value": "150785" }], [{ "label": "临河区", "value": "150802" }, { "label": "五原县", "value": "150821" }, { "label": "磴口县", "value": "150822" }, { "label": "乌拉特前旗", "value": "150823" }, { "label": "乌拉特中旗", "value": "150824" }, { "label": "乌拉特后旗", "value": "150825" }, { "label": "杭锦后旗", "value": "150826" }], [{ "label": "集宁区", "value": "150902" }, { "label": "卓资县", "value": "150921" }, { "label": "化德县", "value": "150922" }, { "label": "商都县", "value": "150923" }, { "label": "兴和县", "value": "150924" }, { "label": "凉城县", "value": "150925" }, { "label": "察哈尔右翼前旗", "value": "150926" }, { "label": "察哈尔右翼中旗", "value": "150927" }, { "label": "察哈尔右翼后旗", "value": "150928" }, { "label": "四子王旗", "value": "150929" }, { "label": "丰镇市", "value": "150981" }], [{ "label": "乌兰浩特市", "value": "152201" }, { "label": "阿尔山市", "value": "152202" }, { "label": "科尔沁右翼前旗", "value": "152221" }, { "label": "科尔沁右翼中旗", "value": "152222" }, { "label": "扎赉特旗", "value": "152223" }, { "label": "突泉县", "value": "152224" }], [{ "label": "二连浩特市", "value": "152501" }, { "label": "锡林浩特市", "value": "152502" }, { "label": "阿巴嘎旗", "value": "152522" }, { "label": "苏尼特左旗", "value": "152523" }, { "label": "苏尼特右旗", "value": "152524" }, { "label": "东乌珠穆沁旗", "value": "152525" }, { "label": "西乌珠穆沁旗", "value": "152526" }, { "label": "太仆寺旗", "value": "152527" }, { "label": "镶黄旗", "value": "152528" }, { "label": "正镶白旗", "value": "152529" }, { "label": "正蓝旗", "value": "152530" }, { "label": "多伦县", "value": "152531" }, { "label": "乌拉盖管委会", "value": "152571" }], [{ "label": "阿拉善左旗", "value": "152921" }, { "label": "阿拉善右旗", "value": "152922" }, { "label": "额济纳旗", "value": "152923" }, { "label": "内蒙古阿拉善经济开发区", "value": "152971" }]], [[{ "label": "和平区", "value": "210102" }, { "label": "沈河区", "value": "210103" }, { "label": "大东区", "value": "210104" }, { "label": "皇姑区", "value": "210105" }, { "label": "铁西区", "value": "210106" }, { "label": "苏家屯区", "value": "210111" }, { "label": "浑南区", "value": "210112" }, { "label": "沈北新区", "value": "210113" }, { "label": "于洪区", "value": "210114" }, { "label": "辽中区", "value": "210115" }, { "label": "康平县", "value": "210123" }, { "label": "法库县", "value": "210124" }, { "label": "新民市", "value": "210181" }], [{ "label": "中山区", "value": "210202" }, { "label": "西岗区", "value": "210203" }, { "label": "沙河口区", "value": "210204" }, { "label": "甘井子区", "value": "210211" }, { "label": "旅顺口区", "value": "210212" }, { "label": "金州区", "value": "210213" }, { "label": "普兰店区", "value": "210214" }, { "label": "长海县", "value": "210224" }, { "label": "瓦房店市", "value": "210281" }, { "label": "庄河市", "value": "210283" }], [{ "label": "铁东区", "value": "210302" }, { "label": "铁西区", "value": "210303" }, { "label": "立山区", "value": "210304" }, { "label": "千山区", "value": "210311" }, { "label": "台安县", "value": "210321" }, { "label": "岫岩满族自治县", "value": "210323" }, { "label": "海城市", "value": "210381" }], [{ "label": "新抚区", "value": "210402" }, { "label": "东洲区", "value": "210403" }, { "label": "望花区", "value": "210404" }, { "label": "顺城区", "value": "210411" }, { "label": "抚顺县", "value": "210421" }, { "label": "新宾满族自治县", "value": "210422" }, { "label": "清原满族自治县", "value": "210423" }], [{ "label": "平山区", "value": "210502" }, { "label": "溪湖区", "value": "210503" }, { "label": "明山区", "value": "210504" }, { "label": "南芬区", "value": "210505" }, { "label": "本溪满族自治县", "value": "210521" }, { "label": "桓仁满族自治县", "value": "210522" }], [{ "label": "元宝区", "value": "210602" }, { "label": "振兴区", "value": "210603" }, { "label": "振安区", "value": "210604" }, { "label": "宽甸满族自治县", "value": "210624" }, { "label": "东港市", "value": "210681" }, { "label": "凤城市", "value": "210682" }], [{ "label": "古塔区", "value": "210702" }, { "label": "凌河区", "value": "210703" }, { "label": "太和区", "value": "210711" }, { "label": "黑山县", "value": "210726" }, { "label": "义县", "value": "210727" }, { "label": "凌海市", "value": "210781" }, { "label": "北镇市", "value": "210782" }], [{ "label": "站前区", "value": "210802" }, { "label": "西市区", "value": "210803" }, { "label": "鲅鱼圈区", "value": "210804" }, { "label": "老边区", "value": "210811" }, { "label": "盖州市", "value": "210881" }, { "label": "大石桥市", "value": "210882" }], [{ "label": "海州区", "value": "210902" }, { "label": "新邱区", "value": "210903" }, { "label": "太平区", "value": "210904" }, { "label": "清河门区", "value": "210905" }, { "label": "细河区", "value": "210911" }, { "label": "阜新蒙古族自治县", "value": "210921" }, { "label": "彰武县", "value": "210922" }], [{ "label": "白塔区", "value": "211002" }, { "label": "文圣区", "value": "211003" }, { "label": "宏伟区", "value": "211004" }, { "label": "弓长岭区", "value": "211005" }, { "label": "太子河区", "value": "211011" }, { "label": "辽阳县", "value": "211021" }, { "label": "灯塔市", "value": "211081" }], [{ "label": "双台子区", "value": "211102" }, { "label": "兴隆台区", "value": "211103" }, { "label": "大洼区", "value": "211104" }, { "label": "盘山县", "value": "211122" }], [{ "label": "银州区", "value": "211202" }, { "label": "清河区", "value": "211204" }, { "label": "铁岭县", "value": "211221" }, { "label": "西丰县", "value": "211223" }, { "label": "昌图县", "value": "211224" }, { "label": "调兵山市", "value": "211281" }, { "label": "开原市", "value": "211282" }], [{ "label": "双塔区", "value": "211302" }, { "label": "龙城区", "value": "211303" }, { "label": "朝阳县", "value": "211321" }, { "label": "建平县", "value": "211322" }, { "label": "喀喇沁左翼蒙古族自治县", "value": "211324" }, { "label": "北票市", "value": "211381" }, { "label": "凌源市", "value": "211382" }], [{ "label": "连山区", "value": "211402" }, { "label": "龙港区", "value": "211403" }, { "label": "南票区", "value": "211404" }, { "label": "绥中县", "value": "211421" }, { "label": "建昌县", "value": "211422" }, { "label": "兴城市", "value": "211481" }]], [[{ "label": "南关区", "value": "220102" }, { "label": "宽城区", "value": "220103" }, { "label": "朝阳区", "value": "220104" }, { "label": "二道区", "value": "220105" }, { "label": "绿园区", "value": "220106" }, { "label": "双阳区", "value": "220112" }, { "label": "九台区", "value": "220113" }, { "label": "农安县", "value": "220122" }, { "label": "长春经济技术开发区", "value": "220171" }, { "label": "长春净月高新技术产业开发区", "value": "220172" }, { "label": "长春高新技术产业开发区", "value": "220173" }, { "label": "长春汽车经济技术开发区", "value": "220174" }, { "label": "榆树市", "value": "220182" }, { "label": "德惠市", "value": "220183" }], [{ "label": "昌邑区", "value": "220202" }, { "label": "龙潭区", "value": "220203" }, { "label": "船营区", "value": "220204" }, { "label": "丰满区", "value": "220211" }, { "label": "永吉县", "value": "220221" }, { "label": "吉林经济开发区", "value": "220271" }, { "label": "吉林高新技术产业开发区", "value": "220272" }, { "label": "吉林中国新加坡食品区", "value": "220273" }, { "label": "蛟河市", "value": "220281" }, { "label": "桦甸市", "value": "220282" }, { "label": "舒兰市", "value": "220283" }, { "label": "磐石市", "value": "220284" }], [{ "label": "铁西区", "value": "220302" }, { "label": "铁东区", "value": "220303" }, { "label": "梨树县", "value": "220322" }, { "label": "伊通满族自治县", "value": "220323" }, { "label": "公主岭市", "value": "220381" }, { "label": "双辽市", "value": "220382" }], [{ "label": "龙山区", "value": "220402" }, { "label": "西安区", "value": "220403" }, { "label": "东丰县", "value": "220421" }, { "label": "东辽县", "value": "220422" }], [{ "label": "东昌区", "value": "220502" }, { "label": "二道江区", "value": "220503" }, { "label": "通化县", "value": "220521" }, { "label": "辉南县", "value": "220523" }, { "label": "柳河县", "value": "220524" }, { "label": "梅河口市", "value": "220581" }, { "label": "集安市", "value": "220582" }], [{ "label": "浑江区", "value": "220602" }, { "label": "江源区", "value": "220605" }, { "label": "抚松县", "value": "220621" }, { "label": "靖宇县", "value": "220622" }, { "label": "长白朝鲜族自治县", "value": "220623" }, { "label": "临江市", "value": "220681" }], [{ "label": "宁江区", "value": "220702" }, { "label": "前郭尔罗斯蒙古族自治县", "value": "220721" }, { "label": "长岭县", "value": "220722" }, { "label": "乾安县", "value": "220723" }, { "label": "吉林松原经济开发区", "value": "220771" }, { "label": "扶余市", "value": "220781" }], [{ "label": "洮北区", "value": "220802" }, { "label": "镇赉县", "value": "220821" }, { "label": "通榆县", "value": "220822" }, { "label": "吉林白城经济开发区", "value": "220871" }, { "label": "洮南市", "value": "220881" }, { "label": "大安市", "value": "220882" }], [{ "label": "延吉市", "value": "222401" }, { "label": "图们市", "value": "222402" }, { "label": "敦化市", "value": "222403" }, { "label": "珲春市", "value": "222404" }, { "label": "龙井市", "value": "222405" }, { "label": "和龙市", "value": "222406" }, { "label": "汪清县", "value": "222424" }, { "label": "安图县", "value": "222426" }]], [[{ "label": "道里区", "value": "230102" }, { "label": "南岗区", "value": "230103" }, { "label": "道外区", "value": "230104" }, { "label": "平房区", "value": "230108" }, { "label": "松北区", "value": "230109" }, { "label": "香坊区", "value": "230110" }, { "label": "呼兰区", "value": "230111" }, { "label": "阿城区", "value": "230112" }, { "label": "双城区", "value": "230113" }, { "label": "依兰县", "value": "230123" }, { "label": "方正县", "value": "230124" }, { "label": "宾县", "value": "230125" }, { "label": "巴彦县", "value": "230126" }, { "label": "木兰县", "value": "230127" }, { "label": "通河县", "value": "230128" }, { "label": "延寿县", "value": "230129" }, { "label": "尚志市", "value": "230183" }, { "label": "五常市", "value": "230184" }], [{ "label": "龙沙区", "value": "230202" }, { "label": "建华区", "value": "230203" }, { "label": "铁锋区", "value": "230204" }, { "label": "昂昂溪区", "value": "230205" }, { "label": "富拉尔基区", "value": "230206" }, { "label": "碾子山区", "value": "230207" }, { "label": "梅里斯达斡尔族区", "value": "230208" }, { "label": "龙江县", "value": "230221" }, { "label": "依安县", "value": "230223" }, { "label": "泰来县", "value": "230224" }, { "label": "甘南县", "value": "230225" }, { "label": "富裕县", "value": "230227" }, { "label": "克山县", "value": "230229" }, { "label": "克东县", "value": "230230" }, { "label": "拜泉县", "value": "230231" }, { "label": "讷河市", "value": "230281" }], [{ "label": "鸡冠区", "value": "230302" }, { "label": "恒山区", "value": "230303" }, { "label": "滴道区", "value": "230304" }, { "label": "梨树区", "value": "230305" }, { "label": "城子河区", "value": "230306" }, { "label": "麻山区", "value": "230307" }, { "label": "鸡东县", "value": "230321" }, { "label": "虎林市", "value": "230381" }, { "label": "密山市", "value": "230382" }], [{ "label": "向阳区", "value": "230402" }, { "label": "工农区", "value": "230403" }, { "label": "南山区", "value": "230404" }, { "label": "兴安区", "value": "230405" }, { "label": "东山区", "value": "230406" }, { "label": "兴山区", "value": "230407" }, { "label": "萝北县", "value": "230421" }, { "label": "绥滨县", "value": "230422" }], [{ "label": "尖山区", "value": "230502" }, { "label": "岭东区", "value": "230503" }, { "label": "四方台区", "value": "230505" }, { "label": "宝山区", "value": "230506" }, { "label": "集贤县", "value": "230521" }, { "label": "友谊县", "value": "230522" }, { "label": "宝清县", "value": "230523" }, { "label": "饶河县", "value": "230524" }], [{ "label": "萨尔图区", "value": "230602" }, { "label": "龙凤区", "value": "230603" }, { "label": "让胡路区", "value": "230604" }, { "label": "红岗区", "value": "230605" }, { "label": "大同区", "value": "230606" }, { "label": "肇州县", "value": "230621" }, { "label": "肇源县", "value": "230622" }, { "label": "林甸县", "value": "230623" }, { "label": "杜尔伯特蒙古族自治县", "value": "230624" }, { "label": "大庆高新技术产业开发区", "value": "230671" }], [{ "label": "伊春区", "value": "230702" }, { "label": "南岔区", "value": "230703" }, { "label": "友好区", "value": "230704" }, { "label": "西林区", "value": "230705" }, { "label": "翠峦区", "value": "230706" }, { "label": "新青区", "value": "230707" }, { "label": "美溪区", "value": "230708" }, { "label": "金山屯区", "value": "230709" }, { "label": "五营区", "value": "230710" }, { "label": "乌马河区", "value": "230711" }, { "label": "汤旺河区", "value": "230712" }, { "label": "带岭区", "value": "230713" }, { "label": "乌伊岭区", "value": "230714" }, { "label": "红星区", "value": "230715" }, { "label": "上甘岭区", "value": "230716" }, { "label": "嘉荫县", "value": "230722" }, { "label": "铁力市", "value": "230781" }], [{ "label": "向阳区", "value": "230803" }, { "label": "前进区", "value": "230804" }, { "label": "东风区", "value": "230805" }, { "label": "郊区", "value": "230811" }, { "label": "桦南县", "value": "230822" }, { "label": "桦川县", "value": "230826" }, { "label": "汤原县", "value": "230828" }, { "label": "同江市", "value": "230881" }, { "label": "富锦市", "value": "230882" }, { "label": "抚远市", "value": "230883" }], [{ "label": "新兴区", "value": "230902" }, { "label": "桃山区", "value": "230903" }, { "label": "茄子河区", "value": "230904" }, { "label": "勃利县", "value": "230921" }], [{ "label": "东安区", "value": "231002" }, { "label": "阳明区", "value": "231003" }, { "label": "爱民区", "value": "231004" }, { "label": "西安区", "value": "231005" }, { "label": "林口县", "value": "231025" }, { "label": "牡丹江经济技术开发区", "value": "231071" }, { "label": "绥芬河市", "value": "231081" }, { "label": "海林市", "value": "231083" }, { "label": "宁安市", "value": "231084" }, { "label": "穆棱市", "value": "231085" }, { "label": "东宁市", "value": "231086" }], [{ "label": "爱辉区", "value": "231102" }, { "label": "嫩江县", "value": "231121" }, { "label": "逊克县", "value": "231123" }, { "label": "孙吴县", "value": "231124" }, { "label": "北安市", "value": "231181" }, { "label": "五大连池市", "value": "231182" }], [{ "label": "北林区", "value": "231202" }, { "label": "望奎县", "value": "231221" }, { "label": "兰西县", "value": "231222" }, { "label": "青冈县", "value": "231223" }, { "label": "庆安县", "value": "231224" }, { "label": "明水县", "value": "231225" }, { "label": "绥棱县", "value": "231226" }, { "label": "安达市", "value": "231281" }, { "label": "肇东市", "value": "231282" }, { "label": "海伦市", "value": "231283" }], [{ "label": "加格达奇区", "value": "232701" }, { "label": "松岭区", "value": "232702" }, { "label": "新林区", "value": "232703" }, { "label": "呼中区", "value": "232704" }, { "label": "呼玛县", "value": "232721" }, { "label": "塔河县", "value": "232722" }, { "label": "漠河县", "value": "232723" }]], [[{ "label": "黄浦区", "value": "310101" }, { "label": "徐汇区", "value": "310104" }, { "label": "长宁区", "value": "310105" }, { "label": "静安区", "value": "310106" }, { "label": "普陀区", "value": "310107" }, { "label": "虹口区", "value": "310109" }, { "label": "杨浦区", "value": "310110" }, { "label": "闵行区", "value": "310112" }, { "label": "宝山区", "value": "310113" }, { "label": "嘉定区", "value": "310114" }, { "label": "浦东新区", "value": "310115" }, { "label": "金山区", "value": "310116" }, { "label": "松江区", "value": "310117" }, { "label": "青浦区", "value": "310118" }, { "label": "奉贤区", "value": "310120" }, { "label": "崇明区", "value": "310151" }]], [[{ "label": "玄武区", "value": "320102" }, { "label": "秦淮区", "value": "320104" }, { "label": "建邺区", "value": "320105" }, { "label": "鼓楼区", "value": "320106" }, { "label": "浦口区", "value": "320111" }, { "label": "栖霞区", "value": "320113" }, { "label": "雨花台区", "value": "320114" }, { "label": "江宁区", "value": "320115" }, { "label": "六合区", "value": "320116" }, { "label": "溧水区", "value": "320117" }, { "label": "高淳区", "value": "320118" }], [{ "label": "锡山区", "value": "320205" }, { "label": "惠山区", "value": "320206" }, { "label": "滨湖区", "value": "320211" }, { "label": "梁溪区", "value": "320213" }, { "label": "新吴区", "value": "320214" }, { "label": "江阴市", "value": "320281" }, { "label": "宜兴市", "value": "320282" }], [{ "label": "鼓楼区", "value": "320302" }, { "label": "云龙区", "value": "320303" }, { "label": "贾汪区", "value": "320305" }, { "label": "泉山区", "value": "320311" }, { "label": "铜山区", "value": "320312" }, { "label": "丰县", "value": "320321" }, { "label": "沛县", "value": "320322" }, { "label": "睢宁县", "value": "320324" }, { "label": "徐州经济技术开发区", "value": "320371" }, { "label": "新沂市", "value": "320381" }, { "label": "邳州市", "value": "320382" }], [{ "label": "天宁区", "value": "320402" }, { "label": "钟楼区", "value": "320404" }, { "label": "新北区", "value": "320411" }, { "label": "武进区", "value": "320412" }, { "label": "金坛区", "value": "320413" }, { "label": "溧阳市", "value": "320481" }], [{ "label": "虎丘区", "value": "320505" }, { "label": "吴中区", "value": "320506" }, { "label": "相城区", "value": "320507" }, { "label": "姑苏区", "value": "320508" }, { "label": "吴江区", "value": "320509" }, { "label": "苏州工业园区", "value": "320571" }, { "label": "常熟市", "value": "320581" }, { "label": "张家港市", "value": "320582" }, { "label": "昆山市", "value": "320583" }, { "label": "太仓市", "value": "320585" }], [{ "label": "崇川区", "value": "320602" }, { "label": "港闸区", "value": "320611" }, { "label": "通州区", "value": "320612" }, { "label": "海安县", "value": "320621" }, { "label": "如东县", "value": "320623" }, { "label": "南通经济技术开发区", "value": "320671" }, { "label": "启东市", "value": "320681" }, { "label": "如皋市", "value": "320682" }, { "label": "海门市", "value": "320684" }], [{ "label": "连云区", "value": "320703" }, { "label": "海州区", "value": "320706" }, { "label": "赣榆区", "value": "320707" }, { "label": "东海县", "value": "320722" }, { "label": "灌云县", "value": "320723" }, { "label": "灌南县", "value": "320724" }, { "label": "连云港经济技术开发区", "value": "320771" }, { "label": "连云港高新技术产业开发区", "value": "320772" }], [{ "label": "淮安区", "value": "320803" }, { "label": "淮阴区", "value": "320804" }, { "label": "清江浦区", "value": "320812" }, { "label": "洪泽区", "value": "320813" }, { "label": "涟水县", "value": "320826" }, { "label": "盱眙县", "value": "320830" }, { "label": "金湖县", "value": "320831" }, { "label": "淮安经济技术开发区", "value": "320871" }], [{ "label": "亭湖区", "value": "320902" }, { "label": "盐都区", "value": "320903" }, { "label": "大丰区", "value": "320904" }, { "label": "响水县", "value": "320921" }, { "label": "滨海县", "value": "320922" }, { "label": "阜宁县", "value": "320923" }, { "label": "射阳县", "value": "320924" }, { "label": "建湖县", "value": "320925" }, { "label": "盐城经济技术开发区", "value": "320971" }, { "label": "东台市", "value": "320981" }], [{ "label": "广陵区", "value": "321002" }, { "label": "邗江区", "value": "321003" }, { "label": "江都区", "value": "321012" }, { "label": "宝应县", "value": "321023" }, { "label": "扬州经济技术开发区", "value": "321071" }, { "label": "仪征市", "value": "321081" }, { "label": "高邮市", "value": "321084" }], [{ "label": "京口区", "value": "321102" }, { "label": "润州区", "value": "321111" }, { "label": "丹徒区", "value": "321112" }, { "label": "镇江新区", "value": "321171" }, { "label": "丹阳市", "value": "321181" }, { "label": "扬中市", "value": "321182" }, { "label": "句容市", "value": "321183" }], [{ "label": "海陵区", "value": "321202" }, { "label": "高港区", "value": "321203" }, { "label": "姜堰区", "value": "321204" }, { "label": "泰州医药高新技术产业开发区", "value": "321271" }, { "label": "兴化市", "value": "321281" }, { "label": "靖江市", "value": "321282" }, { "label": "泰兴市", "value": "321283" }], [{ "label": "宿城区", "value": "321302" }, { "label": "宿豫区", "value": "321311" }, { "label": "沭阳县", "value": "321322" }, { "label": "泗阳县", "value": "321323" }, { "label": "泗洪县", "value": "321324" }, { "label": "宿迁经济技术开发区", "value": "321371" }]], [[{ "label": "上城区", "value": "330102" }, { "label": "下城区", "value": "330103" }, { "label": "江干区", "value": "330104" }, { "label": "拱墅区", "value": "330105" }, { "label": "西湖区", "value": "330106" }, { "label": "滨江区", "value": "330108" }, { "label": "萧山区", "value": "330109" }, { "label": "余杭区", "value": "330110" }, { "label": "富阳区", "value": "330111" }, { "label": "临安区", "value": "330112" }, { "label": "桐庐县", "value": "330122" }, { "label": "淳安县", "value": "330127" }, { "label": "建德市", "value": "330182" }], [{ "label": "海曙区", "value": "330203" }, { "label": "江北区", "value": "330205" }, { "label": "北仑区", "value": "330206" }, { "label": "镇海区", "value": "330211" }, { "label": "鄞州区", "value": "330212" }, { "label": "奉化区", "value": "330213" }, { "label": "象山县", "value": "330225" }, { "label": "宁海县", "value": "330226" }, { "label": "余姚市", "value": "330281" }, { "label": "慈溪市", "value": "330282" }], [{ "label": "鹿城区", "value": "330302" }, { "label": "龙湾区", "value": "330303" }, { "label": "瓯海区", "value": "330304" }, { "label": "洞头区", "value": "330305" }, { "label": "永嘉县", "value": "330324" }, { "label": "平阳县", "value": "330326" }, { "label": "苍南县", "value": "330327" }, { "label": "文成县", "value": "330328" }, { "label": "泰顺县", "value": "330329" }, { "label": "温州经济技术开发区", "value": "330371" }, { "label": "瑞安市", "value": "330381" }, { "label": "乐清市", "value": "330382" }], [{ "label": "南湖区", "value": "330402" }, { "label": "秀洲区", "value": "330411" }, { "label": "嘉善县", "value": "330421" }, { "label": "海盐县", "value": "330424" }, { "label": "海宁市", "value": "330481" }, { "label": "平湖市", "value": "330482" }, { "label": "桐乡市", "value": "330483" }], [{ "label": "吴兴区", "value": "330502" }, { "label": "南浔区", "value": "330503" }, { "label": "德清县", "value": "330521" }, { "label": "长兴县", "value": "330522" }, { "label": "安吉县", "value": "330523" }], [{ "label": "越城区", "value": "330602" }, { "label": "柯桥区", "value": "330603" }, { "label": "上虞区", "value": "330604" }, { "label": "新昌县", "value": "330624" }, { "label": "诸暨市", "value": "330681" }, { "label": "嵊州市", "value": "330683" }], [{ "label": "婺城区", "value": "330702" }, { "label": "金东区", "value": "330703" }, { "label": "武义县", "value": "330723" }, { "label": "浦江县", "value": "330726" }, { "label": "磐安县", "value": "330727" }, { "label": "兰溪市", "value": "330781" }, { "label": "义乌市", "value": "330782" }, { "label": "东阳市", "value": "330783" }, { "label": "永康市", "value": "330784" }], [{ "label": "柯城区", "value": "330802" }, { "label": "衢江区", "value": "330803" }, { "label": "常山县", "value": "330822" }, { "label": "开化县", "value": "330824" }, { "label": "龙游县", "value": "330825" }, { "label": "江山市", "value": "330881" }], [{ "label": "定海区", "value": "330902" }, { "label": "普陀区", "value": "330903" }, { "label": "岱山县", "value": "330921" }, { "label": "嵊泗县", "value": "330922" }], [{ "label": "椒江区", "value": "331002" }, { "label": "黄岩区", "value": "331003" }, { "label": "路桥区", "value": "331004" }, { "label": "三门县", "value": "331022" }, { "label": "天台县", "value": "331023" }, { "label": "仙居县", "value": "331024" }, { "label": "温岭市", "value": "331081" }, { "label": "临海市", "value": "331082" }, { "label": "玉环市", "value": "331083" }], [{ "label": "莲都区", "value": "331102" }, { "label": "青田县", "value": "331121" }, { "label": "缙云县", "value": "331122" }, { "label": "遂昌县", "value": "331123" }, { "label": "松阳县", "value": "331124" }, { "label": "云和县", "value": "331125" }, { "label": "庆元县", "value": "331126" }, { "label": "景宁畲族自治县", "value": "331127" }, { "label": "龙泉市", "value": "331181" }]], [[{ "label": "瑶海区", "value": "340102" }, { "label": "庐阳区", "value": "340103" }, { "label": "蜀山区", "value": "340104" }, { "label": "包河区", "value": "340111" }, { "label": "长丰县", "value": "340121" }, { "label": "肥东县", "value": "340122" }, { "label": "肥西县", "value": "340123" }, { "label": "庐江县", "value": "340124" }, { "label": "合肥高新技术产业开发区", "value": "340171" }, { "label": "合肥经济技术开发区", "value": "340172" }, { "label": "合肥新站高新技术产业开发区", "value": "340173" }, { "label": "巢湖市", "value": "340181" }], [{ "label": "镜湖区", "value": "340202" }, { "label": "弋江区", "value": "340203" }, { "label": "鸠江区", "value": "340207" }, { "label": "三山区", "value": "340208" }, { "label": "芜湖县", "value": "340221" }, { "label": "繁昌县", "value": "340222" }, { "label": "南陵县", "value": "340223" }, { "label": "无为县", "value": "340225" }, { "label": "芜湖经济技术开发区", "value": "340271" }, { "label": "安徽芜湖长江大桥经济开发区", "value": "340272" }], [{ "label": "龙子湖区", "value": "340302" }, { "label": "蚌山区", "value": "340303" }, { "label": "禹会区", "value": "340304" }, { "label": "淮上区", "value": "340311" }, { "label": "怀远县", "value": "340321" }, { "label": "五河县", "value": "340322" }, { "label": "固镇县", "value": "340323" }, { "label": "蚌埠市高新技术开发区", "value": "340371" }, { "label": "蚌埠市经济开发区", "value": "340372" }], [{ "label": "大通区", "value": "340402" }, { "label": "田家庵区", "value": "340403" }, { "label": "谢家集区", "value": "340404" }, { "label": "八公山区", "value": "340405" }, { "label": "潘集区", "value": "340406" }, { "label": "凤台县", "value": "340421" }, { "label": "寿县", "value": "340422" }], [{ "label": "花山区", "value": "340503" }, { "label": "雨山区", "value": "340504" }, { "label": "博望区", "value": "340506" }, { "label": "当涂县", "value": "340521" }, { "label": "含山县", "value": "340522" }, { "label": "和县", "value": "340523" }], [{ "label": "杜集区", "value": "340602" }, { "label": "相山区", "value": "340603" }, { "label": "烈山区", "value": "340604" }, { "label": "濉溪县", "value": "340621" }], [{ "label": "铜官区", "value": "340705" }, { "label": "义安区", "value": "340706" }, { "label": "郊区", "value": "340711" }, { "label": "枞阳县", "value": "340722" }], [{ "label": "迎江区", "value": "340802" }, { "label": "大观区", "value": "340803" }, { "label": "宜秀区", "value": "340811" }, { "label": "怀宁县", "value": "340822" }, { "label": "潜山县", "value": "340824" }, { "label": "太湖县", "value": "340825" }, { "label": "宿松县", "value": "340826" }, { "label": "望江县", "value": "340827" }, { "label": "岳西县", "value": "340828" }, { "label": "安徽安庆经济开发区", "value": "340871" }, { "label": "桐城市", "value": "340881" }], [{ "label": "屯溪区", "value": "341002" }, { "label": "黄山区", "value": "341003" }, { "label": "徽州区", "value": "341004" }, { "label": "歙县", "value": "341021" }, { "label": "休宁县", "value": "341022" }, { "label": "黟县", "value": "341023" }, { "label": "祁门县", "value": "341024" }], [{ "label": "琅琊区", "value": "341102" }, { "label": "南谯区", "value": "341103" }, { "label": "来安县", "value": "341122" }, { "label": "全椒县", "value": "341124" }, { "label": "定远县", "value": "341125" }, { "label": "凤阳县", "value": "341126" }, { "label": "苏滁现代产业园", "value": "341171" }, { "label": "滁州经济技术开发区", "value": "341172" }, { "label": "天长市", "value": "341181" }, { "label": "明光市", "value": "341182" }], [{ "label": "颍州区", "value": "341202" }, { "label": "颍东区", "value": "341203" }, { "label": "颍泉区", "value": "341204" }, { "label": "临泉县", "value": "341221" }, { "label": "太和县", "value": "341222" }, { "label": "阜南县", "value": "341225" }, { "label": "颍上县", "value": "341226" }, { "label": "阜阳合肥现代产业园区", "value": "341271" }, { "label": "阜阳经济技术开发区", "value": "341272" }, { "label": "界首市", "value": "341282" }], [{ "label": "埇桥区", "value": "341302" }, { "label": "砀山县", "value": "341321" }, { "label": "萧县", "value": "341322" }, { "label": "灵璧县", "value": "341323" }, { "label": "泗县", "value": "341324" }, { "label": "宿州马鞍山现代产业园区", "value": "341371" }, { "label": "宿州经济技术开发区", "value": "341372" }], [{ "label": "金安区", "value": "341502" }, { "label": "裕安区", "value": "341503" }, { "label": "叶集区", "value": "341504" }, { "label": "霍邱县", "value": "341522" }, { "label": "舒城县", "value": "341523" }, { "label": "金寨县", "value": "341524" }, { "label": "霍山县", "value": "341525" }], [{ "label": "谯城区", "value": "341602" }, { "label": "涡阳县", "value": "341621" }, { "label": "蒙城县", "value": "341622" }, { "label": "利辛县", "value": "341623" }], [{ "label": "贵池区", "value": "341702" }, { "label": "东至县", "value": "341721" }, { "label": "石台县", "value": "341722" }, { "label": "青阳县", "value": "341723" }], [{ "label": "宣州区", "value": "341802" }, { "label": "郎溪县", "value": "341821" }, { "label": "广德县", "value": "341822" }, { "label": "泾县", "value": "341823" }, { "label": "绩溪县", "value": "341824" }, { "label": "旌德县", "value": "341825" }, { "label": "宣城市经济开发区", "value": "341871" }, { "label": "宁国市", "value": "341881" }]], [[{ "label": "鼓楼区", "value": "350102" }, { "label": "台江区", "value": "350103" }, { "label": "仓山区", "value": "350104" }, { "label": "马尾区", "value": "350105" }, { "label": "晋安区", "value": "350111" }, { "label": "闽侯县", "value": "350121" }, { "label": "连江县", "value": "350122" }, { "label": "罗源县", "value": "350123" }, { "label": "闽清县", "value": "350124" }, { "label": "永泰县", "value": "350125" }, { "label": "平潭县", "value": "350128" }, { "label": "福清市", "value": "350181" }, { "label": "长乐市", "value": "350182" }], [{ "label": "思明区", "value": "350203" }, { "label": "海沧区", "value": "350205" }, { "label": "湖里区", "value": "350206" }, { "label": "集美区", "value": "350211" }, { "label": "同安区", "value": "350212" }, { "label": "翔安区", "value": "350213" }], [{ "label": "城厢区", "value": "350302" }, { "label": "涵江区", "value": "350303" }, { "label": "荔城区", "value": "350304" }, { "label": "秀屿区", "value": "350305" }, { "label": "仙游县", "value": "350322" }], [{ "label": "梅列区", "value": "350402" }, { "label": "三元区", "value": "350403" }, { "label": "明溪县", "value": "350421" }, { "label": "清流县", "value": "350423" }, { "label": "宁化县", "value": "350424" }, { "label": "大田县", "value": "350425" }, { "label": "尤溪县", "value": "350426" }, { "label": "沙县", "value": "350427" }, { "label": "将乐县", "value": "350428" }, { "label": "泰宁县", "value": "350429" }, { "label": "建宁县", "value": "350430" }, { "label": "永安市", "value": "350481" }], [{ "label": "鲤城区", "value": "350502" }, { "label": "丰泽区", "value": "350503" }, { "label": "洛江区", "value": "350504" }, { "label": "泉港区", "value": "350505" }, { "label": "惠安县", "value": "350521" }, { "label": "安溪县", "value": "350524" }, { "label": "永春县", "value": "350525" }, { "label": "德化县", "value": "350526" }, { "label": "金门县", "value": "350527" }, { "label": "石狮市", "value": "350581" }, { "label": "晋江市", "value": "350582" }, { "label": "南安市", "value": "350583" }], [{ "label": "芗城区", "value": "350602" }, { "label": "龙文区", "value": "350603" }, { "label": "云霄县", "value": "350622" }, { "label": "漳浦县", "value": "350623" }, { "label": "诏安县", "value": "350624" }, { "label": "长泰县", "value": "350625" }, { "label": "东山县", "value": "350626" }, { "label": "南靖县", "value": "350627" }, { "label": "平和县", "value": "350628" }, { "label": "华安县", "value": "350629" }, { "label": "龙海市", "value": "350681" }], [{ "label": "延平区", "value": "350702" }, { "label": "建阳区", "value": "350703" }, { "label": "顺昌县", "value": "350721" }, { "label": "浦城县", "value": "350722" }, { "label": "光泽县", "value": "350723" }, { "label": "松溪县", "value": "350724" }, { "label": "政和县", "value": "350725" }, { "label": "邵武市", "value": "350781" }, { "label": "武夷山市", "value": "350782" }, { "label": "建瓯市", "value": "350783" }], [{ "label": "新罗区", "value": "350802" }, { "label": "永定区", "value": "350803" }, { "label": "长汀县", "value": "350821" }, { "label": "上杭县", "value": "350823" }, { "label": "武平县", "value": "350824" }, { "label": "连城县", "value": "350825" }, { "label": "漳平市", "value": "350881" }], [{ "label": "蕉城区", "value": "350902" }, { "label": "霞浦县", "value": "350921" }, { "label": "古田县", "value": "350922" }, { "label": "屏南县", "value": "350923" }, { "label": "寿宁县", "value": "350924" }, { "label": "周宁县", "value": "350925" }, { "label": "柘荣县", "value": "350926" }, { "label": "福安市", "value": "350981" }, { "label": "福鼎市", "value": "350982" }]], [[{ "label": "东湖区", "value": "360102" }, { "label": "西湖区", "value": "360103" }, { "label": "青云谱区", "value": "360104" }, { "label": "湾里区", "value": "360105" }, { "label": "青山湖区", "value": "360111" }, { "label": "新建区", "value": "360112" }, { "label": "南昌县", "value": "360121" }, { "label": "安义县", "value": "360123" }, { "label": "进贤县", "value": "360124" }], [{ "label": "昌江区", "value": "360202" }, { "label": "珠山区", "value": "360203" }, { "label": "浮梁县", "value": "360222" }, { "label": "乐平市", "value": "360281" }], [{ "label": "安源区", "value": "360302" }, { "label": "湘东区", "value": "360313" }, { "label": "莲花县", "value": "360321" }, { "label": "上栗县", "value": "360322" }, { "label": "芦溪县", "value": "360323" }], [{ "label": "濂溪区", "value": "360402" }, { "label": "浔阳区", "value": "360403" }, { "label": "柴桑区", "value": "360404" }, { "label": "武宁县", "value": "360423" }, { "label": "修水县", "value": "360424" }, { "label": "永修县", "value": "360425" }, { "label": "德安县", "value": "360426" }, { "label": "都昌县", "value": "360428" }, { "label": "湖口县", "value": "360429" }, { "label": "彭泽县", "value": "360430" }, { "label": "瑞昌市", "value": "360481" }, { "label": "共青城市", "value": "360482" }, { "label": "庐山市", "value": "360483" }], [{ "label": "渝水区", "value": "360502" }, { "label": "分宜县", "value": "360521" }], [{ "label": "月湖区", "value": "360602" }, { "label": "余江县", "value": "360622" }, { "label": "贵溪市", "value": "360681" }], [{ "label": "章贡区", "value": "360702" }, { "label": "南康区", "value": "360703" }, { "label": "赣县区", "value": "360704" }, { "label": "信丰县", "value": "360722" }, { "label": "大余县", "value": "360723" }, { "label": "上犹县", "value": "360724" }, { "label": "崇义县", "value": "360725" }, { "label": "安远县", "value": "360726" }, { "label": "龙南县", "value": "360727" }, { "label": "定南县", "value": "360728" }, { "label": "全南县", "value": "360729" }, { "label": "宁都县", "value": "360730" }, { "label": "于都县", "value": "360731" }, { "label": "兴国县", "value": "360732" }, { "label": "会昌县", "value": "360733" }, { "label": "寻乌县", "value": "360734" }, { "label": "石城县", "value": "360735" }, { "label": "瑞金市", "value": "360781" }], [{ "label": "吉州区", "value": "360802" }, { "label": "青原区", "value": "360803" }, { "label": "吉安县", "value": "360821" }, { "label": "吉水县", "value": "360822" }, { "label": "峡江县", "value": "360823" }, { "label": "新干县", "value": "360824" }, { "label": "永丰县", "value": "360825" }, { "label": "泰和县", "value": "360826" }, { "label": "遂川县", "value": "360827" }, { "label": "万安县", "value": "360828" }, { "label": "安福县", "value": "360829" }, { "label": "永新县", "value": "360830" }, { "label": "井冈山市", "value": "360881" }], [{ "label": "袁州区", "value": "360902" }, { "label": "奉新县", "value": "360921" }, { "label": "万载县", "value": "360922" }, { "label": "上高县", "value": "360923" }, { "label": "宜丰县", "value": "360924" }, { "label": "靖安县", "value": "360925" }, { "label": "铜鼓县", "value": "360926" }, { "label": "丰城市", "value": "360981" }, { "label": "樟树市", "value": "360982" }, { "label": "高安市", "value": "360983" }], [{ "label": "临川区", "value": "361002" }, { "label": "东乡区", "value": "361003" }, { "label": "南城县", "value": "361021" }, { "label": "黎川县", "value": "361022" }, { "label": "南丰县", "value": "361023" }, { "label": "崇仁县", "value": "361024" }, { "label": "乐安县", "value": "361025" }, { "label": "宜黄县", "value": "361026" }, { "label": "金溪县", "value": "361027" }, { "label": "资溪县", "value": "361028" }, { "label": "广昌县", "value": "361030" }], [{ "label": "信州区", "value": "361102" }, { "label": "广丰区", "value": "361103" }, { "label": "上饶县", "value": "361121" }, { "label": "玉山县", "value": "361123" }, { "label": "铅山县", "value": "361124" }, { "label": "横峰县", "value": "361125" }, { "label": "弋阳县", "value": "361126" }, { "label": "余干县", "value": "361127" }, { "label": "鄱阳县", "value": "361128" }, { "label": "万年县", "value": "361129" }, { "label": "婺源县", "value": "361130" }, { "label": "德兴市", "value": "361181" }]], [[{ "label": "历下区", "value": "370102" }, { "label": "市中区", "value": "370103" }, { "label": "槐荫区", "value": "370104" }, { "label": "天桥区", "value": "370105" }, { "label": "历城区", "value": "370112" }, { "label": "长清区", "value": "370113" }, { "label": "章丘区", "value": "370114" }, { "label": "平阴县", "value": "370124" }, { "label": "济阳县", "value": "370125" }, { "label": "商河县", "value": "370126" }, { "label": "济南高新技术产业开发区", "value": "370171" }], [{ "label": "市南区", "value": "370202" }, { "label": "市北区", "value": "370203" }, { "label": "黄岛区", "value": "370211" }, { "label": "崂山区", "value": "370212" }, { "label": "李沧区", "value": "370213" }, { "label": "城阳区", "value": "370214" }, { "label": "即墨区", "value": "370215" }, { "label": "青岛高新技术产业开发区", "value": "370271" }, { "label": "胶州市", "value": "370281" }, { "label": "平度市", "value": "370283" }, { "label": "莱西市", "value": "370285" }], [{ "label": "淄川区", "value": "370302" }, { "label": "张店区", "value": "370303" }, { "label": "博山区", "value": "370304" }, { "label": "临淄区", "value": "370305" }, { "label": "周村区", "value": "370306" }, { "label": "桓台县", "value": "370321" }, { "label": "高青县", "value": "370322" }, { "label": "沂源县", "value": "370323" }], [{ "label": "市中区", "value": "370402" }, { "label": "薛城区", "value": "370403" }, { "label": "峄城区", "value": "370404" }, { "label": "台儿庄区", "value": "370405" }, { "label": "山亭区", "value": "370406" }, { "label": "滕州市", "value": "370481" }], [{ "label": "东营区", "value": "370502" }, { "label": "河口区", "value": "370503" }, { "label": "垦利区", "value": "370505" }, { "label": "利津县", "value": "370522" }, { "label": "广饶县", "value": "370523" }, { "label": "东营经济技术开发区", "value": "370571" }, { "label": "东营港经济开发区", "value": "370572" }], [{ "label": "芝罘区", "value": "370602" }, { "label": "福山区", "value": "370611" }, { "label": "牟平区", "value": "370612" }, { "label": "莱山区", "value": "370613" }, { "label": "长岛县", "value": "370634" }, { "label": "烟台高新技术产业开发区", "value": "370671" }, { "label": "烟台经济技术开发区", "value": "370672" }, { "label": "龙口市", "value": "370681" }, { "label": "莱阳市", "value": "370682" }, { "label": "莱州市", "value": "370683" }, { "label": "蓬莱市", "value": "370684" }, { "label": "招远市", "value": "370685" }, { "label": "栖霞市", "value": "370686" }, { "label": "海阳市", "value": "370687" }], [{ "label": "潍城区", "value": "370702" }, { "label": "寒亭区", "value": "370703" }, { "label": "坊子区", "value": "370704" }, { "label": "奎文区", "value": "370705" }, { "label": "临朐县", "value": "370724" }, { "label": "昌乐县", "value": "370725" }, { "label": "潍坊滨海经济技术开发区", "value": "370772" }, { "label": "青州市", "value": "370781" }, { "label": "诸城市", "value": "370782" }, { "label": "寿光市", "value": "370783" }, { "label": "安丘市", "value": "370784" }, { "label": "高密市", "value": "370785" }, { "label": "昌邑市", "value": "370786" }], [{ "label": "任城区", "value": "370811" }, { "label": "兖州区", "value": "370812" }, { "label": "微山县", "value": "370826" }, { "label": "鱼台县", "value": "370827" }, { "label": "金乡县", "value": "370828" }, { "label": "嘉祥县", "value": "370829" }, { "label": "汶上县", "value": "370830" }, { "label": "泗水县", "value": "370831" }, { "label": "梁山县", "value": "370832" }, { "label": "济宁高新技术产业开发区", "value": "370871" }, { "label": "曲阜市", "value": "370881" }, { "label": "邹城市", "value": "370883" }], [{ "label": "泰山区", "value": "370902" }, { "label": "岱岳区", "value": "370911" }, { "label": "宁阳县", "value": "370921" }, { "label": "东平县", "value": "370923" }, { "label": "新泰市", "value": "370982" }, { "label": "肥城市", "value": "370983" }], [{ "label": "环翠区", "value": "371002" }, { "label": "文登区", "value": "371003" }, { "label": "威海火炬高技术产业开发区", "value": "371071" }, { "label": "威海经济技术开发区", "value": "371072" }, { "label": "威海临港经济技术开发区", "value": "371073" }, { "label": "荣成市", "value": "371082" }, { "label": "乳山市", "value": "371083" }], [{ "label": "东港区", "value": "371102" }, { "label": "岚山区", "value": "371103" }, { "label": "五莲县", "value": "371121" }, { "label": "莒县", "value": "371122" }, { "label": "日照经济技术开发区", "value": "371171" }, { "label": "日照国际海洋城", "value": "371172" }], [{ "label": "莱城区", "value": "371202" }, { "label": "钢城区", "value": "371203" }], [{ "label": "兰山区", "value": "371302" }, { "label": "罗庄区", "value": "371311" }, { "label": "河东区", "value": "371312" }, { "label": "沂南县", "value": "371321" }, { "label": "郯城县", "value": "371322" }, { "label": "沂水县", "value": "371323" }, { "label": "兰陵县", "value": "371324" }, { "label": "费县", "value": "371325" }, { "label": "平邑县", "value": "371326" }, { "label": "莒南县", "value": "371327" }, { "label": "蒙阴县", "value": "371328" }, { "label": "临沭县", "value": "371329" }, { "label": "临沂高新技术产业开发区", "value": "371371" }, { "label": "临沂经济技术开发区", "value": "371372" }, { "label": "临沂临港经济开发区", "value": "371373" }], [{ "label": "德城区", "value": "371402" }, { "label": "陵城区", "value": "371403" }, { "label": "宁津县", "value": "371422" }, { "label": "庆云县", "value": "371423" }, { "label": "临邑县", "value": "371424" }, { "label": "齐河县", "value": "371425" }, { "label": "平原县", "value": "371426" }, { "label": "夏津县", "value": "371427" }, { "label": "武城县", "value": "371428" }, { "label": "德州经济技术开发区", "value": "371471" }, { "label": "德州运河经济开发区", "value": "371472" }, { "label": "乐陵市", "value": "371481" }, { "label": "禹城市", "value": "371482" }], [{ "label": "东昌府区", "value": "371502" }, { "label": "阳谷县", "value": "371521" }, { "label": "莘县", "value": "371522" }, { "label": "茌平县", "value": "371523" }, { "label": "东阿县", "value": "371524" }, { "label": "冠县", "value": "371525" }, { "label": "高唐县", "value": "371526" }, { "label": "临清市", "value": "371581" }], [{ "label": "滨城区", "value": "371602" }, { "label": "沾化区", "value": "371603" }, { "label": "惠民县", "value": "371621" }, { "label": "阳信县", "value": "371622" }, { "label": "无棣县", "value": "371623" }, { "label": "博兴县", "value": "371625" }, { "label": "邹平县", "value": "371626" }], [{ "label": "牡丹区", "value": "371702" }, { "label": "定陶区", "value": "371703" }, { "label": "曹县", "value": "371721" }, { "label": "单县", "value": "371722" }, { "label": "成武县", "value": "371723" }, { "label": "巨野县", "value": "371724" }, { "label": "郓城县", "value": "371725" }, { "label": "鄄城县", "value": "371726" }, { "label": "东明县", "value": "371728" }, { "label": "菏泽经济技术开发区", "value": "371771" }, { "label": "菏泽高新技术开发区", "value": "371772" }]], [[{ "label": "中原区", "value": "410102" }, { "label": "二七区", "value": "410103" }, { "label": "管城回族区", "value": "410104" }, { "label": "金水区", "value": "410105" }, { "label": "上街区", "value": "410106" }, { "label": "惠济区", "value": "410108" }, { "label": "中牟县", "value": "410122" }, { "label": "郑州经济技术开发区", "value": "410171" }, { "label": "郑州高新技术产业开发区", "value": "410172" }, { "label": "郑州航空港经济综合实验区", "value": "410173" }, { "label": "巩义市", "value": "410181" }, { "label": "荥阳市", "value": "410182" }, { "label": "新密市", "value": "410183" }, { "label": "新郑市", "value": "410184" }, { "label": "登封市", "value": "410185" }], [{ "label": "龙亭区", "value": "410202" }, { "label": "顺河回族区", "value": "410203" }, { "label": "鼓楼区", "value": "410204" }, { "label": "禹王台区", "value": "410205" }, { "label": "祥符区", "value": "410212" }, { "label": "杞县", "value": "410221" }, { "label": "通许县", "value": "410222" }, { "label": "尉氏县", "value": "410223" }, { "label": "兰考县", "value": "410225" }], [{ "label": "老城区", "value": "410302" }, { "label": "西工区", "value": "410303" }, { "label": "瀍河回族区", "value": "410304" }, { "label": "涧西区", "value": "410305" }, { "label": "吉利区", "value": "410306" }, { "label": "洛龙区", "value": "410311" }, { "label": "孟津县", "value": "410322" }, { "label": "新安县", "value": "410323" }, { "label": "栾川县", "value": "410324" }, { "label": "嵩县", "value": "410325" }, { "label": "汝阳县", "value": "410326" }, { "label": "宜阳县", "value": "410327" }, { "label": "洛宁县", "value": "410328" }, { "label": "伊川县", "value": "410329" }, { "label": "洛阳高新技术产业开发区", "value": "410371" }, { "label": "偃师市", "value": "410381" }], [{ "label": "新华区", "value": "410402" }, { "label": "卫东区", "value": "410403" }, { "label": "石龙区", "value": "410404" }, { "label": "湛河区", "value": "410411" }, { "label": "宝丰县", "value": "410421" }, { "label": "叶县", "value": "410422" }, { "label": "鲁山县", "value": "410423" }, { "label": "郏县", "value": "410425" }, { "label": "平顶山高新技术产业开发区", "value": "410471" }, { "label": "平顶山市新城区", "value": "410472" }, { "label": "舞钢市", "value": "410481" }, { "label": "汝州市", "value": "410482" }], [{ "label": "文峰区", "value": "410502" }, { "label": "北关区", "value": "410503" }, { "label": "殷都区", "value": "410505" }, { "label": "龙安区", "value": "410506" }, { "label": "安阳县", "value": "410522" }, { "label": "汤阴县", "value": "410523" }, { "label": "滑县", "value": "410526" }, { "label": "内黄县", "value": "410527" }, { "label": "安阳高新技术产业开发区", "value": "410571" }, { "label": "林州市", "value": "410581" }], [{ "label": "鹤山区", "value": "410602" }, { "label": "山城区", "value": "410603" }, { "label": "淇滨区", "value": "410611" }, { "label": "浚县", "value": "410621" }, { "label": "淇县", "value": "410622" }, { "label": "鹤壁经济技术开发区", "value": "410671" }], [{ "label": "红旗区", "value": "410702" }, { "label": "卫滨区", "value": "410703" }, { "label": "凤泉区", "value": "410704" }, { "label": "牧野区", "value": "410711" }, { "label": "新乡县", "value": "410721" }, { "label": "获嘉县", "value": "410724" }, { "label": "原阳县", "value": "410725" }, { "label": "延津县", "value": "410726" }, { "label": "封丘县", "value": "410727" }, { "label": "长垣县", "value": "410728" }, { "label": "新乡高新技术产业开发区", "value": "410771" }, { "label": "新乡经济技术开发区", "value": "410772" }, { "label": "新乡市平原城乡一体化示范区", "value": "410773" }, { "label": "卫辉市", "value": "410781" }, { "label": "辉县市", "value": "410782" }], [{ "label": "解放区", "value": "410802" }, { "label": "中站区", "value": "410803" }, { "label": "马村区", "value": "410804" }, { "label": "山阳区", "value": "410811" }, { "label": "修武县", "value": "410821" }, { "label": "博爱县", "value": "410822" }, { "label": "武陟县", "value": "410823" }, { "label": "温县", "value": "410825" }, { "label": "焦作城乡一体化示范区", "value": "410871" }, { "label": "沁阳市", "value": "410882" }, { "label": "孟州市", "value": "410883" }], [{ "label": "华龙区", "value": "410902" }, { "label": "清丰县", "value": "410922" }, { "label": "南乐县", "value": "410923" }, { "label": "范县", "value": "410926" }, { "label": "台前县", "value": "410927" }, { "label": "濮阳县", "value": "410928" }, { "label": "河南濮阳工业园区", "value": "410971" }, { "label": "濮阳经济技术开发区", "value": "410972" }], [{ "label": "魏都区", "value": "411002" }, { "label": "建安区", "value": "411003" }, { "label": "鄢陵县", "value": "411024" }, { "label": "襄城县", "value": "411025" }, { "label": "许昌经济技术开发区", "value": "411071" }, { "label": "禹州市", "value": "411081" }, { "label": "长葛市", "value": "411082" }], [{ "label": "源汇区", "value": "411102" }, { "label": "郾城区", "value": "411103" }, { "label": "召陵区", "value": "411104" }, { "label": "舞阳县", "value": "411121" }, { "label": "临颍县", "value": "411122" }, { "label": "漯河经济技术开发区", "value": "411171" }], [{ "label": "湖滨区", "value": "411202" }, { "label": "陕州区", "value": "411203" }, { "label": "渑池县", "value": "411221" }, { "label": "卢氏县", "value": "411224" }, { "label": "河南三门峡经济开发区", "value": "411271" }, { "label": "义马市", "value": "411281" }, { "label": "灵宝市", "value": "411282" }], [{ "label": "宛城区", "value": "411302" }, { "label": "卧龙区", "value": "411303" }, { "label": "南召县", "value": "411321" }, { "label": "方城县", "value": "411322" }, { "label": "西峡县", "value": "411323" }, { "label": "镇平县", "value": "411324" }, { "label": "内乡县", "value": "411325" }, { "label": "淅川县", "value": "411326" }, { "label": "社旗县", "value": "411327" }, { "label": "唐河县", "value": "411328" }, { "label": "新野县", "value": "411329" }, { "label": "桐柏县", "value": "411330" }, { "label": "南阳高新技术产业开发区", "value": "411371" }, { "label": "南阳市城乡一体化示范区", "value": "411372" }, { "label": "邓州市", "value": "411381" }], [{ "label": "梁园区", "value": "411402" }, { "label": "睢阳区", "value": "411403" }, { "label": "民权县", "value": "411421" }, { "label": "睢县", "value": "411422" }, { "label": "宁陵县", "value": "411423" }, { "label": "柘城县", "value": "411424" }, { "label": "虞城县", "value": "411425" }, { "label": "夏邑县", "value": "411426" }, { "label": "豫东综合物流产业聚集区", "value": "411471" }, { "label": "河南商丘经济开发区", "value": "411472" }, { "label": "永城市", "value": "411481" }], [{ "label": "浉河区", "value": "411502" }, { "label": "平桥区", "value": "411503" }, { "label": "罗山县", "value": "411521" }, { "label": "光山县", "value": "411522" }, { "label": "新县", "value": "411523" }, { "label": "商城县", "value": "411524" }, { "label": "固始县", "value": "411525" }, { "label": "潢川县", "value": "411526" }, { "label": "淮滨县", "value": "411527" }, { "label": "息县", "value": "411528" }, { "label": "信阳高新技术产业开发区", "value": "411571" }], [{ "label": "川汇区", "value": "411602" }, { "label": "扶沟县", "value": "411621" }, { "label": "西华县", "value": "411622" }, { "label": "商水县", "value": "411623" }, { "label": "沈丘县", "value": "411624" }, { "label": "郸城县", "value": "411625" }, { "label": "淮阳县", "value": "411626" }, { "label": "太康县", "value": "411627" }, { "label": "鹿邑县", "value": "411628" }, { "label": "河南周口经济开发区", "value": "411671" }, { "label": "项城市", "value": "411681" }], [{ "label": "驿城区", "value": "411702" }, { "label": "西平县", "value": "411721" }, { "label": "上蔡县", "value": "411722" }, { "label": "平舆县", "value": "411723" }, { "label": "正阳县", "value": "411724" }, { "label": "确山县", "value": "411725" }, { "label": "泌阳县", "value": "411726" }, { "label": "汝南县", "value": "411727" }, { "label": "遂平县", "value": "411728" }, { "label": "新蔡县", "value": "411729" }, { "label": "河南驻马店经济开发区", "value": "411771" }], [{ "label": "济源市", "value": "419001" }]], [[{ "label": "江岸区", "value": "420102" }, { "label": "江汉区", "value": "420103" }, { "label": "硚口区", "value": "420104" }, { "label": "汉阳区", "value": "420105" }, { "label": "武昌区", "value": "420106" }, { "label": "青山区", "value": "420107" }, { "label": "洪山区", "value": "420111" }, { "label": "东西湖区", "value": "420112" }, { "label": "汉南区", "value": "420113" }, { "label": "蔡甸区", "value": "420114" }, { "label": "江夏区", "value": "420115" }, { "label": "黄陂区", "value": "420116" }, { "label": "新洲区", "value": "420117" }], [{ "label": "黄石港区", "value": "420202" }, { "label": "西塞山区", "value": "420203" }, { "label": "下陆区", "value": "420204" }, { "label": "铁山区", "value": "420205" }, { "label": "阳新县", "value": "420222" }, { "label": "大冶市", "value": "420281" }], [{ "label": "茅箭区", "value": "420302" }, { "label": "张湾区", "value": "420303" }, { "label": "郧阳区", "value": "420304" }, { "label": "郧西县", "value": "420322" }, { "label": "竹山县", "value": "420323" }, { "label": "竹溪县", "value": "420324" }, { "label": "房县", "value": "420325" }, { "label": "丹江口市", "value": "420381" }], [{ "label": "西陵区", "value": "420502" }, { "label": "伍家岗区", "value": "420503" }, { "label": "点军区", "value": "420504" }, { "label": "猇亭区", "value": "420505" }, { "label": "夷陵区", "value": "420506" }, { "label": "远安县", "value": "420525" }, { "label": "兴山县", "value": "420526" }, { "label": "秭归县", "value": "420527" }, { "label": "长阳土家族自治县", "value": "420528" }, { "label": "五峰土家族自治县", "value": "420529" }, { "label": "宜都市", "value": "420581" }, { "label": "当阳市", "value": "420582" }, { "label": "枝江市", "value": "420583" }], [{ "label": "襄城区", "value": "420602" }, { "label": "樊城区", "value": "420606" }, { "label": "襄州区", "value": "420607" }, { "label": "南漳县", "value": "420624" }, { "label": "谷城县", "value": "420625" }, { "label": "保康县", "value": "420626" }, { "label": "老河口市", "value": "420682" }, { "label": "枣阳市", "value": "420683" }, { "label": "宜城市", "value": "420684" }], [{ "label": "梁子湖区", "value": "420702" }, { "label": "华容区", "value": "420703" }, { "label": "鄂城区", "value": "420704" }], [{ "label": "东宝区", "value": "420802" }, { "label": "掇刀区", "value": "420804" }, { "label": "京山县", "value": "420821" }, { "label": "沙洋县", "value": "420822" }, { "label": "钟祥市", "value": "420881" }], [{ "label": "孝南区", "value": "420902" }, { "label": "孝昌县", "value": "420921" }, { "label": "大悟县", "value": "420922" }, { "label": "云梦县", "value": "420923" }, { "label": "应城市", "value": "420981" }, { "label": "安陆市", "value": "420982" }, { "label": "汉川市", "value": "420984" }], [{ "label": "沙市区", "value": "421002" }, { "label": "荆州区", "value": "421003" }, { "label": "公安县", "value": "421022" }, { "label": "监利县", "value": "421023" }, { "label": "江陵县", "value": "421024" }, { "label": "荆州经济技术开发区", "value": "421071" }, { "label": "石首市", "value": "421081" }, { "label": "洪湖市", "value": "421083" }, { "label": "松滋市", "value": "421087" }], [{ "label": "黄州区", "value": "421102" }, { "label": "团风县", "value": "421121" }, { "label": "红安县", "value": "421122" }, { "label": "罗田县", "value": "421123" }, { "label": "英山县", "value": "421124" }, { "label": "浠水县", "value": "421125" }, { "label": "蕲春县", "value": "421126" }, { "label": "黄梅县", "value": "421127" }, { "label": "龙感湖管理区", "value": "421171" }, { "label": "麻城市", "value": "421181" }, { "label": "武穴市", "value": "421182" }], [{ "label": "咸安区", "value": "421202" }, { "label": "嘉鱼县", "value": "421221" }, { "label": "通城县", "value": "421222" }, { "label": "崇阳县", "value": "421223" }, { "label": "通山县", "value": "421224" }, { "label": "赤壁市", "value": "421281" }], [{ "label": "曾都区", "value": "421303" }, { "label": "随县", "value": "421321" }, { "label": "广水市", "value": "421381" }], [{ "label": "恩施市", "value": "422801" }, { "label": "利川市", "value": "422802" }, { "label": "建始县", "value": "422822" }, { "label": "巴东县", "value": "422823" }, { "label": "宣恩县", "value": "422825" }, { "label": "咸丰县", "value": "422826" }, { "label": "来凤县", "value": "422827" }, { "label": "鹤峰县", "value": "422828" }], [{ "label": "仙桃市", "value": "429004" }, { "label": "潜江市", "value": "429005" }, { "label": "天门市", "value": "429006" }, { "label": "神农架林区", "value": "429021" }]], [[{ "label": "芙蓉区", "value": "430102" }, { "label": "天心区", "value": "430103" }, { "label": "岳麓区", "value": "430104" }, { "label": "开福区", "value": "430105" }, { "label": "雨花区", "value": "430111" }, { "label": "望城区", "value": "430112" }, { "label": "长沙县", "value": "430121" }, { "label": "浏阳市", "value": "430181" }, { "label": "宁乡市", "value": "430182" }], [{ "label": "荷塘区", "value": "430202" }, { "label": "芦淞区", "value": "430203" }, { "label": "石峰区", "value": "430204" }, { "label": "天元区", "value": "430211" }, { "label": "株洲县", "value": "430221" }, { "label": "攸县", "value": "430223" }, { "label": "茶陵县", "value": "430224" }, { "label": "炎陵县", "value": "430225" }, { "label": "云龙示范区", "value": "430271" }, { "label": "醴陵市", "value": "430281" }], [{ "label": "雨湖区", "value": "430302" }, { "label": "岳塘区", "value": "430304" }, { "label": "湘潭县", "value": "430321" }, { "label": "湖南湘潭高新技术产业园区", "value": "430371" }, { "label": "湘潭昭山示范区", "value": "430372" }, { "label": "湘潭九华示范区", "value": "430373" }, { "label": "湘乡市", "value": "430381" }, { "label": "韶山市", "value": "430382" }], [{ "label": "珠晖区", "value": "430405" }, { "label": "雁峰区", "value": "430406" }, { "label": "石鼓区", "value": "430407" }, { "label": "蒸湘区", "value": "430408" }, { "label": "南岳区", "value": "430412" }, { "label": "衡阳县", "value": "430421" }, { "label": "衡南县", "value": "430422" }, { "label": "衡山县", "value": "430423" }, { "label": "衡东县", "value": "430424" }, { "label": "祁东县", "value": "430426" }, { "label": "衡阳综合保税区", "value": "430471" }, { "label": "湖南衡阳高新技术产业园区", "value": "430472" }, { "label": "湖南衡阳松木经济开发区", "value": "430473" }, { "label": "耒阳市", "value": "430481" }, { "label": "常宁市", "value": "430482" }], [{ "label": "双清区", "value": "430502" }, { "label": "大祥区", "value": "430503" }, { "label": "北塔区", "value": "430511" }, { "label": "邵东县", "value": "430521" }, { "label": "新邵县", "value": "430522" }, { "label": "邵阳县", "value": "430523" }, { "label": "隆回县", "value": "430524" }, { "label": "洞口县", "value": "430525" }, { "label": "绥宁县", "value": "430527" }, { "label": "新宁县", "value": "430528" }, { "label": "城步苗族自治县", "value": "430529" }, { "label": "武冈市", "value": "430581" }], [{ "label": "岳阳楼区", "value": "430602" }, { "label": "云溪区", "value": "430603" }, { "label": "君山区", "value": "430611" }, { "label": "岳阳县", "value": "430621" }, { "label": "华容县", "value": "430623" }, { "label": "湘阴县", "value": "430624" }, { "label": "平江县", "value": "430626" }, { "label": "岳阳市屈原管理区", "value": "430671" }, { "label": "汨罗市", "value": "430681" }, { "label": "临湘市", "value": "430682" }], [{ "label": "武陵区", "value": "430702" }, { "label": "鼎城区", "value": "430703" }, { "label": "安乡县", "value": "430721" }, { "label": "汉寿县", "value": "430722" }, { "label": "澧县", "value": "430723" }, { "label": "临澧县", "value": "430724" }, { "label": "桃源县", "value": "430725" }, { "label": "石门县", "value": "430726" }, { "label": "常德市西洞庭管理区", "value": "430771" }, { "label": "津市市", "value": "430781" }], [{ "label": "永定区", "value": "430802" }, { "label": "武陵源区", "value": "430811" }, { "label": "慈利县", "value": "430821" }, { "label": "桑植县", "value": "430822" }], [{ "label": "资阳区", "value": "430902" }, { "label": "赫山区", "value": "430903" }, { "label": "南县", "value": "430921" }, { "label": "桃江县", "value": "430922" }, { "label": "安化县", "value": "430923" }, { "label": "益阳市大通湖管理区", "value": "430971" }, { "label": "湖南益阳高新技术产业园区", "value": "430972" }, { "label": "沅江市", "value": "430981" }], [{ "label": "北湖区", "value": "431002" }, { "label": "苏仙区", "value": "431003" }, { "label": "桂阳县", "value": "431021" }, { "label": "宜章县", "value": "431022" }, { "label": "永兴县", "value": "431023" }, { "label": "嘉禾县", "value": "431024" }, { "label": "临武县", "value": "431025" }, { "label": "汝城县", "value": "431026" }, { "label": "桂东县", "value": "431027" }, { "label": "安仁县", "value": "431028" }, { "label": "资兴市", "value": "431081" }], [{ "label": "零陵区", "value": "431102" }, { "label": "冷水滩区", "value": "431103" }, { "label": "祁阳县", "value": "431121" }, { "label": "东安县", "value": "431122" }, { "label": "双牌县", "value": "431123" }, { "label": "道县", "value": "431124" }, { "label": "江永县", "value": "431125" }, { "label": "宁远县", "value": "431126" }, { "label": "蓝山县", "value": "431127" }, { "label": "新田县", "value": "431128" }, { "label": "江华瑶族自治县", "value": "431129" }, { "label": "永州经济技术开发区", "value": "431171" }, { "label": "永州市金洞管理区", "value": "431172" }, { "label": "永州市回龙圩管理区", "value": "431173" }], [{ "label": "鹤城区", "value": "431202" }, { "label": "中方县", "value": "431221" }, { "label": "沅陵县", "value": "431222" }, { "label": "辰溪县", "value": "431223" }, { "label": "溆浦县", "value": "431224" }, { "label": "会同县", "value": "431225" }, { "label": "麻阳苗族自治县", "value": "431226" }, { "label": "新晃侗族自治县", "value": "431227" }, { "label": "芷江侗族自治县", "value": "431228" }, { "label": "靖州苗族侗族自治县", "value": "431229" }, { "label": "通道侗族自治县", "value": "431230" }, { "label": "怀化市洪江管理区", "value": "431271" }, { "label": "洪江市", "value": "431281" }], [{ "label": "娄星区", "value": "431302" }, { "label": "双峰县", "value": "431321" }, { "label": "新化县", "value": "431322" }, { "label": "冷水江市", "value": "431381" }, { "label": "涟源市", "value": "431382" }], [{ "label": "吉首市", "value": "433101" }, { "label": "泸溪县", "value": "433122" }, { "label": "凤凰县", "value": "433123" }, { "label": "花垣县", "value": "433124" }, { "label": "保靖县", "value": "433125" }, { "label": "古丈县", "value": "433126" }, { "label": "永顺县", "value": "433127" }, { "label": "龙山县", "value": "433130" }, { "label": "湖南吉首经济开发区", "value": "433172" }, { "label": "湖南永顺经济开发区", "value": "433173" }]], [[{ "label": "荔湾区", "value": "440103" }, { "label": "越秀区", "value": "440104" }, { "label": "海珠区", "value": "440105" }, { "label": "天河区", "value": "440106" }, { "label": "白云区", "value": "440111" }, { "label": "黄埔区", "value": "440112" }, { "label": "番禺区", "value": "440113" }, { "label": "花都区", "value": "440114" }, { "label": "南沙区", "value": "440115" }, { "label": "从化区", "value": "440117" }, { "label": "增城区", "value": "440118" }], [{ "label": "武江区", "value": "440203" }, { "label": "浈江区", "value": "440204" }, { "label": "曲江区", "value": "440205" }, { "label": "始兴县", "value": "440222" }, { "label": "仁化县", "value": "440224" }, { "label": "翁源县", "value": "440229" }, { "label": "乳源瑶族自治县", "value": "440232" }, { "label": "新丰县", "value": "440233" }, { "label": "乐昌市", "value": "440281" }, { "label": "南雄市", "value": "440282" }], [{ "label": "罗湖区", "value": "440303" }, { "label": "福田区", "value": "440304" }, { "label": "南山区", "value": "440305" }, { "label": "宝安区", "value": "440306" }, { "label": "龙岗区", "value": "440307" }, { "label": "盐田区", "value": "440308" }, { "label": "龙华区", "value": "440309" }, { "label": "坪山区", "value": "440310" }], [{ "label": "香洲区", "value": "440402" }, { "label": "斗门区", "value": "440403" }, { "label": "金湾区", "value": "440404" }], [{ "label": "龙湖区", "value": "440507" }, { "label": "金平区", "value": "440511" }, { "label": "濠江区", "value": "440512" }, { "label": "潮阳区", "value": "440513" }, { "label": "潮南区", "value": "440514" }, { "label": "澄海区", "value": "440515" }, { "label": "南澳县", "value": "440523" }], [{ "label": "禅城区", "value": "440604" }, { "label": "南海区", "value": "440605" }, { "label": "顺德区", "value": "440606" }, { "label": "三水区", "value": "440607" }, { "label": "高明区", "value": "440608" }], [{ "label": "蓬江区", "value": "440703" }, { "label": "江海区", "value": "440704" }, { "label": "新会区", "value": "440705" }, { "label": "台山市", "value": "440781" }, { "label": "开平市", "value": "440783" }, { "label": "鹤山市", "value": "440784" }, { "label": "恩平市", "value": "440785" }], [{ "label": "赤坎区", "value": "440802" }, { "label": "霞山区", "value": "440803" }, { "label": "坡头区", "value": "440804" }, { "label": "麻章区", "value": "440811" }, { "label": "遂溪县", "value": "440823" }, { "label": "徐闻县", "value": "440825" }, { "label": "廉江市", "value": "440881" }, { "label": "雷州市", "value": "440882" }, { "label": "吴川市", "value": "440883" }], [{ "label": "茂南区", "value": "440902" }, { "label": "电白区", "value": "440904" }, { "label": "高州市", "value": "440981" }, { "label": "化州市", "value": "440982" }, { "label": "信宜市", "value": "440983" }], [{ "label": "端州区", "value": "441202" }, { "label": "鼎湖区", "value": "441203" }, { "label": "高要区", "value": "441204" }, { "label": "广宁县", "value": "441223" }, { "label": "怀集县", "value": "441224" }, { "label": "封开县", "value": "441225" }, { "label": "德庆县", "value": "441226" }, { "label": "四会市", "value": "441284" }], [{ "label": "惠城区", "value": "441302" }, { "label": "惠阳区", "value": "441303" }, { "label": "博罗县", "value": "441322" }, { "label": "惠东县", "value": "441323" }, { "label": "龙门县", "value": "441324" }], [{ "label": "梅江区", "value": "441402" }, { "label": "梅县区", "value": "441403" }, { "label": "大埔县", "value": "441422" }, { "label": "丰顺县", "value": "441423" }, { "label": "五华县", "value": "441424" }, { "label": "平远县", "value": "441426" }, { "label": "蕉岭县", "value": "441427" }, { "label": "兴宁市", "value": "441481" }], [{ "label": "城区", "value": "441502" }, { "label": "海丰县", "value": "441521" }, { "label": "陆河县", "value": "441523" }, { "label": "陆丰市", "value": "441581" }], [{ "label": "源城区", "value": "441602" }, { "label": "紫金县", "value": "441621" }, { "label": "龙川县", "value": "441622" }, { "label": "连平县", "value": "441623" }, { "label": "和平县", "value": "441624" }, { "label": "东源县", "value": "441625" }], [{ "label": "江城区", "value": "441702" }, { "label": "阳东区", "value": "441704" }, { "label": "阳西县", "value": "441721" }, { "label": "阳春市", "value": "441781" }], [{ "label": "清城区", "value": "441802" }, { "label": "清新区", "value": "441803" }, { "label": "佛冈县", "value": "441821" }, { "label": "阳山县", "value": "441823" }, { "label": "连山壮族瑶族自治县", "value": "441825" }, { "label": "连南瑶族自治县", "value": "441826" }, { "label": "英德市", "value": "441881" }, { "label": "连州市", "value": "441882" }], [{ "label": "东莞市", "value": "441900" }], [{ "label": "中山市", "value": "442000" }], [{ "label": "湘桥区", "value": "445102" }, { "label": "潮安区", "value": "445103" }, { "label": "饶平县", "value": "445122" }], [{ "label": "榕城区", "value": "445202" }, { "label": "揭东区", "value": "445203" }, { "label": "揭西县", "value": "445222" }, { "label": "惠来县", "value": "445224" }, { "label": "普宁市", "value": "445281" }], [{ "label": "云城区", "value": "445302" }, { "label": "云安区", "value": "445303" }, { "label": "新兴县", "value": "445321" }, { "label": "郁南县", "value": "445322" }, { "label": "罗定市", "value": "445381" }]], [[{ "label": "兴宁区", "value": "450102" }, { "label": "青秀区", "value": "450103" }, { "label": "江南区", "value": "450105" }, { "label": "西乡塘区", "value": "450107" }, { "label": "良庆区", "value": "450108" }, { "label": "邕宁区", "value": "450109" }, { "label": "武鸣区", "value": "450110" }, { "label": "隆安县", "value": "450123" }, { "label": "马山县", "value": "450124" }, { "label": "上林县", "value": "450125" }, { "label": "宾阳县", "value": "450126" }, { "label": "横县", "value": "450127" }], [{ "label": "城中区", "value": "450202" }, { "label": "鱼峰区", "value": "450203" }, { "label": "柳南区", "value": "450204" }, { "label": "柳北区", "value": "450205" }, { "label": "柳江区", "value": "450206" }, { "label": "柳城县", "value": "450222" }, { "label": "鹿寨县", "value": "450223" }, { "label": "融安县", "value": "450224" }, { "label": "融水苗族自治县", "value": "450225" }, { "label": "三江侗族自治县", "value": "450226" }], [{ "label": "秀峰区", "value": "450302" }, { "label": "叠彩区", "value": "450303" }, { "label": "象山区", "value": "450304" }, { "label": "七星区", "value": "450305" }, { "label": "雁山区", "value": "450311" }, { "label": "临桂区", "value": "450312" }, { "label": "阳朔县", "value": "450321" }, { "label": "灵川县", "value": "450323" }, { "label": "全州县", "value": "450324" }, { "label": "兴安县", "value": "450325" }, { "label": "永福县", "value": "450326" }, { "label": "灌阳县", "value": "450327" }, { "label": "龙胜各族自治县", "value": "450328" }, { "label": "资源县", "value": "450329" }, { "label": "平乐县", "value": "450330" }, { "label": "荔浦县", "value": "450331" }, { "label": "恭城瑶族自治县", "value": "450332" }], [{ "label": "万秀区", "value": "450403" }, { "label": "长洲区", "value": "450405" }, { "label": "龙圩区", "value": "450406" }, { "label": "苍梧县", "value": "450421" }, { "label": "藤县", "value": "450422" }, { "label": "蒙山县", "value": "450423" }, { "label": "岑溪市", "value": "450481" }], [{ "label": "海城区", "value": "450502" }, { "label": "银海区", "value": "450503" }, { "label": "铁山港区", "value": "450512" }, { "label": "合浦县", "value": "450521" }], [{ "label": "港口区", "value": "450602" }, { "label": "防城区", "value": "450603" }, { "label": "上思县", "value": "450621" }, { "label": "东兴市", "value": "450681" }], [{ "label": "钦南区", "value": "450702" }, { "label": "钦北区", "value": "450703" }, { "label": "灵山县", "value": "450721" }, { "label": "浦北县", "value": "450722" }], [{ "label": "港北区", "value": "450802" }, { "label": "港南区", "value": "450803" }, { "label": "覃塘区", "value": "450804" }, { "label": "平南县", "value": "450821" }, { "label": "桂平市", "value": "450881" }], [{ "label": "玉州区", "value": "450902" }, { "label": "福绵区", "value": "450903" }, { "label": "容县", "value": "450921" }, { "label": "陆川县", "value": "450922" }, { "label": "博白县", "value": "450923" }, { "label": "兴业县", "value": "450924" }, { "label": "北流市", "value": "450981" }], [{ "label": "右江区", "value": "451002" }, { "label": "田阳县", "value": "451021" }, { "label": "田东县", "value": "451022" }, { "label": "平果县", "value": "451023" }, { "label": "德保县", "value": "451024" }, { "label": "那坡县", "value": "451026" }, { "label": "凌云县", "value": "451027" }, { "label": "乐业县", "value": "451028" }, { "label": "田林县", "value": "451029" }, { "label": "西林县", "value": "451030" }, { "label": "隆林各族自治县", "value": "451031" }, { "label": "靖西市", "value": "451081" }], [{ "label": "八步区", "value": "451102" }, { "label": "平桂区", "value": "451103" }, { "label": "昭平县", "value": "451121" }, { "label": "钟山县", "value": "451122" }, { "label": "富川瑶族自治县", "value": "451123" }], [{ "label": "金城江区", "value": "451202" }, { "label": "宜州区", "value": "451203" }, { "label": "南丹县", "value": "451221" }, { "label": "天峨县", "value": "451222" }, { "label": "凤山县", "value": "451223" }, { "label": "东兰县", "value": "451224" }, { "label": "罗城仫佬族自治县", "value": "451225" }, { "label": "环江毛南族自治县", "value": "451226" }, { "label": "巴马瑶族自治县", "value": "451227" }, { "label": "都安瑶族自治县", "value": "451228" }, { "label": "大化瑶族自治县", "value": "451229" }], [{ "label": "兴宾区", "value": "451302" }, { "label": "忻城县", "value": "451321" }, { "label": "象州县", "value": "451322" }, { "label": "武宣县", "value": "451323" }, { "label": "金秀瑶族自治县", "value": "451324" }, { "label": "合山市", "value": "451381" }], [{ "label": "江州区", "value": "451402" }, { "label": "扶绥县", "value": "451421" }, { "label": "宁明县", "value": "451422" }, { "label": "龙州县", "value": "451423" }, { "label": "大新县", "value": "451424" }, { "label": "天等县", "value": "451425" }, { "label": "凭祥市", "value": "451481" }]], [[{ "label": "秀英区", "value": "460105" }, { "label": "龙华区", "value": "460106" }, { "label": "琼山区", "value": "460107" }, { "label": "美兰区", "value": "460108" }], [{ "label": "海棠区", "value": "460202" }, { "label": "吉阳区", "value": "460203" }, { "label": "天涯区", "value": "460204" }, { "label": "崖州区", "value": "460205" }], [{ "label": "西沙群岛", "value": "460321" }, { "label": "南沙群岛", "value": "460322" }, { "label": "中沙群岛的岛礁及其海域", "value": "460323" }], [{ "label": "儋州市", "value": "460400" }], [{ "label": "五指山市", "value": "469001" }, { "label": "琼海市", "value": "469002" }, { "label": "文昌市", "value": "469005" }, { "label": "万宁市", "value": "469006" }, { "label": "东方市", "value": "469007" }, { "label": "定安县", "value": "469021" }, { "label": "屯昌县", "value": "469022" }, { "label": "澄迈县", "value": "469023" }, { "label": "临高县", "value": "469024" }, { "label": "白沙黎族自治县", "value": "469025" }, { "label": "昌江黎族自治县", "value": "469026" }, { "label": "乐东黎族自治县", "value": "469027" }, { "label": "陵水黎族自治县", "value": "469028" }, { "label": "保亭黎族苗族自治县", "value": "469029" }, { "label": "琼中黎族苗族自治县", "value": "469030" }]], [[{ "label": "万州区", "value": "500101" }, { "label": "涪陵区", "value": "500102" }, { "label": "渝中区", "value": "500103" }, { "label": "大渡口区", "value": "500104" }, { "label": "江北区", "value": "500105" }, { "label": "沙坪坝区", "value": "500106" }, { "label": "九龙坡区", "value": "500107" }, { "label": "南岸区", "value": "500108" }, { "label": "北碚区", "value": "500109" }, { "label": "綦江区", "value": "500110" }, { "label": "大足区", "value": "500111" }, { "label": "渝北区", "value": "500112" }, { "label": "巴南区", "value": "500113" }, { "label": "黔江区", "value": "500114" }, { "label": "长寿区", "value": "500115" }, { "label": "江津区", "value": "500116" }, { "label": "合川区", "value": "500117" }, { "label": "永川区", "value": "500118" }, { "label": "南川区", "value": "500119" }, { "label": "璧山区", "value": "500120" }, { "label": "铜梁区", "value": "500151" }, { "label": "潼南区", "value": "500152" }, { "label": "荣昌区", "value": "500153" }, { "label": "开州区", "value": "500154" }, { "label": "梁平区", "value": "500155" }, { "label": "武隆区", "value": "500156" }], [{ "label": "城口县", "value": "500229" }, { "label": "丰都县", "value": "500230" }, { "label": "垫江县", "value": "500231" }, { "label": "忠县", "value": "500233" }, { "label": "云阳县", "value": "500235" }, { "label": "奉节县", "value": "500236" }, { "label": "巫山县", "value": "500237" }, { "label": "巫溪县", "value": "500238" }, { "label": "石柱土家族自治县", "value": "500240" }, { "label": "秀山土家族苗族自治县", "value": "500241" }, { "label": "酉阳土家族苗族自治县", "value": "500242" }, { "label": "彭水苗族土家族自治县", "value": "500243" }]], [[{ "label": "锦江区", "value": "510104" }, { "label": "青羊区", "value": "510105" }, { "label": "金牛区", "value": "510106" }, { "label": "武侯区", "value": "510107" }, { "label": "成华区", "value": "510108" }, { "label": "龙泉驿区", "value": "510112" }, { "label": "青白江区", "value": "510113" }, { "label": "新都区", "value": "510114" }, { "label": "温江区", "value": "510115" }, { "label": "双流区", "value": "510116" }, { "label": "郫都区", "value": "510117" }, { "label": "金堂县", "value": "510121" }, { "label": "大邑县", "value": "510129" }, { "label": "蒲江县", "value": "510131" }, { "label": "新津县", "value": "510132" }, { "label": "都江堰市", "value": "510181" }, { "label": "彭州市", "value": "510182" }, { "label": "邛崃市", "value": "510183" }, { "label": "崇州市", "value": "510184" }, { "label": "简阳市", "value": "510185" }], [{ "label": "自流井区", "value": "510302" }, { "label": "贡井区", "value": "510303" }, { "label": "大安区", "value": "510304" }, { "label": "沿滩区", "value": "510311" }, { "label": "荣县", "value": "510321" }, { "label": "富顺县", "value": "510322" }], [{ "label": "东区", "value": "510402" }, { "label": "西区", "value": "510403" }, { "label": "仁和区", "value": "510411" }, { "label": "米易县", "value": "510421" }, { "label": "盐边县", "value": "510422" }], [{ "label": "江阳区", "value": "510502" }, { "label": "纳溪区", "value": "510503" }, { "label": "龙马潭区", "value": "510504" }, { "label": "泸县", "value": "510521" }, { "label": "合江县", "value": "510522" }, { "label": "叙永县", "value": "510524" }, { "label": "古蔺县", "value": "510525" }], [{ "label": "旌阳区", "value": "510603" }, { "label": "罗江区", "value": "510604" }, { "label": "中江县", "value": "510623" }, { "label": "广汉市", "value": "510681" }, { "label": "什邡市", "value": "510682" }, { "label": "绵竹市", "value": "510683" }], [{ "label": "涪城区", "value": "510703" }, { "label": "游仙区", "value": "510704" }, { "label": "安州区", "value": "510705" }, { "label": "三台县", "value": "510722" }, { "label": "盐亭县", "value": "510723" }, { "label": "梓潼县", "value": "510725" }, { "label": "北川羌族自治县", "value": "510726" }, { "label": "平武县", "value": "510727" }, { "label": "江油市", "value": "510781" }], [{ "label": "利州区", "value": "510802" }, { "label": "昭化区", "value": "510811" }, { "label": "朝天区", "value": "510812" }, { "label": "旺苍县", "value": "510821" }, { "label": "青川县", "value": "510822" }, { "label": "剑阁县", "value": "510823" }, { "label": "苍溪县", "value": "510824" }], [{ "label": "船山区", "value": "510903" }, { "label": "安居区", "value": "510904" }, { "label": "蓬溪县", "value": "510921" }, { "label": "射洪县", "value": "510922" }, { "label": "大英县", "value": "510923" }], [{ "label": "市中区", "value": "511002" }, { "label": "东兴区", "value": "511011" }, { "label": "威远县", "value": "511024" }, { "label": "资中县", "value": "511025" }, { "label": "内江经济开发区", "value": "511071" }, { "label": "隆昌市", "value": "511083" }], [{ "label": "市中区", "value": "511102" }, { "label": "沙湾区", "value": "511111" }, { "label": "五通桥区", "value": "511112" }, { "label": "金口河区", "value": "511113" }, { "label": "犍为县", "value": "511123" }, { "label": "井研县", "value": "511124" }, { "label": "夹江县", "value": "511126" }, { "label": "沐川县", "value": "511129" }, { "label": "峨边彝族自治县", "value": "511132" }, { "label": "马边彝族自治县", "value": "511133" }, { "label": "峨眉山市", "value": "511181" }], [{ "label": "顺庆区", "value": "511302" }, { "label": "高坪区", "value": "511303" }, { "label": "嘉陵区", "value": "511304" }, { "label": "南部县", "value": "511321" }, { "label": "营山县", "value": "511322" }, { "label": "蓬安县", "value": "511323" }, { "label": "仪陇县", "value": "511324" }, { "label": "西充县", "value": "511325" }, { "label": "阆中市", "value": "511381" }], [{ "label": "东坡区", "value": "511402" }, { "label": "彭山区", "value": "511403" }, { "label": "仁寿县", "value": "511421" }, { "label": "洪雅县", "value": "511423" }, { "label": "丹棱县", "value": "511424" }, { "label": "青神县", "value": "511425" }], [{ "label": "翠屏区", "value": "511502" }, { "label": "南溪区", "value": "511503" }, { "label": "宜宾县", "value": "511521" }, { "label": "江安县", "value": "511523" }, { "label": "长宁县", "value": "511524" }, { "label": "高县", "value": "511525" }, { "label": "珙县", "value": "511526" }, { "label": "筠连县", "value": "511527" }, { "label": "兴文县", "value": "511528" }, { "label": "屏山县", "value": "511529" }], [{ "label": "广安区", "value": "511602" }, { "label": "前锋区", "value": "511603" }, { "label": "岳池县", "value": "511621" }, { "label": "武胜县", "value": "511622" }, { "label": "邻水县", "value": "511623" }, { "label": "华蓥市", "value": "511681" }], [{ "label": "通川区", "value": "511702" }, { "label": "达川区", "value": "511703" }, { "label": "宣汉县", "value": "511722" }, { "label": "开江县", "value": "511723" }, { "label": "大竹县", "value": "511724" }, { "label": "渠县", "value": "511725" }, { "label": "达州经济开发区", "value": "511771" }, { "label": "万源市", "value": "511781" }], [{ "label": "雨城区", "value": "511802" }, { "label": "名山区", "value": "511803" }, { "label": "荥经县", "value": "511822" }, { "label": "汉源县", "value": "511823" }, { "label": "石棉县", "value": "511824" }, { "label": "天全县", "value": "511825" }, { "label": "芦山县", "value": "511826" }, { "label": "宝兴县", "value": "511827" }], [{ "label": "巴州区", "value": "511902" }, { "label": "恩阳区", "value": "511903" }, { "label": "通江县", "value": "511921" }, { "label": "南江县", "value": "511922" }, { "label": "平昌县", "value": "511923" }, { "label": "巴中经济开发区", "value": "511971" }], [{ "label": "雁江区", "value": "512002" }, { "label": "安岳县", "value": "512021" }, { "label": "乐至县", "value": "512022" }], [{ "label": "马尔康市", "value": "513201" }, { "label": "汶川县", "value": "513221" }, { "label": "理县", "value": "513222" }, { "label": "茂县", "value": "513223" }, { "label": "松潘县", "value": "513224" }, { "label": "九寨沟县", "value": "513225" }, { "label": "金川县", "value": "513226" }, { "label": "小金县", "value": "513227" }, { "label": "黑水县", "value": "513228" }, { "label": "壤塘县", "value": "513230" }, { "label": "阿坝县", "value": "513231" }, { "label": "若尔盖县", "value": "513232" }, { "label": "红原县", "value": "513233" }], [{ "label": "康定市", "value": "513301" }, { "label": "泸定县", "value": "513322" }, { "label": "丹巴县", "value": "513323" }, { "label": "九龙县", "value": "513324" }, { "label": "雅江县", "value": "513325" }, { "label": "道孚县", "value": "513326" }, { "label": "炉霍县", "value": "513327" }, { "label": "甘孜县", "value": "513328" }, { "label": "新龙县", "value": "513329" }, { "label": "德格县", "value": "513330" }, { "label": "白玉县", "value": "513331" }, { "label": "石渠县", "value": "513332" }, { "label": "色达县", "value": "513333" }, { "label": "理塘县", "value": "513334" }, { "label": "巴塘县", "value": "513335" }, { "label": "乡城县", "value": "513336" }, { "label": "稻城县", "value": "513337" }, { "label": "得荣县", "value": "513338" }], [{ "label": "西昌市", "value": "513401" }, { "label": "木里藏族自治县", "value": "513422" }, { "label": "盐源县", "value": "513423" }, { "label": "德昌县", "value": "513424" }, { "label": "会理县", "value": "513425" }, { "label": "会东县", "value": "513426" }, { "label": "宁南县", "value": "513427" }, { "label": "普格县", "value": "513428" }, { "label": "布拖县", "value": "513429" }, { "label": "金阳县", "value": "513430" }, { "label": "昭觉县", "value": "513431" }, { "label": "喜德县", "value": "513432" }, { "label": "冕宁县", "value": "513433" }, { "label": "越西县", "value": "513434" }, { "label": "甘洛县", "value": "513435" }, { "label": "美姑县", "value": "513436" }, { "label": "雷波县", "value": "513437" }]], [[{ "label": "南明区", "value": "520102" }, { "label": "云岩区", "value": "520103" }, { "label": "花溪区", "value": "520111" }, { "label": "乌当区", "value": "520112" }, { "label": "白云区", "value": "520113" }, { "label": "观山湖区", "value": "520115" }, { "label": "开阳县", "value": "520121" }, { "label": "息烽县", "value": "520122" }, { "label": "修文县", "value": "520123" }, { "label": "清镇市", "value": "520181" }], [{ "label": "钟山区", "value": "520201" }, { "label": "六枝特区", "value": "520203" }, { "label": "水城县", "value": "520221" }, { "label": "盘州市", "value": "520281" }], [{ "label": "红花岗区", "value": "520302" }, { "label": "汇川区", "value": "520303" }, { "label": "播州区", "value": "520304" }, { "label": "桐梓县", "value": "520322" }, { "label": "绥阳县", "value": "520323" }, { "label": "正安县", "value": "520324" }, { "label": "道真仡佬族苗族自治县", "value": "520325" }, { "label": "务川仡佬族苗族自治县", "value": "520326" }, { "label": "凤冈县", "value": "520327" }, { "label": "湄潭县", "value": "520328" }, { "label": "余庆县", "value": "520329" }, { "label": "习水县", "value": "520330" }, { "label": "赤水市", "value": "520381" }, { "label": "仁怀市", "value": "520382" }], [{ "label": "西秀区", "value": "520402" }, { "label": "平坝区", "value": "520403" }, { "label": "普定县", "value": "520422" }, { "label": "镇宁布依族苗族自治县", "value": "520423" }, { "label": "关岭布依族苗族自治县", "value": "520424" }, { "label": "紫云苗族布依族自治县", "value": "520425" }], [{ "label": "七星关区", "value": "520502" }, { "label": "大方县", "value": "520521" }, { "label": "黔西县", "value": "520522" }, { "label": "金沙县", "value": "520523" }, { "label": "织金县", "value": "520524" }, { "label": "纳雍县", "value": "520525" }, { "label": "威宁彝族回族苗族自治县", "value": "520526" }, { "label": "赫章县", "value": "520527" }], [{ "label": "碧江区", "value": "520602" }, { "label": "万山区", "value": "520603" }, { "label": "江口县", "value": "520621" }, { "label": "玉屏侗族自治县", "value": "520622" }, { "label": "石阡县", "value": "520623" }, { "label": "思南县", "value": "520624" }, { "label": "印江土家族苗族自治县", "value": "520625" }, { "label": "德江县", "value": "520626" }, { "label": "沿河土家族自治县", "value": "520627" }, { "label": "松桃苗族自治县", "value": "520628" }], [{ "label": "兴义市", "value": "522301" }, { "label": "兴仁县", "value": "522322" }, { "label": "普安县", "value": "522323" }, { "label": "晴隆县", "value": "522324" }, { "label": "贞丰县", "value": "522325" }, { "label": "望谟县", "value": "522326" }, { "label": "册亨县", "value": "522327" }, { "label": "安龙县", "value": "522328" }], [{ "label": "凯里市", "value": "522601" }, { "label": "黄平县", "value": "522622" }, { "label": "施秉县", "value": "522623" }, { "label": "三穗县", "value": "522624" }, { "label": "镇远县", "value": "522625" }, { "label": "岑巩县", "value": "522626" }, { "label": "天柱县", "value": "522627" }, { "label": "锦屏县", "value": "522628" }, { "label": "剑河县", "value": "522629" }, { "label": "台江县", "value": "522630" }, { "label": "黎平县", "value": "522631" }, { "label": "榕江县", "value": "522632" }, { "label": "从江县", "value": "522633" }, { "label": "雷山县", "value": "522634" }, { "label": "麻江县", "value": "522635" }, { "label": "丹寨县", "value": "522636" }], [{ "label": "都匀市", "value": "522701" }, { "label": "福泉市", "value": "522702" }, { "label": "荔波县", "value": "522722" }, { "label": "贵定县", "value": "522723" }, { "label": "瓮安县", "value": "522725" }, { "label": "独山县", "value": "522726" }, { "label": "平塘县", "value": "522727" }, { "label": "罗甸县", "value": "522728" }, { "label": "长顺县", "value": "522729" }, { "label": "龙里县", "value": "522730" }, { "label": "惠水县", "value": "522731" }, { "label": "三都水族自治县", "value": "522732" }]], [[{ "label": "五华区", "value": "530102" }, { "label": "盘龙区", "value": "530103" }, { "label": "官渡区", "value": "530111" }, { "label": "西山区", "value": "530112" }, { "label": "东川区", "value": "530113" }, { "label": "呈贡区", "value": "530114" }, { "label": "晋宁区", "value": "530115" }, { "label": "富民县", "value": "530124" }, { "label": "宜良县", "value": "530125" }, { "label": "石林彝族自治县", "value": "530126" }, { "label": "嵩明县", "value": "530127" }, { "label": "禄劝彝族苗族自治县", "value": "530128" }, { "label": "寻甸回族彝族自治县", "value": "530129" }, { "label": "安宁市", "value": "530181" }], [{ "label": "麒麟区", "value": "530302" }, { "label": "沾益区", "value": "530303" }, { "label": "马龙县", "value": "530321" }, { "label": "陆良县", "value": "530322" }, { "label": "师宗县", "value": "530323" }, { "label": "罗平县", "value": "530324" }, { "label": "富源县", "value": "530325" }, { "label": "会泽县", "value": "530326" }, { "label": "宣威市", "value": "530381" }], [{ "label": "红塔区", "value": "530402" }, { "label": "江川区", "value": "530403" }, { "label": "澄江县", "value": "530422" }, { "label": "通海县", "value": "530423" }, { "label": "华宁县", "value": "530424" }, { "label": "易门县", "value": "530425" }, { "label": "峨山彝族自治县", "value": "530426" }, { "label": "新平彝族傣族自治县", "value": "530427" }, { "label": "元江哈尼族彝族傣族自治县", "value": "530428" }], [{ "label": "隆阳区", "value": "530502" }, { "label": "施甸县", "value": "530521" }, { "label": "龙陵县", "value": "530523" }, { "label": "昌宁县", "value": "530524" }, { "label": "腾冲市", "value": "530581" }], [{ "label": "昭阳区", "value": "530602" }, { "label": "鲁甸县", "value": "530621" }, { "label": "巧家县", "value": "530622" }, { "label": "盐津县", "value": "530623" }, { "label": "大关县", "value": "530624" }, { "label": "永善县", "value": "530625" }, { "label": "绥江县", "value": "530626" }, { "label": "镇雄县", "value": "530627" }, { "label": "彝良县", "value": "530628" }, { "label": "威信县", "value": "530629" }, { "label": "水富县", "value": "530630" }], [{ "label": "古城区", "value": "530702" }, { "label": "玉龙纳西族自治县", "value": "530721" }, { "label": "永胜县", "value": "530722" }, { "label": "华坪县", "value": "530723" }, { "label": "宁蒗彝族自治县", "value": "530724" }], [{ "label": "思茅区", "value": "530802" }, { "label": "宁洱哈尼族彝族自治县", "value": "530821" }, { "label": "墨江哈尼族自治县", "value": "530822" }, { "label": "景东彝族自治县", "value": "530823" }, { "label": "景谷傣族彝族自治县", "value": "530824" }, { "label": "镇沅彝族哈尼族拉祜族自治县", "value": "530825" }, { "label": "江城哈尼族彝族自治县", "value": "530826" }, { "label": "孟连傣族拉祜族佤族自治县", "value": "530827" }, { "label": "澜沧拉祜族自治县", "value": "530828" }, { "label": "西盟佤族自治县", "value": "530829" }], [{ "label": "临翔区", "value": "530902" }, { "label": "凤庆县", "value": "530921" }, { "label": "云县", "value": "530922" }, { "label": "永德县", "value": "530923" }, { "label": "镇康县", "value": "530924" }, { "label": "双江拉祜族佤族布朗族傣族自治县", "value": "530925" }, { "label": "耿马傣族佤族自治县", "value": "530926" }, { "label": "沧源佤族自治县", "value": "530927" }], [{ "label": "楚雄市", "value": "532301" }, { "label": "双柏县", "value": "532322" }, { "label": "牟定县", "value": "532323" }, { "label": "南华县", "value": "532324" }, { "label": "姚安县", "value": "532325" }, { "label": "大姚县", "value": "532326" }, { "label": "永仁县", "value": "532327" }, { "label": "元谋县", "value": "532328" }, { "label": "武定县", "value": "532329" }, { "label": "禄丰县", "value": "532331" }], [{ "label": "个旧市", "value": "532501" }, { "label": "开远市", "value": "532502" }, { "label": "蒙自市", "value": "532503" }, { "label": "弥勒市", "value": "532504" }, { "label": "屏边苗族自治县", "value": "532523" }, { "label": "建水县", "value": "532524" }, { "label": "石屏县", "value": "532525" }, { "label": "泸西县", "value": "532527" }, { "label": "元阳县", "value": "532528" }, { "label": "红河县", "value": "532529" }, { "label": "金平苗族瑶族傣族自治县", "value": "532530" }, { "label": "绿春县", "value": "532531" }, { "label": "河口瑶族自治县", "value": "532532" }], [{ "label": "文山市", "value": "532601" }, { "label": "砚山县", "value": "532622" }, { "label": "西畴县", "value": "532623" }, { "label": "麻栗坡县", "value": "532624" }, { "label": "马关县", "value": "532625" }, { "label": "丘北县", "value": "532626" }, { "label": "广南县", "value": "532627" }, { "label": "富宁县", "value": "532628" }], [{ "label": "景洪市", "value": "532801" }, { "label": "勐海县", "value": "532822" }, { "label": "勐腊县", "value": "532823" }], [{ "label": "大理市", "value": "532901" }, { "label": "漾濞彝族自治县", "value": "532922" }, { "label": "祥云县", "value": "532923" }, { "label": "宾川县", "value": "532924" }, { "label": "弥渡县", "value": "532925" }, { "label": "南涧彝族自治县", "value": "532926" }, { "label": "巍山彝族回族自治县", "value": "532927" }, { "label": "永平县", "value": "532928" }, { "label": "云龙县", "value": "532929" }, { "label": "洱源县", "value": "532930" }, { "label": "剑川县", "value": "532931" }, { "label": "鹤庆县", "value": "532932" }], [{ "label": "瑞丽市", "value": "533102" }, { "label": "芒市", "value": "533103" }, { "label": "梁河县", "value": "533122" }, { "label": "盈江县", "value": "533123" }, { "label": "陇川县", "value": "533124" }], [{ "label": "泸水市", "value": "533301" }, { "label": "福贡县", "value": "533323" }, { "label": "贡山独龙族怒族自治县", "value": "533324" }, { "label": "兰坪白族普米族自治县", "value": "533325" }], [{ "label": "香格里拉市", "value": "533401" }, { "label": "德钦县", "value": "533422" }, { "label": "维西傈僳族自治县", "value": "533423" }]], [[{ "label": "城关区", "value": "540102" }, { "label": "堆龙德庆区", "value": "540103" }, { "label": "林周县", "value": "540121" }, { "label": "当雄县", "value": "540122" }, { "label": "尼木县", "value": "540123" }, { "label": "曲水县", "value": "540124" }, { "label": "达孜县", "value": "540126" }, { "label": "墨竹工卡县", "value": "540127" }, { "label": "格尔木藏青工业园区", "value": "540171" }, { "label": "拉萨经济技术开发区", "value": "540172" }, { "label": "西藏文化旅游创意园区", "value": "540173" }, { "label": "达孜工业园区", "value": "540174" }], [{ "label": "桑珠孜区", "value": "540202" }, { "label": "南木林县", "value": "540221" }, { "label": "江孜县", "value": "540222" }, { "label": "定日县", "value": "540223" }, { "label": "萨迦县", "value": "540224" }, { "label": "拉孜县", "value": "540225" }, { "label": "昂仁县", "value": "540226" }, { "label": "谢通门县", "value": "540227" }, { "label": "白朗县", "value": "540228" }, { "label": "仁布县", "value": "540229" }, { "label": "康马县", "value": "540230" }, { "label": "定结县", "value": "540231" }, { "label": "仲巴县", "value": "540232" }, { "label": "亚东县", "value": "540233" }, { "label": "吉隆县", "value": "540234" }, { "label": "聂拉木县", "value": "540235" }, { "label": "萨嘎县", "value": "540236" }, { "label": "岗巴县", "value": "540237" }], [{ "label": "卡若区", "value": "540302" }, { "label": "江达县", "value": "540321" }, { "label": "贡觉县", "value": "540322" }, { "label": "类乌齐县", "value": "540323" }, { "label": "丁青县", "value": "540324" }, { "label": "察雅县", "value": "540325" }, { "label": "八宿县", "value": "540326" }, { "label": "左贡县", "value": "540327" }, { "label": "芒康县", "value": "540328" }, { "label": "洛隆县", "value": "540329" }, { "label": "边坝县", "value": "540330" }], [{ "label": "巴宜区", "value": "540402" }, { "label": "工布江达县", "value": "540421" }, { "label": "米林县", "value": "540422" }, { "label": "墨脱县", "value": "540423" }, { "label": "波密县", "value": "540424" }, { "label": "察隅县", "value": "540425" }, { "label": "朗县", "value": "540426" }], [{ "label": "乃东区", "value": "540502" }, { "label": "扎囊县", "value": "540521" }, { "label": "贡嘎县", "value": "540522" }, { "label": "桑日县", "value": "540523" }, { "label": "琼结县", "value": "540524" }, { "label": "曲松县", "value": "540525" }, { "label": "措美县", "value": "540526" }, { "label": "洛扎县", "value": "540527" }, { "label": "加查县", "value": "540528" }, { "label": "隆子县", "value": "540529" }, { "label": "错那县", "value": "540530" }, { "label": "浪卡子县", "value": "540531" }], [{ "label": "那曲县", "value": "542421" }, { "label": "嘉黎县", "value": "542422" }, { "label": "比如县", "value": "542423" }, { "label": "聂荣县", "value": "542424" }, { "label": "安多县", "value": "542425" }, { "label": "申扎县", "value": "542426" }, { "label": "索县", "value": "542427" }, { "label": "班戈县", "value": "542428" }, { "label": "巴青县", "value": "542429" }, { "label": "尼玛县", "value": "542430" }, { "label": "双湖县", "value": "542431" }], [{ "label": "普兰县", "value": "542521" }, { "label": "札达县", "value": "542522" }, { "label": "噶尔县", "value": "542523" }, { "label": "日土县", "value": "542524" }, { "label": "革吉县", "value": "542525" }, { "label": "改则县", "value": "542526" }, { "label": "措勤县", "value": "542527" }]], [[{ "label": "新城区", "value": "610102" }, { "label": "碑林区", "value": "610103" }, { "label": "莲湖区", "value": "610104" }, { "label": "灞桥区", "value": "610111" }, { "label": "未央区", "value": "610112" }, { "label": "雁塔区", "value": "610113" }, { "label": "阎良区", "value": "610114" }, { "label": "临潼区", "value": "610115" }, { "label": "长安区", "value": "610116" }, { "label": "高陵区", "value": "610117" }, { "label": "鄠邑区", "value": "610118" }, { "label": "蓝田县", "value": "610122" }, { "label": "周至县", "value": "610124" }], [{ "label": "王益区", "value": "610202" }, { "label": "印台区", "value": "610203" }, { "label": "耀州区", "value": "610204" }, { "label": "宜君县", "value": "610222" }], [{ "label": "渭滨区", "value": "610302" }, { "label": "金台区", "value": "610303" }, { "label": "陈仓区", "value": "610304" }, { "label": "凤翔县", "value": "610322" }, { "label": "岐山县", "value": "610323" }, { "label": "扶风县", "value": "610324" }, { "label": "眉县", "value": "610326" }, { "label": "陇县", "value": "610327" }, { "label": "千阳县", "value": "610328" }, { "label": "麟游县", "value": "610329" }, { "label": "凤县", "value": "610330" }, { "label": "太白县", "value": "610331" }], [{ "label": "秦都区", "value": "610402" }, { "label": "杨陵区", "value": "610403" }, { "label": "渭城区", "value": "610404" }, { "label": "三原县", "value": "610422" }, { "label": "泾阳县", "value": "610423" }, { "label": "乾县", "value": "610424" }, { "label": "礼泉县", "value": "610425" }, { "label": "永寿县", "value": "610426" }, { "label": "彬县", "value": "610427" }, { "label": "长武县", "value": "610428" }, { "label": "旬邑县", "value": "610429" }, { "label": "淳化县", "value": "610430" }, { "label": "武功县", "value": "610431" }, { "label": "兴平市", "value": "610481" }], [{ "label": "临渭区", "value": "610502" }, { "label": "华州区", "value": "610503" }, { "label": "潼关县", "value": "610522" }, { "label": "大荔县", "value": "610523" }, { "label": "合阳县", "value": "610524" }, { "label": "澄城县", "value": "610525" }, { "label": "蒲城县", "value": "610526" }, { "label": "白水县", "value": "610527" }, { "label": "富平县", "value": "610528" }, { "label": "韩城市", "value": "610581" }, { "label": "华阴市", "value": "610582" }], [{ "label": "宝塔区", "value": "610602" }, { "label": "安塞区", "value": "610603" }, { "label": "延长县", "value": "610621" }, { "label": "延川县", "value": "610622" }, { "label": "子长县", "value": "610623" }, { "label": "志丹县", "value": "610625" }, { "label": "吴起县", "value": "610626" }, { "label": "甘泉县", "value": "610627" }, { "label": "富县", "value": "610628" }, { "label": "洛川县", "value": "610629" }, { "label": "宜川县", "value": "610630" }, { "label": "黄龙县", "value": "610631" }, { "label": "黄陵县", "value": "610632" }], [{ "label": "汉台区", "value": "610702" }, { "label": "南郑区", "value": "610703" }, { "label": "城固县", "value": "610722" }, { "label": "洋县", "value": "610723" }, { "label": "西乡县", "value": "610724" }, { "label": "勉县", "value": "610725" }, { "label": "宁强县", "value": "610726" }, { "label": "略阳县", "value": "610727" }, { "label": "镇巴县", "value": "610728" }, { "label": "留坝县", "value": "610729" }, { "label": "佛坪县", "value": "610730" }], [{ "label": "榆阳区", "value": "610802" }, { "label": "横山区", "value": "610803" }, { "label": "府谷县", "value": "610822" }, { "label": "靖边县", "value": "610824" }, { "label": "定边县", "value": "610825" }, { "label": "绥德县", "value": "610826" }, { "label": "米脂县", "value": "610827" }, { "label": "佳县", "value": "610828" }, { "label": "吴堡县", "value": "610829" }, { "label": "清涧县", "value": "610830" }, { "label": "子洲县", "value": "610831" }, { "label": "神木市", "value": "610881" }], [{ "label": "汉滨区", "value": "610902" }, { "label": "汉阴县", "value": "610921" }, { "label": "石泉县", "value": "610922" }, { "label": "宁陕县", "value": "610923" }, { "label": "紫阳县", "value": "610924" }, { "label": "岚皋县", "value": "610925" }, { "label": "平利县", "value": "610926" }, { "label": "镇坪县", "value": "610927" }, { "label": "旬阳县", "value": "610928" }, { "label": "白河县", "value": "610929" }], [{ "label": "商州区", "value": "611002" }, { "label": "洛南县", "value": "611021" }, { "label": "丹凤县", "value": "611022" }, { "label": "商南县", "value": "611023" }, { "label": "山阳县", "value": "611024" }, { "label": "镇安县", "value": "611025" }, { "label": "柞水县", "value": "611026" }]], [[{ "label": "城关区", "value": "620102" }, { "label": "七里河区", "value": "620103" }, { "label": "西固区", "value": "620104" }, { "label": "安宁区", "value": "620105" }, { "label": "红古区", "value": "620111" }, { "label": "永登县", "value": "620121" }, { "label": "皋兰县", "value": "620122" }, { "label": "榆中县", "value": "620123" }, { "label": "兰州新区", "value": "620171" }], [{ "label": "嘉峪关市", "value": "620201" }], [{ "label": "金川区", "value": "620302" }, { "label": "永昌县", "value": "620321" }], [{ "label": "白银区", "value": "620402" }, { "label": "平川区", "value": "620403" }, { "label": "靖远县", "value": "620421" }, { "label": "会宁县", "value": "620422" }, { "label": "景泰县", "value": "620423" }], [{ "label": "秦州区", "value": "620502" }, { "label": "麦积区", "value": "620503" }, { "label": "清水县", "value": "620521" }, { "label": "秦安县", "value": "620522" }, { "label": "甘谷县", "value": "620523" }, { "label": "武山县", "value": "620524" }, { "label": "张家川回族自治县", "value": "620525" }], [{ "label": "凉州区", "value": "620602" }, { "label": "民勤县", "value": "620621" }, { "label": "古浪县", "value": "620622" }, { "label": "天祝藏族自治县", "value": "620623" }], [{ "label": "甘州区", "value": "620702" }, { "label": "肃南裕固族自治县", "value": "620721" }, { "label": "民乐县", "value": "620722" }, { "label": "临泽县", "value": "620723" }, { "label": "高台县", "value": "620724" }, { "label": "山丹县", "value": "620725" }], [{ "label": "崆峒区", "value": "620802" }, { "label": "泾川县", "value": "620821" }, { "label": "灵台县", "value": "620822" }, { "label": "崇信县", "value": "620823" }, { "label": "华亭县", "value": "620824" }, { "label": "庄浪县", "value": "620825" }, { "label": "静宁县", "value": "620826" }, { "label": "平凉工业园区", "value": "620871" }], [{ "label": "肃州区", "value": "620902" }, { "label": "金塔县", "value": "620921" }, { "label": "瓜州县", "value": "620922" }, { "label": "肃北蒙古族自治县", "value": "620923" }, { "label": "阿克塞哈萨克族自治县", "value": "620924" }, { "label": "玉门市", "value": "620981" }, { "label": "敦煌市", "value": "620982" }], [{ "label": "西峰区", "value": "621002" }, { "label": "庆城县", "value": "621021" }, { "label": "环县", "value": "621022" }, { "label": "华池县", "value": "621023" }, { "label": "合水县", "value": "621024" }, { "label": "正宁县", "value": "621025" }, { "label": "宁县", "value": "621026" }, { "label": "镇原县", "value": "621027" }], [{ "label": "安定区", "value": "621102" }, { "label": "通渭县", "value": "621121" }, { "label": "陇西县", "value": "621122" }, { "label": "渭源县", "value": "621123" }, { "label": "临洮县", "value": "621124" }, { "label": "漳县", "value": "621125" }, { "label": "岷县", "value": "621126" }], [{ "label": "武都区", "value": "621202" }, { "label": "成县", "value": "621221" }, { "label": "文县", "value": "621222" }, { "label": "宕昌县", "value": "621223" }, { "label": "康县", "value": "621224" }, { "label": "西和县", "value": "621225" }, { "label": "礼县", "value": "621226" }, { "label": "徽县", "value": "621227" }, { "label": "两当县", "value": "621228" }], [{ "label": "临夏市", "value": "622901" }, { "label": "临夏县", "value": "622921" }, { "label": "康乐县", "value": "622922" }, { "label": "永靖县", "value": "622923" }, { "label": "广河县", "value": "622924" }, { "label": "和政县", "value": "622925" }, { "label": "东乡族自治县", "value": "622926" }, { "label": "积石山保安族东乡族撒拉族自治县", "value": "622927" }], [{ "label": "合作市", "value": "623001" }, { "label": "临潭县", "value": "623021" }, { "label": "卓尼县", "value": "623022" }, { "label": "舟曲县", "value": "623023" }, { "label": "迭部县", "value": "623024" }, { "label": "玛曲县", "value": "623025" }, { "label": "碌曲县", "value": "623026" }, { "label": "夏河县", "value": "623027" }]], [[{ "label": "城东区", "value": "630102" }, { "label": "城中区", "value": "630103" }, { "label": "城西区", "value": "630104" }, { "label": "城北区", "value": "630105" }, { "label": "大通回族土族自治县", "value": "630121" }, { "label": "湟中县", "value": "630122" }, { "label": "湟源县", "value": "630123" }], [{ "label": "乐都区", "value": "630202" }, { "label": "平安区", "value": "630203" }, { "label": "民和回族土族自治县", "value": "630222" }, { "label": "互助土族自治县", "value": "630223" }, { "label": "化隆回族自治县", "value": "630224" }, { "label": "循化撒拉族自治县", "value": "630225" }], [{ "label": "门源回族自治县", "value": "632221" }, { "label": "祁连县", "value": "632222" }, { "label": "海晏县", "value": "632223" }, { "label": "刚察县", "value": "632224" }], [{ "label": "同仁县", "value": "632321" }, { "label": "尖扎县", "value": "632322" }, { "label": "泽库县", "value": "632323" }, { "label": "河南蒙古族自治县", "value": "632324" }], [{ "label": "共和县", "value": "632521" }, { "label": "同德县", "value": "632522" }, { "label": "贵德县", "value": "632523" }, { "label": "兴海县", "value": "632524" }, { "label": "贵南县", "value": "632525" }], [{ "label": "玛沁县", "value": "632621" }, { "label": "班玛县", "value": "632622" }, { "label": "甘德县", "value": "632623" }, { "label": "达日县", "value": "632624" }, { "label": "久治县", "value": "632625" }, { "label": "玛多县", "value": "632626" }], [{ "label": "玉树市", "value": "632701" }, { "label": "杂多县", "value": "632722" }, { "label": "称多县", "value": "632723" }, { "label": "治多县", "value": "632724" }, { "label": "囊谦县", "value": "632725" }, { "label": "曲麻莱县", "value": "632726" }], [{ "label": "格尔木市", "value": "632801" }, { "label": "德令哈市", "value": "632802" }, { "label": "乌兰县", "value": "632821" }, { "label": "都兰县", "value": "632822" }, { "label": "天峻县", "value": "632823" }, { "label": "大柴旦行政委员会", "value": "632857" }, { "label": "冷湖行政委员会", "value": "632858" }, { "label": "茫崖行政委员会", "value": "632859" }]], [[{ "label": "兴庆区", "value": "640104" }, { "label": "西夏区", "value": "640105" }, { "label": "金凤区", "value": "640106" }, { "label": "永宁县", "value": "640121" }, { "label": "贺兰县", "value": "640122" }, { "label": "灵武市", "value": "640181" }], [{ "label": "大武口区", "value": "640202" }, { "label": "惠农区", "value": "640205" }, { "label": "平罗县", "value": "640221" }], [{ "label": "利通区", "value": "640302" }, { "label": "红寺堡区", "value": "640303" }, { "label": "盐池县", "value": "640323" }, { "label": "同心县", "value": "640324" }, { "label": "青铜峡市", "value": "640381" }], [{ "label": "原州区", "value": "640402" }, { "label": "西吉县", "value": "640422" }, { "label": "隆德县", "value": "640423" }, { "label": "泾源县", "value": "640424" }, { "label": "彭阳县", "value": "640425" }], [{ "label": "沙坡头区", "value": "640502" }, { "label": "中宁县", "value": "640521" }, { "label": "海原县", "value": "640522" }]], [[{ "label": "天山区", "value": "650102" }, { "label": "沙依巴克区", "value": "650103" }, { "label": "新市区", "value": "650104" }, { "label": "水磨沟区", "value": "650105" }, { "label": "头屯河区", "value": "650106" }, { "label": "达坂城区", "value": "650107" }, { "label": "米东区", "value": "650109" }, { "label": "乌鲁木齐县", "value": "650121" }, { "label": "乌鲁木齐经济技术开发区", "value": "650171" }, { "label": "乌鲁木齐高新技术产业开发区", "value": "650172" }], [{ "label": "独山子区", "value": "650202" }, { "label": "克拉玛依区", "value": "650203" }, { "label": "白碱滩区", "value": "650204" }, { "label": "乌尔禾区", "value": "650205" }], [{ "label": "高昌区", "value": "650402" }, { "label": "鄯善县", "value": "650421" }, { "label": "托克逊县", "value": "650422" }], [{ "label": "伊州区", "value": "650502" }, { "label": "巴里坤哈萨克自治县", "value": "650521" }, { "label": "伊吾县", "value": "650522" }], [{ "label": "昌吉市", "value": "652301" }, { "label": "阜康市", "value": "652302" }, { "label": "呼图壁县", "value": "652323" }, { "label": "玛纳斯县", "value": "652324" }, { "label": "奇台县", "value": "652325" }, { "label": "吉木萨尔县", "value": "652327" }, { "label": "木垒哈萨克自治县", "value": "652328" }], [{ "label": "博乐市", "value": "652701" }, { "label": "阿拉山口市", "value": "652702" }, { "label": "精河县", "value": "652722" }, { "label": "温泉县", "value": "652723" }], [{ "label": "库尔勒市", "value": "652801" }, { "label": "轮台县", "value": "652822" }, { "label": "尉犁县", "value": "652823" }, { "label": "若羌县", "value": "652824" }, { "label": "且末县", "value": "652825" }, { "label": "焉耆回族自治县", "value": "652826" }, { "label": "和静县", "value": "652827" }, { "label": "和硕县", "value": "652828" }, { "label": "博湖县", "value": "652829" }, { "label": "库尔勒经济技术开发区", "value": "652871" }], [{ "label": "阿克苏市", "value": "652901" }, { "label": "温宿县", "value": "652922" }, { "label": "库车县", "value": "652923" }, { "label": "沙雅县", "value": "652924" }, { "label": "新和县", "value": "652925" }, { "label": "拜城县", "value": "652926" }, { "label": "乌什县", "value": "652927" }, { "label": "阿瓦提县", "value": "652928" }, { "label": "柯坪县", "value": "652929" }], [{ "label": "阿图什市", "value": "653001" }, { "label": "阿克陶县", "value": "653022" }, { "label": "阿合奇县", "value": "653023" }, { "label": "乌恰县", "value": "653024" }], [{ "label": "喀什市", "value": "653101" }, { "label": "疏附县", "value": "653121" }, { "label": "疏勒县", "value": "653122" }, { "label": "英吉沙县", "value": "653123" }, { "label": "泽普县", "value": "653124" }, { "label": "莎车县", "value": "653125" }, { "label": "叶城县", "value": "653126" }, { "label": "麦盖提县", "value": "653127" }, { "label": "岳普湖县", "value": "653128" }, { "label": "伽师县", "value": "653129" }, { "label": "巴楚县", "value": "653130" }, { "label": "塔什库尔干塔吉克自治县", "value": "653131" }], [{ "label": "和田市", "value": "653201" }, { "label": "和田县", "value": "653221" }, { "label": "墨玉县", "value": "653222" }, { "label": "皮山县", "value": "653223" }, { "label": "洛浦县", "value": "653224" }, { "label": "策勒县", "value": "653225" }, { "label": "于田县", "value": "653226" }, { "label": "民丰县", "value": "653227" }], [{ "label": "伊宁市", "value": "654002" }, { "label": "奎屯市", "value": "654003" }, { "label": "霍尔果斯市", "value": "654004" }, { "label": "伊宁县", "value": "654021" }, { "label": "察布查尔锡伯自治县", "value": "654022" }, { "label": "霍城县", "value": "654023" }, { "label": "巩留县", "value": "654024" }, { "label": "新源县", "value": "654025" }, { "label": "昭苏县", "value": "654026" }, { "label": "特克斯县", "value": "654027" }, { "label": "尼勒克县", "value": "654028" }], [{ "label": "塔城市", "value": "654201" }, { "label": "乌苏市", "value": "654202" }, { "label": "额敏县", "value": "654221" }, { "label": "沙湾县", "value": "654223" }, { "label": "托里县", "value": "654224" }, { "label": "裕民县", "value": "654225" }, { "label": "和布克赛尔蒙古自治县", "value": "654226" }], [{ "label": "阿勒泰市", "value": "654301" }, { "label": "布尔津县", "value": "654321" }, { "label": "富蕴县", "value": "654322" }, { "label": "福海县", "value": "654323" }, { "label": "哈巴河县", "value": "654324" }, { "label": "青河县", "value": "654325" }, { "label": "吉木乃县", "value": "654326" }], [{ "label": "石河子市", "value": "659001" }, { "label": "阿拉尔市", "value": "659002" }, { "label": "图木舒克市", "value": "659003" }, { "label": "五家渠市", "value": "659004" }, { "label": "铁门关市", "value": "659006" }]], [[{ "label": "台北", "value": "660101" }], [{ "label": "高雄", "value": "660201" }], [{ "label": "基隆", "value": "660301" }], [{ "label": "台中", "value": "660401" }], [{ "label": "台南", "value": "660501" }], [{ "label": "新竹", "value": "660601" }], [{ "label": "嘉义", "value": "660701" }], [{ "label": "宜兰", "value": "660801" }], [{ "label": "桃园", "value": "660901" }], [{ "label": "苗栗", "value": "661001" }], [{ "label": "彰化", "value": "661101" }], [{ "label": "南投", "value": "661201" }], [{ "label": "云林", "value": "661301" }], [{ "label": "屏东", "value": "661401" }], [{ "label": "台东", "value": "661501" }], [{ "label": "花莲", "value": "661601" }], [{ "label": "澎湖", "value": "661701" }]], [[{ "label": "香港岛", "value": "670101" }], [{ "label": "九龙", "value": "670201" }], [{ "label": "新界", "value": "670301" }]], [[{ "label": "澳门半岛", "value": "680101" }], [{ "label": "氹仔岛", "value": "680201" }], [{ "label": "路环岛", "value": "680301" }], [{ "label": "路氹城", "value": "680401" }]]];var _default = areaData;exports.default = _default;
+
+/***/ }),
+
+/***/ 505:
+/*!*******************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/components/utils/request.js ***!
+  \*******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(uni) {/**
+ * GET请求封装
+ */
+function get(url) {var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return request(url, data, 'GET');
+}
+
+function put(url) {var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return request(url, data, 'put');
+}
+
+function deletes(url) {var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return request(url, data, 'delete');
+}
+/**
+   * POST请求封装
+   */
+
+function post(url) {var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return request(url, data, 'POST');
+}
+/**
+   * 微信的request
+   */
+
+
+
+
+
+var BASEURL = getApp().globalData.url;
+
+
+function request(url) {var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "GET";
+  return new Promise(function (resolve, reject) {
+    uni.showLoading({
+      title: "加载中" });
+
+    uni.request({
+      url: BASEURL + url,
+      method: method,
+      data: data,
+      header: {
+        'mini-session': uni.getStorageSync('session') || '',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/json' },
+
+
+      success: function success(res) {
+        if (res.data) {
+          if (res.data.error) {
+            if (res.data.error.code != 404) {
+              uni.showToast({
+                title: res.data.error.message,
+                icon: 'none' });
+
+            }
+
+            if (res.data.error.code == 9999) {
+              uni.clearStorageSync('session');
+              uni.showToast({
+                title: '登录失效，请重新登录',
+                icon: 'none' });
+
+              setTimeout(function () {
+                uni.reLaunch({
+                  url: '/pages/login/login' });
+
+              }, 1000);
+            }
+
+            reject(res.data.error.message);
+          } else {
+            resolve(res.data);
+          }
+        } else {
+          resolve(null);
+          uni.hideLoading();
+        }
+      },
+
+      fail: function fail(res) {
+        console.log(res);
+        uni.showToast({
+          title: '请求超时，请重试',
+          icon: 'none' });
+        // wx.hideLoading()
+      } });
+
+
+  });
+}
+
+
+
+module.exports = {
+  get: get,
+  post: post,
+  put: put,
+  deletes: deletes };
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 506:
+/*!***********************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/components/utils/uploadimage.js ***!
+  \***********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni, uniCloud) {
+
+
+
+
+
+
+var _api = __webpack_require__(/*! ../../unit/api.js */ 14);var BASEURL = getApp().globalData.url;
+function uploadImage() {
+  return new Promise(function (resolve, reject) {
+
+    uni.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success: function success(ress) {
+        if (ress.tempFiles.length > 0) {
+          var tempFilePaths = ress.tempFiles[0].path;
+          var size = ress.tempFiles[0].size;
+          if (size < 8388608) {
+            uni.showLoading({
+              title: '上传中' });
+
+            var imageurl = tempFilePaths;
+            var pdfurl = "";
+            uni.uploadFile({
+              url: BASEURL + '/api/v1/enterprise/upload/image', //仅为示例，非真实的接口地址
+              filePath: tempFilePaths,
+              header: {
+                "mini-session": uni.getStorageSync('session'),
+                "Content-Type": "multipart/form-data;boundary=----WebKitFormBoundaryi8lPVoSysovJLNqi",
+                "Accept": "application/json" },
+
+              name: 'file',
+              formData: {
+                'user': 'test' },
+
+              success: function success(res) {
+                if (res.statusCode == 500) {
+                  uni.showToast({
+                    title: '图片上传失败',
+                    icon: 'none' });
+
+                  reject('失败');
+                } else {
+                  uni.showToast({
+                    title: '图片上传成功',
+                    icon: 'success' });
+
+                  if (res.data) {
+                    var uploadId = JSON.parse(res.data).id;
+                    resolve({
+                      imageurl: imageurl, // 图片地址
+                      uploadId: uploadId // 后台返回的文件id
+                    });
+                  }
+
+                }
+              } });
+
+          } else {
+            uni.showToast({
+              title: '超出限制大小',
+              icon: "none" });
+
+          }
+        } else {
+          uni.showToast({
+            title: '文件不存在',
+            icon: "none" });
+
+        }
+      } });
+
+  });
+}
+
+function uploadPdf() {
+  return new Promise(function (resolve, reject) {
+    uni.chooseMessageFile({
+      count: 1,
+      type: 'all',
+      success: function success(ress) {
+        console.log(ress);
+        if (ress.tempFiles.length > 0) {
+          if (ress.tempFiles[0].size < 8388608) {
+            uni.showLoading({
+              title: '上传中' });
+
+            var pdfurl = ress.tempFiles[0].name;
+            uniCloud.uploadFile({
+              // url: 'https://www.yik.ink/sockets/union/uploadFile.php', //仅为示例，非真实的接口地址
+              filePath: ress.tempFiles[0].path,
+              name: 'file',
+              cloudPath: '题库.pdf',
+              // header: {
+              // 	"mini-session": uni.getStorageSync('session'),
+              // 	"Content-Type": "multipart/form-data; boundary=----WebKitFormBoundaryi8lPVoSysovJLNqi",
+              // 	"Accept": "application/json"
+              // },
+              // formData: '\r\n--XXX' +
+              // 		  '\r\nContent-Disposition: form-data; name="file"' +
+              // 		  '\r\n' + ress.tempFiles[0].path,
+              success: function success(res) {
+                // let filePath = JSON.parse(res.data).url
+                // console.log(filePath)
+                (0, _api.myRequest)({
+                  url: '/video/uploadFile',
+                  method: 'post',
+                  data: { filePath: res.fileID } }).
+                then(function (response) {
+                  uni.hideLoading();
+                  uni.showToast({
+                    title: '上传成功' });
+
+                });
+              } });
+
+          } else {
+            uni.showToast({
+              title: '超出限制大小',
+              icon: "none" });
+
+            return;
+          }
+        } else {
+          uni.showToast({
+            title: '文件不存在',
+            icon: "none" });
+
+        }
+
+      } });
+
+  });
+}
+module.exports = {
+  uploadImage: uploadImage,
+  uploadPdf: uploadPdf };
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 401)["default"]))
+
+/***/ }),
+
+/***/ 507:
+/*!*******************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/components/utils/openpdf.js ***!
+  \*******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(uni) {
+
+
+
+
+var BASEURL = getApp().globalData.url;
+
+
+function previepdf(url) {
+  uni.showLoading({
+    title: '加载中' });
+
+  uni.downloadFile({
+    url: BASEURL + url,
+
+    success: function success(res) {
+      var path = res.tempFilePath;
+      uni.openDocument({
+        filePath: path,
+        fileType: "pdf",
+
+        success: function success() {
+          uni.hideLoading();
+        },
+
+        fail: function fail() {
+          uni.hideLoading();
+        } });
+
+
+    } });
+
+
+}
+
+module.exports = {
+  previepdf: previepdf };
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 515:
+/*!*******************************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uni_modules/qiun-data-charts/js_sdk/u-charts/u-charts-v2.0.0.js ***!
+  \*******************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*
+ * uCharts®
+ * 高性能跨平台图表库，支持H5、APP、小程序（微信/支付宝/百度/头条/QQ/360）、Vue、Taro等支持canvas的框架平台
+ * Copyright (c) 2021 QIUN®秋云 https://www.ucharts.cn All rights reserved.
+ * Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
+ * 复制使用请保留本段注释，感谢支持开源！
+ * 
+ * uCharts®官方网站
+ * https://www.uCharts.cn
+ * 
+ * 开源地址:
+ * https://gitee.com/uCharts/uCharts
+ * 
+ * uni-app插件市场地址：
+ * http://ext.dcloud.net.cn/plugin?id=271
+ * 
+ */
+
+function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function _iterableToArrayLimit(arr, i) {if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}
+
+var config = {
+  version: 'v2.0.0-20210412',
+  yAxisWidth: 15,
+  yAxisSplit: 5,
+  xAxisHeight: 22,
+  xAxisLineHeight: 22,
+  legendHeight: 15,
+  yAxisTitleWidth: 15,
+  padding: [10, 10, 10, 10],
+  pixelRatio: 1,
+  rotate: false,
+  columePadding: 3,
+  fontSize: 13,
+  fontColor: '#666666',
+  dataPointShape: ['circle', 'circle', 'circle', 'circle'],
+  color: ['#1890FF', '#91CB74', '#FAC858', '#EE6666', '#73C0DE', '#3CA272', '#FC8452', '#9A60B4', '#ea7ccc'],
+  linearColor: ['#0EE2F8', '#2BDCA8', '#FA7D8D', '#EB88E2', '#2AE3A0', '#0EE2F8', '#EB88E2', '#6773E3', '#F78A85'],
+  pieChartLinePadding: 15,
+  pieChartTextPadding: 5,
+  xAxisTextPadding: 3,
+  titleColor: '#333333',
+  titleFontSize: 20,
+  subtitleColor: '#999999',
+  subtitleFontSize: 15,
+  toolTipPadding: 3,
+  toolTipBackground: '#000000',
+  toolTipOpacity: 0.7,
+  toolTipLineHeight: 20,
+  radarLabelTextMargin: 13,
+  gaugeLabelTextMargin: 13 };
+
+
+var assign = function assign(target) {for (var _len2 = arguments.length, varArgs = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {varArgs[_key2 - 1] = arguments[_key2];}
+  if (target == null) {
+    throw new TypeError('[uCharts] Cannot convert undefined or null to object');
+  }
+  if (!varArgs || varArgs.length <= 0) {
+    return target;
+  }
+  // 深度合并对象
+  function deepAssign(obj1, obj2) {
+    for (var key in obj2) {
+      obj1[key] = obj1[key] && obj1[key].toString() === "[object Object]" ?
+      deepAssign(obj1[key], obj2[key]) : obj1[key] = obj2[key];
+    }
+    return obj1;
+  }
+  varArgs.forEach(function (val) {
+    target = deepAssign(target, val);
+  });
+  return target;
+};
+
+var util = {
+  toFixed: function toFixed(num, limit) {
+    limit = limit || 2;
+    if (this.isFloat(num)) {
+      num = num.toFixed(limit);
+    }
+    return num;
+  },
+  isFloat: function isFloat(num) {
+    return num % 1 !== 0;
+  },
+  approximatelyEqual: function approximatelyEqual(num1, num2) {
+    return Math.abs(num1 - num2) < 1e-10;
+  },
+  isSameSign: function isSameSign(num1, num2) {
+    return Math.abs(num1) === num1 && Math.abs(num2) === num2 || Math.abs(num1) !== num1 && Math.abs(num2) !== num2;
+  },
+  isSameXCoordinateArea: function isSameXCoordinateArea(p1, p2) {
+    return this.isSameSign(p1.x, p2.x);
+  },
+  isCollision: function isCollision(obj1, obj2) {
+    obj1.end = {};
+    obj1.end.x = obj1.start.x + obj1.width;
+    obj1.end.y = obj1.start.y - obj1.height;
+    obj2.end = {};
+    obj2.end.x = obj2.start.x + obj2.width;
+    obj2.end.y = obj2.start.y - obj2.height;
+    var flag = obj2.start.x > obj1.end.x || obj2.end.x < obj1.start.x || obj2.end.y > obj1.start.y || obj2.start.y < obj1.end.y;
+    return !flag;
+  } };
+
+
+//兼容H5点击事件
+function getH5Offset(e) {
+  e.mp = {
+    changedTouches: [] };
+
+  e.mp.changedTouches.push({
+    x: e.offsetX,
+    y: e.offsetY });
+
+  return e;
+}
+
+// 经纬度转墨卡托
+function lonlat2mercator(longitude, latitude) {
+  var mercator = Array(2);
+  var x = longitude * 20037508.34 / 180;
+  var y = Math.log(Math.tan((90 + latitude) * Math.PI / 360)) / (Math.PI / 180);
+  y = y * 20037508.34 / 180;
+  mercator[0] = x;
+  mercator[1] = y;
+  return mercator;
+}
+
+// 墨卡托转经纬度
+function mercator2lonlat(longitude, latitude) {
+  var lonlat = Array(2);
+  var x = longitude / 20037508.34 * 180;
+  var y = latitude / 20037508.34 * 180;
+  y = 180 / Math.PI * (2 * Math.atan(Math.exp(y * Math.PI / 180)) - Math.PI / 2);
+  lonlat[0] = x;
+  lonlat[1] = y;
+  return lonlat;
+}
+
+// hex 转 rgba
+function hexToRgb(hexValue, opc) {
+  var rgx = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  var hex = hexValue.replace(rgx, function (m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+  var rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  var r = parseInt(rgb[1], 16);
+  var g = parseInt(rgb[2], 16);
+  var b = parseInt(rgb[3], 16);
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + opc + ')';
+}
+
+function findRange(num, type, limit) {
+  if (isNaN(num)) {
+    throw new Error('[uCharts] series数据需为Number格式');
+  }
+  limit = limit || 10;
+  type = type ? type : 'upper';
+  var multiple = 1;
+  while (limit < 1) {
+    limit *= 10;
+    multiple *= 10;
+  }
+  if (type === 'upper') {
+    num = Math.ceil(num * multiple);
+  } else {
+    num = Math.floor(num * multiple);
+  }
+  while (num % limit !== 0) {
+    if (type === 'upper') {
+      num++;
+    } else {
+      num--;
+    }
+  }
+  return num / multiple;
+}
+
+function calCandleMA(dayArr, nameArr, colorArr, kdata) {
+  var seriesTemp = [];
+  for (var k = 0; k < dayArr.length; k++) {
+    var seriesItem = {
+      data: [],
+      name: nameArr[k],
+      color: colorArr[k] };
+
+    for (var i = 0, len = kdata.length; i < len; i++) {
+      if (i < dayArr[k]) {
+        seriesItem.data.push(null);
+        continue;
+      }
+      var sum = 0;
+      for (var j = 0; j < dayArr[k]; j++) {
+        sum += kdata[i - j][1];
+      }
+      seriesItem.data.push(+(sum / dayArr[k]).toFixed(3));
+    }
+    seriesTemp.push(seriesItem);
+  }
+  return seriesTemp;
+}
+
+function calValidDistance(self, distance, chartData, config, opts) {
+  var dataChartAreaWidth = opts.width - opts.area[1] - opts.area[3];
+  var dataChartWidth = chartData.eachSpacing * (opts.chartData.xAxisData.xAxisPoints.length - 1);
+  var validDistance = distance;
+  if (distance >= 0) {
+    validDistance = 0;
+    self.uevent.trigger('scrollLeft');
+    self.scrollOption.position = 'left';
+    opts.xAxis.scrollPosition = 'left';
+  } else if (Math.abs(distance) >= dataChartWidth - dataChartAreaWidth) {
+    validDistance = dataChartAreaWidth - dataChartWidth;
+    self.uevent.trigger('scrollRight');
+    self.scrollOption.position = 'right';
+    opts.xAxis.scrollPosition = 'right';
+  } else {
+    self.scrollOption.position = distance;
+    opts.xAxis.scrollPosition = distance;
+  }
+  return validDistance;
+}
+
+function isInAngleRange(angle, startAngle, endAngle) {
+  function adjust(angle) {
+    while (angle < 0) {
+      angle += 2 * Math.PI;
+    }
+    while (angle > 2 * Math.PI) {
+      angle -= 2 * Math.PI;
+    }
+    return angle;
+  }
+  angle = adjust(angle);
+  startAngle = adjust(startAngle);
+  endAngle = adjust(endAngle);
+  if (startAngle > endAngle) {
+    endAngle += 2 * Math.PI;
+    if (angle < startAngle) {
+      angle += 2 * Math.PI;
+    }
+  }
+  return angle >= startAngle && angle <= endAngle;
+}
+
+function calRotateTranslate(x, y, h) {
+  var xv = x;
+  var yv = h - y;
+  var transX = xv + (h - yv - xv) / Math.sqrt(2);
+  transX *= -1;
+  var transY = (h - yv) * (Math.sqrt(2) - 1) - (h - yv - xv) / Math.sqrt(2);
+  return {
+    transX: transX,
+    transY: transY };
+
+}
+
+function createCurveControlPoints(points, i) {
+  function isNotMiddlePoint(points, i) {
+    if (points[i - 1] && points[i + 1]) {
+      return points[i].y >= Math.max(points[i - 1].y, points[i + 1].y) || points[i].y <= Math.min(points[i - 1].y,
+      points[i + 1].y);
+    } else {
+      return false;
+    }
+  }
+  function isNotMiddlePointX(points, i) {
+    if (points[i - 1] && points[i + 1]) {
+      return points[i].x >= Math.max(points[i - 1].x, points[i + 1].x) || points[i].x <= Math.min(points[i - 1].x,
+      points[i + 1].x);
+    } else {
+      return false;
+    }
+  }
+  var a = 0.2;
+  var b = 0.2;
+  var pAx = null;
+  var pAy = null;
+  var pBx = null;
+  var pBy = null;
+  if (i < 1) {
+    pAx = points[0].x + (points[1].x - points[0].x) * a;
+    pAy = points[0].y + (points[1].y - points[0].y) * a;
+  } else {
+    pAx = points[i].x + (points[i + 1].x - points[i - 1].x) * a;
+    pAy = points[i].y + (points[i + 1].y - points[i - 1].y) * a;
+  }
+
+  if (i > points.length - 3) {
+    var last = points.length - 1;
+    pBx = points[last].x - (points[last].x - points[last - 1].x) * b;
+    pBy = points[last].y - (points[last].y - points[last - 1].y) * b;
+  } else {
+    pBx = points[i + 1].x - (points[i + 2].x - points[i].x) * b;
+    pBy = points[i + 1].y - (points[i + 2].y - points[i].y) * b;
+  }
+  if (isNotMiddlePoint(points, i + 1)) {
+    pBy = points[i + 1].y;
+  }
+  if (isNotMiddlePoint(points, i)) {
+    pAy = points[i].y;
+  }
+  if (isNotMiddlePointX(points, i + 1)) {
+    pBx = points[i + 1].x;
+  }
+  if (isNotMiddlePointX(points, i)) {
+    pAx = points[i].x;
+  }
+  if (pAy >= Math.max(points[i].y, points[i + 1].y) || pAy <= Math.min(points[i].y, points[i + 1].y)) {
+    pAy = points[i].y;
+  }
+  if (pBy >= Math.max(points[i].y, points[i + 1].y) || pBy <= Math.min(points[i].y, points[i + 1].y)) {
+    pBy = points[i + 1].y;
+  }
+  if (pAx >= Math.max(points[i].x, points[i + 1].x) || pAx <= Math.min(points[i].x, points[i + 1].x)) {
+    pAx = points[i].x;
+  }
+  if (pBx >= Math.max(points[i].x, points[i + 1].x) || pBx <= Math.min(points[i].x, points[i + 1].x)) {
+    pBx = points[i + 1].x;
+  }
+  return {
+    ctrA: {
+      x: pAx,
+      y: pAy },
+
+    ctrB: {
+      x: pBx,
+      y: pBy } };
+
+
+}
+
+function convertCoordinateOrigin(x, y, center) {
+  return {
+    x: center.x + x,
+    y: center.y - y };
+
+}
+
+function avoidCollision(obj, target) {
+  if (target) {
+    // is collision test
+    while (util.isCollision(obj, target)) {
+      if (obj.start.x > 0) {
+        obj.start.y--;
+      } else if (obj.start.x < 0) {
+        obj.start.y++;
+      } else {
+        if (obj.start.y > 0) {
+          obj.start.y++;
+        } else {
+          obj.start.y--;
+        }
+      }
+    }
+  }
+  return obj;
+}
+
+function fixPieSeries(series, opts, config) {
+  var pieSeriesArr = [];
+  if (series[0].data.constructor.toString().indexOf('Array') > -1) {
+    opts._pieSeries_ = series;
+    var oldseries = series[0].data;
+    for (var i = 0; i < oldseries.length; i++) {
+      if (series[0].formatter) {
+        pieSeriesArr.push({ name: oldseries[i].name, data: oldseries[i].value, formatter: series[0].formatter });
+      } else {
+        pieSeriesArr.push({ name: oldseries[i].name, data: oldseries[i].value });
+      }
+    }
+    opts.series = pieSeriesArr;
+  } else {
+    pieSeriesArr = series;
+  }
+  return pieSeriesArr;
+}
+
+function fillSeries(series, opts, config) {
+  var index = 0;
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    if (!item.color) {
+      item.color = config.color[index];
+      index = (index + 1) % config.color.length;
+    }
+    if (!item.linearIndex) {
+      item.linearIndex = i;
+    }
+    if (!item.index) {
+      item.index = 0;
+    }
+    if (!item.type) {
+      item.type = opts.type;
+    }
+    if (typeof item.show == "undefined") {
+      item.show = true;
+    }
+    if (!item.type) {
+      item.type = opts.type;
+    }
+    if (!item.pointShape) {
+      item.pointShape = "circle";
+    }
+    if (!item.legendShape) {
+      switch (item.type) {
+        case 'line':
+          item.legendShape = "line";
+          break;
+        case 'column':
+          item.legendShape = "rect";
+          break;
+        case 'area':
+          item.legendShape = "triangle";
+          break;
+        default:
+          item.legendShape = "circle";}
+
+    }
+  }
+  return series;
+}
+
+function fillCustomColor(linearType, customColor, series, config) {
+  var newcolor = customColor || [];
+  if (linearType == 'custom' && newcolor.length == 0) {
+    newcolor = config.linearColor;
+  }
+  if (linearType == 'custom' && newcolor.length < series.length) {
+    var chazhi = series.length - newcolor.length;
+    for (var i = 0; i < chazhi; i++) {
+      newcolor.push(config.linearColor[(i + 1) % config.linearColor.length]);
+    }
+  }
+  return newcolor;
+}
+
+function getDataRange(minData, maxData) {
+  var limit = 0;
+  var range = maxData - minData;
+  if (range >= 10000) {
+    limit = 1000;
+  } else if (range >= 1000) {
+    limit = 100;
+  } else if (range >= 100) {
+    limit = 10;
+  } else if (range >= 10) {
+    limit = 5;
+  } else if (range >= 1) {
+    limit = 1;
+  } else if (range >= 0.1) {
+    limit = 0.1;
+  } else if (range >= 0.01) {
+    limit = 0.01;
+  } else if (range >= 0.001) {
+    limit = 0.001;
+  } else if (range >= 0.0001) {
+    limit = 0.0001;
+  } else if (range >= 0.00001) {
+    limit = 0.00001;
+  } else {
+    limit = 0.000001;
+  }
+  return {
+    minRange: findRange(minData, 'lower', limit),
+    maxRange: findRange(maxData, 'upper', limit) };
+
+}
+
+function measureText(text, fontSize, context) {
+  var width = 0;
+  text = String(text);
+
+
+
+  if (context !== false && context !== undefined && context.setFontSize && context.measureText) {
+    context.setFontSize(fontSize);
+    return context.measureText(text).width;
+  } else {
+    var text = text.split('');
+    for (var i = 0; i < text.length; i++) {
+      var item = text[i];
+      if (/[a-zA-Z]/.test(item)) {
+        width += 7;
+      } else if (/[0-9]/.test(item)) {
+        width += 5.5;
+      } else if (/\./.test(item)) {
+        width += 2.7;
+      } else if (/-/.test(item)) {
+        width += 3.25;
+      } else if (/:/.test(item)) {
+        width += 2.5;
+      } else if (/[\u4e00-\u9fa5]/.test(item)) {
+        width += 10;
+      } else if (/\(|\)/.test(item)) {
+        width += 3.73;
+      } else if (/\s/.test(item)) {
+        width += 2.5;
+      } else if (/%/.test(item)) {
+        width += 8;
+      } else {
+        width += 10;
+      }
+    }
+    return width * fontSize / 10;
+  }
+}
+
+function dataCombine(series) {
+  return series.reduce(function (a, b) {
+    return (a.data ? a.data : a).concat(b.data);
+  }, []);
+}
+
+function dataCombineStack(series, len) {
+  var sum = new Array(len);
+  for (var j = 0; j < sum.length; j++) {
+    sum[j] = 0;
+  }
+  for (var i = 0; i < series.length; i++) {
+    for (var j = 0; j < sum.length; j++) {
+      sum[j] += series[i].data[j];
+    }
+  }
+  return series.reduce(function (a, b) {
+    return (a.data ? a.data : a).concat(b.data).concat(sum);
+  }, []);
+}
+
+function getTouches(touches, opts, e) {
+  var x, y;
+  if (touches.clientX) {
+    if (opts.rotate) {
+      y = opts.height - touches.clientX * opts.pix;
+      x = (touches.pageY - e.currentTarget.offsetTop - opts.height / opts.pix / 2 * (opts.pix - 1)) * opts.pix;
+    } else {
+      x = touches.clientX * opts.pix;
+      y = (touches.pageY - e.currentTarget.offsetTop - opts.height / opts.pix / 2 * (opts.pix - 1)) * opts.pix;
+    }
+  } else {
+    if (opts.rotate) {
+      y = opts.height - touches.x * opts.pix;
+      x = touches.y * opts.pix;
+    } else {
+      x = touches.x * opts.pix;
+      y = touches.y * opts.pix;
+    }
+  }
+  return {
+    x: x,
+    y: y };
+
+}
+
+function getSeriesDataItem(series, index) {
+  var data = [];
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    if (item.data[index] !== null && typeof item.data[index] !== 'undefined' && item.show) {
+      var seriesItem = {};
+      seriesItem.color = item.color;
+      seriesItem.type = item.type;
+      seriesItem.style = item.style;
+      seriesItem.pointShape = item.pointShape;
+      seriesItem.disableLegend = item.disableLegend;
+      seriesItem.name = item.name;
+      seriesItem.show = item.show;
+      seriesItem.data = item.formatter ? item.formatter(item.data[index]) : item.data[index];
+      data.push(seriesItem);
+    }
+  }
+  return data;
+}
+
+function getMaxTextListLength(list, fontSize, context) {
+  var lengthList = list.map(function (item) {
+    return measureText(item, fontSize, context);
+  });
+  return Math.max.apply(null, lengthList);
+}
+
+function getRadarCoordinateSeries(length) {
+  var eachAngle = 2 * Math.PI / length;
+  var CoordinateSeries = [];
+  for (var i = 0; i < length; i++) {
+    CoordinateSeries.push(eachAngle * i);
+  }
+  return CoordinateSeries.map(function (item) {
+    return -1 * item + Math.PI / 2;
+  });
+}
+
+function getToolTipData(seriesData, opts, index, categories) {
+  var option = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+  var calPoints = opts.chartData.calPoints ? opts.chartData.calPoints : [];
+  var textList = seriesData.map(function (item) {
+    var titleText = [];
+    if (categories) {
+      titleText = categories;
+    } else {
+      titleText = item.data;
+    }
+    return {
+      text: option.formatter ? option.formatter(item, titleText[index], index, opts) : item.name + ': ' + item.data,
+      color: item.color };
+
+  });
+  var validCalPoints = [];
+  var offset = {
+    x: 0,
+    y: 0 };
+
+  for (var i = 0; i < calPoints.length; i++) {
+    var points = calPoints[i];
+    if (typeof points[index] !== 'undefined' && points[index] !== null) {
+      validCalPoints.push(points[index]);
+    }
+  }
+  for (var _i = 0; _i < validCalPoints.length; _i++) {
+    var item = validCalPoints[_i];
+    offset.x = Math.round(item.x);
+    offset.y += item.y;
+  }
+  offset.y /= validCalPoints.length;
+  return {
+    textList: textList,
+    offset: offset };
+
+}
+
+function getMixToolTipData(seriesData, opts, index, categories) {
+  var option = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+  var calPoints = opts.chartData.calPoints;
+  var textList = seriesData.map(function (item) {
+    return {
+      text: option.formatter ? option.formatter(item, categories[index], index, opts) : item.name + ': ' + item.data,
+      color: item.color,
+      disableLegend: item.disableLegend ? true : false };
+
+  });
+  textList = textList.filter(function (item) {
+    if (item.disableLegend !== true) {
+      return item;
+    }
+  });
+  var validCalPoints = [];
+  var offset = {
+    x: 0,
+    y: 0 };
+
+  for (var i = 0; i < calPoints.length; i++) {
+    var points = calPoints[i];
+    if (typeof points[index] !== 'undefined' && points[index] !== null) {
+      validCalPoints.push(points[index]);
+    }
+  }
+  for (var _i2 = 0; _i2 < validCalPoints.length; _i2++) {
+    var item = validCalPoints[_i2];
+    offset.x = Math.round(item.x);
+    offset.y += item.y;
+  }
+  offset.y /= validCalPoints.length;
+  return {
+    textList: textList,
+    offset: offset };
+
+}
+
+function getCandleToolTipData(series, seriesData, opts, index, categories, extra) {
+  var option = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : {};
+  var calPoints = opts.chartData.calPoints;
+  var upColor = extra.color.upFill;
+  var downColor = extra.color.downFill;
+  //颜色顺序为开盘，收盘，最低，最高
+  var color = [upColor, upColor, downColor, upColor];
+  var textList = [];
+  var text0 = {
+    text: categories[index],
+    color: null };
+
+  textList.push(text0);
+  seriesData.map(function (item) {
+    if (index == 0) {
+      if (item.data[1] - item.data[0] < 0) {
+        color[1] = downColor;
+      } else {
+        color[1] = upColor;
+      }
+    } else {
+      if (item.data[0] < series[index - 1][1]) {
+        color[0] = downColor;
+      }
+      if (item.data[1] < item.data[0]) {
+        color[1] = downColor;
+      }
+      if (item.data[2] > series[index - 1][1]) {
+        color[2] = upColor;
+      }
+      if (item.data[3] < series[index - 1][1]) {
+        color[3] = downColor;
+      }
+    }
+    var text1 = {
+      text: '开盘：' + item.data[0],
+      color: color[0] };
+
+    var text2 = {
+      text: '收盘：' + item.data[1],
+      color: color[1] };
+
+    var text3 = {
+      text: '最低：' + item.data[2],
+      color: color[2] };
+
+    var text4 = {
+      text: '最高：' + item.data[3],
+      color: color[3] };
+
+    textList.push(text1, text2, text3, text4);
+  });
+  var validCalPoints = [];
+  var offset = {
+    x: 0,
+    y: 0 };
+
+  for (var i = 0; i < calPoints.length; i++) {
+    var points = calPoints[i];
+    if (typeof points[index] !== 'undefined' && points[index] !== null) {
+      validCalPoints.push(points[index]);
+    }
+  }
+  offset.x = Math.round(validCalPoints[0][0].x);
+  return {
+    textList: textList,
+    offset: offset };
+
+}
+
+function filterSeries(series) {
+  var tempSeries = [];
+  for (var i = 0; i < series.length; i++) {
+    if (series[i].show == true) {
+      tempSeries.push(series[i]);
+    }
+  }
+  return tempSeries;
+}
+
+function findCurrentIndex(currentPoints, calPoints, opts, config) {
+  var offset = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+  var currentIndex = -1;
+  var spacing = opts.chartData.eachSpacing / 2;
+  var xAxisPoints = [];
+  if (calPoints && calPoints.length > 0) {
+    for (var i = 1; i < opts.chartData.xAxisPoints.length; i++) {
+      xAxisPoints.push(opts.chartData.xAxisPoints[i] - spacing);
+    }
+    if ((opts.type == 'line' || opts.type == 'area') && opts.xAxis.boundaryGap == 'justify') {
+      xAxisPoints = opts.chartData.xAxisPoints;
+    }
+    if (!opts.categories) {
+      spacing = 0;
+    }
+    if (isInExactChartArea(currentPoints, opts, config)) {
+      xAxisPoints.forEach(function (item, index) {
+        if (currentPoints.x + offset + spacing > item) {
+          currentIndex = index;
+        }
+      });
+    }
+  }
+  return currentIndex;
+}
+
+function findLegendIndex(currentPoints, legendData, opts) {
+  var currentIndex = -1;
+  var gap = 0;
+  if (isInExactLegendArea(currentPoints, legendData.area)) {
+    var points = legendData.points;
+    var index = -1;
+    for (var i = 0, len = points.length; i < len; i++) {
+      var item = points[i];
+      for (var j = 0; j < item.length; j++) {
+        index += 1;
+        var area = item[j]['area'];
+        if (area && currentPoints.x > area[0] - gap && currentPoints.x < area[2] + gap && currentPoints.y > area[1] - gap && currentPoints.y < area[3] + gap) {
+          currentIndex = index;
+          break;
+        }
+      }
+    }
+    return currentIndex;
+  }
+  return currentIndex;
+}
+
+function isInExactLegendArea(currentPoints, area) {
+  return currentPoints.x > area.start.x && currentPoints.x < area.end.x && currentPoints.y > area.start.y && currentPoints.y < area.end.y;
+}
+
+function isInExactChartArea(currentPoints, opts, config) {
+  return currentPoints.x <= opts.width - opts.area[1] + 10 && currentPoints.x >= opts.area[3] - 10 && currentPoints.y >= opts.area[0] && currentPoints.y <= opts.height - opts.area[2];
+}
+
+function findRadarChartCurrentIndex(currentPoints, radarData, count) {
+  var eachAngleArea = 2 * Math.PI / count;
+  var currentIndex = -1;
+  if (isInExactPieChartArea(currentPoints, radarData.center, radarData.radius)) {
+    var fixAngle = function fixAngle(angle) {
+      if (angle < 0) {
+        angle += 2 * Math.PI;
+      }
+      if (angle > 2 * Math.PI) {
+        angle -= 2 * Math.PI;
+      }
+      return angle;
+    };
+    var angle = Math.atan2(radarData.center.y - currentPoints.y, currentPoints.x - radarData.center.x);
+    angle = -1 * angle;
+    if (angle < 0) {
+      angle += 2 * Math.PI;
+    }
+    var angleList = radarData.angleList.map(function (item) {
+      item = fixAngle(-1 * item);
+      return item;
+    });
+    angleList.forEach(function (item, index) {
+      var rangeStart = fixAngle(item - eachAngleArea / 2);
+      var rangeEnd = fixAngle(item + eachAngleArea / 2);
+      if (rangeEnd < rangeStart) {
+        rangeEnd += 2 * Math.PI;
+      }
+      if (angle >= rangeStart && angle <= rangeEnd || angle + 2 * Math.PI >= rangeStart && angle + 2 * Math.PI <= rangeEnd) {
+        currentIndex = index;
+      }
+    });
+  }
+  return currentIndex;
+}
+
+function findFunnelChartCurrentIndex(currentPoints, funnelData) {
+  var currentIndex = -1;
+  for (var i = 0, len = funnelData.series.length; i < len; i++) {
+    var item = funnelData.series[i];
+    if (currentPoints.x > item.funnelArea[0] && currentPoints.x < item.funnelArea[2] && currentPoints.y > item.funnelArea[1] && currentPoints.y < item.funnelArea[3]) {
+      currentIndex = i;
+      break;
+    }
+  }
+  return currentIndex;
+}
+
+function findWordChartCurrentIndex(currentPoints, wordData) {
+  var currentIndex = -1;
+  for (var i = 0, len = wordData.length; i < len; i++) {
+    var item = wordData[i];
+    if (currentPoints.x > item.area[0] && currentPoints.x < item.area[2] && currentPoints.y > item.area[1] && currentPoints.y < item.area[3]) {
+      currentIndex = i;
+      break;
+    }
+  }
+  return currentIndex;
+}
+
+function findMapChartCurrentIndex(currentPoints, opts) {
+  var currentIndex = -1;
+  var cData = opts.chartData.mapData;
+  var data = opts.series;
+  var tmp = pointToCoordinate(currentPoints.y, currentPoints.x, cData.bounds, cData.scale, cData.xoffset, cData.yoffset);
+  var poi = [tmp.x, tmp.y];
+  for (var i = 0, len = data.length; i < len; i++) {
+    var item = data[i].geometry.coordinates;
+    if (isPoiWithinPoly(poi, item, opts.chartData.mapData.mercator)) {
+      currentIndex = i;
+      break;
+    }
+  }
+  return currentIndex;
+}
+
+function findPieChartCurrentIndex(currentPoints, pieData) {
+  var currentIndex = -1;
+  if (pieData && pieData.center && isInExactPieChartArea(currentPoints, pieData.center, pieData.radius)) {
+    var angle = Math.atan2(pieData.center.y - currentPoints.y, currentPoints.x - pieData.center.x);
+    angle = -angle;
+    for (var i = 0, len = pieData.series.length; i < len; i++) {
+      var item = pieData.series[i];
+      if (isInAngleRange(angle, item._start_, item._start_ + item._proportion_ * 2 * Math.PI)) {
+        currentIndex = i;
+        break;
+      }
+    }
+  }
+
+  return currentIndex;
+}
+
+function isInExactPieChartArea(currentPoints, center, radius) {
+  return Math.pow(currentPoints.x - center.x, 2) + Math.pow(currentPoints.y - center.y, 2) <= Math.pow(radius, 2);
+}
+
+function splitPoints(points, eachSeries) {
+  var newPoints = [];
+  var items = [];
+  points.forEach(function (item, index) {
+    if (eachSeries.connectNulls) {
+      if (item !== null) {
+        items.push(item);
+      }
+    } else {
+      if (item !== null) {
+        items.push(item);
+      } else {
+        if (items.length) {
+          newPoints.push(items);
+        }
+        items = [];
+      }
+    }
+
+  });
+  if (items.length) {
+    newPoints.push(items);
+  }
+  return newPoints;
+}
+
+function calLegendData(series, opts, config, chartData, context) {
+  var legendData = {
+    area: {
+      start: {
+        x: 0,
+        y: 0 },
+
+      end: {
+        x: 0,
+        y: 0 },
+
+      width: 0,
+      height: 0,
+      wholeWidth: 0,
+      wholeHeight: 0 },
+
+    points: [],
+    widthArr: [],
+    heightArr: [] };
+
+  if (opts.legend.show === false) {
+    chartData.legendData = legendData;
+    return legendData;
+  }
+  var padding = opts.legend.padding * opts.pix;
+  var margin = opts.legend.margin * opts.pix;
+  var fontSize = opts.legend.fontSize * opts.pix;
+  var shapeWidth = 15 * opts.pix;
+  var shapeRight = 5 * opts.pix;
+  var lineHeight = Math.max(opts.legend.lineHeight * opts.pix, fontSize);
+  if (opts.legend.position == 'top' || opts.legend.position == 'bottom') {
+    var legendList = [];
+    var widthCount = 0;
+    var widthCountArr = [];
+    var currentRow = [];
+    for (var i = 0; i < series.length; i++) {
+      var item = series[i];
+      var itemWidth = shapeWidth + shapeRight + measureText(item.name || 'undefined', fontSize, context) + opts.legend.itemGap * opts.pix;
+      if (widthCount + itemWidth > opts.width - opts.area[1] - opts.area[3]) {
+        legendList.push(currentRow);
+        widthCountArr.push(widthCount - opts.legend.itemGap * opts.pix);
+        widthCount = itemWidth;
+        currentRow = [item];
+      } else {
+        widthCount += itemWidth;
+        currentRow.push(item);
+      }
+    }
+    if (currentRow.length) {
+      legendList.push(currentRow);
+      widthCountArr.push(widthCount - opts.legend.itemGap * opts.pix);
+      legendData.widthArr = widthCountArr;
+      var legendWidth = Math.max.apply(null, widthCountArr);
+      switch (opts.legend.float) {
+        case 'left':
+          legendData.area.start.x = opts.area[3];
+          legendData.area.end.x = opts.area[3] + legendWidth + 2 * padding;
+          break;
+        case 'right':
+          legendData.area.start.x = opts.width - opts.area[1] - legendWidth - 2 * padding;
+          legendData.area.end.x = opts.width - opts.area[1];
+          break;
+        default:
+          legendData.area.start.x = (opts.width - legendWidth) / 2 - padding;
+          legendData.area.end.x = (opts.width + legendWidth) / 2 + padding;}
+
+      legendData.area.width = legendWidth + 2 * padding;
+      legendData.area.wholeWidth = legendWidth + 2 * padding;
+      legendData.area.height = legendList.length * lineHeight + 2 * padding;
+      legendData.area.wholeHeight = legendList.length * lineHeight + 2 * padding + 2 * margin;
+      legendData.points = legendList;
+    }
+  } else {
+    var len = series.length;
+    var maxHeight = opts.height - opts.area[0] - opts.area[2] - 2 * margin - 2 * padding;
+    var maxLength = Math.min(Math.floor(maxHeight / lineHeight), len);
+    legendData.area.height = maxLength * lineHeight + padding * 2;
+    legendData.area.wholeHeight = maxLength * lineHeight + padding * 2;
+    switch (opts.legend.float) {
+      case 'top':
+        legendData.area.start.y = opts.area[0] + margin;
+        legendData.area.end.y = opts.area[0] + margin + legendData.area.height;
+        break;
+      case 'bottom':
+        legendData.area.start.y = opts.height - opts.area[2] - margin - legendData.area.height;
+        legendData.area.end.y = opts.height - opts.area[2] - margin;
+        break;
+      default:
+        legendData.area.start.y = (opts.height - legendData.area.height) / 2;
+        legendData.area.end.y = (opts.height + legendData.area.height) / 2;}
+
+    var lineNum = len % maxLength === 0 ? len / maxLength : Math.floor(len / maxLength + 1);
+    var _currentRow = [];
+    for (var _i3 = 0; _i3 < lineNum; _i3++) {
+      var temp = series.slice(_i3 * maxLength, _i3 * maxLength + maxLength);
+      _currentRow.push(temp);
+    }
+    legendData.points = _currentRow;
+    if (_currentRow.length) {
+      for (var _i4 = 0; _i4 < _currentRow.length; _i4++) {
+        var _item = _currentRow[_i4];
+        var maxWidth = 0;
+        for (var j = 0; j < _item.length; j++) {
+          var _itemWidth = shapeWidth + shapeRight + measureText(_item[j].name || 'undefined', fontSize, context) + opts.legend.itemGap * opts.pix;
+          if (_itemWidth > maxWidth) {
+            maxWidth = _itemWidth;
+          }
+        }
+        legendData.widthArr.push(maxWidth);
+        legendData.heightArr.push(_item.length * lineHeight + padding * 2);
+      }
+      var _legendWidth = 0;
+      for (var _i5 = 0; _i5 < legendData.widthArr.length; _i5++) {
+        _legendWidth += legendData.widthArr[_i5];
+      }
+      legendData.area.width = _legendWidth - opts.legend.itemGap * opts.pix + 2 * padding;
+      legendData.area.wholeWidth = legendData.area.width + padding;
+    }
+  }
+  switch (opts.legend.position) {
+    case 'top':
+      legendData.area.start.y = opts.area[0] + margin;
+      legendData.area.end.y = opts.area[0] + margin + legendData.area.height;
+      break;
+    case 'bottom':
+      legendData.area.start.y = opts.height - opts.area[2] - legendData.area.height - margin;
+      legendData.area.end.y = opts.height - opts.area[2] - margin;
+      break;
+    case 'left':
+      legendData.area.start.x = opts.area[3];
+      legendData.area.end.x = opts.area[3] + legendData.area.width;
+      break;
+    case 'right':
+      legendData.area.start.x = opts.width - opts.area[1] - legendData.area.width;
+      legendData.area.end.x = opts.width - opts.area[1];
+      break;}
+
+  chartData.legendData = legendData;
+  return legendData;
+}
+
+function calCategoriesData(categories, opts, config, eachSpacing, context) {
+  var result = {
+    angle: 0,
+    xAxisHeight: config.xAxisHeight };
+
+  var categoriesTextLenth = categories.map(function (item) {
+    return measureText(item, opts.xAxis.fontSize || config.fontSize, context);
+  });
+  var maxTextLength = Math.max.apply(this, categoriesTextLenth);
+
+  if (opts.xAxis.rotateLabel == true && maxTextLength + 2 * config.xAxisTextPadding > eachSpacing) {
+    result.angle = 45 * Math.PI / 180;
+    result.xAxisHeight = 2 * config.xAxisTextPadding + maxTextLength * Math.sin(result.angle);
+  }
+  return result;
+}
+
+function getXAxisTextList(series, opts, config) {
+  var index = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : -1;
+  var data = dataCombine(series);
+  var sorted = [];
+  // remove null from data
+  data = data.filter(function (item) {
+    //return item !== null;
+    if (typeof item === 'object' && item !== null) {
+      if (item.constructor.toString().indexOf('Array') > -1) {
+        return item !== null;
+      } else {
+        return item.value !== null;
+      }
+    } else {
+      return item !== null;
+    }
+  });
+  data.map(function (item) {
+    if (typeof item === 'object') {
+      if (item.constructor.toString().indexOf('Array') > -1) {
+        if (opts.type == 'candle') {
+          item.map(function (subitem) {
+            sorted.push(subitem);
+          });
+        } else {
+          sorted.push(item[0]);
+        }
+      } else {
+        sorted.push(item.value);
+      }
+    } else {
+      sorted.push(item);
+    }
+  });
+
+  var minData = 0;
+  var maxData = 0;
+  if (sorted.length > 0) {
+    minData = Math.min.apply(this, sorted);
+    maxData = Math.max.apply(this, sorted);
+  }
+  //为了兼容v1.9.0之前的项目
+  if (index > -1) {
+    if (typeof opts.xAxis.data[index].min === 'number') {
+      minData = Math.min(opts.xAxis.data[index].min, minData);
+    }
+    if (typeof opts.xAxis.data[index].max === 'number') {
+      maxData = Math.max(opts.xAxis.data[index].max, maxData);
+    }
+  } else {
+    if (typeof opts.xAxis.min === 'number') {
+      minData = Math.min(opts.xAxis.min, minData);
+    }
+    if (typeof opts.xAxis.max === 'number') {
+      maxData = Math.max(opts.xAxis.max, maxData);
+    }
+  }
+  if (minData === maxData) {
+    var rangeSpan = maxData || 10;
+    maxData += rangeSpan;
+  }
+  //var dataRange = getDataRange(minData, maxData);
+  var minRange = minData;
+  var maxRange = maxData;
+  var range = [];
+  var eachRange = (maxRange - minRange) / opts.xAxis.splitNumber;
+  for (var i = 0; i <= opts.xAxis.splitNumber; i++) {
+    range.push(minRange + eachRange * i);
+  }
+  return range;
+}
+
+function calXAxisData(series, opts, config, context) {
+  var result = {
+    angle: 0,
+    xAxisHeight: config.xAxisHeight };
+
+  result.ranges = getXAxisTextList(series, opts, config);
+  result.rangesFormat = result.ranges.map(function (item) {
+    item = opts.xAxis.formatter ? opts.xAxis.formatter(item) : util.toFixed(item, 2);
+    return item;
+  });
+  var xAxisScaleValues = result.ranges.map(function (item) {
+    // 如果刻度值是浮点数,则保留两位小数
+    item = util.toFixed(item, 2);
+    // 若有自定义格式则调用自定义的格式化函数
+    item = opts.xAxis.formatter ? opts.xAxis.formatter(Number(item)) : item;
+    return item;
+  });
+  result = Object.assign(result, getXAxisPoints(xAxisScaleValues, opts, config));
+  // 计算X轴刻度的属性譬如每个刻度的间隔,刻度的起始点\结束点以及总长
+  var eachSpacing = result.eachSpacing;
+  var textLength = xAxisScaleValues.map(function (item) {
+    return measureText(item, config.fontSize, context);
+  });
+  // get max length of categories text
+  var maxTextLength = Math.max.apply(this, textLength);
+  // 如果刻度值文本内容过长,则将其逆时针旋转45°
+  if (maxTextLength + 2 * config.xAxisTextPadding > eachSpacing) {
+    result.angle = 45 * Math.PI / 180;
+    result.xAxisHeight = 2 * config.xAxisTextPadding + maxTextLength * Math.sin(result.angle);
+  }
+  if (opts.xAxis.disabled === true) {
+    result.xAxisHeight = 0;
+  }
+  return result;
+}
+
+function getRadarDataPoints(angleList, center, radius, series, opts) {
+  var process = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;
+  var radarOption = opts.extra.radar || {};
+  radarOption.max = radarOption.max || 0;
+  var maxData = Math.max(radarOption.max, Math.max.apply(null, dataCombine(series)));
+  var data = [];var _loop2 = function _loop2(
+  i) {
+    var each = series[i];
+    var listItem = {};
+    listItem.color = each.color;
+    listItem.legendShape = each.legendShape;
+    listItem.pointShape = each.pointShape;
+    listItem.data = [];
+    each.data.forEach(function (item, index) {
+      var tmp = {};
+      tmp.angle = angleList[index];
+      tmp.proportion = item / maxData;
+      tmp.position = convertCoordinateOrigin(radius * tmp.proportion * process * Math.cos(tmp.angle), radius * tmp.proportion * process * Math.sin(tmp.angle), center);
+      listItem.data.push(tmp);
+    });
+    data.push(listItem);};for (var i = 0; i < series.length; i++) {_loop2(i);
+  }
+  return data;
+}
+
+function getPieDataPoints(series, radius) {
+  var process = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+  var count = 0;
+  var _start_ = 0;
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    item.data = item.data === null ? 0 : item.data;
+    count += item.data;
+  }
+  for (var _i6 = 0; _i6 < series.length; _i6++) {
+    var _item2 = series[_i6];
+    _item2.data = _item2.data === null ? 0 : _item2.data;
+    if (count === 0) {
+      _item2._proportion_ = 1 / series.length * process;
+    } else {
+      _item2._proportion_ = _item2.data / count * process;
+    }
+    _item2._radius_ = radius;
+  }
+  for (var _i7 = 0; _i7 < series.length; _i7++) {
+    var _item3 = series[_i7];
+    _item3._start_ = _start_;
+    _start_ += 2 * _item3._proportion_ * Math.PI;
+  }
+  return series;
+}
+
+function getFunnelDataPoints(series, radius) {
+  var process = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+  series = series.sort(function (a, b) {
+    return parseInt(b.data) - parseInt(a.data);
+  });
+  for (var i = 0; i < series.length; i++) {
+    series[i].radius = series[i].data / series[0].data * radius * process;
+    series[i]._proportion_ = series[i].data / series[0].data;
+  }
+  return series.reverse();
+}
+
+function getRoseDataPoints(series, type, minRadius, radius) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var count = 0;
+  var _start_ = 0;
+  var dataArr = [];
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    item.data = item.data === null ? 0 : item.data;
+    count += item.data;
+    dataArr.push(item.data);
+  }
+  var minData = Math.min.apply(null, dataArr);
+  var maxData = Math.max.apply(null, dataArr);
+  var radiusLength = radius - minRadius;
+  for (var _i8 = 0; _i8 < series.length; _i8++) {
+    var _item4 = series[_i8];
+    _item4.data = _item4.data === null ? 0 : _item4.data;
+    if (count === 0 || type == 'area') {
+      _item4._proportion_ = _item4.data / count * process;
+      _item4._rose_proportion_ = 1 / series.length * process;
+    } else {
+      _item4._proportion_ = _item4.data / count * process;
+      _item4._rose_proportion_ = _item4.data / count * process;
+    }
+    _item4._radius_ = minRadius + radiusLength * ((_item4.data - minData) / (maxData - minData));
+  }
+  for (var _i9 = 0; _i9 < series.length; _i9++) {
+    var _item5 = series[_i9];
+    _item5._start_ = _start_;
+    _start_ += 2 * _item5._rose_proportion_ * Math.PI;
+  }
+  return series;
+}
+
+function getArcbarDataPoints(series, arcbarOption) {
+  var process = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+  if (process == 1) {
+    process = 0.999999;
+  }
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    item.data = item.data === null ? 0 : item.data;
+    var totalAngle = void 0;
+    if (arcbarOption.type == 'circle') {
+      totalAngle = 2;
+    } else {
+      if (arcbarOption.endAngle < arcbarOption.startAngle) {
+        totalAngle = 2 + arcbarOption.endAngle - arcbarOption.startAngle;
+      } else {
+        totalAngle = arcbarOption.startAngle - arcbarOption.endAngle;
+      }
+    }
+    item._proportion_ = totalAngle * item.data * process + arcbarOption.startAngle;
+    if (item._proportion_ >= 2) {
+      item._proportion_ = item._proportion_ % 2;
+    }
+  }
+  return series;
+}
+
+function getGaugeAxisPoints(categories, startAngle, endAngle) {
+  var totalAngle = startAngle - endAngle + 1;
+  var tempStartAngle = startAngle;
+  for (var i = 0; i < categories.length; i++) {
+    categories[i].value = categories[i].value === null ? 0 : categories[i].value;
+    categories[i]._startAngle_ = tempStartAngle;
+    categories[i]._endAngle_ = totalAngle * categories[i].value + startAngle;
+    if (categories[i]._endAngle_ >= 2) {
+      categories[i]._endAngle_ = categories[i]._endAngle_ % 2;
+    }
+    tempStartAngle = categories[i]._endAngle_;
+  }
+  return categories;
+}
+
+function getGaugeDataPoints(series, categories, gaugeOption) {
+  var process = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    item.data = item.data === null ? 0 : item.data;
+    if (gaugeOption.pointer.color == 'auto') {
+      for (var _i10 = 0; _i10 < categories.length; _i10++) {
+        if (item.data <= categories[_i10].value) {
+          item.color = categories[_i10].color;
+          break;
+        }
+      }
+    } else {
+      item.color = gaugeOption.pointer.color;
+    }
+    var totalAngle = gaugeOption.startAngle - gaugeOption.endAngle + 1;
+    item._endAngle_ = totalAngle * item.data + gaugeOption.startAngle;
+    item._oldAngle_ = gaugeOption.oldAngle;
+    if (gaugeOption.oldAngle < gaugeOption.endAngle) {
+      item._oldAngle_ += 2;
+    }
+    if (item.data >= gaugeOption.oldData) {
+      item._proportion_ = (item._endAngle_ - item._oldAngle_) * process + gaugeOption.oldAngle;
+    } else {
+      item._proportion_ = item._oldAngle_ - (item._oldAngle_ - item._endAngle_) * process;
+    }
+    if (item._proportion_ >= 2) {
+      item._proportion_ = item._proportion_ % 2;
+    }
+  }
+  return series;
+}
+
+function getPieTextMaxLength(series, config, context) {
+  series = getPieDataPoints(series);
+  var maxLength = 0;
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    var text = item.formatter ? item.formatter(+item._proportion_.toFixed(2)) : util.toFixed(item._proportion_ * 100) + '%';
+    maxLength = Math.max(maxLength, measureText(text, config.fontSize, context));
+  }
+  return maxLength;
+}
+
+function fixColumeData(points, eachSpacing, columnLen, index, config, opts) {
+  return points.map(function (item) {
+    if (item === null) {
+      return null;
+    }
+    var seriesGap = 0;
+    if (opts.type == 'mix') {
+      seriesGap = opts.extra.mix.column.seriesGap * opts.pix || 0;
+    } else {
+      seriesGap = opts.extra.column.seriesGap * opts.pix || 0;
+    }
+    item.width = Math.ceil((eachSpacing - 2 * config.columePadding - seriesGap * (columnLen - 1)) / columnLen);
+    if (opts.extra.mix && opts.extra.mix.column.width && +opts.extra.mix.column.width > 0) {
+      item.width = Math.min(item.width, +opts.extra.mix.column.width * opts.pix);
+    }
+    if (opts.extra.column && opts.extra.column.width && +opts.extra.column.width > 0) {
+      item.width = Math.min(item.width, +opts.extra.column.width * opts.pix);
+    }
+    if (item.width <= 0) {
+      item.width = 1;
+    }
+    item.x += (index + 0.5 - columnLen / 2) * (item.width + seriesGap);
+    return item;
+  });
+}
+
+function fixColumeMeterData(points, eachSpacing, columnLen, index, config, opts, border) {
+  return points.map(function (item) {
+    if (item === null) {
+      return null;
+    }
+    item.width = Math.ceil((eachSpacing - 2 * config.columePadding) / 2);
+    if (opts.extra.column && opts.extra.column.width && +opts.extra.column.width > 0) {
+      item.width = Math.min(item.width, +opts.extra.column.width * opts.pix);
+    }
+    if (index > 0) {
+      item.width -= 2 * border;
+    }
+    return item;
+  });
+}
+
+function fixColumeStackData(points, eachSpacing, columnLen, index, config, opts, series) {
+  return points.map(function (item, indexn) {
+    if (item === null) {
+      return null;
+    }
+    item.width = Math.ceil((eachSpacing - 2 * config.columePadding) / 2);
+    if (opts.extra.column && opts.extra.column.width && +opts.extra.column.width > 0) {
+      item.width = Math.min(item.width, +opts.extra.column.width * opts.pix);
+    }
+    return item;
+  });
+}
+
+function getXAxisPoints(categories, opts, config) {
+  var spacingValid = opts.width - opts.area[1] - opts.area[3];
+  var dataCount = opts.enableScroll ? Math.min(opts.xAxis.itemCount, categories.length) : categories.length;
+  if ((opts.type == 'line' || opts.type == 'area') && dataCount > 1 && opts.xAxis.boundaryGap == 'justify') {
+    dataCount -= 1;
+  }
+  var eachSpacing = spacingValid / dataCount;
+  var xAxisPoints = [];
+  var startX = opts.area[3];
+  var endX = opts.width - opts.area[1];
+  categories.forEach(function (item, index) {
+    xAxisPoints.push(startX + index * eachSpacing);
+  });
+  if (opts.xAxis.boundaryGap !== 'justify') {
+    if (opts.enableScroll === true) {
+      xAxisPoints.push(startX + categories.length * eachSpacing);
+    } else {
+      xAxisPoints.push(endX);
+    }
+  }
+  return {
+    xAxisPoints: xAxisPoints,
+    startX: startX,
+    endX: endX,
+    eachSpacing: eachSpacing };
+
+}
+
+function getCandleDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config) {
+  var process = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 1;
+  var points = [];
+  var validHeight = opts.height - opts.area[0] - opts.area[2];
+  data.forEach(function (item, index) {
+    if (item === null) {
+      points.push(null);
+    } else {
+      var cPoints = [];
+      item.forEach(function (items, indexs) {
+        var point = {};
+        point.x = xAxisPoints[index] + Math.round(eachSpacing / 2);
+        var value = items.value || items;
+        var height = validHeight * (value - minRange) / (maxRange - minRange);
+        height *= process;
+        point.y = opts.height - Math.round(height) - opts.area[2];
+        cPoints.push(point);
+      });
+      points.push(cPoints);
+    }
+  });
+  return points;
+}
+
+function getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config) {
+  var process = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 1;
+  var boundaryGap = 'center';
+  if (opts.type == 'line' || opts.type == 'area') {
+    boundaryGap = opts.xAxis.boundaryGap;
+  }
+  var points = [];
+  var validHeight = opts.height - opts.area[0] - opts.area[2];
+  var validWidth = opts.width - opts.area[1] - opts.area[3];
+  data.forEach(function (item, index) {
+    if (item === null) {
+      points.push(null);
+    } else {
+      var point = {};
+      point.color = item.color;
+      point.x = xAxisPoints[index];
+      var value = item;
+      if (typeof item === 'object' && item !== null) {
+        if (item.constructor.toString().indexOf('Array') > -1) {
+          var xranges, xminRange, xmaxRange;
+          xranges = [].concat(opts.chartData.xAxisData.ranges);
+          xminRange = xranges.shift();
+          xmaxRange = xranges.pop();
+          value = item[1];
+          point.x = opts.area[3] + validWidth * (item[0] - xminRange) / (xmaxRange - xminRange);
+        } else {
+          value = item.value;
+        }
+      }
+      if (boundaryGap == 'center') {
+        point.x += Math.round(eachSpacing / 2);
+      }
+      var height = validHeight * (value - minRange) / (maxRange - minRange);
+      height *= process;
+      point.y = opts.height - Math.round(height) - opts.area[2];
+      points.push(point);
+    }
+  });
+  return points;
+}
+
+function getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, seriesIndex,
+stackSeries) {
+  var process = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 1;
+  var points = [];
+  var validHeight = opts.height - opts.area[0] - opts.area[2];
+  data.forEach(function (item, index) {
+    if (item === null) {
+      points.push(null);
+    } else {
+      var point = {};
+      point.color = item.color;
+      point.x = xAxisPoints[index] + Math.round(eachSpacing / 2);
+
+      if (seriesIndex > 0) {
+        var value = 0;
+        for (var i = 0; i <= seriesIndex; i++) {
+          value += stackSeries[i].data[index];
+        }
+        var value0 = value - item;
+        var height = validHeight * (value - minRange) / (maxRange - minRange);
+        var height0 = validHeight * (value0 - minRange) / (maxRange - minRange);
+      } else {
+        var value = item;
+        var height = validHeight * (value - minRange) / (maxRange - minRange);
+        var height0 = 0;
+      }
+      var heightc = height0;
+      height *= process;
+      heightc *= process;
+      point.y = opts.height - Math.round(height) - opts.area[2];
+      point.y0 = opts.height - Math.round(heightc) - opts.area[2];
+      points.push(point);
+    }
+  });
+
+  return points;
+}
+
+function getYAxisTextList(series, opts, config, stack) {
+  var index = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : -1;
+  var data;
+  if (stack == 'stack') {
+    data = dataCombineStack(series, opts.categories.length);
+  } else {
+    data = dataCombine(series);
+  }
+  var sorted = [];
+  // remove null from data
+  data = data.filter(function (item) {
+    //return item !== null;
+    if (typeof item === 'object' && item !== null) {
+      if (item.constructor.toString().indexOf('Array') > -1) {
+        return item !== null;
+      } else {
+        return item.value !== null;
+      }
+    } else {
+      return item !== null;
+    }
+  });
+  data.map(function (item) {
+    if (typeof item === 'object') {
+      if (item.constructor.toString().indexOf('Array') > -1) {
+        if (opts.type == 'candle') {
+          item.map(function (subitem) {
+            sorted.push(subitem);
+          });
+        } else {
+          sorted.push(item[1]);
+        }
+      } else {
+        sorted.push(item.value);
+      }
+    } else {
+      sorted.push(item);
+    }
+  });
+  var minData = 0;
+  var maxData = 0;
+  if (sorted.length > 0) {
+    minData = Math.min.apply(this, sorted);
+    maxData = Math.max.apply(this, sorted);
+  }
+  //为了兼容v1.9.0之前的项目
+  if (index > -1) {
+    if (typeof opts.yAxis.data[index].min === 'number') {
+      minData = Math.min(opts.yAxis.data[index].min, minData);
+    }
+    if (typeof opts.yAxis.data[index].max === 'number') {
+      maxData = Math.max(opts.yAxis.data[index].max, maxData);
+    }
+  } else {
+    if (typeof opts.yAxis.min === 'number') {
+      minData = Math.min(opts.yAxis.min, minData);
+    }
+    if (typeof opts.yAxis.max === 'number') {
+      maxData = Math.max(opts.yAxis.max, maxData);
+    }
+  }
+  if (minData === maxData) {
+    var rangeSpan = maxData || 10;
+    maxData += rangeSpan;
+  }
+  var dataRange = getDataRange(minData, maxData);
+  var minRange = dataRange.minRange;
+  var maxRange = dataRange.maxRange;
+  var range = [];
+  var eachRange = (maxRange - minRange) / opts.yAxis.splitNumber;
+  for (var i = 0; i <= opts.yAxis.splitNumber; i++) {
+    range.push(minRange + eachRange * i);
+  }
+  return range.reverse();
+}
+
+function calYAxisData(series, opts, config, context) {
+  //堆叠图重算Y轴
+  var columnstyle = assign({}, {
+    type: "" },
+  opts.extra.column);
+  //如果是多Y轴，重新计算
+  var YLength = opts.yAxis.data.length;
+  var newSeries = new Array(YLength);
+  if (YLength > 0) {
+    for (var i = 0; i < YLength; i++) {
+      newSeries[i] = [];
+      for (var j = 0; j < series.length; j++) {
+        if (series[j].index == i) {
+          newSeries[i].push(series[j]);
+        }
+      }
+    }
+    var rangesArr = new Array(YLength);
+    var rangesFormatArr = new Array(YLength);
+    var yAxisWidthArr = new Array(YLength);var _loop3 = function _loop3(
+
+    _i11) {
+      var yData = opts.yAxis.data[_i11];
+      //如果总开关不显示，强制每个Y轴为不显示
+      if (opts.yAxis.disabled == true) {
+        yData.disabled = true;
+      }
+      if (!yData.formatter) {
+        yData.formatter = function (val) {return val.toFixed(yData.tofix) + (yData.unit || '');};
+      }
+      rangesArr[_i11] = getYAxisTextList(newSeries[_i11], opts, config, columnstyle.type, _i11);
+      var yAxisFontSizes = yData.fontSize * opts.pix || config.fontSize;
+      yAxisWidthArr[_i11] = {
+        position: yData.position ? yData.position : 'left',
+        width: 0 };
+
+      rangesFormatArr[_i11] = rangesArr[_i11].map(function (items) {
+        items = yData.formatter(Number(items));
+        yAxisWidthArr[_i11].width = Math.max(yAxisWidthArr[_i11].width, measureText(items, yAxisFontSizes, context) + 5);
+        return items;
+      });
+      var calibration = yData.calibration ? 4 * opts.pix : 0;
+      yAxisWidthArr[_i11].width += calibration + 3 * opts.pix;
+      if (yData.disabled === true) {
+        yAxisWidthArr[_i11].width = 0;
+      }};for (var _i11 = 0; _i11 < YLength; _i11++) {_loop3(_i11);
+    }
+  } else {
+    var rangesArr = new Array(1);
+    var rangesFormatArr = new Array(1);
+    var yAxisWidthArr = new Array(1);
+    if (!opts.yAxis.formatter) {
+      opts.yAxis.formatter = function (val) {return val.toFixed(opts.yAxis.tofix) + (opts.yAxis.unit || '');};
+    }
+    rangesArr[0] = getYAxisTextList(series, opts, config, columnstyle.type);
+    yAxisWidthArr[0] = {
+      position: 'left',
+      width: 0 };
+
+    var yAxisFontSize = opts.yAxis.fontSize * opts.pix || config.fontSize;
+    rangesFormatArr[0] = rangesArr[0].map(function (item) {
+      item = opts.yAxis.formatter(Number(item));
+      yAxisWidthArr[0].width = Math.max(yAxisWidthArr[0].width, measureText(item, yAxisFontSize, context) + 5);
+      return item;
+    });
+    yAxisWidthArr[0].width += 3 * opts.pix;
+    if (opts.yAxis.disabled === true) {
+      yAxisWidthArr[0] = {
+        position: 'left',
+        width: 0 };
+
+      opts.yAxis.data[0] = {
+        disabled: true };
+
+    } else {
+      opts.yAxis.data[0] = {
+        disabled: false,
+        position: 'left',
+        max: opts.yAxis.max,
+        min: opts.yAxis.min,
+        formatter: opts.yAxis.formatter };
+
+    }
+  }
+  return {
+    rangesFormat: rangesFormatArr,
+    ranges: rangesArr,
+    yAxisWidth: yAxisWidthArr };
+
+}
+
+function calTooltipYAxisData(point, series, opts, config, eachSpacing) {
+  var ranges = [].concat(opts.chartData.yAxisData.ranges);
+  var spacingValid = opts.height - opts.area[0] - opts.area[2];
+  var minAxis = opts.area[0];
+  var items = [];
+  for (var i = 0; i < ranges.length; i++) {
+    var maxVal = ranges[i].shift();
+    var minVal = ranges[i].pop();
+    var item = maxVal - (maxVal - minVal) * (point - minAxis) / spacingValid;
+    item = opts.yAxis.data[i].formatter ? opts.yAxis.data[i].formatter(Number(item)) : item.toFixed(0);
+    items.push(String(item));
+  }
+  return items;
+}
+
+function calMarkLineData(points, opts) {
+  var minRange, maxRange;
+  var spacingValid = opts.height - opts.area[0] - opts.area[2];
+  for (var i = 0; i < points.length; i++) {
+    points[i].yAxisIndex = points[i].yAxisIndex ? points[i].yAxisIndex : 0;
+    var range = [].concat(opts.chartData.yAxisData.ranges[points[i].yAxisIndex]);
+    minRange = range.pop();
+    maxRange = range.shift();
+    var height = spacingValid * (points[i].value - minRange) / (maxRange - minRange);
+    points[i].y = opts.height - Math.round(height) - opts.area[2];
+  }
+  return points;
+}
+
+function contextRotate(context, opts) {
+  if (opts.rotateLock !== true) {
+    context.translate(opts.height, 0);
+    context.rotate(90 * Math.PI / 180);
+  } else if (opts._rotate_ !== true) {
+    context.translate(opts.height, 0);
+    context.rotate(90 * Math.PI / 180);
+    opts._rotate_ = true;
+  }
+}
+
+function drawPointShape(points, color, shape, context, opts) {
+  context.beginPath();
+  if (opts.dataPointShapeType == 'hollow') {
+    context.setStrokeStyle(color);
+    context.setFillStyle(opts.background);
+    context.setLineWidth(2 * opts.pix);
+  } else {
+    context.setStrokeStyle("#ffffff");
+    context.setFillStyle(color);
+    context.setLineWidth(1 * opts.pix);
+  }
+  if (shape === 'diamond') {
+    points.forEach(function (item, index) {
+      if (item !== null) {
+        context.moveTo(item.x, item.y - 4.5);
+        context.lineTo(item.x - 4.5, item.y);
+        context.lineTo(item.x, item.y + 4.5);
+        context.lineTo(item.x + 4.5, item.y);
+        context.lineTo(item.x, item.y - 4.5);
+      }
+    });
+  } else if (shape === 'circle') {
+    points.forEach(function (item, index) {
+      if (item !== null) {
+        context.moveTo(item.x + 2.5 * opts.pix, item.y);
+        context.arc(item.x, item.y, 3 * opts.pix, 0, 2 * Math.PI, false);
+      }
+    });
+  } else if (shape === 'square') {
+    points.forEach(function (item, index) {
+      if (item !== null) {
+        context.moveTo(item.x - 3.5, item.y - 3.5);
+        context.rect(item.x - 3.5, item.y - 3.5, 7, 7);
+      }
+    });
+  } else if (shape === 'triangle') {
+    points.forEach(function (item, index) {
+      if (item !== null) {
+        context.moveTo(item.x, item.y - 4.5);
+        context.lineTo(item.x - 4.5, item.y + 4.5);
+        context.lineTo(item.x + 4.5, item.y + 4.5);
+        context.lineTo(item.x, item.y - 4.5);
+      }
+    });
+  } else if (shape === 'triangle') {
+    return;
+  }
+  context.closePath();
+  context.fill();
+  context.stroke();
+}
+
+function drawRingTitle(opts, config, context, center) {
+  var titlefontSize = opts.title.fontSize || config.titleFontSize;
+  var subtitlefontSize = opts.subtitle.fontSize || config.subtitleFontSize;
+  var title = opts.title.name || '';
+  var subtitle = opts.subtitle.name || '';
+  var titleFontColor = opts.title.color || opts.fontColor;
+  var subtitleFontColor = opts.subtitle.color || opts.fontColor;
+  var titleHeight = title ? titlefontSize : 0;
+  var subtitleHeight = subtitle ? subtitlefontSize : 0;
+  var margin = 5;
+  if (subtitle) {
+    var textWidth = measureText(subtitle, subtitlefontSize * opts.pix, context);
+    var startX = center.x - textWidth / 2 + (opts.subtitle.offsetX || 0) * opts.pix;
+    var startY = center.y + subtitlefontSize * opts.pix / 2 + (opts.subtitle.offsetY || 0) * opts.pix;
+    if (title) {
+      startY += (titleHeight * opts.pix + margin) / 2;
+    }
+    context.beginPath();
+    context.setFontSize(subtitlefontSize * opts.pix);
+    context.setFillStyle(subtitleFontColor);
+    context.fillText(subtitle, startX, startY);
+    context.closePath();
+    context.stroke();
+  }
+  if (title) {
+    var _textWidth = measureText(title, titlefontSize * opts.pix, context);
+    var _startX = center.x - _textWidth / 2 + (opts.title.offsetX || 0);
+    var _startY = center.y + titlefontSize * opts.pix / 2 + (opts.title.offsetY || 0) * opts.pix;
+    if (subtitle) {
+      _startY -= (subtitleHeight * opts.pix + margin) / 2;
+    }
+    context.beginPath();
+    context.setFontSize(titlefontSize * opts.pix);
+    context.setFillStyle(titleFontColor);
+    context.fillText(title, _startX, _startY);
+    context.closePath();
+    context.stroke();
+  }
+}
+
+function drawPointText(points, series, config, context, opts) {
+  // 绘制数据文案
+  var data = series.data;
+  var textOffset = series.textOffset ? series.textOffset : 0;
+  points.forEach(function (item, index) {
+    if (item !== null) {
+      context.beginPath();
+      context.setFontSize(series.textSize || config.fontSize);
+      context.setFillStyle(series.textColor || config.fontColor);
+      var value = data[index];
+      if (typeof data[index] === 'object' && data[index] !== null) {
+        if (data[index].constructor.toString().indexOf('Array') > -1) {
+          value = data[index][1];
+        } else {
+          value = data[index].value;
+        }
+      }
+      var formatVal = series.formatter ? series.formatter(value) : value;
+      context.setTextAlign('center');
+      context.fillText(String(formatVal), item.x, item.y - 4 + textOffset * opts.pix);
+      context.closePath();
+      context.stroke();
+      context.setTextAlign('left');
+    }
+  });
+
+}
+
+function drawGaugeLabel(gaugeOption, radius, centerPosition, opts, config, context) {
+  radius -= gaugeOption.width / 2 + config.gaugeLabelTextMargin;
+  var totalAngle = gaugeOption.startAngle - gaugeOption.endAngle + 1;
+  var splitAngle = totalAngle / gaugeOption.splitLine.splitNumber;
+  var totalNumber = gaugeOption.endNumber - gaugeOption.startNumber;
+  var splitNumber = totalNumber / gaugeOption.splitLine.splitNumber;
+  var nowAngle = gaugeOption.startAngle;
+  var nowNumber = gaugeOption.startNumber;
+  for (var i = 0; i < gaugeOption.splitLine.splitNumber + 1; i++) {
+    var pos = {
+      x: radius * Math.cos(nowAngle * Math.PI),
+      y: radius * Math.sin(nowAngle * Math.PI) };
+
+    var labelText = gaugeOption.formatter ? gaugeOption.formatter(nowNumber) : nowNumber;
+    pos.x += centerPosition.x - measureText(labelText, config.fontSize, context) / 2;
+    pos.y += centerPosition.y;
+    var startX = pos.x;
+    var startY = pos.y;
+    context.beginPath();
+    context.setFontSize(config.fontSize);
+    context.setFillStyle(gaugeOption.labelColor || opts.fontColor);
+    context.fillText(labelText, startX, startY + config.fontSize / 2);
+    context.closePath();
+    context.stroke();
+    nowAngle += splitAngle;
+    if (nowAngle >= 2) {
+      nowAngle = nowAngle % 2;
+    }
+    nowNumber += splitNumber;
+  }
+
+}
+
+function drawRadarLabel(angleList, radius, centerPosition, opts, config, context) {
+  var radarOption = opts.extra.radar || {};
+  radius += config.radarLabelTextMargin * opts.pix;
+  angleList.forEach(function (angle, index) {
+    var pos = {
+      x: radius * Math.cos(angle),
+      y: radius * Math.sin(angle) };
+
+    var posRelativeCanvas = convertCoordinateOrigin(pos.x, pos.y, centerPosition);
+    var startX = posRelativeCanvas.x;
+    var startY = posRelativeCanvas.y;
+    if (util.approximatelyEqual(pos.x, 0)) {
+      startX -= measureText(opts.categories[index] || '', config.fontSize, context) / 2;
+    } else if (pos.x < 0) {
+      startX -= measureText(opts.categories[index] || '', config.fontSize, context);
+    }
+    context.beginPath();
+    context.setFontSize(config.fontSize);
+    context.setFillStyle(radarOption.labelColor || opts.fontColor);
+    context.fillText(opts.categories[index] || '', startX, startY + config.fontSize / 2);
+    context.closePath();
+    context.stroke();
+  });
+
+}
+
+function drawPieText(series, opts, config, context, radius, center) {
+  var lineRadius = config.pieChartLinePadding;
+  var textObjectCollection = [];
+  var lastTextObject = null;
+  var seriesConvert = series.map(function (item, index, series) {
+    var text = item.formatter ? item.formatter(item, index, series) : util.toFixed(item._proportion_.toFixed(4) * 100) + '%';
+    if (item._rose_proportion_) item._proportion_ = item._rose_proportion_;
+    var arc = 2 * Math.PI - (item._start_ + 2 * Math.PI * item._proportion_ / 2);
+    var color = item.color;
+    var radius = item._radius_;
+    return {
+      arc: arc,
+      text: text,
+      color: color,
+      radius: radius,
+      textColor: item.textColor,
+      textSize: item.textSize };
+
+  });
+  for (var i = 0; i < seriesConvert.length; i++) {
+    var item = seriesConvert[i];
+    // line end
+    var orginX1 = Math.cos(item.arc) * (item.radius + lineRadius);
+    var orginY1 = Math.sin(item.arc) * (item.radius + lineRadius);
+    // line start
+    var orginX2 = Math.cos(item.arc) * item.radius;
+    var orginY2 = Math.sin(item.arc) * item.radius;
+    // text start
+    var orginX3 = orginX1 >= 0 ? orginX1 + config.pieChartTextPadding : orginX1 - config.pieChartTextPadding;
+    var orginY3 = orginY1;
+    var textWidth = measureText(item.text, item.textSize || config.fontSize, context);
+    var startY = orginY3;
+    if (lastTextObject && util.isSameXCoordinateArea(lastTextObject.start, {
+      x: orginX3 }))
+    {
+      if (orginX3 > 0) {
+        startY = Math.min(orginY3, lastTextObject.start.y);
+      } else if (orginX1 < 0) {
+        startY = Math.max(orginY3, lastTextObject.start.y);
+      } else {
+        if (orginY3 > 0) {
+          startY = Math.max(orginY3, lastTextObject.start.y);
+        } else {
+          startY = Math.min(orginY3, lastTextObject.start.y);
+        }
+      }
+    }
+    if (orginX3 < 0) {
+      orginX3 -= textWidth;
+    }
+    var textObject = {
+      lineStart: {
+        x: orginX2,
+        y: orginY2 },
+
+      lineEnd: {
+        x: orginX1,
+        y: orginY1 },
+
+      start: {
+        x: orginX3,
+        y: startY },
+
+      width: textWidth,
+      height: config.fontSize,
+      text: item.text,
+      color: item.color,
+      textColor: item.textColor,
+      textSize: item.textSize };
+
+    lastTextObject = avoidCollision(textObject, lastTextObject);
+    textObjectCollection.push(lastTextObject);
+  }
+  for (var _i12 = 0; _i12 < textObjectCollection.length; _i12++) {
+    var _item6 = textObjectCollection[_i12];
+    var lineStartPoistion = convertCoordinateOrigin(_item6.lineStart.x, _item6.lineStart.y, center);
+    var lineEndPoistion = convertCoordinateOrigin(_item6.lineEnd.x, _item6.lineEnd.y, center);
+    var textPosition = convertCoordinateOrigin(_item6.start.x, _item6.start.y, center);
+    context.setLineWidth(1 * opts.pix);
+    context.setFontSize(config.fontSize);
+    context.beginPath();
+    context.setStrokeStyle(_item6.color);
+    context.setFillStyle(_item6.color);
+    context.moveTo(lineStartPoistion.x, lineStartPoistion.y);
+    var curveStartX = _item6.start.x < 0 ? textPosition.x + _item6.width : textPosition.x;
+    var textStartX = _item6.start.x < 0 ? textPosition.x - 5 : textPosition.x + 5;
+    context.quadraticCurveTo(lineEndPoistion.x, lineEndPoistion.y, curveStartX, textPosition.y);
+    context.moveTo(lineStartPoistion.x, lineStartPoistion.y);
+    context.stroke();
+    context.closePath();
+    context.beginPath();
+    context.moveTo(textPosition.x + _item6.width, textPosition.y);
+    context.arc(curveStartX, textPosition.y, 2, 0, 2 * Math.PI);
+    context.closePath();
+    context.fill();
+    context.beginPath();
+    context.setFontSize(_item6.textSize || config.fontSize);
+    context.setFillStyle(_item6.textColor || opts.fontColor);
+    context.fillText(_item6.text, textStartX, textPosition.y + 3);
+    context.closePath();
+    context.stroke();
+    context.closePath();
+  }
+}
+
+function drawToolTipSplitLine(offsetX, opts, config, context) {
+  var toolTipOption = opts.extra.tooltip || {};
+  toolTipOption.gridType = toolTipOption.gridType == undefined ? 'solid' : toolTipOption.gridType;
+  toolTipOption.dashLength = toolTipOption.dashLength == undefined ? 4 : toolTipOption.dashLength;
+  var startY = opts.area[0];
+  var endY = opts.height - opts.area[2];
+  if (toolTipOption.gridType == 'dash') {
+    context.setLineDash([toolTipOption.dashLength, toolTipOption.dashLength]);
+  }
+  context.setStrokeStyle(toolTipOption.gridColor || '#cccccc');
+  context.setLineWidth(1 * opts.pix);
+  context.beginPath();
+  context.moveTo(offsetX, startY);
+  context.lineTo(offsetX, endY);
+  context.stroke();
+  context.setLineDash([]);
+  if (toolTipOption.xAxisLabel) {
+    var labelText = opts.categories[opts.tooltip.index];
+    context.setFontSize(config.fontSize);
+    var textWidth = measureText(labelText, config.fontSize, context);
+    var textX = offsetX - 0.5 * textWidth;
+    var textY = endY;
+    context.beginPath();
+    context.setFillStyle(hexToRgb(toolTipOption.labelBgColor || config.toolTipBackground, toolTipOption.labelBgOpacity || config.toolTipOpacity));
+    context.setStrokeStyle(toolTipOption.labelBgColor || config.toolTipBackground);
+    context.setLineWidth(1 * opts.pix);
+    context.rect(textX - config.toolTipPadding, textY, textWidth + 2 * config.toolTipPadding, config.fontSize + 2 * config.toolTipPadding);
+    context.closePath();
+    context.stroke();
+    context.fill();
+    context.beginPath();
+    context.setFontSize(config.fontSize);
+    context.setFillStyle(toolTipOption.labelFontColor || opts.fontColor);
+    context.fillText(String(labelText), textX, textY + config.toolTipPadding + config.fontSize);
+    context.closePath();
+    context.stroke();
+  }
+}
+
+function drawMarkLine(opts, config, context) {
+  var markLineOption = assign({}, {
+    type: 'solid',
+    dashLength: 4,
+    data: [] },
+  opts.extra.markLine);
+  var startX = opts.area[3];
+  var endX = opts.width - opts.area[1];
+  var points = calMarkLineData(markLineOption.data, opts);
+  for (var i = 0; i < points.length; i++) {
+    var item = assign({}, {
+      lineColor: '#DE4A42',
+      showLabel: false,
+      labelFontColor: '#666666',
+      labelBgColor: '#DFE8FF',
+      labelBgOpacity: 0.8,
+      yAxisIndex: 0 },
+    points[i]);
+    if (markLineOption.type == 'dash') {
+      context.setLineDash([markLineOption.dashLength, markLineOption.dashLength]);
+    }
+    context.setStrokeStyle(item.lineColor);
+    context.setLineWidth(1 * opts.pix);
+    context.beginPath();
+    context.moveTo(startX, item.y);
+    context.lineTo(endX, item.y);
+    context.stroke();
+    context.setLineDash([]);
+    if (item.showLabel) {
+      var labelText = opts.yAxis.formatter ? opts.yAxis.formatter(Number(item.value)) : item.value;
+      context.setFontSize(config.fontSize);
+      var textWidth = measureText(labelText, config.fontSize, context);
+      var yAxisWidth = opts.chartData.yAxisData.yAxisWidth[0].width;
+      var bgStartX = opts.area[3] - textWidth - config.toolTipPadding * 2;
+      var bgEndX = opts.area[3];
+      var bgWidth = bgEndX - bgStartX;
+      var textX = bgEndX - config.toolTipPadding;
+      var textY = item.y;
+      context.setFillStyle(hexToRgb(item.labelBgColor, item.labelBgOpacity));
+      context.setStrokeStyle(item.labelBgColor);
+      context.setLineWidth(1 * opts.pix);
+      context.beginPath();
+      context.rect(bgStartX, textY - 0.5 * config.fontSize - config.toolTipPadding, bgWidth, config.fontSize + 2 * config.toolTipPadding);
+      context.closePath();
+      context.stroke();
+      context.fill();
+      context.setFontSize(config.fontSize);
+      context.setTextAlign('right');
+      context.setFillStyle(item.labelFontColor);
+      context.fillText(String(labelText), textX, textY + 0.5 * config.fontSize);
+      context.stroke();
+      context.setTextAlign('left');
+    }
+  }
+}
+
+function drawToolTipHorizentalLine(opts, config, context, eachSpacing, xAxisPoints) {
+  var toolTipOption = assign({}, {
+    gridType: 'solid',
+    dashLength: 4 },
+  opts.extra.tooltip);
+  var startX = opts.area[3];
+  var endX = opts.width - opts.area[1];
+  if (toolTipOption.gridType == 'dash') {
+    context.setLineDash([toolTipOption.dashLength, toolTipOption.dashLength]);
+  }
+  context.setStrokeStyle(toolTipOption.gridColor || '#cccccc');
+  context.setLineWidth(1 * opts.pix);
+  context.beginPath();
+  context.moveTo(startX, opts.tooltip.offset.y);
+  context.lineTo(endX, opts.tooltip.offset.y);
+  context.stroke();
+  context.setLineDash([]);
+  if (toolTipOption.yAxisLabel) {
+    var labelText = calTooltipYAxisData(opts.tooltip.offset.y, opts.series, opts, config, eachSpacing);
+    var widthArr = opts.chartData.yAxisData.yAxisWidth;
+    var tStartLeft = opts.area[3];
+    var tStartRight = opts.width - opts.area[1];
+    for (var i = 0; i < labelText.length; i++) {
+      context.setFontSize(config.fontSize);
+      var textWidth = measureText(labelText[i], config.fontSize, context);
+      var bgStartX = void 0,bgEndX = void 0,bgWidth = void 0;
+      if (widthArr[i].position == 'left') {
+        bgStartX = tStartLeft - widthArr[i].width;
+        bgEndX = Math.max(bgStartX, bgStartX + textWidth + config.toolTipPadding * 2);
+      } else {
+        bgStartX = tStartRight;
+        bgEndX = Math.max(bgStartX + widthArr[i].width, bgStartX + textWidth + config.toolTipPadding * 2);
+      }
+      bgWidth = bgEndX - bgStartX;
+      var textX = bgStartX + (bgWidth - textWidth) / 2;
+      var textY = opts.tooltip.offset.y;
+      context.beginPath();
+      context.setFillStyle(hexToRgb(toolTipOption.labelBgColor || config.toolTipBackground, toolTipOption.labelBgOpacity || config.toolTipOpacity));
+      context.setStrokeStyle(toolTipOption.labelBgColor || config.toolTipBackground);
+      context.setLineWidth(1 * opts.pix);
+      context.rect(bgStartX, textY - 0.5 * config.fontSize - config.toolTipPadding, bgWidth, config.fontSize + 2 *
+      config.toolTipPadding);
+      context.closePath();
+      context.stroke();
+      context.fill();
+      context.beginPath();
+      context.setFontSize(config.fontSize);
+      context.setFillStyle(toolTipOption.labelFontColor || opts.fontColor);
+      context.fillText(labelText[i], textX, textY + 0.5 * config.fontSize);
+      context.closePath();
+      context.stroke();
+      if (widthArr[i].position == 'left') {
+        tStartLeft -= widthArr[i].width + opts.yAxis.padding * opts.pix;
+      } else {
+        tStartRight += widthArr[i].width + opts.yAxis.padding * opts.pix;
+      }
+    }
+  }
+}
+
+function drawToolTipSplitArea(offsetX, opts, config, context, eachSpacing) {
+  var toolTipOption = assign({}, {
+    activeBgColor: '#000000',
+    activeBgOpacity: 0.08 },
+  opts.extra.column);
+  var startY = opts.area[0];
+  var endY = opts.height - opts.area[2];
+  context.beginPath();
+  context.setFillStyle(hexToRgb(toolTipOption.activeBgColor, toolTipOption.activeBgOpacity));
+  context.rect(offsetX - eachSpacing / 2, startY, eachSpacing, endY - startY);
+  context.closePath();
+  context.fill();
+}
+
+function drawToolTip(textList, offset, opts, config, context, eachSpacing, xAxisPoints) {
+  var toolTipOption = assign({}, {
+    showBox: true,
+    showArrow: true,
+    bgColor: '#000000',
+    bgOpacity: 0.7,
+    borderColor: '#000000',
+    borderWidth: 0,
+    borderRadius: 0,
+    borderOpacity: 0.7,
+    fontColor: '#FFFFFF',
+    splitLine: true },
+  opts.extra.tooltip);
+  var legendWidth = 4 * opts.pix;
+  var legendMarginRight = 5 * opts.pix;
+  var arrowWidth = toolTipOption.showArrow ? 8 * opts.pix : 0;
+  var isOverRightBorder = false;
+  if (opts.type == 'line' || opts.type == 'area' || opts.type == 'candle' || opts.type == 'mix') {
+    if (toolTipOption.splitLine == true) {
+      drawToolTipSplitLine(opts.tooltip.offset.x, opts, config, context);
+    }
+  }
+  offset = assign({
+    x: 0,
+    y: 0 },
+  offset);
+  offset.y -= 8 * opts.pix;
+  var textWidth = textList.map(function (item) {
+    return measureText(item.text, config.fontSize, context);
+  });
+  var toolTipWidth = legendWidth + legendMarginRight + 4 * config.toolTipPadding + Math.max.apply(null, textWidth);
+  var toolTipHeight = 2 * config.toolTipPadding + textList.length * config.toolTipLineHeight;
+  if (toolTipOption.showBox == false) {
+    return;
+  }
+  // if beyond the right border
+  if (offset.x - Math.abs(opts._scrollDistance_) + arrowWidth + toolTipWidth > opts.width) {
+    isOverRightBorder = true;
+  }
+  if (toolTipHeight + offset.y > opts.height) {
+    offset.y = opts.height - toolTipHeight;
+  }
+  // draw background rect
+  context.beginPath();
+  context.setFillStyle(hexToRgb(toolTipOption.bgColor || config.toolTipBackground, toolTipOption.bgOpacity || config.toolTipOpacity));
+  context.setLineWidth(toolTipOption.borderWidth * opts.pix);
+  context.setStrokeStyle(hexToRgb(toolTipOption.borderColor, toolTipOption.borderOpacity));
+  var radius = toolTipOption.borderRadius;
+  if (isOverRightBorder) {
+    if (toolTipOption.showArrow) {
+      context.moveTo(offset.x, offset.y + 10 * opts.pix);
+      context.lineTo(offset.x - arrowWidth, offset.y + 10 * opts.pix + 5 * opts.pix);
+    }
+    context.arc(offset.x - arrowWidth - radius, offset.y + toolTipHeight - radius, radius, 0, Math.PI / 2, false);
+    context.arc(offset.x - arrowWidth - Math.round(toolTipWidth) + radius, offset.y + toolTipHeight - radius, radius,
+    Math.PI / 2, Math.PI, false);
+    context.arc(offset.x - arrowWidth - Math.round(toolTipWidth) + radius, offset.y + radius, radius, -Math.PI, -Math.PI / 2, false);
+    context.arc(offset.x - arrowWidth - radius, offset.y + radius, radius, -Math.PI / 2, 0, false);
+    if (toolTipOption.showArrow) {
+      context.lineTo(offset.x - arrowWidth, offset.y + 10 * opts.pix - 5 * opts.pix);
+      context.lineTo(offset.x, offset.y + 10 * opts.pix);
+    }
+  } else {
+    if (toolTipOption.showArrow) {
+      context.moveTo(offset.x, offset.y + 10 * opts.pix);
+      context.lineTo(offset.x + arrowWidth, offset.y + 10 * opts.pix - 5 * opts.pix);
+    }
+    context.arc(offset.x + arrowWidth + radius, offset.y + radius, radius, -Math.PI, -Math.PI / 2, false);
+    context.arc(offset.x + arrowWidth + Math.round(toolTipWidth) - radius, offset.y + radius, radius, -Math.PI / 2, 0,
+    false);
+    context.arc(offset.x + arrowWidth + Math.round(toolTipWidth) - radius, offset.y + toolTipHeight - radius, radius, 0,
+    Math.PI / 2, false);
+    context.arc(offset.x + arrowWidth + radius, offset.y + toolTipHeight - radius, radius, Math.PI / 2, Math.PI, false);
+    if (toolTipOption.showArrow) {
+      context.lineTo(offset.x + arrowWidth, offset.y + 10 * opts.pix + 5 * opts.pix);
+      context.lineTo(offset.x, offset.y + 10 * opts.pix);
+    }
+  }
+  context.closePath();
+  context.fill();
+  if (toolTipOption.borderWidth > 0) {
+    context.stroke();
+  }
+  // draw legend
+  textList.forEach(function (item, index) {
+    if (item.color !== null) {
+      context.beginPath();
+      context.setFillStyle(item.color);
+      var startX = offset.x + arrowWidth + 2 * config.toolTipPadding;
+      var startY = offset.y + (config.toolTipLineHeight - config.fontSize) / 2 + config.toolTipLineHeight * index + config.toolTipPadding + 1;
+      if (isOverRightBorder) {
+        startX = offset.x - toolTipWidth - arrowWidth + 2 * config.toolTipPadding;
+      }
+      context.fillRect(startX, startY, legendWidth, config.fontSize);
+      context.closePath();
+    }
+  });
+  // draw text list
+  textList.forEach(function (item, index) {
+    var startX = offset.x + arrowWidth + 2 * config.toolTipPadding + legendWidth + legendMarginRight;
+    if (isOverRightBorder) {
+      startX = offset.x - toolTipWidth - arrowWidth + 2 * config.toolTipPadding + +legendWidth + legendMarginRight;
+    }
+    var startY = offset.y + (config.toolTipLineHeight - config.fontSize) / 2 + config.toolTipLineHeight * index + config.toolTipPadding;
+    context.beginPath();
+    context.setFontSize(config.fontSize);
+    context.setFillStyle(toolTipOption.fontColor);
+    context.fillText(item.text, startX, startY + config.fontSize);
+    context.closePath();
+    context.stroke();
+  });
+}
+
+function drawColumnDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var xAxisData = opts.chartData.xAxisData,
+  xAxisPoints = xAxisData.xAxisPoints,
+  eachSpacing = xAxisData.eachSpacing;
+  var columnOption = assign({}, {
+    type: 'group',
+    width: eachSpacing / 2,
+    meterBorder: 4,
+    meterFillColor: '#FFFFFF',
+    barBorderCircle: false,
+    barBorderRadius: [],
+    seriesGap: 2,
+    linearType: 'none',
+    linearOpacity: 1,
+    customColor: [],
+    colorStop: 0 },
+  opts.extra.column);
+  var calPoints = [];
+  context.save();
+  var leftNum = -2;
+  var rightNum = xAxisPoints.length + 2;
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+    leftNum = Math.floor(-opts._scrollDistance_ / eachSpacing) - 2;
+    rightNum = leftNum + opts.xAxis.itemCount + 4;
+  }
+  if (opts.tooltip && opts.tooltip.textList && opts.tooltip.textList.length && process === 1) {
+    drawToolTipSplitArea(opts.tooltip.offset.x, opts, config, context, eachSpacing);
+  }
+  columnOption.customColor = fillCustomColor(columnOption.linearType, columnOption.customColor, series, config);
+  series.forEach(function (eachSeries, seriesIndex) {
+    var ranges, minRange, maxRange;
+    ranges = [].concat(opts.chartData.yAxisData.ranges[eachSeries.index]);
+    minRange = ranges.pop();
+    maxRange = ranges.shift();
+    var data = eachSeries.data;
+    switch (columnOption.type) {
+      case 'group':
+        var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+        var tooltipPoints = getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, seriesIndex, series, process);
+        calPoints.push(tooltipPoints);
+        points = fixColumeData(points, eachSpacing, series.length, seriesIndex, config, opts);
+        for (var i = 0; i < points.length; i++) {
+          var item = points[i];
+          //fix issues/I27B1N yyoinge & Joeshu
+          if (item !== null && i > leftNum && i < rightNum) {
+            var startX = item.x - item.width / 2;
+            var height = opts.height - item.y - opts.area[2];
+            context.beginPath();
+            var fillColor = item.color || eachSeries.color;
+            var strokeColor = item.color || eachSeries.color;
+            if (columnOption.linearType !== 'none') {
+              var grd = context.createLinearGradient(startX, item.y, startX, opts.height - opts.area[2]);
+              //透明渐变
+              if (columnOption.linearType == 'opacity') {
+                grd.addColorStop(0, hexToRgb(fillColor, columnOption.linearOpacity));
+                grd.addColorStop(1, hexToRgb(fillColor, 1));
+              } else {
+                grd.addColorStop(0, hexToRgb(columnOption.customColor[eachSeries.linearIndex], columnOption.linearOpacity));
+                grd.addColorStop(columnOption.colorStop, hexToRgb(columnOption.customColor[eachSeries.linearIndex], columnOption.linearOpacity));
+                grd.addColorStop(1, hexToRgb(fillColor, 1));
+              }
+              fillColor = grd;
+            }
+            // 圆角边框
+            if (columnOption.barBorderRadius && columnOption.barBorderRadius.length === 4 || columnOption.barBorderCircle === true) {
+              var left = startX;
+              var top = item.y;
+              var width = item.width;
+              var _height = opts.height - opts.area[2] - item.y;
+              if (columnOption.barBorderCircle) {
+                columnOption.barBorderRadius = [width / 2, width / 2, 0, 0];
+              }var _columnOption$barBord = _slicedToArray(
+              columnOption.barBorderRadius, 4),r0 = _columnOption$barBord[0],r1 = _columnOption$barBord[1],r2 = _columnOption$barBord[2],r3 = _columnOption$barBord[3];
+              if (r0 + r2 > _height) {
+                r0 = _height;
+                r2 = 0;
+                r1 = _height;
+                r3 = 0;
+              }
+              if (r0 + r2 > width / 2) {
+                r0 = width / 2;
+                r2 = 0;
+                r1 = width / 2;
+                r3 = 0;
+              }
+              r0 = r0 < 0 ? 0 : r0;
+              r1 = r1 < 0 ? 0 : r1;
+              r2 = r2 < 0 ? 0 : r2;
+              r3 = r3 < 0 ? 0 : r3;
+              context.arc(left + r0, top + r0, r0, -Math.PI, -Math.PI / 2);
+              context.arc(left + width - r1, top + r1, r1, -Math.PI / 2, 0);
+              context.arc(left + width - r2, top + _height - r2, r2, 0, Math.PI / 2);
+              context.arc(left + r3, top + _height - r3, r3, Math.PI / 2, Math.PI);
+            } else {
+              context.moveTo(startX, item.y);
+              context.lineTo(startX + item.width - 2, item.y);
+              context.lineTo(startX + item.width - 2, opts.height - opts.area[2]);
+              context.lineTo(startX, opts.height - opts.area[2]);
+              context.lineTo(startX, item.y);
+              context.setLineWidth(1);
+              context.setStrokeStyle(strokeColor);
+            }
+            context.setFillStyle(fillColor);
+            context.closePath();
+            //context.stroke();
+            context.fill();
+          }
+        };
+        break;
+      case 'stack':
+        // 绘制堆叠数据图
+        var points = getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, seriesIndex, series, process);
+        calPoints.push(points);
+        points = fixColumeStackData(points, eachSpacing, series.length, seriesIndex, config, opts, series);
+        for (var _i13 = 0; _i13 < points.length; _i13++) {
+          var _item7 = points[_i13];
+          if (_item7 !== null && _i13 > leftNum && _i13 < rightNum) {
+            context.beginPath();
+            var fillColor = _item7.color || eachSeries.color;
+            var startX = _item7.x - _item7.width / 2 + 1;
+            var height = opts.height - _item7.y - opts.area[2];
+            var height0 = opts.height - _item7.y0 - opts.area[2];
+            if (seriesIndex > 0) {
+              height -= height0;
+            }
+            context.setFillStyle(fillColor);
+            context.moveTo(startX, _item7.y);
+            context.fillRect(startX, _item7.y, _item7.width - 2, height);
+            context.closePath();
+            context.fill();
+          }
+        };
+        break;
+      case 'meter':
+        // 绘制温度计数据图
+        var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+        calPoints.push(points);
+        points = fixColumeMeterData(points, eachSpacing, series.length, seriesIndex, config, opts, columnOption.meterBorder);
+        if (seriesIndex == 0) {
+          for (var _i14 = 0; _i14 < points.length; _i14++) {
+            var _item8 = points[_i14];
+            if (_item8 !== null && _i14 > leftNum && _i14 < rightNum) {
+              //画背景颜色
+              context.beginPath();
+              context.setFillStyle(columnOption.meterFillColor);
+              var startX = _item8.x - _item8.width / 2;
+              var height = opts.height - _item8.y - opts.area[2];
+              context.moveTo(startX, _item8.y);
+              context.fillRect(startX, _item8.y, _item8.width, height);
+              context.closePath();
+              context.fill();
+              //画边框线
+              if (columnOption.meterBorder > 0) {
+                context.beginPath();
+                context.setStrokeStyle(eachSeries.color);
+                context.setLineWidth(columnOption.meterBorder * opts.pix);
+                context.moveTo(startX + columnOption.meterBorder * 0.5, _item8.y + height);
+                context.lineTo(startX + columnOption.meterBorder * 0.5, _item8.y + columnOption.meterBorder * 0.5);
+                context.lineTo(startX + _item8.width - columnOption.meterBorder * 0.5, _item8.y + columnOption.meterBorder * 0.5);
+                context.lineTo(startX + _item8.width - columnOption.meterBorder * 0.5, _item8.y + height);
+                context.stroke();
+              }
+            }
+          };
+        } else {
+          for (var _i15 = 0; _i15 < points.length; _i15++) {
+            var _item9 = points[_i15];
+            if (_item9 !== null && _i15 > leftNum && _i15 < rightNum) {
+              context.beginPath();
+              context.setFillStyle(_item9.color || eachSeries.color);
+              var startX = _item9.x - _item9.width / 2;
+              var height = opts.height - _item9.y - opts.area[2];
+              context.moveTo(startX, _item9.y);
+              context.fillRect(startX, _item9.y, _item9.width, height);
+              context.closePath();
+              context.fill();
+            }
+          };
+        }
+        break;}
+
+  });
+
+  if (opts.dataLabel !== false && process === 1) {
+    series.forEach(function (eachSeries, seriesIndex) {
+      var ranges, minRange, maxRange;
+      ranges = [].concat(opts.chartData.yAxisData.ranges[eachSeries.index]);
+      minRange = ranges.pop();
+      maxRange = ranges.shift();
+      var data = eachSeries.data;
+      switch (columnOption.type) {
+        case 'group':
+          var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+          points = fixColumeData(points, eachSpacing, series.length, seriesIndex, config, opts);
+          drawPointText(points, eachSeries, config, context, opts);
+          break;
+        case 'stack':
+          var points = getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, seriesIndex, series, process);
+          drawPointText(points, eachSeries, config, context, opts);
+          break;
+        case 'meter':
+          var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+          drawPointText(points, eachSeries, config, context, opts);
+          break;}
+
+    });
+  }
+  context.restore();
+  return {
+    xAxisPoints: xAxisPoints,
+    calPoints: calPoints,
+    eachSpacing: eachSpacing };
+
+}
+
+function drawCandleDataPoints(series, seriesMA, opts, config, context) {
+  var process = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;
+  var candleOption = assign({}, {
+    color: {},
+    average: {} },
+  opts.extra.candle);
+  candleOption.color = assign({}, {
+    upLine: '#f04864',
+    upFill: '#f04864',
+    downLine: '#2fc25b',
+    downFill: '#2fc25b' },
+  candleOption.color);
+  candleOption.average = assign({}, {
+    show: false,
+    name: [],
+    day: [],
+    color: config.color },
+  candleOption.average);
+  opts.extra.candle = candleOption;
+  var xAxisData = opts.chartData.xAxisData,
+  xAxisPoints = xAxisData.xAxisPoints,
+  eachSpacing = xAxisData.eachSpacing;
+  var calPoints = [];
+  context.save();
+  var leftNum = -2;
+  var rightNum = xAxisPoints.length + 2;
+  var leftSpace = 0;
+  var rightSpace = opts.width + eachSpacing;
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+    leftNum = Math.floor(-opts._scrollDistance_ / eachSpacing) - 2;
+    rightNum = leftNum + opts.xAxis.itemCount + 4;
+    leftSpace = -opts._scrollDistance_ - eachSpacing * 2 + opts.area[3];
+    rightSpace = leftSpace + (opts.xAxis.itemCount + 4) * eachSpacing;
+  }
+  //画均线
+  if (candleOption.average.show || seriesMA) {//Merge pull request !12 from 邱贵翔
+    seriesMA.forEach(function (eachSeries, seriesIndex) {
+      var ranges, minRange, maxRange;
+      ranges = [].concat(opts.chartData.yAxisData.ranges[eachSeries.index]);
+      minRange = ranges.pop();
+      maxRange = ranges.shift();
+      var data = eachSeries.data;
+      var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+      var splitPointList = splitPoints(points, eachSeries);
+      for (var i = 0; i < splitPointList.length; i++) {
+        var _points = splitPointList[i];
+        context.beginPath();
+        context.setStrokeStyle(eachSeries.color);
+        context.setLineWidth(1);
+        if (_points.length === 1) {
+          context.moveTo(_points[0].x, _points[0].y);
+          context.arc(_points[0].x, _points[0].y, 1, 0, 2 * Math.PI);
+        } else {
+          context.moveTo(_points[0].x, _points[0].y);
+          var startPoint = 0;
+          for (var j = 0; j < _points.length; j++) {
+            var item = _points[j];
+            if (startPoint == 0 && item.x > leftSpace) {
+              context.moveTo(item.x, item.y);
+              startPoint = 1;
+            }
+            if (j > 0 && item.x > leftSpace && item.x < rightSpace) {
+              var ctrlPoint = createCurveControlPoints(_points, j - 1);
+              context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y, item.x,
+              item.y);
+            }
+          }
+          context.moveTo(_points[0].x, _points[0].y);
+        }
+        context.closePath();
+        context.stroke();
+      }
+    });
+  }
+  //画K线
+  series.forEach(function (eachSeries, seriesIndex) {
+    var ranges, minRange, maxRange;
+    ranges = [].concat(opts.chartData.yAxisData.ranges[eachSeries.index]);
+    minRange = ranges.pop();
+    maxRange = ranges.shift();
+    var data = eachSeries.data;
+    var points = getCandleDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+    calPoints.push(points);
+    var splitPointList = splitPoints(points, eachSeries);
+    for (var i = 0; i < splitPointList[0].length; i++) {
+      if (i > leftNum && i < rightNum) {
+        var item = splitPointList[0][i];
+        context.beginPath();
+        //如果上涨
+        if (data[i][1] - data[i][0] > 0) {
+          context.setStrokeStyle(candleOption.color.upLine);
+          context.setFillStyle(candleOption.color.upFill);
+          context.setLineWidth(1 * opts.pix);
+          context.moveTo(item[3].x, item[3].y); //顶点
+          context.lineTo(item[1].x, item[1].y); //收盘中间点
+          context.lineTo(item[1].x - eachSpacing / 4, item[1].y); //收盘左侧点
+          context.lineTo(item[0].x - eachSpacing / 4, item[0].y); //开盘左侧点
+          context.lineTo(item[0].x, item[0].y); //开盘中间点
+          context.lineTo(item[2].x, item[2].y); //底点
+          context.lineTo(item[0].x, item[0].y); //开盘中间点
+          context.lineTo(item[0].x + eachSpacing / 4, item[0].y); //开盘右侧点
+          context.lineTo(item[1].x + eachSpacing / 4, item[1].y); //收盘右侧点
+          context.lineTo(item[1].x, item[1].y); //收盘中间点
+          context.moveTo(item[3].x, item[3].y); //顶点
+        } else {
+          context.setStrokeStyle(candleOption.color.downLine);
+          context.setFillStyle(candleOption.color.downFill);
+          context.setLineWidth(1 * opts.pix);
+          context.moveTo(item[3].x, item[3].y); //顶点
+          context.lineTo(item[0].x, item[0].y); //开盘中间点
+          context.lineTo(item[0].x - eachSpacing / 4, item[0].y); //开盘左侧点
+          context.lineTo(item[1].x - eachSpacing / 4, item[1].y); //收盘左侧点
+          context.lineTo(item[1].x, item[1].y); //收盘中间点
+          context.lineTo(item[2].x, item[2].y); //底点
+          context.lineTo(item[1].x, item[1].y); //收盘中间点
+          context.lineTo(item[1].x + eachSpacing / 4, item[1].y); //收盘右侧点
+          context.lineTo(item[0].x + eachSpacing / 4, item[0].y); //开盘右侧点
+          context.lineTo(item[0].x, item[0].y); //开盘中间点
+          context.moveTo(item[3].x, item[3].y); //顶点
+        }
+        context.closePath();
+        context.fill();
+        context.stroke();
+      }
+    }
+  });
+  context.restore();
+  return {
+    xAxisPoints: xAxisPoints,
+    calPoints: calPoints,
+    eachSpacing: eachSpacing };
+
+}
+
+function drawAreaDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var areaOption = assign({}, {
+    type: 'straight',
+    opacity: 0.2,
+    addLine: false,
+    width: 2,
+    gradient: false },
+  opts.extra.area);
+  var xAxisData = opts.chartData.xAxisData,
+  xAxisPoints = xAxisData.xAxisPoints,
+  eachSpacing = xAxisData.eachSpacing;
+  var endY = opts.height - opts.area[2];
+  var calPoints = [];
+  context.save();
+  var leftSpace = 0;
+  var rightSpace = opts.width + eachSpacing;
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+    leftSpace = -opts._scrollDistance_ - eachSpacing * 2 + opts.area[3];
+    rightSpace = leftSpace + (opts.xAxis.itemCount + 4) * eachSpacing;
+  }
+  series.forEach(function (eachSeries, seriesIndex) {
+    var ranges, minRange, maxRange;
+    ranges = [].concat(opts.chartData.yAxisData.ranges[eachSeries.index]);
+    minRange = ranges.pop();
+    maxRange = ranges.shift();
+    var data = eachSeries.data;
+    var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+    calPoints.push(points);
+    var splitPointList = splitPoints(points, eachSeries);
+    for (var i = 0; i < splitPointList.length; i++) {
+      var _points2 = splitPointList[i];
+      // 绘制区域数
+      context.beginPath();
+      context.setStrokeStyle(hexToRgb(eachSeries.color, areaOption.opacity));
+      if (areaOption.gradient) {
+        var gradient = context.createLinearGradient(0, opts.area[0], 0, opts.height - opts.area[2]);
+        gradient.addColorStop('0', hexToRgb(eachSeries.color, areaOption.opacity));
+        gradient.addColorStop('1.0', hexToRgb("#FFFFFF", 0.1));
+        context.setFillStyle(gradient);
+      } else {
+        context.setFillStyle(hexToRgb(eachSeries.color, areaOption.opacity));
+      }
+      context.setLineWidth(areaOption.width * opts.pix);
+      if (_points2.length > 1) {
+        var firstPoint = _points2[0];
+        var lastPoint = _points2[_points2.length - 1];
+        context.moveTo(firstPoint.x, firstPoint.y);
+        var startPoint = 0;
+        if (areaOption.type === 'curve') {
+          for (var j = 0; j < _points2.length; j++) {
+            var item = _points2[j];
+            if (startPoint == 0 && item.x > leftSpace) {
+              context.moveTo(item.x, item.y);
+              startPoint = 1;
+            }
+            if (j > 0 && item.x > leftSpace && item.x < rightSpace) {
+              var ctrlPoint = createCurveControlPoints(_points2, j - 1);
+              context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y, item.x, item.y);
+            }
+          };
+        } else {
+          for (var _j = 0; _j < _points2.length; _j++) {
+            var _item10 = _points2[_j];
+            if (startPoint == 0 && _item10.x > leftSpace) {
+              context.moveTo(_item10.x, _item10.y);
+              startPoint = 1;
+            }
+            if (_j > 0 && _item10.x > leftSpace && _item10.x < rightSpace) {
+              context.lineTo(_item10.x, _item10.y);
+            }
+          };
+        }
+        context.lineTo(lastPoint.x, endY);
+        context.lineTo(firstPoint.x, endY);
+        context.lineTo(firstPoint.x, firstPoint.y);
+      } else {
+        var _item11 = _points2[0];
+        context.moveTo(_item11.x - eachSpacing / 2, _item11.y);
+        context.lineTo(_item11.x + eachSpacing / 2, _item11.y);
+        context.lineTo(_item11.x + eachSpacing / 2, endY);
+        context.lineTo(_item11.x - eachSpacing / 2, endY);
+        context.moveTo(_item11.x - eachSpacing / 2, _item11.y);
+      }
+      context.closePath();
+      context.fill();
+      //画连线
+      if (areaOption.addLine) {
+        if (eachSeries.lineType == 'dash') {
+          var dashLength = eachSeries.dashLength ? eachSeries.dashLength : 8;
+          dashLength *= opts.pix;
+          context.setLineDash([dashLength, dashLength]);
+        }
+        context.beginPath();
+        context.setStrokeStyle(eachSeries.color);
+        context.setLineWidth(areaOption.width * opts.pix);
+        if (_points2.length === 1) {
+          context.moveTo(_points2[0].x, _points2[0].y);
+          context.arc(_points2[0].x, _points2[0].y, 1, 0, 2 * Math.PI);
+        } else {
+          context.moveTo(_points2[0].x, _points2[0].y);
+          var _startPoint = 0;
+          if (areaOption.type === 'curve') {
+            for (var _j2 = 0; _j2 < _points2.length; _j2++) {
+              var _item12 = _points2[_j2];
+              if (_startPoint == 0 && _item12.x > leftSpace) {
+                context.moveTo(_item12.x, _item12.y);
+                _startPoint = 1;
+              }
+              if (_j2 > 0 && _item12.x > leftSpace && _item12.x < rightSpace) {
+                var _ctrlPoint = createCurveControlPoints(_points2, _j2 - 1);
+                context.bezierCurveTo(_ctrlPoint.ctrA.x, _ctrlPoint.ctrA.y, _ctrlPoint.ctrB.x, _ctrlPoint.ctrB.y, _item12.x, _item12.y);
+              }
+            };
+          } else {
+            for (var _j3 = 0; _j3 < _points2.length; _j3++) {
+              var _item13 = _points2[_j3];
+              if (_startPoint == 0 && _item13.x > leftSpace) {
+                context.moveTo(_item13.x, _item13.y);
+                _startPoint = 1;
+              }
+              if (_j3 > 0 && _item13.x > leftSpace && _item13.x < rightSpace) {
+                context.lineTo(_item13.x, _item13.y);
+              }
+            };
+          }
+          context.moveTo(_points2[0].x, _points2[0].y);
+        }
+        context.stroke();
+        context.setLineDash([]);
+      }
+    }
+    //画点
+    if (opts.dataPointShape !== false) {
+      drawPointShape(points, eachSeries.color, eachSeries.pointShape, context, opts);
+    }
+  });
+
+  if (opts.dataLabel !== false && process === 1) {
+    series.forEach(function (eachSeries, seriesIndex) {
+      var ranges, minRange, maxRange;
+      ranges = [].concat(opts.chartData.yAxisData.ranges[eachSeries.index]);
+      minRange = ranges.pop();
+      maxRange = ranges.shift();
+      var data = eachSeries.data;
+      var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+      drawPointText(points, eachSeries, config, context, opts);
+    });
+  }
+  context.restore();
+  return {
+    xAxisPoints: xAxisPoints,
+    calPoints: calPoints,
+    eachSpacing: eachSpacing };
+
+}
+
+function drawLineDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var lineOption = assign({}, {
+    type: 'straight',
+    width: 2 },
+  opts.extra.line);
+  lineOption.width *= opts.pix;
+  var xAxisData = opts.chartData.xAxisData,
+  xAxisPoints = xAxisData.xAxisPoints,
+  eachSpacing = xAxisData.eachSpacing;
+  var calPoints = [];
+  context.save();
+  var leftSpace = 0;
+  var rightSpace = opts.width + eachSpacing;
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+    leftSpace = -opts._scrollDistance_ - eachSpacing * 2 + opts.area[3];
+    rightSpace = leftSpace + (opts.xAxis.itemCount + 4) * eachSpacing;
+  }
+  series.forEach(function (eachSeries, seriesIndex) {
+    var ranges, minRange, maxRange;
+    ranges = [].concat(opts.chartData.yAxisData.ranges[eachSeries.index]);
+    minRange = ranges.pop();
+    maxRange = ranges.shift();
+    var data = eachSeries.data;
+    var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+    calPoints.push(points);
+    var splitPointList = splitPoints(points, eachSeries);
+    if (eachSeries.lineType == 'dash') {
+      var dashLength = eachSeries.dashLength ? eachSeries.dashLength : 8;
+      dashLength *= opts.pix;
+      context.setLineDash([dashLength, dashLength]);
+    }
+    context.beginPath();
+    context.setStrokeStyle(eachSeries.color);
+    context.setLineWidth(lineOption.width);
+    splitPointList.forEach(function (points, index) {
+      if (points.length === 1) {
+        context.moveTo(points[0].x, points[0].y);
+        context.arc(points[0].x, points[0].y, 1, 0, 2 * Math.PI);
+      } else {
+        context.moveTo(points[0].x, points[0].y);
+        var startPoint = 0;
+        if (lineOption.type === 'curve') {
+          for (var j = 0; j < points.length; j++) {
+            var item = points[j];
+            if (startPoint == 0 && item.x > leftSpace) {
+              context.moveTo(item.x, item.y);
+              startPoint = 1;
+            }
+            if (j > 0 && item.x > leftSpace && item.x < rightSpace) {
+              var ctrlPoint = createCurveControlPoints(points, j - 1);
+              context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y, item.x, item.y);
+            }
+          };
+        }
+        if (lineOption.type === 'straight') {
+          for (var _j4 = 0; _j4 < points.length; _j4++) {
+            var _item14 = points[_j4];
+            if (startPoint == 0 && _item14.x > leftSpace) {
+              context.moveTo(_item14.x, _item14.y);
+              startPoint = 1;
+            }
+            if (_j4 > 0 && _item14.x > leftSpace && _item14.x < rightSpace) {
+              context.lineTo(_item14.x, _item14.y);
+            }
+          };
+        }
+        if (lineOption.type === 'step') {
+          for (var _j5 = 0; _j5 < points.length; _j5++) {
+            var _item15 = points[_j5];
+            if (startPoint == 0 && _item15.x > leftSpace) {
+              context.moveTo(_item15.x, _item15.y);
+              startPoint = 1;
+            }
+            if (_j5 > 0 && _item15.x > leftSpace && _item15.x < rightSpace) {
+              context.lineTo(_item15.x, points[_j5 - 1].y);
+              context.lineTo(_item15.x, _item15.y);
+            }
+          };
+        }
+        context.moveTo(points[0].x, points[0].y);
+      }
+    });
+    context.stroke();
+    context.setLineDash([]);
+    if (opts.dataPointShape !== false) {
+      drawPointShape(points, eachSeries.color, eachSeries.pointShape, context, opts);
+    }
+  });
+  if (opts.dataLabel !== false && process === 1) {
+    series.forEach(function (eachSeries, seriesIndex) {
+      var ranges, minRange, maxRange;
+      ranges = [].concat(opts.chartData.yAxisData.ranges[eachSeries.index]);
+      minRange = ranges.pop();
+      maxRange = ranges.shift();
+      var data = eachSeries.data;
+      var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+      drawPointText(points, eachSeries, config, context, opts);
+    });
+  }
+  context.restore();
+  return {
+    xAxisPoints: xAxisPoints,
+    calPoints: calPoints,
+    eachSpacing: eachSpacing };
+
+}
+
+function drawMixDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var columnOption = assign({}, {
+    width: eachSpacing / 2,
+    barBorderCircle: false,
+    barBorderRadius: [],
+    seriesGap: 2,
+    linearType: 'none',
+    linearOpacity: 1,
+    customColor: [],
+    colorStop: 0 },
+  opts.extra.mix.column);
+  var xAxisData = opts.chartData.xAxisData,
+  xAxisPoints = xAxisData.xAxisPoints,
+  eachSpacing = xAxisData.eachSpacing;
+  var endY = opts.height - opts.area[2];
+  var calPoints = [];
+  var columnIndex = 0;
+  var columnLength = 0;
+  series.forEach(function (eachSeries, seriesIndex) {
+    if (eachSeries.type == 'column') {
+      columnLength += 1;
+    }
+  });
+  context.save();
+  var leftNum = -2;
+  var rightNum = xAxisPoints.length + 2;
+  var leftSpace = 0;
+  var rightSpace = opts.width + eachSpacing;
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+    leftNum = Math.floor(-opts._scrollDistance_ / eachSpacing) - 2;
+    rightNum = leftNum + opts.xAxis.itemCount + 4;
+    leftSpace = -opts._scrollDistance_ - eachSpacing * 2 + opts.area[3];
+    rightSpace = leftSpace + (opts.xAxis.itemCount + 4) * eachSpacing;
+  }
+  columnOption.customColor = fillCustomColor(columnOption.linearType, columnOption.customColor, series, config);
+  series.forEach(function (eachSeries, seriesIndex) {
+    var ranges, minRange, maxRange;
+    ranges = [].concat(opts.chartData.yAxisData.ranges[eachSeries.index]);
+    minRange = ranges.pop();
+    maxRange = ranges.shift();
+    var data = eachSeries.data;
+    var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+    calPoints.push(points);
+    // 绘制柱状数据图
+    if (eachSeries.type == 'column') {
+      points = fixColumeData(points, eachSpacing, columnLength, columnIndex, config, opts);
+      for (var i = 0; i < points.length; i++) {
+        var item = points[i];
+        if (item !== null && i > leftNum && i < rightNum) {
+          var startX = item.x - item.width / 2;
+          var height = opts.height - item.y - opts.area[2];
+          context.beginPath();
+          var fillColor = eachSeries.color;
+          var strokeColor = eachSeries.color;
+          if (columnOption.linearType !== 'none') {
+            var grd = context.createLinearGradient(startX, item.y, startX, opts.height - opts.area[2]);
+            //透明渐变
+            if (columnOption.linearType == 'opacity') {
+              grd.addColorStop(0, hexToRgb(fillColor, columnOption.linearOpacity));
+              grd.addColorStop(1, hexToRgb(fillColor, 1));
+            } else {
+              grd.addColorStop(0, hexToRgb(columnOption.customColor[eachSeries.linearIndex], columnOption.linearOpacity));
+              grd.addColorStop(columnOption.colorStop, hexToRgb(columnOption.customColor[eachSeries.linearIndex], columnOption.linearOpacity));
+              grd.addColorStop(1, hexToRgb(fillColor, 1));
+            }
+            fillColor = grd;
+          }
+          // 圆角边框
+          if (columnOption.barBorderRadius && columnOption.barBorderRadius.length === 4 || columnOption.barBorderCircle) {
+            var left = startX;
+            var top = item.y;
+            var width = item.width;
+            var _height2 = opts.height - opts.area[2] - item.y;
+            if (columnOption.barBorderCircle) {
+              columnOption.barBorderRadius = [width / 2, width / 2, 0, 0];
+            }var _columnOption$barBord2 = _slicedToArray(
+            columnOption.barBorderRadius, 4),r0 = _columnOption$barBord2[0],r1 = _columnOption$barBord2[1],r2 = _columnOption$barBord2[2],r3 = _columnOption$barBord2[3];
+            if (r0 + r2 > _height2) {
+              r0 = _height2;
+              r2 = 0;
+              r1 = _height2;
+              r3 = 0;
+            }
+            if (r0 + r2 > width / 2) {
+              r0 = width / 2;
+              r2 = 0;
+              r1 = width / 2;
+              r3 = 0;
+            }
+            r0 = r0 < 0 ? 0 : r0;
+            r1 = r1 < 0 ? 0 : r1;
+            r2 = r2 < 0 ? 0 : r2;
+            r3 = r3 < 0 ? 0 : r3;
+            context.arc(left + r0, top + r0, r0, -Math.PI, -Math.PI / 2);
+            context.arc(left + width - r1, top + r1, r1, -Math.PI / 2, 0);
+            context.arc(left + width - r2, top + _height2 - r2, r2, 0, Math.PI / 2);
+            context.arc(left + r3, top + _height2 - r3, r3, Math.PI / 2, Math.PI);
+          } else {
+            context.moveTo(startX, item.y);
+            context.lineTo(startX + item.width - 2, item.y);
+            context.lineTo(startX + item.width - 2, opts.height - opts.area[2]);
+            context.lineTo(startX, opts.height - opts.area[2]);
+            context.lineTo(startX, item.y);
+            context.setLineWidth(1);
+            context.setStrokeStyle(strokeColor);
+          }
+          context.setFillStyle(fillColor);
+          context.closePath();
+          context.fill();
+        }
+      }
+      columnIndex += 1;
+    }
+    //绘制区域图数据
+    if (eachSeries.type == 'area') {
+      var _splitPointList = splitPoints(points, eachSeries);
+      for (var _i16 = 0; _i16 < _splitPointList.length; _i16++) {
+        var _points3 = _splitPointList[_i16];
+        // 绘制区域数据
+        context.beginPath();
+        context.setStrokeStyle(eachSeries.color);
+        context.setFillStyle(hexToRgb(eachSeries.color, 0.2));
+        context.setLineWidth(2 * opts.pix);
+        if (_points3.length > 1) {
+          var firstPoint = _points3[0];
+          var lastPoint = _points3[_points3.length - 1];
+          context.moveTo(firstPoint.x, firstPoint.y);
+          var startPoint = 0;
+          if (eachSeries.style === 'curve') {
+            for (var j = 0; j < _points3.length; j++) {
+              var _item16 = _points3[j];
+              if (startPoint == 0 && _item16.x > leftSpace) {
+                context.moveTo(_item16.x, _item16.y);
+                startPoint = 1;
+              }
+              if (j > 0 && _item16.x > leftSpace && _item16.x < rightSpace) {
+                var ctrlPoint = createCurveControlPoints(_points3, j - 1);
+                context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y, _item16.x, _item16.y);
+              }
+            };
+          } else {
+            for (var _j6 = 0; _j6 < _points3.length; _j6++) {
+              var _item17 = _points3[_j6];
+              if (startPoint == 0 && _item17.x > leftSpace) {
+                context.moveTo(_item17.x, _item17.y);
+                startPoint = 1;
+              }
+              if (_j6 > 0 && _item17.x > leftSpace && _item17.x < rightSpace) {
+                context.lineTo(_item17.x, _item17.y);
+              }
+            };
+          }
+          context.lineTo(lastPoint.x, endY);
+          context.lineTo(firstPoint.x, endY);
+          context.lineTo(firstPoint.x, firstPoint.y);
+        } else {
+          var _item18 = _points3[0];
+          context.moveTo(_item18.x - eachSpacing / 2, _item18.y);
+          context.lineTo(_item18.x + eachSpacing / 2, _item18.y);
+          context.lineTo(_item18.x + eachSpacing / 2, endY);
+          context.lineTo(_item18.x - eachSpacing / 2, endY);
+          context.moveTo(_item18.x - eachSpacing / 2, _item18.y);
+        }
+        context.closePath();
+        context.fill();
+      }
+    }
+    // 绘制折线数据图
+    if (eachSeries.type == 'line') {
+      var splitPointList = splitPoints(points, eachSeries);
+      splitPointList.forEach(function (points, index) {
+        if (eachSeries.lineType == 'dash') {
+          var dashLength = eachSeries.dashLength ? eachSeries.dashLength : 8;
+          dashLength *= opts.pix;
+          context.setLineDash([dashLength, dashLength]);
+        }
+        context.beginPath();
+        context.setStrokeStyle(eachSeries.color);
+        context.setLineWidth(2 * opts.pix);
+        if (points.length === 1) {
+          context.moveTo(points[0].x, points[0].y);
+          context.arc(points[0].x, points[0].y, 1, 0, 2 * Math.PI);
+        } else {
+          context.moveTo(points[0].x, points[0].y);
+          var _startPoint2 = 0;
+          if (eachSeries.style == 'curve') {
+            for (var _j7 = 0; _j7 < points.length; _j7++) {
+              var _item19 = points[_j7];
+              if (_startPoint2 == 0 && _item19.x > leftSpace) {
+                context.moveTo(_item19.x, _item19.y);
+                _startPoint2 = 1;
+              }
+              if (_j7 > 0 && _item19.x > leftSpace && _item19.x < rightSpace) {
+                var ctrlPoint = createCurveControlPoints(points, _j7 - 1);
+                context.bezierCurveTo(ctrlPoint.ctrA.x, ctrlPoint.ctrA.y, ctrlPoint.ctrB.x, ctrlPoint.ctrB.y,
+                _item19.x, _item19.y);
+              }
+            }
+          } else {
+            for (var _j8 = 0; _j8 < points.length; _j8++) {
+              var _item20 = points[_j8];
+              if (_startPoint2 == 0 && _item20.x > leftSpace) {
+                context.moveTo(_item20.x, _item20.y);
+                _startPoint2 = 1;
+              }
+              if (_j8 > 0 && _item20.x > leftSpace && _item20.x < rightSpace) {
+                context.lineTo(_item20.x, _item20.y);
+              }
+            }
+          }
+          context.moveTo(points[0].x, points[0].y);
+        }
+        context.stroke();
+        context.setLineDash([]);
+      });
+    }
+    // 绘制点数据图
+    if (eachSeries.type == 'point') {
+      eachSeries.addPoint = true;
+    }
+    if (eachSeries.addPoint == true && eachSeries.type !== 'column') {
+      drawPointShape(points, eachSeries.color, eachSeries.pointShape, context, opts);
+    }
+  });
+  if (opts.dataLabel !== false && process === 1) {
+    var columnIndex = 0;
+    series.forEach(function (eachSeries, seriesIndex) {
+      var ranges, minRange, maxRange;
+      ranges = [].concat(opts.chartData.yAxisData.ranges[eachSeries.index]);
+      minRange = ranges.pop();
+      maxRange = ranges.shift();
+      var data = eachSeries.data;
+      var points = getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, process);
+      if (eachSeries.type !== 'column') {
+        drawPointText(points, eachSeries, config, context, opts);
+      } else {
+        points = fixColumeData(points, eachSpacing, columnLength, columnIndex, config, opts);
+        drawPointText(points, eachSeries, config, context, opts);
+        columnIndex += 1;
+      }
+    });
+  }
+  context.restore();
+  return {
+    xAxisPoints: xAxisPoints,
+    calPoints: calPoints,
+    eachSpacing: eachSpacing };
+
+}
+
+function drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints) {
+  var toolTipOption = opts.extra.tooltip || {};
+  if (toolTipOption.horizentalLine && opts.tooltip && process === 1 && (opts.type == 'line' || opts.type == 'area' || opts.type == 'column' || opts.type == 'candle' || opts.type == 'mix')) {
+    drawToolTipHorizentalLine(opts, config, context, eachSpacing, xAxisPoints);
+  }
+  context.save();
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0 && opts.enableScroll === true) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+  if (opts.tooltip && opts.tooltip.textList && opts.tooltip.textList.length && process === 1) {
+    drawToolTip(opts.tooltip.textList, opts.tooltip.offset, opts, config, context, eachSpacing, xAxisPoints);
+  }
+  context.restore();
+
+}
+
+function drawXAxis(categories, opts, config, context) {
+
+  var xAxisData = opts.chartData.xAxisData,
+  xAxisPoints = xAxisData.xAxisPoints,
+  startX = xAxisData.startX,
+  endX = xAxisData.endX,
+  eachSpacing = xAxisData.eachSpacing;
+  var boundaryGap = 'center';
+  if (opts.type == 'line' || opts.type == 'area') {
+    boundaryGap = opts.xAxis.boundaryGap;
+  }
+  var startY = opts.height - opts.area[2];
+  var endY = opts.area[0];
+
+  //绘制滚动条
+  if (opts.enableScroll && opts.xAxis.scrollShow) {
+    var scrollY = opts.height - opts.area[2] + config.xAxisHeight;
+    var scrollScreenWidth = endX - startX;
+    var scrollTotalWidth = eachSpacing * (xAxisPoints.length - 1);
+    var scrollWidth = scrollScreenWidth * scrollScreenWidth / scrollTotalWidth;
+    var scrollLeft = 0;
+    if (opts._scrollDistance_) {
+      scrollLeft = -opts._scrollDistance_ * scrollScreenWidth / scrollTotalWidth;
+    }
+    context.beginPath();
+    context.setLineCap('round');
+    context.setLineWidth(6 * opts.pix);
+    context.setStrokeStyle(opts.xAxis.scrollBackgroundColor || "#EFEBEF");
+    context.moveTo(startX, scrollY);
+    context.lineTo(endX, scrollY);
+    context.stroke();
+    context.closePath();
+    context.beginPath();
+    context.setLineCap('round');
+    context.setLineWidth(6 * opts.pix);
+    context.setStrokeStyle(opts.xAxis.scrollColor || "#A6A6A6");
+    context.moveTo(startX + scrollLeft, scrollY);
+    context.lineTo(startX + scrollLeft + scrollWidth, scrollY);
+    context.stroke();
+    context.closePath();
+    context.setLineCap('butt');
+  }
+  context.save();
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+  //绘制X轴刻度线
+  if (opts.xAxis.calibration === true) {
+    context.setStrokeStyle(opts.xAxis.gridColor || "#cccccc");
+    context.setLineCap('butt');
+    context.setLineWidth(1 * opts.pix);
+    xAxisPoints.forEach(function (item, index) {
+      if (index > 0) {
+        context.beginPath();
+        context.moveTo(item - eachSpacing / 2, startY);
+        context.lineTo(item - eachSpacing / 2, startY + 3 * opts.pix);
+        context.closePath();
+        context.stroke();
+      }
+    });
+  }
+  //绘制X轴网格
+  if (opts.xAxis.disableGrid !== true) {
+    context.setStrokeStyle(opts.xAxis.gridColor || "#cccccc");
+    context.setLineCap('butt');
+    context.setLineWidth(1 * opts.pix);
+    if (opts.xAxis.gridType == 'dash') {
+      context.setLineDash([opts.xAxis.dashLength * opts.pix, opts.xAxis.dashLength * opts.pix]);
+    }
+    opts.xAxis.gridEval = opts.xAxis.gridEval || 1;
+    xAxisPoints.forEach(function (item, index) {
+      if (index % opts.xAxis.gridEval == 0) {
+        context.beginPath();
+        context.moveTo(item, startY);
+        context.lineTo(item, endY);
+        context.stroke();
+      }
+    });
+    context.setLineDash([]);
+  }
+  //绘制X轴文案
+  if (opts.xAxis.disabled !== true) {
+    // 对X轴列表做抽稀处理
+    //默认全部显示X轴标签
+    var maxXAxisListLength = categories.length;
+    //如果设置了X轴单屏数量
+    if (opts.xAxis.labelCount) {
+      //如果设置X轴密度
+      if (opts.xAxis.itemCount) {
+        maxXAxisListLength = Math.ceil(categories.length / opts.xAxis.itemCount * opts.xAxis.labelCount);
+      } else {
+        maxXAxisListLength = opts.xAxis.labelCount;
+      }
+      maxXAxisListLength -= 1;
+    }
+
+    var ratio = Math.ceil(categories.length / maxXAxisListLength);
+
+    var newCategories = [];
+    var cgLength = categories.length;
+    for (var i = 0; i < cgLength; i++) {
+      if (i % ratio !== 0) {
+        newCategories.push("");
+      } else {
+        newCategories.push(categories[i]);
+      }
+    }
+    newCategories[cgLength - 1] = categories[cgLength - 1];
+    var xAxisFontSize = opts.xAxis.fontSize * opts.pix || config.fontSize;
+    if (config._xAxisTextAngle_ === 0) {
+      newCategories.forEach(function (item, index) {
+        var offset = -measureText(String(item), xAxisFontSize, context) / 2;
+        if (boundaryGap == 'center') {
+          offset += eachSpacing / 2;
+        }
+        var scrollHeight = 0;
+        if (opts.xAxis.scrollShow) {
+          scrollHeight = 6 * opts.pix;
+        }
+        context.beginPath();
+        context.setFontSize(xAxisFontSize);
+        context.setFillStyle(opts.xAxis.fontColor || opts.fontColor);
+        context.fillText(String(item), xAxisPoints[index] + offset, startY + xAxisFontSize + (config.xAxisHeight - scrollHeight - xAxisFontSize) / 2);
+        context.closePath();
+        context.stroke();
+      });
+    } else {
+      newCategories.forEach(function (item, index) {
+        context.save();
+        context.beginPath();
+        context.setFontSize(xAxisFontSize);
+        context.setFillStyle(opts.xAxis.fontColor || opts.fontColor);
+        var textWidth = measureText(String(item), xAxisFontSize, context);
+        var offset = -textWidth;
+        if (boundaryGap == 'center') {
+          offset += eachSpacing / 2;
+        }
+        var _calRotateTranslate = calRotateTranslate(xAxisPoints[index] + eachSpacing / 2, startY + xAxisFontSize / 2 + 5, opts.height),
+        transX = _calRotateTranslate.transX,
+        transY = _calRotateTranslate.transY;
+
+        context.rotate(-1 * config._xAxisTextAngle_);
+        context.translate(transX, transY);
+        context.fillText(String(item), xAxisPoints[index] + offset, startY + xAxisFontSize + 5);
+        context.closePath();
+        context.stroke();
+        context.restore();
+      });
+    }
+  }
+  context.restore();
+  //绘制X轴轴线
+  if (opts.xAxis.axisLine) {
+    context.beginPath();
+    context.setStrokeStyle(opts.xAxis.axisLineColor);
+    context.setLineWidth(1 * opts.pix);
+    context.moveTo(startX, opts.height - opts.area[2]);
+    context.lineTo(endX, opts.height - opts.area[2]);
+    context.stroke();
+  }
+}
+
+function drawYAxisGrid(categories, opts, config, context) {
+  if (opts.yAxis.disableGrid === true) {
+    return;
+  }
+  var spacingValid = opts.height - opts.area[0] - opts.area[2];
+  var eachSpacing = spacingValid / opts.yAxis.splitNumber;
+  var startX = opts.area[3];
+  var xAxisPoints = opts.chartData.xAxisData.xAxisPoints,
+  xAxiseachSpacing = opts.chartData.xAxisData.eachSpacing;
+  var TotalWidth = xAxiseachSpacing * (xAxisPoints.length - 1);
+  var endX = startX + TotalWidth;
+  var points = [];
+  var startY = 1;
+  if (opts.xAxis.axisLine === false) {
+    startY = 0;
+  }
+  for (var i = startY; i < opts.yAxis.splitNumber + 1; i++) {
+    points.push(opts.height - opts.area[2] - eachSpacing * i);
+  }
+  context.save();
+  if (opts._scrollDistance_ && opts._scrollDistance_ !== 0) {
+    context.translate(opts._scrollDistance_, 0);
+  }
+  if (opts.yAxis.gridType == 'dash') {
+    context.setLineDash([opts.yAxis.dashLength * opts.pix, opts.yAxis.dashLength * opts.pix]);
+  }
+  context.setStrokeStyle(opts.yAxis.gridColor);
+  context.setLineWidth(1 * opts.pix);
+  points.forEach(function (item, index) {
+    context.beginPath();
+    context.moveTo(startX, item);
+    context.lineTo(endX, item);
+    context.stroke();
+  });
+  context.setLineDash([]);
+  context.restore();
+}
+
+function drawYAxis(series, opts, config, context) {
+  if (opts.yAxis.disabled === true) {
+    return;
+  }
+  var spacingValid = opts.height - opts.area[0] - opts.area[2];
+  var eachSpacing = spacingValid / opts.yAxis.splitNumber;
+  var startX = opts.area[3];
+  var endX = opts.width - opts.area[1];
+  var endY = opts.height - opts.area[2];
+  var fillEndY = endY + config.xAxisHeight;
+  if (opts.xAxis.scrollShow) {
+    fillEndY -= 3 * opts.pix;
+  }
+  if (opts.xAxis.rotateLabel) {
+    fillEndY = opts.height - opts.area[2] + opts.fontSize * opts.pix / 2;
+  }
+  // set YAxis background
+  context.beginPath();
+  context.setFillStyle(opts.background);
+  if (opts.enableScroll == true && opts.xAxis.scrollPosition && opts.xAxis.scrollPosition !== 'left') {
+    context.fillRect(0, 0, startX, fillEndY);
+  }
+  if (opts.enableScroll == true && opts.xAxis.scrollPosition && opts.xAxis.scrollPosition !== 'right') {
+    context.fillRect(endX, 0, opts.width, fillEndY);
+  }
+  context.closePath();
+  context.stroke();
+  var points = [];
+  for (var i = 0; i <= opts.yAxis.splitNumber; i++) {
+    points.push(opts.area[0] + eachSpacing * i);
+  }
+  var tStartLeft = opts.area[3];
+  var tStartRight = opts.width - opts.area[1];
+  if (opts.yAxis.data) {var _loop4 = function _loop4(
+    _i17) {
+      var yData = opts.yAxis.data[_i17];
+      if (yData.disabled !== true) {
+        var rangesFormat = opts.chartData.yAxisData.rangesFormat[_i17];
+        var yAxisFontSize = yData.fontSize || config.fontSize;
+        var yAxisWidth = opts.chartData.yAxisData.yAxisWidth[_i17];
+        var textAlign = yData.textAlign || "right";
+        //画Y轴刻度及文案
+        rangesFormat.forEach(function (item, index) {
+          var pos = points[index] ? points[index] : endY;
+          context.beginPath();
+          context.setFontSize(yAxisFontSize);
+          context.setLineWidth(1 * opts.pix);
+          context.setStrokeStyle(yData.axisLineColor || '#cccccc');
+          context.setFillStyle(yData.fontColor || opts.fontColor);
+          var tmpstrat = 0;
+          var gapwidth = 4 * opts.pix;
+          if (yAxisWidth.position == 'left') {
+            //画刻度线
+            if (yData.calibration == true) {
+              context.moveTo(tStartLeft, pos);
+              context.lineTo(tStartLeft - 3 * opts.pix, pos);
+              gapwidth += 3 * opts.pix;
+            }
+            //画文字
+            switch (textAlign) {
+              case "left":
+                context.setTextAlign('left');
+                tmpstrat = tStartLeft - yAxisWidth.width;
+                break;
+              case "right":
+                context.setTextAlign('right');
+                tmpstrat = tStartLeft - gapwidth;
+                break;
+              default:
+                context.setTextAlign('center');
+                tmpstrat = tStartLeft - yAxisWidth.width / 2;}
+
+            context.fillText(String(item), tmpstrat, pos + yAxisFontSize / 2 - 3 * opts.pix);
+
+          } else {
+            //画刻度线
+            if (yData.calibration == true) {
+              context.moveTo(tStartRight, pos);
+              context.lineTo(tStartRight + 3 * opts.pix, pos);
+              gapwidth += 3 * opts.pix;
+            }
+            switch (textAlign) {
+              case "left":
+                context.setTextAlign('left');
+                tmpstrat = tStartRight + gapwidth;
+                break;
+              case "right":
+                context.setTextAlign('right');
+                tmpstrat = tStartRight + yAxisWidth.width;
+                break;
+              default:
+                context.setTextAlign('center');
+                tmpstrat = tStartRight + yAxisWidth.width / 2;}
+
+            context.fillText(String(item), tmpstrat, pos + yAxisFontSize / 2 - 3 * opts.pix);
+          }
+          context.closePath();
+          context.stroke();
+          context.setTextAlign('left');
+        });
+        //画Y轴轴线
+        if (yData.axisLine !== false) {
+          context.beginPath();
+          context.setStrokeStyle(yData.axisLineColor || '#cccccc');
+          context.setLineWidth(1 * opts.pix);
+          if (yAxisWidth.position == 'left') {
+            context.moveTo(tStartLeft, opts.height - opts.area[2]);
+            context.lineTo(tStartLeft, opts.area[0]);
+          } else {
+            context.moveTo(tStartRight, opts.height - opts.area[2]);
+            context.lineTo(tStartRight, opts.area[0]);
+          }
+          context.stroke();
+        }
+        //画Y轴标题
+        if (opts.yAxis.showTitle) {
+          var titleFontSize = yData.titleFontSize || config.fontSize;
+          var title = yData.title;
+          context.beginPath();
+          context.setFontSize(titleFontSize);
+          context.setFillStyle(yData.titleFontColor || opts.fontColor);
+          if (yAxisWidth.position == 'left') {
+            context.fillText(title, tStartLeft - measureText(title, titleFontSize, context) / 2, opts.area[0] - 10 *
+            opts.pix);
+          } else {
+            context.fillText(title, tStartRight - measureText(title, titleFontSize, context) / 2, opts.area[0] - 10 *
+            opts.pix);
+          }
+          context.closePath();
+          context.stroke();
+        }
+        if (yAxisWidth.position == 'left') {
+          tStartLeft -= yAxisWidth.width + opts.yAxis.padding * opts.pix;
+        } else {
+          tStartRight += yAxisWidth.width + opts.yAxis.padding * opts.pix;
+        }
+      }};for (var _i17 = 0; _i17 < opts.yAxis.data.length; _i17++) {_loop4(_i17);
+    }
+  }
+
+}
+
+function drawLegend(series, opts, config, context, chartData) {
+  if (opts.legend.show === false) {
+    return;
+  }
+  var legendData = chartData.legendData;
+  var legendList = legendData.points;
+  var legendArea = legendData.area;
+  var padding = opts.legend.padding * opts.pix;
+  var fontSize = opts.legend.fontSize * opts.pix;
+  var shapeWidth = 15 * opts.pix;
+  var shapeRight = 5 * opts.pix;
+  var itemGap = opts.legend.itemGap * opts.pix;
+  var lineHeight = Math.max(opts.legend.lineHeight * opts.pix, fontSize);
+  //画背景及边框
+  context.beginPath();
+  context.setLineWidth(opts.legend.borderWidth * opts.pix);
+  context.setStrokeStyle(opts.legend.borderColor);
+  context.setFillStyle(opts.legend.backgroundColor);
+  context.moveTo(legendArea.start.x, legendArea.start.y);
+  context.rect(legendArea.start.x, legendArea.start.y, legendArea.width, legendArea.height);
+  context.closePath();
+  context.fill();
+  context.stroke();
+  legendList.forEach(function (itemList, listIndex) {
+    var width = 0;
+    var height = 0;
+    width = legendData.widthArr[listIndex];
+    height = legendData.heightArr[listIndex];
+    var startX = 0;
+    var startY = 0;
+    if (opts.legend.position == 'top' || opts.legend.position == 'bottom') {
+      startX = legendArea.start.x + (legendArea.width - width) / 2;
+      startY = legendArea.start.y + padding + listIndex * lineHeight;
+    } else {
+      if (listIndex == 0) {
+        width = 0;
+      } else {
+        width = legendData.widthArr[listIndex - 1];
+      }
+      startX = legendArea.start.x + padding + width;
+      startY = legendArea.start.y + padding + (legendArea.height - height) / 2;
+    }
+    context.setFontSize(config.fontSize);
+    for (var i = 0; i < itemList.length; i++) {
+      var item = itemList[i];
+      item.area = [0, 0, 0, 0];
+      item.area[0] = startX;
+      item.area[1] = startY;
+      item.area[3] = startY + lineHeight;
+      context.beginPath();
+      context.setLineWidth(1 * opts.pix);
+      context.setStrokeStyle(item.show ? item.color : opts.legend.hiddenColor);
+      context.setFillStyle(item.show ? item.color : opts.legend.hiddenColor);
+      switch (item.legendShape) {
+        case 'line':
+          context.moveTo(startX, startY + 0.5 * lineHeight - 2 * opts.pix);
+          context.fillRect(startX, startY + 0.5 * lineHeight - 2 * opts.pix, 15 * opts.pix, 4 * opts.pix);
+          break;
+        case 'triangle':
+          context.moveTo(startX + 7.5 * opts.pix, startY + 0.5 * lineHeight - 5 * opts.pix);
+          context.lineTo(startX + 2.5 * opts.pix, startY + 0.5 * lineHeight + 5 * opts.pix);
+          context.lineTo(startX + 12.5 * opts.pix, startY + 0.5 * lineHeight + 5 * opts.pix);
+          context.lineTo(startX + 7.5 * opts.pix, startY + 0.5 * lineHeight - 5 * opts.pix);
+          break;
+        case 'diamond':
+          context.moveTo(startX + 7.5 * opts.pix, startY + 0.5 * lineHeight - 5 * opts.pix);
+          context.lineTo(startX + 2.5 * opts.pix, startY + 0.5 * lineHeight);
+          context.lineTo(startX + 7.5 * opts.pix, startY + 0.5 * lineHeight + 5 * opts.pix);
+          context.lineTo(startX + 12.5 * opts.pix, startY + 0.5 * lineHeight);
+          context.lineTo(startX + 7.5 * opts.pix, startY + 0.5 * lineHeight - 5 * opts.pix);
+          break;
+        case 'circle':
+          context.moveTo(startX + 7.5 * opts.pix, startY + 0.5 * lineHeight);
+          context.arc(startX + 7.5 * opts.pix, startY + 0.5 * lineHeight, 5 * opts.pix, 0, 2 * Math.PI);
+          break;
+        case 'rect':
+          context.moveTo(startX, startY + 0.5 * lineHeight - 5 * opts.pix);
+          context.fillRect(startX, startY + 0.5 * lineHeight - 5 * opts.pix, 15 * opts.pix, 10 * opts.pix);
+          break;
+        case 'square':
+          context.moveTo(startX + 5 * opts.pix, startY + 0.5 * lineHeight - 5 * opts.pix);
+          context.fillRect(startX + 5 * opts.pix, startY + 0.5 * lineHeight - 5 * opts.pix, 10 * opts.pix, 10 * opts.pix);
+          break;
+        case 'none':
+          break;
+        default:
+          context.moveTo(startX, startY + 0.5 * lineHeight - 5 * opts.pix);
+          context.fillRect(startX, startY + 0.5 * lineHeight - 5 * opts.pix, 15 * opts.pix, 10 * opts.pix);}
+
+      context.closePath();
+      context.fill();
+      context.stroke();
+      startX += shapeWidth + shapeRight;
+      var fontTrans = 0.5 * lineHeight + 0.5 * fontSize - 2;
+      context.beginPath();
+      context.setFontSize(fontSize);
+      context.setFillStyle(item.show ? opts.legend.fontColor : opts.legend.hiddenColor);
+      context.fillText(item.name, startX, startY + fontTrans);
+      context.closePath();
+      context.stroke();
+      if (opts.legend.position == 'top' || opts.legend.position == 'bottom') {
+        startX += measureText(item.name, fontSize, context) + itemGap;
+        item.area[2] = startX;
+      } else {
+        item.area[2] = startX + measureText(item.name, fontSize, context) + itemGap;;
+        startX -= shapeWidth + shapeRight;
+        startY += lineHeight;
+      }
+    }
+  });
+}
+
+function drawPieDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var pieOption = assign({}, {
+    activeOpacity: 0.5,
+    activeRadius: 10,
+    offsetAngle: 0,
+    labelWidth: 15,
+    ringWidth: 30,
+    customRadius: 0,
+    border: false,
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
+    linearType: 'none',
+    customColor: [] },
+  opts.type == "pie" ? opts.extra.pie : opts.extra.ring);
+  var centerPosition = {
+    x: opts.area[3] + (opts.width - opts.area[1] - opts.area[3]) / 2,
+    y: opts.area[0] + (opts.height - opts.area[0] - opts.area[2]) / 2 };
+
+  if (config.pieChartLinePadding == 0) {
+    config.pieChartLinePadding = pieOption.activeRadius * opts.pix;
+  }
+
+  var radius = Math.min((opts.width - opts.area[1] - opts.area[3]) / 2 - config.pieChartLinePadding - config.pieChartTextPadding - config._pieTextMaxLength_, (opts.height - opts.area[0] - opts.area[2]) / 2 - config.pieChartLinePadding - config.pieChartTextPadding);
+  if (pieOption.customRadius > 0) {
+    radius = pieOption.customRadius * opts.pix;
+  }
+  series = getPieDataPoints(series, radius, process);
+  var activeRadius = pieOption.activeRadius * opts.pix;
+  pieOption.customColor = fillCustomColor(pieOption.linearType, pieOption.customColor, series, config);
+  series = series.map(function (eachSeries) {
+    eachSeries._start_ += pieOption.offsetAngle * Math.PI / 180;
+    return eachSeries;
+  });
+  series.forEach(function (eachSeries, seriesIndex) {
+    if (opts.tooltip) {
+      if (opts.tooltip.index == seriesIndex) {
+        context.beginPath();
+        context.setFillStyle(hexToRgb(eachSeries.color, pieOption.activeOpacity || 0.5));
+        context.moveTo(centerPosition.x, centerPosition.y);
+        context.arc(centerPosition.x, centerPosition.y, eachSeries._radius_ + activeRadius, eachSeries._start_, eachSeries._start_ + 2 * eachSeries._proportion_ * Math.PI);
+        context.closePath();
+        context.fill();
+      }
+    }
+    context.beginPath();
+    context.setLineWidth(pieOption.borderWidth * opts.pix);
+    context.lineJoin = "round";
+    context.setStrokeStyle(pieOption.borderColor);
+    var fillcolor = eachSeries.color;
+    if (pieOption.linearType == 'custom') {
+      var grd;
+      if (context.createCircularGradient) {
+        grd = context.createCircularGradient(centerPosition.x, centerPosition.y, eachSeries._radius_);
+      } else {
+        grd = context.createRadialGradient(centerPosition.x, centerPosition.y, 0, centerPosition.x, centerPosition.y, eachSeries._radius_);
+      }
+      grd.addColorStop(0, hexToRgb(pieOption.customColor[eachSeries.linearIndex], 1));
+      grd.addColorStop(1, hexToRgb(eachSeries.color, 1));
+      fillcolor = grd;
+    }
+    context.setFillStyle(fillcolor);
+    context.moveTo(centerPosition.x, centerPosition.y);
+    context.arc(centerPosition.x, centerPosition.y, eachSeries._radius_, eachSeries._start_, eachSeries._start_ + 2 * eachSeries._proportion_ * Math.PI);
+    context.closePath();
+    context.fill();
+    if (pieOption.border == true) {
+      context.stroke();
+    }
+  });
+  if (opts.type === 'ring') {
+    var innerPieWidth = radius * 0.6;
+    if (typeof pieOption.ringWidth === 'number' && pieOption.ringWidth > 0) {
+      innerPieWidth = Math.max(0, radius - pieOption.ringWidth * opts.pix);
+    }
+    context.beginPath();
+    context.setFillStyle(opts.background);
+    context.moveTo(centerPosition.x, centerPosition.y);
+    context.arc(centerPosition.x, centerPosition.y, innerPieWidth, 0, 2 * Math.PI);
+    context.closePath();
+    context.fill();
+  }
+  if (opts.dataLabel !== false && process === 1) {
+    var valid = false;
+    for (var i = 0, len = series.length; i < len; i++) {
+      if (series[i].data > 0) {
+        valid = true;
+        break;
+      }
+    }
+    if (valid) {
+      drawPieText(series, opts, config, context, radius, centerPosition);
+    }
+  }
+  if (process === 1 && opts.type === 'ring') {
+    drawRingTitle(opts, config, context, centerPosition);
+  }
+  return {
+    center: centerPosition,
+    radius: radius,
+    series: series };
+
+}
+
+function drawRoseDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var roseOption = assign({}, {
+    type: 'area',
+    activeOpacity: 0.5,
+    activeRadius: 10,
+    offsetAngle: 0,
+    labelWidth: 15,
+    border: false,
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
+    linearType: 'none',
+    customColor: [] },
+  opts.extra.rose);
+  if (config.pieChartLinePadding == 0) {
+    config.pieChartLinePadding = roseOption.activeRadius * opts.pix;
+  }
+  var centerPosition = {
+    x: opts.area[3] + (opts.width - opts.area[1] - opts.area[3]) / 2,
+    y: opts.area[0] + (opts.height - opts.area[0] - opts.area[2]) / 2 };
+
+  var radius = Math.min((opts.width - opts.area[1] - opts.area[3]) / 2 - config.pieChartLinePadding - config.pieChartTextPadding - config._pieTextMaxLength_, (opts.height - opts.area[0] - opts.area[2]) / 2 - config.pieChartLinePadding - config.pieChartTextPadding);
+  var minRadius = roseOption.minRadius || radius * 0.5;
+  series = getRoseDataPoints(series, roseOption.type, minRadius, radius, process);
+  var activeRadius = roseOption.activeRadius * opts.pix;
+  roseOption.customColor = fillCustomColor(roseOption.linearType, roseOption.customColor, series, config);
+  series = series.map(function (eachSeries) {
+    eachSeries._start_ += (roseOption.offsetAngle || 0) * Math.PI / 180;
+    return eachSeries;
+  });
+  series.forEach(function (eachSeries, seriesIndex) {
+    if (opts.tooltip) {
+      if (opts.tooltip.index == seriesIndex) {
+        context.beginPath();
+        context.setFillStyle(hexToRgb(eachSeries.color, roseOption.activeOpacity || 0.5));
+        context.moveTo(centerPosition.x, centerPosition.y);
+        context.arc(centerPosition.x, centerPosition.y, activeRadius + eachSeries._radius_, eachSeries._start_, eachSeries._start_ + 2 * eachSeries._rose_proportion_ * Math.PI);
+        context.closePath();
+        context.fill();
+      }
+    }
+    context.beginPath();
+    context.setLineWidth(roseOption.borderWidth * opts.pix);
+    context.lineJoin = "round";
+    context.setStrokeStyle(roseOption.borderColor);
+    var fillcolor = eachSeries.color;
+    if (roseOption.linearType == 'custom') {
+      var grd;
+      if (context.createCircularGradient) {
+        grd = context.createCircularGradient(centerPosition.x, centerPosition.y, eachSeries._radius_);
+      } else {
+        grd = context.createRadialGradient(centerPosition.x, centerPosition.y, 0, centerPosition.x, centerPosition.y, eachSeries._radius_);
+      }
+      grd.addColorStop(0, hexToRgb(roseOption.customColor[eachSeries.linearIndex], 1));
+      grd.addColorStop(1, hexToRgb(eachSeries.color, 1));
+      fillcolor = grd;
+    }
+    context.setFillStyle(fillcolor);
+    context.moveTo(centerPosition.x, centerPosition.y);
+    context.arc(centerPosition.x, centerPosition.y, eachSeries._radius_, eachSeries._start_, eachSeries._start_ + 2 * eachSeries._rose_proportion_ * Math.PI);
+    context.closePath();
+    context.fill();
+    if (roseOption.border == true) {
+      context.stroke();
+    }
+  });
+
+  if (opts.dataLabel !== false && process === 1) {
+    var valid = false;
+    for (var i = 0, len = series.length; i < len; i++) {
+      if (series[i].data > 0) {
+        valid = true;
+        break;
+      }
+    }
+    if (valid) {
+      drawPieText(series, opts, config, context, radius, centerPosition);
+    }
+  }
+  return {
+    center: centerPosition,
+    radius: radius,
+    series: series };
+
+}
+
+function drawArcbarDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var arcbarOption = assign({}, {
+    startAngle: 0.75,
+    endAngle: 0.25,
+    type: 'default',
+    width: 12,
+    gap: 2,
+    linearType: 'none',
+    customColor: [] },
+  opts.extra.arcbar);
+  series = getArcbarDataPoints(series, arcbarOption, process);
+  var centerPosition;
+  if (arcbarOption.centerX || arcbarOption.centerY) {
+    centerPosition = {
+      x: arcbarOption.centerX ? arcbarOption.centerX : opts.width / 2,
+      y: arcbarOption.centerY ? arcbarOption.centerY : opts.height / 2 };
+
+  } else {
+    centerPosition = {
+      x: opts.width / 2,
+      y: opts.height / 2 };
+
+  }
+  var radius;
+  if (arcbarOption.radius) {
+    radius = arcbarOption.radius;
+  } else {
+    radius = Math.min(centerPosition.x, centerPosition.y);
+    radius -= 5 * opts.pix;
+    radius -= arcbarOption.width / 2;
+  }
+  arcbarOption.customColor = fillCustomColor(arcbarOption.linearType, arcbarOption.customColor, series, config);
+
+  for (var i = 0; i < series.length; i++) {
+    var eachSeries = series[i];
+    //背景颜色
+    context.setLineWidth(arcbarOption.width * opts.pix);
+    context.setStrokeStyle(arcbarOption.backgroundColor || '#E9E9E9');
+    context.setLineCap('round');
+    context.beginPath();
+    if (arcbarOption.type == 'default') {
+      context.arc(centerPosition.x, centerPosition.y, radius - (arcbarOption.width * opts.pix + arcbarOption.gap * opts.pix) * i, arcbarOption.startAngle * Math.PI, arcbarOption.endAngle * Math.PI, false);
+    } else {
+      context.arc(centerPosition.x, centerPosition.y, radius - (arcbarOption.width * opts.pix + arcbarOption.gap * opts.pix) * i, 0, 2 * Math.PI, false);
+    }
+    context.stroke();
+    //进度条
+    var fillColor = eachSeries.color;
+    if (arcbarOption.linearType == 'custom') {
+      var grd = context.createLinearGradient(centerPosition.x - radius, centerPosition.y, centerPosition.x + radius, centerPosition.y);
+      grd.addColorStop(1, hexToRgb(arcbarOption.customColor[eachSeries.linearIndex], 1));
+      grd.addColorStop(0, hexToRgb(eachSeries.color, 1));
+      fillColor = grd;
+    }
+    context.setLineWidth(arcbarOption.width * opts.pix);
+    context.setStrokeStyle(fillColor);
+    context.setLineCap('round');
+    context.beginPath();
+    context.arc(centerPosition.x, centerPosition.y, radius - (arcbarOption.width * opts.pix + arcbarOption.gap * opts.pix) * i, arcbarOption.startAngle * Math.PI, eachSeries._proportion_ * Math.PI, false);
+    context.stroke();
+  }
+  drawRingTitle(opts, config, context, centerPosition);
+  return {
+    center: centerPosition,
+    radius: radius,
+    series: series };
+
+}
+
+function drawGaugeDataPoints(categories, series, opts, config, context) {
+  var process = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;
+  var gaugeOption = assign({}, {
+    type: 'default',
+    startAngle: 0.75,
+    endAngle: 0.25,
+    width: 15,
+    splitLine: {
+      fixRadius: 0,
+      splitNumber: 10,
+      width: 15,
+      color: '#FFFFFF',
+      childNumber: 5,
+      childWidth: 5 },
+
+    pointer: {
+      width: 15,
+      color: 'auto' } },
+
+  opts.extra.gauge);
+  if (gaugeOption.oldAngle == undefined) {
+    gaugeOption.oldAngle = gaugeOption.startAngle;
+  }
+  if (gaugeOption.oldData == undefined) {
+    gaugeOption.oldData = 0;
+  }
+  categories = getGaugeAxisPoints(categories, gaugeOption.startAngle, gaugeOption.endAngle);
+  var centerPosition = {
+    x: opts.width / 2,
+    y: opts.height / 2 };
+
+  var radius = Math.min(centerPosition.x, centerPosition.y);
+  radius -= 5 * opts.pix;
+  radius -= gaugeOption.width / 2;
+  var innerRadius = radius - gaugeOption.width;
+  var totalAngle = 0;
+  //判断仪表盘的样式：default百度样式，progress新样式
+  if (gaugeOption.type == 'progress') {
+    //## 第一步画中心圆形背景和进度条背景
+    //中心圆形背景
+    var pieRadius = radius - gaugeOption.width * 3;
+    context.beginPath();
+    var gradient = context.createLinearGradient(centerPosition.x, centerPosition.y - pieRadius, centerPosition.x, centerPosition.y + pieRadius);
+    //配置渐变填充（起点：中心点向上减半径；结束点中心点向下加半径）
+    gradient.addColorStop('0', hexToRgb(series[0].color, 0.3));
+    gradient.addColorStop('1.0', hexToRgb("#FFFFFF", 0.1));
+    context.setFillStyle(gradient);
+    context.arc(centerPosition.x, centerPosition.y, pieRadius, 0, 2 * Math.PI, false);
+    context.fill();
+    //画进度条背景
+    context.setLineWidth(gaugeOption.width);
+    context.setStrokeStyle(hexToRgb(series[0].color, 0.3));
+    context.setLineCap('round');
+    context.beginPath();
+    context.arc(centerPosition.x, centerPosition.y, innerRadius, gaugeOption.startAngle * Math.PI, gaugeOption.endAngle * Math.PI, false);
+    context.stroke();
+    //## 第二步画刻度线
+    totalAngle = gaugeOption.startAngle - gaugeOption.endAngle + 1;
+    var splitAngle = totalAngle / gaugeOption.splitLine.splitNumber;
+    var childAngle = totalAngle / gaugeOption.splitLine.splitNumber / gaugeOption.splitLine.childNumber;
+    var startX = -radius - gaugeOption.width * 0.5 - gaugeOption.splitLine.fixRadius;
+    var endX = -radius - gaugeOption.width - gaugeOption.splitLine.fixRadius + gaugeOption.splitLine.width;
+    context.save();
+    context.translate(centerPosition.x, centerPosition.y);
+    context.rotate((gaugeOption.startAngle - 1) * Math.PI);
+    var len = gaugeOption.splitLine.splitNumber * gaugeOption.splitLine.childNumber + 1;
+    var proc = series[0].data * process;
+    for (var i = 0; i < len; i++) {
+      context.beginPath();
+      //刻度线随进度变色
+      if (proc > i / len) {
+        context.setStrokeStyle(hexToRgb(series[0].color, 1));
+      } else {
+        context.setStrokeStyle(hexToRgb(series[0].color, 0.3));
+      }
+      context.setLineWidth(3 * opts.pix);
+      context.moveTo(startX, 0);
+      context.lineTo(endX, 0);
+      context.stroke();
+      context.rotate(childAngle * Math.PI);
+    }
+    context.restore();
+    //## 第三步画进度条
+    series = getArcbarDataPoints(series, gaugeOption, process);
+    context.setLineWidth(gaugeOption.width);
+    context.setStrokeStyle(series[0].color);
+    context.setLineCap('round');
+    context.beginPath();
+    context.arc(centerPosition.x, centerPosition.y, innerRadius, gaugeOption.startAngle * Math.PI, series[0]._proportion_ * Math.PI, false);
+    context.stroke();
+    //## 第四步画指针
+    var pointerRadius = radius - gaugeOption.width * 2.5;
+    context.save();
+    context.translate(centerPosition.x, centerPosition.y);
+    context.rotate((series[0]._proportion_ - 1) * Math.PI);
+    context.beginPath();
+    context.setLineWidth(gaugeOption.width / 3);
+    var gradient3 = context.createLinearGradient(0, -pointerRadius * 0.6, 0, pointerRadius * 0.6);
+    gradient3.addColorStop('0', hexToRgb('#FFFFFF', 0));
+    gradient3.addColorStop('0.5', hexToRgb(series[0].color, 1));
+    gradient3.addColorStop('1.0', hexToRgb('#FFFFFF', 0));
+    context.setStrokeStyle(gradient3);
+    context.arc(0, 0, pointerRadius, 0.85 * Math.PI, 1.15 * Math.PI, false);
+    context.stroke();
+    context.beginPath();
+    context.setLineWidth(1);
+    context.setStrokeStyle(series[0].color);
+    context.setFillStyle(series[0].color);
+    context.moveTo(-pointerRadius - gaugeOption.width / 3 / 2, -4);
+    context.lineTo(-pointerRadius - gaugeOption.width / 3 / 2 - 4, 0);
+    context.lineTo(-pointerRadius - gaugeOption.width / 3 / 2, 4);
+    context.lineTo(-pointerRadius - gaugeOption.width / 3 / 2, -4);
+    context.stroke();
+    context.fill();
+    context.restore();
+    //default百度样式
+  } else {
+    //画背景
+    context.setLineWidth(gaugeOption.width);
+    context.setLineCap('butt');
+    for (var _i18 = 0; _i18 < categories.length; _i18++) {
+      var eachCategories = categories[_i18];
+      context.beginPath();
+      context.setStrokeStyle(eachCategories.color);
+      context.arc(centerPosition.x, centerPosition.y, radius, eachCategories._startAngle_ * Math.PI, eachCategories._endAngle_ * Math.PI, false);
+      context.stroke();
+    }
+    context.save();
+    //画刻度线
+    totalAngle = gaugeOption.startAngle - gaugeOption.endAngle + 1;
+    var _splitAngle = totalAngle / gaugeOption.splitLine.splitNumber;
+    var _childAngle = totalAngle / gaugeOption.splitLine.splitNumber / gaugeOption.splitLine.childNumber;
+    var _startX2 = -radius - gaugeOption.width * 0.5 - gaugeOption.splitLine.fixRadius;
+    var _endX = -radius - gaugeOption.width * 0.5 - gaugeOption.splitLine.fixRadius + gaugeOption.splitLine.width;
+    var childendX = -radius - gaugeOption.width * 0.5 - gaugeOption.splitLine.fixRadius + gaugeOption.splitLine.childWidth;
+    context.translate(centerPosition.x, centerPosition.y);
+    context.rotate((gaugeOption.startAngle - 1) * Math.PI);
+    for (var _i19 = 0; _i19 < gaugeOption.splitLine.splitNumber + 1; _i19++) {
+      context.beginPath();
+      context.setStrokeStyle(gaugeOption.splitLine.color);
+      context.setLineWidth(2 * opts.pix);
+      context.moveTo(_startX2, 0);
+      context.lineTo(_endX, 0);
+      context.stroke();
+      context.rotate(_splitAngle * Math.PI);
+    }
+    context.restore();
+    context.save();
+    context.translate(centerPosition.x, centerPosition.y);
+    context.rotate((gaugeOption.startAngle - 1) * Math.PI);
+    for (var _i20 = 0; _i20 < gaugeOption.splitLine.splitNumber * gaugeOption.splitLine.childNumber + 1; _i20++) {
+      context.beginPath();
+      context.setStrokeStyle(gaugeOption.splitLine.color);
+      context.setLineWidth(1 * opts.pix);
+      context.moveTo(_startX2, 0);
+      context.lineTo(childendX, 0);
+      context.stroke();
+      context.rotate(_childAngle * Math.PI);
+    }
+    context.restore();
+    //画指针
+    series = getGaugeDataPoints(series, categories, gaugeOption, process);
+    for (var _i21 = 0; _i21 < series.length; _i21++) {
+      var eachSeries = series[_i21];
+      context.save();
+      context.translate(centerPosition.x, centerPosition.y);
+      context.rotate((eachSeries._proportion_ - 1) * Math.PI);
+      context.beginPath();
+      context.setFillStyle(eachSeries.color);
+      context.moveTo(gaugeOption.pointer.width, 0);
+      context.lineTo(0, -gaugeOption.pointer.width / 2);
+      context.lineTo(-innerRadius, 0);
+      context.lineTo(0, gaugeOption.pointer.width / 2);
+      context.lineTo(gaugeOption.pointer.width, 0);
+      context.closePath();
+      context.fill();
+      context.beginPath();
+      context.setFillStyle('#FFFFFF');
+      context.arc(0, 0, gaugeOption.pointer.width / 6, 0, 2 * Math.PI, false);
+      context.fill();
+      context.restore();
+    }
+    if (opts.dataLabel !== false) {
+      drawGaugeLabel(gaugeOption, radius, centerPosition, opts, config, context);
+    }
+  }
+  //画仪表盘标题，副标题
+  drawRingTitle(opts, config, context, centerPosition);
+  if (process === 1 && opts.type === 'gauge') {
+    opts.extra.gauge.oldAngle = series[0]._proportion_;
+    opts.extra.gauge.oldData = series[0].data;
+  }
+  return {
+    center: centerPosition,
+    radius: radius,
+    innerRadius: innerRadius,
+    categories: categories,
+    totalAngle: totalAngle };
+
+}
+
+function drawRadarDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var radarOption = assign({}, {
+    gridColor: '#cccccc',
+    gridType: 'radar',
+    labelColor: '#666666',
+    opacity: 0.2,
+    gridCount: 3,
+    border: false,
+    borderWidth: 2 },
+  opts.extra.radar);
+  var coordinateAngle = getRadarCoordinateSeries(opts.categories.length);
+  var centerPosition = {
+    x: opts.area[3] + (opts.width - opts.area[1] - opts.area[3]) / 2,
+    y: opts.area[0] + (opts.height - opts.area[0] - opts.area[2]) / 2 };
+
+  var xr = (opts.width - opts.area[1] - opts.area[3]) / 2;
+  var yr = (opts.height - opts.area[0] - opts.area[2]) / 2;
+  var radius = Math.min(xr - (getMaxTextListLength(opts.categories, config.fontSize, context) + config.radarLabelTextMargin), yr - config.radarLabelTextMargin);
+  radius -= config.radarLabelTextMargin * opts.pix;
+  // 画分割线
+  context.beginPath();
+  context.setLineWidth(1 * opts.pix);
+  context.setStrokeStyle(radarOption.gridColor);
+  coordinateAngle.forEach(function (angle) {
+    var pos = convertCoordinateOrigin(radius * Math.cos(angle), radius * Math.sin(angle), centerPosition);
+    context.moveTo(centerPosition.x, centerPosition.y);
+    context.lineTo(pos.x, pos.y);
+  });
+  context.stroke();
+  context.closePath();
+
+  // 画背景网格
+  var _loop = function _loop(i) {
+    var startPos = {};
+    context.beginPath();
+    context.setLineWidth(1 * opts.pix);
+    context.setStrokeStyle(radarOption.gridColor);
+    if (radarOption.gridType == 'radar') {
+      coordinateAngle.forEach(function (angle, index) {
+        var pos = convertCoordinateOrigin(radius / radarOption.gridCount * i * Math.cos(angle), radius /
+        radarOption.gridCount * i * Math.sin(angle), centerPosition);
+        if (index === 0) {
+          startPos = pos;
+          context.moveTo(pos.x, pos.y);
+        } else {
+          context.lineTo(pos.x, pos.y);
+        }
+      });
+      context.lineTo(startPos.x, startPos.y);
+    } else {
+      var pos = convertCoordinateOrigin(radius / radarOption.gridCount * i * Math.cos(1.5), radius / radarOption.gridCount * i * Math.sin(1.5), centerPosition);
+      context.arc(centerPosition.x, centerPosition.y, centerPosition.y - pos.y, 0, 2 * Math.PI, false);
+    }
+    context.stroke();
+    context.closePath();
+  };
+  for (var i = 1; i <= radarOption.gridCount; i++) {
+    _loop(i);
+  }
+  var radarDataPoints = getRadarDataPoints(coordinateAngle, centerPosition, radius, series, opts, process);
+  radarDataPoints.forEach(function (eachSeries, seriesIndex) {
+    // 绘制区域数据
+    context.beginPath();
+    context.setLineWidth(radarOption.borderWidth * opts.pix);
+    context.setStrokeStyle(eachSeries.color);
+    context.setFillStyle(hexToRgb(eachSeries.color, radarOption.opacity));
+    eachSeries.data.forEach(function (item, index) {
+      if (index === 0) {
+        context.moveTo(item.position.x, item.position.y);
+      } else {
+        context.lineTo(item.position.x, item.position.y);
+      }
+    });
+    context.closePath();
+    context.fill();
+    if (radarOption.border === true) {
+      context.stroke();
+    }
+    context.closePath();
+    if (opts.dataPointShape !== false) {
+      var points = eachSeries.data.map(function (item) {
+        return item.position;
+      });
+      drawPointShape(points, eachSeries.color, eachSeries.pointShape, context, opts);
+    }
+  });
+  // draw label text
+  drawRadarLabel(coordinateAngle, radius, centerPosition, opts, config, context);
+  return {
+    center: centerPosition,
+    radius: radius,
+    angleList: coordinateAngle };
+
+}
+
+function normalInt(min, max, iter) {
+  iter = iter == 0 ? 1 : iter;
+  var arr = [];
+  for (var i = 0; i < iter; i++) {
+    arr[i] = Math.random();
+  };
+  return Math.floor(arr.reduce(function (i, j) {
+    return i + j;
+  }) / iter * (max - min)) + min;
+};
+
+function collisionNew(area, points, width, height) {
+  var isIn = false;
+  for (var i = 0; i < points.length; i++) {
+    if (points[i].area) {
+      if (area[3] < points[i].area[1] || area[0] > points[i].area[2] || area[1] > points[i].area[3] || area[2] < points[i].area[0]) {
+        if (area[0] < 0 || area[1] < 0 || area[2] > width || area[3] > height) {
+          isIn = true;
+          break;
+        } else {
+          isIn = false;
+        }
+      } else {
+        isIn = true;
+        break;
+      }
+    }
+  }
+  return isIn;
+};
+
+function getBoundingBox(data) {
+  var bounds = {},coords;
+  bounds.xMin = 180;
+  bounds.xMax = 0;
+  bounds.yMin = 90;
+  bounds.yMax = 0;
+  for (var i = 0; i < data.length; i++) {
+    var coorda = data[i].geometry.coordinates;
+    for (var k = 0; k < coorda.length; k++) {
+      coords = coorda[k];
+      if (coords.length == 1) {
+        coords = coords[0];
+      }
+      for (var j = 0; j < coords.length; j++) {
+        var longitude = coords[j][0];
+        var latitude = coords[j][1];
+        var point = {
+          x: longitude,
+          y: latitude };
+
+        bounds.xMin = bounds.xMin < point.x ? bounds.xMin : point.x;
+        bounds.xMax = bounds.xMax > point.x ? bounds.xMax : point.x;
+        bounds.yMin = bounds.yMin < point.y ? bounds.yMin : point.y;
+        bounds.yMax = bounds.yMax > point.y ? bounds.yMax : point.y;
+      }
+    }
+  }
+  return bounds;
+}
+
+function coordinateToPoint(latitude, longitude, bounds, scale, xoffset, yoffset) {
+  return {
+    x: (longitude - bounds.xMin) * scale + xoffset,
+    y: (bounds.yMax - latitude) * scale + yoffset };
+
+}
+
+function pointToCoordinate(pointY, pointX, bounds, scale, xoffset, yoffset) {
+  return {
+    x: (pointX - xoffset) / scale + bounds.xMin,
+    y: bounds.yMax - (pointY - yoffset) / scale };
+
+}
+
+function isRayIntersectsSegment(poi, s_poi, e_poi) {
+  if (s_poi[1] == e_poi[1]) {
+    return false;
+  }
+  if (s_poi[1] > poi[1] && e_poi[1] > poi[1]) {
+    return false;
+  }
+  if (s_poi[1] < poi[1] && e_poi[1] < poi[1]) {
+    return false;
+  }
+  if (s_poi[1] == poi[1] && e_poi[1] > poi[1]) {
+    return false;
+  }
+  if (e_poi[1] == poi[1] && s_poi[1] > poi[1]) {
+    return false;
+  }
+  if (s_poi[0] < poi[0] && e_poi[1] < poi[1]) {
+    return false;
+  }
+  var xseg = e_poi[0] - (e_poi[0] - s_poi[0]) * (e_poi[1] - poi[1]) / (e_poi[1] - s_poi[1]);
+  if (xseg < poi[0]) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function isPoiWithinPoly(poi, poly, mercator) {
+  var sinsc = 0;
+  for (var i = 0; i < poly.length; i++) {
+    var epoly = poly[i][0];
+    if (poly.length == 1) {
+      epoly = poly[i][0];
+    }
+    for (var j = 0; j < epoly.length - 1; j++) {
+      var s_poi = epoly[j];
+      var e_poi = epoly[j + 1];
+      if (mercator) {
+        s_poi = lonlat2mercator(epoly[j][0], epoly[j][1]);
+        e_poi = lonlat2mercator(epoly[j + 1][0], epoly[j + 1][1]);
+      }
+      if (isRayIntersectsSegment(poi, s_poi, e_poi)) {
+        sinsc += 1;
+      }
+    }
+  }
+  if (sinsc % 2 == 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+function drawMapDataPoints(series, opts, config, context) {
+  var mapOption = assign({}, {
+    border: true,
+    mercator: false,
+    borderWidth: 1,
+    borderColor: '#666666',
+    fillOpacity: 0.6,
+    activeBorderColor: '#f04864',
+    activeFillColor: '#facc14',
+    activeFillOpacity: 1 },
+  opts.extra.map);
+  var coords, point;
+  var data = series;
+  var bounds = getBoundingBox(data);
+  if (mapOption.mercator) {
+    var max = lonlat2mercator(bounds.xMax, bounds.yMax);
+    var min = lonlat2mercator(bounds.xMin, bounds.yMin);
+    bounds.xMax = max[0];
+    bounds.yMax = max[1];
+    bounds.xMin = min[0];
+    bounds.yMin = min[1];
+  }
+  var xScale = opts.width / Math.abs(bounds.xMax - bounds.xMin);
+  var yScale = opts.height / Math.abs(bounds.yMax - bounds.yMin);
+  var scale = xScale < yScale ? xScale : yScale;
+  var xoffset = opts.width / 2 - Math.abs(bounds.xMax - bounds.xMin) / 2 * scale;
+  var yoffset = opts.height / 2 - Math.abs(bounds.yMax - bounds.yMin) / 2 * scale;
+  for (var i = 0; i < data.length; i++) {
+    context.beginPath();
+    context.setLineWidth(mapOption.borderWidth * opts.pix);
+    context.setStrokeStyle(mapOption.borderColor);
+    context.setFillStyle(hexToRgb(series[i].color, mapOption.fillOpacity));
+    if (opts.tooltip) {
+      if (opts.tooltip.index == i) {
+        context.setStrokeStyle(mapOption.activeBorderColor);
+        context.setFillStyle(hexToRgb(mapOption.activeFillColor, mapOption.activeFillOpacity));
+      }
+    }
+    var coorda = data[i].geometry.coordinates;
+    for (var k = 0; k < coorda.length; k++) {
+      coords = coorda[k];
+      if (coords.length == 1) {
+        coords = coords[0];
+      }
+      for (var j = 0; j < coords.length; j++) {
+        var gaosi = Array(2);
+        if (mapOption.mercator) {
+          gaosi = lonlat2mercator(coords[j][0], coords[j][1]);
+        } else {
+          gaosi = coords[j];
+        }
+        point = coordinateToPoint(gaosi[1], gaosi[0], bounds, scale, xoffset, yoffset);
+        if (j === 0) {
+          context.beginPath();
+          context.moveTo(point.x, point.y);
+        } else {
+          context.lineTo(point.x, point.y);
+        }
+      }
+      context.fill();
+      if (mapOption.border == true) {
+        context.stroke();
+      }
+    }
+    if (opts.dataLabel == true) {
+      var centerPoint = data[i].properties.centroid;
+      if (centerPoint) {
+        if (mapOption.mercator) {
+          centerPoint = lonlat2mercator(data[i].properties.centroid[0], data[i].properties.centroid[1]);
+        }
+        point = coordinateToPoint(centerPoint[1], centerPoint[0], bounds, scale, xoffset, yoffset);
+        var fontSize = data[i].textSize || config.fontSize;
+        var text = data[i].properties.name;
+        context.beginPath();
+        context.setFontSize(fontSize);
+        context.setFillStyle(data[i].textColor || opts.fontColor);
+        context.fillText(text, point.x - measureText(text, fontSize, context) / 2, point.y + fontSize / 2);
+        context.closePath();
+        context.stroke();
+      }
+    }
+  }
+  opts.chartData.mapData = {
+    bounds: bounds,
+    scale: scale,
+    xoffset: xoffset,
+    yoffset: yoffset,
+    mercator: mapOption.mercator };
+
+  drawToolTipBridge(opts, config, context, 1);
+  context.draw();
+}
+
+function getWordCloudPoint(opts, type, context) {
+  var points = opts.series.sort(function (a, b) {
+    return parseInt(b.textSize) - parseInt(a.textSize);
+  });
+  switch (type) {
+    case 'normal':
+      for (var i = 0; i < points.length; i++) {
+        var text = points[i].name;
+        var tHeight = points[i].textSize * opts.pix;
+        var tWidth = measureText(text, tHeight, context);
+        var x = void 0,y = void 0;
+        var area = void 0;
+        var breaknum = 0;
+        while (true) {
+          breaknum++;
+          x = normalInt(-opts.width / 2, opts.width / 2, 5) - tWidth / 2;
+          y = normalInt(-opts.height / 2, opts.height / 2, 5) + tHeight / 2;
+          area = [x - 5 + opts.width / 2, y - 5 - tHeight + opts.height / 2, x + tWidth + 5 + opts.width / 2, y + 5 +
+          opts.height / 2];
+
+          var isCollision = collisionNew(area, points, opts.width, opts.height);
+          if (!isCollision) break;
+          if (breaknum == 1000) {
+            area = [-100, -100, -100, -100];
+            break;
+          }
+        };
+        points[i].area = area;
+      }
+      break;
+    case 'vertical':var
+      Spin = function Spin() {
+        //获取均匀随机值，是否旋转，旋转的概率为（1-0.5）
+        if (Math.random() > 0.7) {
+          return true;
+        } else {
+          return false;
+        };
+      };;
+      for (var _i22 = 0; _i22 < points.length; _i22++) {
+        var _text = points[_i22].name;
+        var _tHeight = points[_i22].textSize * opts.pix;
+        var _tWidth = measureText(_text, _tHeight, context);
+        var isSpin = Spin();
+        var _x = void 0,_y = void 0,_area = void 0,areav = void 0;
+        var _breaknum = 0;
+        while (true) {
+          _breaknum++;
+          var _isCollision = void 0;
+          if (isSpin) {
+            _x = normalInt(-opts.width / 2, opts.width / 2, 5) - _tWidth / 2;
+            _y = normalInt(-opts.height / 2, opts.height / 2, 5) + _tHeight / 2;
+            _area = [_y - 5 - _tWidth + opts.width / 2, -_x - 5 + opts.height / 2, _y + 5 + opts.width / 2, -_x + _tHeight + 5 + opts.height / 2];
+            areav = [opts.width - (opts.width / 2 - opts.height / 2) - (-_x + _tHeight + 5 + opts.height / 2) - 5, opts.height / 2 - opts.width / 2 + (_y - 5 - _tWidth + opts.width / 2) - 5, opts.width - (opts.width / 2 - opts.height / 2) - (-_x + _tHeight + 5 + opts.height / 2) + _tHeight, opts.height / 2 - opts.width / 2 + (_y - 5 - _tWidth + opts.width / 2) + _tWidth + 5];
+            _isCollision = collisionNew(areav, points, opts.height, opts.width);
+          } else {
+            _x = normalInt(-opts.width / 2, opts.width / 2, 5) - _tWidth / 2;
+            _y = normalInt(-opts.height / 2, opts.height / 2, 5) + _tHeight / 2;
+            _area = [_x - 5 + opts.width / 2, _y - 5 - _tHeight + opts.height / 2, _x + _tWidth + 5 + opts.width / 2, _y + 5 + opts.height / 2];
+            _isCollision = collisionNew(_area, points, opts.width, opts.height);
+          }
+          if (!_isCollision) break;
+          if (_breaknum == 1000) {
+            _area = [-1000, -1000, -1000, -1000];
+            break;
+          }
+        };
+        if (isSpin) {
+          points[_i22].area = areav;
+          points[_i22].areav = _area;
+        } else {
+          points[_i22].area = _area;
+        }
+        points[_i22].rotate = isSpin;
+      };
+      break;}
+
+  return points;
+}
+
+
+function drawWordCloudDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var wordOption = assign({}, {
+    type: 'normal',
+    autoColors: true },
+  opts.extra.word);
+  if (!opts.chartData.wordCloudData) {
+    opts.chartData.wordCloudData = getWordCloudPoint(opts, wordOption.type, context);
+  }
+  context.beginPath();
+  context.setFillStyle(opts.background);
+  context.rect(0, 0, opts.width, opts.height);
+  context.fill();
+  context.save();
+  var points = opts.chartData.wordCloudData;
+  context.translate(opts.width / 2, opts.height / 2);
+  for (var i = 0; i < points.length; i++) {
+    context.save();
+    if (points[i].rotate) {
+      context.rotate(90 * Math.PI / 180);
+    }
+    var text = points[i].name;
+    var tHeight = points[i].textSize * opts.pix;
+    var tWidth = measureText(text, tHeight, context);
+    context.beginPath();
+    context.setStrokeStyle(points[i].color);
+    context.setFillStyle(points[i].color);
+    context.setFontSize(tHeight);
+    if (points[i].rotate) {
+      if (points[i].areav[0] > 0) {
+        if (opts.tooltip) {
+          if (opts.tooltip.index == i) {
+            context.strokeText(text, (points[i].areav[0] + 5 - opts.width / 2) * process - tWidth * (1 - process) / 2, (points[i].areav[1] + 5 + tHeight - opts.height / 2) * process);
+          } else {
+            context.fillText(text, (points[i].areav[0] + 5 - opts.width / 2) * process - tWidth * (1 - process) / 2, (points[i].areav[1] + 5 + tHeight - opts.height / 2) * process);
+          }
+        } else {
+          context.fillText(text, (points[i].areav[0] + 5 - opts.width / 2) * process - tWidth * (1 - process) / 2, (points[i].areav[1] + 5 + tHeight - opts.height / 2) * process);
+        }
+      }
+    } else {
+      if (points[i].area[0] > 0) {
+        if (opts.tooltip) {
+          if (opts.tooltip.index == i) {
+            context.strokeText(text, (points[i].area[0] + 5 - opts.width / 2) * process - tWidth * (1 - process) / 2, (points[i].area[1] + 5 + tHeight - opts.height / 2) * process);
+          } else {
+            context.fillText(text, (points[i].area[0] + 5 - opts.width / 2) * process - tWidth * (1 - process) / 2, (points[i].area[1] + 5 + tHeight - opts.height / 2) * process);
+          }
+        } else {
+          context.fillText(text, (points[i].area[0] + 5 - opts.width / 2) * process - tWidth * (1 - process) / 2, (points[i].area[1] + 5 + tHeight - opts.height / 2) * process);
+        }
+      }
+    }
+    context.stroke();
+    context.restore();
+  }
+  context.restore();
+}
+
+function drawFunnelDataPoints(series, opts, config, context) {
+  var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+  var funnelOption = assign({}, {
+    activeWidth: 10,
+    activeOpacity: 0.3,
+    border: false,
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
+    fillOpacity: 1,
+    labelAlign: 'right',
+    linearType: 'none',
+    customColor: [] },
+  opts.extra.funnel);
+  var eachSpacing = (opts.height - opts.area[0] - opts.area[2]) / series.length;
+  var centerPosition = {
+    x: opts.area[3] + (opts.width - opts.area[1] - opts.area[3]) / 2,
+    y: opts.height - opts.area[2] };
+
+  var activeWidth = funnelOption.activeWidth * opts.pix;
+  var radius = Math.min((opts.width - opts.area[1] - opts.area[3]) / 2 - activeWidth, (opts.height - opts.area[0] - opts.area[2]) / 2 - activeWidth);
+  series = getFunnelDataPoints(series, radius, process);
+  context.save();
+  context.translate(centerPosition.x, centerPosition.y);
+  funnelOption.customColor = fillCustomColor(funnelOption.linearType, funnelOption.customColor, series, config);
+  for (var i = 0; i < series.length; i++) {
+    if (i == 0) {
+      if (opts.tooltip) {
+        if (opts.tooltip.index == i) {
+          context.beginPath();
+          context.setFillStyle(hexToRgb(series[i].color, funnelOption.activeOpacity));
+          context.moveTo(-activeWidth, 0);
+          context.lineTo(-series[i].radius - activeWidth, -eachSpacing);
+          context.lineTo(series[i].radius + activeWidth, -eachSpacing);
+          context.lineTo(activeWidth, 0);
+          context.lineTo(-activeWidth, 0);
+          context.closePath();
+          context.fill();
+        }
+      }
+      series[i].funnelArea = [centerPosition.x - series[i].radius, centerPosition.y - eachSpacing, centerPosition.x + series[i].radius, centerPosition.y];
+      context.beginPath();
+      context.setLineWidth(funnelOption.borderWidth * opts.pix);
+      context.setStrokeStyle(funnelOption.borderColor);
+      var fillColor = hexToRgb(series[i].color, funnelOption.fillOpacity);
+      if (funnelOption.linearType == 'custom') {
+        var grd = context.createLinearGradient(series[i].radius, -eachSpacing, -series[i].radius, -eachSpacing);
+        grd.addColorStop(0, hexToRgb(series[i].color, funnelOption.fillOpacity));
+        grd.addColorStop(0.5, hexToRgb(funnelOption.customColor[series[i].linearIndex], funnelOption.fillOpacity));
+        grd.addColorStop(1, hexToRgb(series[i].color, funnelOption.fillOpacity));
+        fillColor = grd;
+      }
+      context.setFillStyle(fillColor);
+      context.moveTo(0, 0);
+      context.lineTo(-series[i].radius, -eachSpacing);
+      context.lineTo(series[i].radius, -eachSpacing);
+      context.lineTo(0, 0);
+      context.closePath();
+      context.fill();
+      if (funnelOption.border == true) {
+        context.stroke();
+      }
+    } else {
+      if (opts.tooltip) {
+        if (opts.tooltip.index == i) {
+          context.beginPath();
+          context.setFillStyle(hexToRgb(series[i].color, funnelOption.activeOpacity));
+          context.moveTo(0, 0);
+          context.lineTo(-series[i - 1].radius - activeWidth, 0);
+          context.lineTo(-series[i].radius - activeWidth, -eachSpacing);
+          context.lineTo(series[i].radius + activeWidth, -eachSpacing);
+          context.lineTo(series[i - 1].radius + activeWidth, 0);
+          context.lineTo(0, 0);
+          context.closePath();
+          context.fill();
+        }
+      }
+      series[i].funnelArea = [centerPosition.x - series[i].radius, centerPosition.y - eachSpacing * (i + 1), centerPosition.x + series[i].radius, centerPosition.y - eachSpacing * i];
+      context.beginPath();
+      context.setLineWidth(funnelOption.borderWidth * opts.pix);
+      context.setStrokeStyle(funnelOption.borderColor);
+      var fillColor = hexToRgb(series[i].color, funnelOption.fillOpacity);
+      if (funnelOption.linearType == 'custom') {
+        var grd = context.createLinearGradient(series[i].radius, -eachSpacing, -series[i].radius, -eachSpacing);
+        grd.addColorStop(0, hexToRgb(series[i].color, funnelOption.fillOpacity));
+        grd.addColorStop(0.5, hexToRgb(funnelOption.customColor[series[i].linearIndex], funnelOption.fillOpacity));
+        grd.addColorStop(1, hexToRgb(series[i].color, funnelOption.fillOpacity));
+        fillColor = grd;
+      }
+      context.setFillStyle(fillColor);
+      context.moveTo(0, 0);
+      context.lineTo(-series[i - 1].radius, 0);
+      context.lineTo(-series[i].radius, -eachSpacing);
+      context.lineTo(series[i].radius, -eachSpacing);
+      context.lineTo(series[i - 1].radius, 0);
+      context.lineTo(0, 0);
+      context.closePath();
+      context.fill();
+      if (funnelOption.border == true) {
+        context.stroke();
+      }
+    }
+    context.translate(0, -eachSpacing);
+  }
+  context.restore();
+  if (opts.dataLabel !== false && process === 1) {
+    drawFunnelText(series, opts, context, eachSpacing, funnelOption.labelAlign, activeWidth, centerPosition);
+  }
+  return {
+    center: centerPosition,
+    radius: radius,
+    series: series };
+
+}
+
+function drawFunnelText(series, opts, context, eachSpacing, labelAlign, activeWidth, centerPosition) {
+  for (var i = 0; i < series.length; i++) {
+    var item = series[i];
+    var startX = void 0,endX = void 0,startY = void 0,fontSize = void 0;
+    var text = item.formatter ? item.formatter(item, i, series) : util.toFixed(item._proportion_ * 100) + '%';
+    if (labelAlign == 'right') {
+      if (i == 0) {
+        startX = (item.funnelArea[2] + centerPosition.x) / 2;
+      } else {
+        startX = (item.funnelArea[2] + series[i - 1].funnelArea[2]) / 2;
+      }
+      endX = startX + activeWidth * 2;
+      startY = item.funnelArea[1] + eachSpacing / 2;
+      fontSize = item.textSize * opts.pix || opts.fontSize * opts.pix;
+      context.setLineWidth(1 * opts.pix);
+      context.setStrokeStyle(item.color);
+      context.setFillStyle(item.color);
+      context.beginPath();
+      context.moveTo(startX, startY);
+      context.lineTo(endX, startY);
+      context.stroke();
+      context.closePath();
+      context.beginPath();
+      context.moveTo(endX, startY);
+      context.arc(endX, startY, 2, 0, 2 * Math.PI);
+      context.closePath();
+      context.fill();
+      context.beginPath();
+      context.setFontSize(fontSize);
+      context.setFillStyle(item.textColor || opts.fontColor);
+      context.fillText(text, endX + 5, startY + fontSize / 2 - 2);
+      context.closePath();
+      context.stroke();
+      context.closePath();
+    } else {
+      if (i == 0) {
+        startX = (item.funnelArea[0] + centerPosition.x) / 2;
+      } else {
+        startX = (item.funnelArea[0] + series[i - 1].funnelArea[0]) / 2;
+      }
+      endX = startX - activeWidth * 2;
+      startY = item.funnelArea[1] + eachSpacing / 2;
+      fontSize = item.textSize * opts.pix || opts.fontSize * opts.pix;
+      context.setLineWidth(1 * opts.pix);
+      context.setStrokeStyle(item.color);
+      context.setFillStyle(item.color);
+      context.beginPath();
+      context.moveTo(startX, startY);
+      context.lineTo(endX, startY);
+      context.stroke();
+      context.closePath();
+      context.beginPath();
+      context.moveTo(endX, startY);
+      context.arc(endX, startY, 2, 0, 2 * Math.PI);
+      context.closePath();
+      context.fill();
+      context.beginPath();
+      context.setFontSize(fontSize);
+      context.setFillStyle(item.textColor || opts.fontColor);
+      context.fillText(text, endX - 5 - measureText(text, fontSize, context), startY + fontSize / 2 - 2);
+      context.closePath();
+      context.stroke();
+      context.closePath();
+    }
+
+  }
+}
+
+function drawCanvas(opts, context) {
+  context.draw();
+}
+
+var Timing = {
+  easeIn: function easeIn(pos) {
+    return Math.pow(pos, 3);
+  },
+  easeOut: function easeOut(pos) {
+    return Math.pow(pos - 1, 3) + 1;
+  },
+  easeInOut: function easeInOut(pos) {
+    if ((pos /= 0.5) < 1) {
+      return 0.5 * Math.pow(pos, 3);
+    } else {
+      return 0.5 * (Math.pow(pos - 2, 3) + 2);
+    }
+  },
+  linear: function linear(pos) {
+    return pos;
+  } };
+
+
+function Animation(opts) {
+  this.isStop = false;
+  opts.duration = typeof opts.duration === 'undefined' ? 1000 : opts.duration;
+  opts.timing = opts.timing || 'easeInOut';
+  var delay = 17;
+  function createAnimationFrame() {
+    if (typeof setTimeout !== 'undefined') {
+      return function (step, delay) {
+        setTimeout(function () {
+          var timeStamp = +new Date();
+          step(timeStamp);
+        }, delay);
+      };
+    } else if (typeof requestAnimationFrame !== 'undefined') {
+      return requestAnimationFrame;
+    } else {
+      return function (step) {
+        step(null);
+      };
+    }
+  };
+  var animationFrame = createAnimationFrame();
+  var startTimeStamp = null;
+  var _step = function step(timestamp) {
+    if (timestamp === null || this.isStop === true) {
+      opts.onProcess && opts.onProcess(1);
+      opts.onAnimationFinish && opts.onAnimationFinish();
+      return;
+    }
+    if (startTimeStamp === null) {
+      startTimeStamp = timestamp;
+    }
+    if (timestamp - startTimeStamp < opts.duration) {
+      var process = (timestamp - startTimeStamp) / opts.duration;
+      var timingFunction = Timing[opts.timing];
+      process = timingFunction(process);
+      opts.onProcess && opts.onProcess(process);
+      animationFrame(_step, delay);
+    } else {
+      opts.onProcess && opts.onProcess(1);
+      opts.onAnimationFinish && opts.onAnimationFinish();
+    }
+  };
+  _step = _step.bind(this);
+  animationFrame(_step, delay);
+}
+
+Animation.prototype.stop = function () {
+  this.isStop = true;
+};
+
+function drawCharts(type, opts, config, context) {
+  var _this = this;
+  var series = opts.series;
+  //兼容ECharts饼图类数据格式
+  if (type === 'pie' || type === 'ring' || type === 'rose' || type === 'funnel') {
+    series = fixPieSeries(series, opts, config);
+  }
+  var categories = opts.categories;
+  series = fillSeries(series, opts, config);
+  var duration = opts.animation ? opts.duration : 0;
+  _this.animationInstance && _this.animationInstance.stop();
+  var seriesMA = null;
+  if (type == 'candle') {
+    var average = assign({}, opts.extra.candle.average);
+    if (average.show) {
+      seriesMA = calCandleMA(average.day, average.name, average.color, series[0].data);
+      seriesMA = fillSeries(seriesMA, opts, config);
+      opts.seriesMA = seriesMA;
+    } else if (opts.seriesMA) {
+      seriesMA = opts.seriesMA = fillSeries(opts.seriesMA, opts, config);
+    } else {
+      seriesMA = series;
+    }
+  } else {
+    seriesMA = series;
+  }
+  /* 过滤掉show=false的series */
+  opts._series_ = series = filterSeries(series);
+  //重新计算图表区域
+  opts.area = new Array(4);
+  //复位绘图区域
+  for (var j = 0; j < 4; j++) {
+    opts.area[j] = opts.padding[j] * opts.pix;
+  }
+  //通过计算三大区域：图例、X轴、Y轴的大小，确定绘图区域
+  var _calLegendData = calLegendData(seriesMA, opts, config, opts.chartData, context),
+  legendHeight = _calLegendData.area.wholeHeight,
+  legendWidth = _calLegendData.area.wholeWidth;
+
+  switch (opts.legend.position) {
+    case 'top':
+      opts.area[0] += legendHeight;
+      break;
+    case 'bottom':
+      opts.area[2] += legendHeight;
+      break;
+    case 'left':
+      opts.area[3] += legendWidth;
+      break;
+    case 'right':
+      opts.area[1] += legendWidth;
+      break;}
+
+
+  var _calYAxisData = {},
+  yAxisWidth = 0;
+  if (opts.type === 'line' || opts.type === 'column' || opts.type === 'area' || opts.type === 'mix' || opts.type === 'candle') {
+    _calYAxisData = calYAxisData(series, opts, config, context);
+    yAxisWidth = _calYAxisData.yAxisWidth;
+    //如果显示Y轴标题
+    if (opts.yAxis.showTitle) {
+      var maxTitleHeight = 0;
+      for (var i = 0; i < opts.yAxis.data.length; i++) {
+        maxTitleHeight = Math.max(maxTitleHeight, opts.yAxis.data[i].titleFontSize ? opts.yAxis.data[i].titleFontSize : config.fontSize);
+      }
+      opts.area[0] += (maxTitleHeight + 6) * opts.pix;
+    }
+    var rightIndex = 0,
+    leftIndex = 0;
+    //计算主绘图区域左右位置
+    for (var _i23 = 0; _i23 < yAxisWidth.length; _i23++) {
+      if (yAxisWidth[_i23].position == 'left') {
+        if (leftIndex > 0) {
+          opts.area[3] += yAxisWidth[_i23].width + opts.yAxis.padding * opts.pix;
+        } else {
+          opts.area[3] += yAxisWidth[_i23].width;
+        }
+        leftIndex += 1;
+      } else {
+        if (rightIndex > 0) {
+          opts.area[1] += yAxisWidth[_i23].width + opts.yAxis.padding * opts.pix;
+        } else {
+          opts.area[1] += yAxisWidth[_i23].width;
+        }
+        rightIndex += 1;
+      }
+    }
+  } else {
+    config.yAxisWidth = yAxisWidth;
+  }
+  opts.chartData.yAxisData = _calYAxisData;
+
+  if (opts.categories && opts.categories.length && opts.type !== 'radar' && opts.type !== 'gauge') {
+    opts.chartData.xAxisData = getXAxisPoints(opts.categories, opts, config);
+    var _calCategoriesData = calCategoriesData(opts.categories, opts, config, opts.chartData.xAxisData.eachSpacing, context),
+    xAxisHeight = _calCategoriesData.xAxisHeight,
+    angle = _calCategoriesData.angle;
+    config.xAxisHeight = xAxisHeight;
+    config._xAxisTextAngle_ = angle;
+    opts.area[2] += xAxisHeight;
+    opts.chartData.categoriesData = _calCategoriesData;
+  } else {
+    if (opts.type === 'line' || opts.type === 'area' || opts.type === 'points') {
+      opts.chartData.xAxisData = calXAxisData(series, opts, config, context);
+      categories = opts.chartData.xAxisData.rangesFormat;
+      var _calCategoriesData2 = calCategoriesData(categories, opts, config, opts.chartData.xAxisData.eachSpacing, context),
+      _xAxisHeight = _calCategoriesData2.xAxisHeight,
+      _angle = _calCategoriesData2.angle;
+      config.xAxisHeight = _xAxisHeight;
+      config._xAxisTextAngle_ = _angle;
+      opts.area[2] += _xAxisHeight;
+      opts.chartData.categoriesData = _calCategoriesData2;
+    } else {
+      opts.chartData.xAxisData = {
+        xAxisPoints: [] };
+
+    }
+  }
+  //计算右对齐偏移距离
+  if (opts.enableScroll && opts.xAxis.scrollAlign == 'right' && opts._scrollDistance_ === undefined) {
+    var offsetLeft = 0,
+    xAxisPoints = opts.chartData.xAxisData.xAxisPoints,
+    startX = opts.chartData.xAxisData.startX,
+    endX = opts.chartData.xAxisData.endX,
+    eachSpacing = opts.chartData.xAxisData.eachSpacing;
+    var totalWidth = eachSpacing * (xAxisPoints.length - 1);
+    var screenWidth = endX - startX;
+    offsetLeft = screenWidth - totalWidth;
+    _this.scrollOption = {
+      currentOffset: offsetLeft,
+      startTouchX: offsetLeft,
+      distance: 0,
+      lastMoveTime: 0 };
+
+    opts._scrollDistance_ = offsetLeft;
+  }
+
+  if (type === 'pie' || type === 'ring' || type === 'rose') {
+    config._pieTextMaxLength_ = opts.dataLabel === false ? 0 : getPieTextMaxLength(seriesMA, config, context);
+  }
+  switch (type) {
+    case 'word':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawWordCloudDataPoints(series, opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'map':
+      context.clearRect(0, 0, opts.width, opts.height);
+      drawMapDataPoints(series, opts, config, context);
+      break;
+    case 'funnel':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          opts.chartData.funnelData = drawFunnelDataPoints(series, opts, config, context, process);
+          drawLegend(opts.series, opts, config, context, opts.chartData);
+          drawToolTipBridge(opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'line':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawYAxisGrid(categories, opts, config, context);
+          drawXAxis(categories, opts, config, context);
+          var _drawLineDataPoints = drawLineDataPoints(series, opts, config, context, process),
+          xAxisPoints = _drawLineDataPoints.xAxisPoints,
+          calPoints = _drawLineDataPoints.calPoints,
+          eachSpacing = _drawLineDataPoints.eachSpacing;
+          opts.chartData.xAxisPoints = xAxisPoints;
+          opts.chartData.calPoints = calPoints;
+          opts.chartData.eachSpacing = eachSpacing;
+          drawYAxis(series, opts, config, context);
+          if (opts.enableMarkLine !== false && process === 1) {
+            drawMarkLine(opts, config, context);
+          }
+          drawLegend(opts.series, opts, config, context, opts.chartData);
+          drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'mix':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawYAxisGrid(categories, opts, config, context);
+          drawXAxis(categories, opts, config, context);
+          var _drawMixDataPoints = drawMixDataPoints(series, opts, config, context, process),
+          xAxisPoints = _drawMixDataPoints.xAxisPoints,
+          calPoints = _drawMixDataPoints.calPoints,
+          eachSpacing = _drawMixDataPoints.eachSpacing;
+          opts.chartData.xAxisPoints = xAxisPoints;
+          opts.chartData.calPoints = calPoints;
+          opts.chartData.eachSpacing = eachSpacing;
+          drawYAxis(series, opts, config, context);
+          if (opts.enableMarkLine !== false && process === 1) {
+            drawMarkLine(opts, config, context);
+          }
+          drawLegend(opts.series, opts, config, context, opts.chartData);
+          drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'column':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawYAxisGrid(categories, opts, config, context);
+          drawXAxis(categories, opts, config, context);
+          var _drawColumnDataPoints = drawColumnDataPoints(series, opts, config, context, process),
+          xAxisPoints = _drawColumnDataPoints.xAxisPoints,
+          calPoints = _drawColumnDataPoints.calPoints,
+          eachSpacing = _drawColumnDataPoints.eachSpacing;
+          opts.chartData.xAxisPoints = xAxisPoints;
+          opts.chartData.calPoints = calPoints;
+          opts.chartData.eachSpacing = eachSpacing;
+          drawYAxis(series, opts, config, context);
+          if (opts.enableMarkLine !== false && process === 1) {
+            drawMarkLine(opts, config, context);
+          }
+          drawLegend(opts.series, opts, config, context, opts.chartData);
+          drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'area':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawYAxisGrid(categories, opts, config, context);
+          drawXAxis(categories, opts, config, context);
+          var _drawAreaDataPoints = drawAreaDataPoints(series, opts, config, context, process),
+          xAxisPoints = _drawAreaDataPoints.xAxisPoints,
+          calPoints = _drawAreaDataPoints.calPoints,
+          eachSpacing = _drawAreaDataPoints.eachSpacing;
+          opts.chartData.xAxisPoints = xAxisPoints;
+          opts.chartData.calPoints = calPoints;
+          opts.chartData.eachSpacing = eachSpacing;
+          drawYAxis(series, opts, config, context);
+          if (opts.enableMarkLine !== false && process === 1) {
+            drawMarkLine(opts, config, context);
+          }
+          drawLegend(opts.series, opts, config, context, opts.chartData);
+          drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'ring':
+    case 'pie':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          opts.chartData.pieData = drawPieDataPoints(series, opts, config, context, process);
+          drawLegend(opts.series, opts, config, context, opts.chartData);
+          drawToolTipBridge(opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'rose':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          opts.chartData.pieData = drawRoseDataPoints(series, opts, config, context, process);
+          drawLegend(opts.series, opts, config, context, opts.chartData);
+          drawToolTipBridge(opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'radar':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          opts.chartData.radarData = drawRadarDataPoints(series, opts, config, context, process);
+          drawLegend(opts.series, opts, config, context, opts.chartData);
+          drawToolTipBridge(opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'arcbar':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          opts.chartData.arcbarData = drawArcbarDataPoints(series, opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'gauge':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          opts.chartData.gaugeData = drawGaugeDataPoints(categories, series, opts, config, context, process);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;
+    case 'candle':
+      this.animationInstance = new Animation({
+        timing: opts.timing,
+        duration: duration,
+        onProcess: function onProcess(process) {
+          context.clearRect(0, 0, opts.width, opts.height);
+          if (opts.rotate) {
+            contextRotate(context, opts);
+          }
+          drawYAxisGrid(categories, opts, config, context);
+          drawXAxis(categories, opts, config, context);
+          var _drawCandleDataPoints = drawCandleDataPoints(series, seriesMA, opts, config, context, process),
+          xAxisPoints = _drawCandleDataPoints.xAxisPoints,
+          calPoints = _drawCandleDataPoints.calPoints,
+          eachSpacing = _drawCandleDataPoints.eachSpacing;
+          opts.chartData.xAxisPoints = xAxisPoints;
+          opts.chartData.calPoints = calPoints;
+          opts.chartData.eachSpacing = eachSpacing;
+          drawYAxis(series, opts, config, context);
+          if (opts.enableMarkLine !== false && process === 1) {
+            drawMarkLine(opts, config, context);
+          }
+          if (seriesMA) {
+            drawLegend(seriesMA, opts, config, context, opts.chartData);
+          } else {
+            drawLegend(opts.series, opts, config, context, opts.chartData);
+          }
+          drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints);
+          drawCanvas(opts, context);
+        },
+        onAnimationFinish: function onAnimationFinish() {
+          _this.uevent.trigger('renderComplete');
+        } });
+
+      break;}
+
+}
+
+function uChartsEvent() {
+  this.events = {};
+}
+
+uChartsEvent.prototype.addEventListener = function (type, listener) {
+  this.events[type] = this.events[type] || [];
+  this.events[type].push(listener);
+};
+
+uChartsEvent.prototype.delEventListener = function (type) {
+  this.events[type] = [];
+};
+
+uChartsEvent.prototype.trigger = function () {
+  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+  var type = args[0];
+  var params = args.slice(1);
+  if (!!this.events[type]) {
+    this.events[type].forEach(function (listener) {
+      try {
+        listener.apply(null, params);
+      } catch (e) {
+        //console.log('[uCharts] '+e);
+      }
+    });
+  }
+};
+
+var uCharts = function uCharts(opts) {
+  opts.pix = opts.pixelRatio ? opts.pixelRatio : 1;
+  opts.fontSize = opts.fontSize ? opts.fontSize : 13;
+  opts.fontColor = opts.fontColor ? opts.fontColor : config.fontColor;
+  if (opts.background == "" || opts.background == "none") {
+    opts.background = "#FFFFFF";
+  }
+  opts.title = assign({}, opts.title);
+  opts.subtitle = assign({}, opts.subtitle);
+  opts.duration = opts.duration ? opts.duration : 1000;
+  opts.yAxis = assign({}, {
+    data: [],
+    showTitle: false,
+    disabled: false,
+    disableGrid: false,
+    splitNumber: 5,
+    gridType: 'solid',
+    dashLength: 4 * opts.pix,
+    gridColor: '#cccccc',
+    padding: 10,
+    fontColor: '#666666' },
+  opts.yAxis);
+  opts.xAxis = assign({}, {
+    rotateLabel: false,
+    type: 'calibration',
+    gridType: 'solid',
+    dashLength: 4,
+    scrollAlign: 'left',
+    boundaryGap: 'center',
+    axisLine: true,
+    axisLineColor: '#cccccc' },
+  opts.xAxis);
+  opts.xAxis.scrollPosition = opts.xAxis.scrollAlign;
+  opts.legend = assign({}, {
+    show: true,
+    position: 'bottom',
+    float: 'center',
+    backgroundColor: 'rgba(0,0,0,0)',
+    borderColor: 'rgba(0,0,0,0)',
+    borderWidth: 0,
+    padding: 5,
+    margin: 5,
+    itemGap: 10,
+    fontSize: opts.fontSize,
+    lineHeight: opts.fontSize,
+    fontColor: '#333333',
+    formatter: {},
+    hiddenColor: '#CECECE' },
+  opts.legend);
+  opts.extra = assign({}, opts.extra);
+  opts.rotate = opts.rotate ? true : false;
+  opts.animation = opts.animation ? true : false;
+  opts.rotate = opts.rotate ? true : false;
+  opts.canvas2d = opts.canvas2d ? true : false;
+
+  var config$$1 = JSON.parse(JSON.stringify(config));
+  config$$1.color = opts.color ? opts.color : config$$1.color;
+  config$$1.yAxisTitleWidth = opts.yAxis.disabled !== true && opts.yAxis.title ? config$$1.yAxisTitleWidth : 0;
+  if (opts.type == 'pie') {
+    config$$1.pieChartLinePadding = opts.dataLabel === false ? 0 : opts.extra.pie.labelWidth * opts.pix || config$$1.pieChartLinePadding * opts.pix;
+  }
+  if (opts.type == 'ring') {
+    config$$1.pieChartLinePadding = opts.dataLabel === false ? 0 : opts.extra.ring.labelWidth * opts.pix || config$$1.pieChartLinePadding * opts.pix;
+  }
+  if (opts.type == 'rose') {
+    config$$1.pieChartLinePadding = opts.dataLabel === false ? 0 : opts.extra.rose.labelWidth * opts.pix || config$$1.pieChartLinePadding * opts.pix;
+  }
+  config$$1.pieChartTextPadding = opts.dataLabel === false ? 0 : config$$1.pieChartTextPadding * opts.pix;
+  config$$1.yAxisSplit = opts.yAxis.splitNumber ? opts.yAxis.splitNumber : config.yAxisSplit;
+
+  //屏幕旋转
+  config$$1.rotate = opts.rotate;
+  if (opts.rotate) {
+    var tempWidth = opts.width;
+    var tempHeight = opts.height;
+    opts.width = tempHeight;
+    opts.height = tempWidth;
+  }
+
+  //适配高分屏
+  opts.padding = opts.padding ? opts.padding : config$$1.padding;
+  config$$1.yAxisWidth = config.yAxisWidth * opts.pix;
+  config$$1.xAxisHeight = config.xAxisHeight * opts.pix;
+  if (opts.enableScroll && opts.xAxis.scrollShow) {
+    config$$1.xAxisHeight += 6 * opts.pix;
+  }
+  config$$1.xAxisLineHeight = config.xAxisLineHeight * opts.pix;
+  config$$1.fontSize = opts.fontSize * opts.pix;
+  config$$1.titleFontSize = config.titleFontSize * opts.pix;
+  config$$1.subtitleFontSize = config.subtitleFontSize * opts.pix;
+  config$$1.toolTipPadding = config.toolTipPadding * opts.pix;
+  config$$1.toolTipLineHeight = config.toolTipLineHeight * opts.pix;
+  config$$1.columePadding = config.columePadding * opts.pix;
+  //this.context = opts.context ? opts.context : uni.createCanvasContext(opts.canvasId, opts.$this);
+  //v2.0版本后需要自行获取context并传入opts进行初始化，这么做是为了确保uCharts可以跨更多端使用，并保证了自定义组件this实例不被循环嵌套。如果您觉得不便请取消上面注释，采用v1.0版本的方式使用，对此给您带来的不便敬请谅解！
+  if (!opts.context) {
+    throw new Error('[uCharts] 未获取到context！注意：v2.0版本后，需要自行获取canvas的绘图上下文并传入opts.context！');
+  }
+  this.context = opts.context;
+  if (!this.context.setTextAlign) {
+    this.context.setStrokeStyle = function (e) {
+      return this.strokeStyle = e;
+    };
+    this.context.setLineWidth = function (e) {
+      return this.lineWidth = e;
+    };
+    this.context.setLineCap = function (e) {
+      return this.lineCap = e;
+    };
+    this.context.setFontSize = function (e) {
+      return this.font = e + "px sans-serif";
+    };
+    this.context.setFillStyle = function (e) {
+      return this.fillStyle = e;
+    };
+    this.context.setTextAlign = function (e) {
+      return this.textAlign = e;
+    };
+    this.context.draw = function () {};
+  }
+  opts.chartData = {};
+  this.uevent = new uChartsEvent();
+  this.scrollOption = {
+    currentOffset: 0,
+    startTouchX: 0,
+    distance: 0,
+    lastMoveTime: 0 };
+
+  this.opts = opts;
+  this.config = config$$1;
+  drawCharts.call(this, opts.type, opts, config$$1, this.context);
+};
+
+uCharts.prototype.updateData = function () {
+  var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  this.opts = assign({}, this.opts, data);
+  this.opts.updateData = true;
+  var scrollPosition = data.scrollPosition || 'current';
+  switch (scrollPosition) {
+    case 'current':
+      this.opts._scrollDistance_ = this.scrollOption.currentOffset;
+      break;
+    case 'left':
+      this.opts._scrollDistance_ = 0;
+      this.scrollOption = {
+        currentOffset: 0,
+        startTouchX: 0,
+        distance: 0,
+        lastMoveTime: 0 };
+
+      break;
+    case 'right':
+      var _calYAxisData = calYAxisData(this.opts.series, this.opts, this.config, this.context),yAxisWidth = _calYAxisData.yAxisWidth;
+      this.config.yAxisWidth = yAxisWidth;
+      var offsetLeft = 0;
+      var _getXAxisPoints0 = getXAxisPoints(this.opts.categories, this.opts, this.config),xAxisPoints = _getXAxisPoints0.xAxisPoints,
+      startX = _getXAxisPoints0.startX,
+      endX = _getXAxisPoints0.endX,
+      eachSpacing = _getXAxisPoints0.eachSpacing;
+      var totalWidth = eachSpacing * (xAxisPoints.length - 1);
+      var screenWidth = endX - startX;
+      offsetLeft = screenWidth - totalWidth;
+      this.scrollOption = {
+        currentOffset: offsetLeft,
+        startTouchX: offsetLeft,
+        distance: 0,
+        lastMoveTime: 0 };
+
+      this.opts._scrollDistance_ = offsetLeft;
+      break;}
+
+  drawCharts.call(this, this.opts.type, this.opts, this.config, this.context);
+};
+
+uCharts.prototype.zoom = function () {
+  var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.opts.xAxis.itemCount;
+  if (this.opts.enableScroll !== true) {
+    console.log('[uCharts] 请启用滚动条后使用');
+    return;
+  }
+  //当前屏幕中间点
+  var centerPoint = Math.round(Math.abs(this.scrollOption.currentOffset) / this.opts.chartData.eachSpacing) + Math.round(this.opts.xAxis.itemCount / 2);
+  this.opts.animation = false;
+  this.opts.xAxis.itemCount = val.itemCount;
+  //重新计算x轴偏移距离
+  var _calYAxisData = calYAxisData(this.opts.series, this.opts, this.config, this.context),
+  yAxisWidth = _calYAxisData.yAxisWidth;
+  this.config.yAxisWidth = yAxisWidth;
+  var offsetLeft = 0;
+  var _getXAxisPoints0 = getXAxisPoints(this.opts.categories, this.opts, this.config),
+  xAxisPoints = _getXAxisPoints0.xAxisPoints,
+  startX = _getXAxisPoints0.startX,
+  endX = _getXAxisPoints0.endX,
+  eachSpacing = _getXAxisPoints0.eachSpacing;
+  var centerLeft = eachSpacing * centerPoint;
+  var screenWidth = endX - startX;
+  var MaxLeft = screenWidth - eachSpacing * (xAxisPoints.length - 1);
+  offsetLeft = screenWidth / 2 - centerLeft;
+  if (offsetLeft > 0) {
+    offsetLeft = 0;
+  }
+  if (offsetLeft < MaxLeft) {
+    offsetLeft = MaxLeft;
+  }
+  this.scrollOption = {
+    currentOffset: offsetLeft,
+    startTouchX: offsetLeft,
+    distance: 0,
+    lastMoveTime: 0 };
+
+  this.opts._scrollDistance_ = offsetLeft;
+  drawCharts.call(this, this.opts.type, this.opts, this.config, this.context);
+};
+
+uCharts.prototype.stopAnimation = function () {
+  this.animationInstance && this.animationInstance.stop();
+};
+
+uCharts.prototype.addEventListener = function (type, listener) {
+  this.uevent.addEventListener(type, listener);
+};
+
+uCharts.prototype.delEventListener = function (type) {
+  this.uevent.delEventListener(type);
+};
+
+uCharts.prototype.getCurrentDataIndex = function (e) {
+  var touches = null;
+  if (e.changedTouches) {
+    touches = e.changedTouches[0];
+  } else {
+    touches = e.mp.changedTouches[0];
+  }
+  if (touches) {
+    var _touches$ = getTouches(touches, this.opts, e);
+    if (this.opts.type === 'pie' || this.opts.type === 'ring' || this.opts.type === 'rose') {
+      return findPieChartCurrentIndex({
+        x: _touches$.x,
+        y: _touches$.y },
+      this.opts.chartData.pieData);
+    } else if (this.opts.type === 'radar') {
+      return findRadarChartCurrentIndex({
+        x: _touches$.x,
+        y: _touches$.y },
+      this.opts.chartData.radarData, this.opts.categories.length);
+    } else if (this.opts.type === 'funnel') {
+      return findFunnelChartCurrentIndex({
+        x: _touches$.x,
+        y: _touches$.y },
+      this.opts.chartData.funnelData);
+    } else if (this.opts.type === 'map') {
+      return findMapChartCurrentIndex({
+        x: _touches$.x,
+        y: _touches$.y },
+      this.opts);
+    } else if (this.opts.type === 'word') {
+      return findWordChartCurrentIndex({
+        x: _touches$.x,
+        y: _touches$.y },
+      this.opts.chartData.wordCloudData);
+    } else {
+      return findCurrentIndex({
+        x: _touches$.x,
+        y: _touches$.y },
+      this.opts.chartData.calPoints, this.opts, this.config, Math.abs(this.scrollOption.currentOffset));
+    }
+  }
+  return -1;
+};
+
+uCharts.prototype.getLegendDataIndex = function (e) {
+  var touches = null;
+  if (e.changedTouches) {
+    touches = e.changedTouches[0];
+  } else {
+    touches = e.mp.changedTouches[0];
+  }
+  if (touches) {
+    var _touches$ = getTouches(touches, this.opts, e);
+    return findLegendIndex({
+      x: _touches$.x,
+      y: _touches$.y },
+    this.opts.chartData.legendData);
+  }
+  return -1;
+};
+
+uCharts.prototype.touchLegend = function (e) {
+  var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var touches = null;
+  if (e.changedTouches) {
+    touches = e.changedTouches[0];
+  } else {
+    touches = e.mp.changedTouches[0];
+  }
+  if (touches) {
+    var _touches$ = getTouches(touches, this.opts, e);
+    var index = this.getLegendDataIndex(e);
+    if (index >= 0) {
+      if (this.opts.type == 'candle') {
+        this.opts.seriesMA[index].show = !this.opts.seriesMA[index].show;
+      } else {
+        this.opts.series[index].show = !this.opts.series[index].show;
+      }
+      this.opts.animation = option.animation ? true : false;
+      this.opts._scrollDistance_ = this.scrollOption.currentOffset;
+      drawCharts.call(this, this.opts.type, this.opts, this.config, this.context);
+    }
+  }
+
+};
+
+uCharts.prototype.showToolTip = function (e) {var _this2 = this;
+  var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var touches = null;
+  if (e.changedTouches) {
+    touches = e.changedTouches[0];
+  } else {
+    touches = e.mp.changedTouches[0];
+  }
+  if (!touches) {
+    console.log("[uCharts] 未获取到event坐标信息");
+  }
+  var _touches$ = getTouches(touches, this.opts, e);
+  var currentOffset = this.scrollOption.currentOffset;
+  var opts = assign({}, this.opts, {
+    _scrollDistance_: currentOffset,
+    animation: false });
+
+  if (this.opts.type === 'line' || this.opts.type === 'area' || this.opts.type === 'column') {
+    var index = option.index == undefined ? this.getCurrentDataIndex(e) : option.index;
+    if (index > -1) {
+      var seriesData = getSeriesDataItem(this.opts.series, index);
+      if (seriesData.length !== 0) {
+        var _getToolTipData = getToolTipData(seriesData, this.opts, index, this.opts.categories, option),
+        textList = _getToolTipData.textList,
+        offset = _getToolTipData.offset;
+        offset.y = _touches$.y;
+        opts.tooltip = {
+          textList: option.textList !== undefined ? option.textList : textList,
+          offset: option.offset !== undefined ? option.offset : offset,
+          option: option,
+          index: index };
+
+      }
+    }
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+  if (this.opts.type === 'mix') {
+    var index = option.index == undefined ? this.getCurrentDataIndex(e) : option.index;
+    if (index > -1) {
+      var currentOffset = this.scrollOption.currentOffset;
+      var opts = assign({}, this.opts, {
+        _scrollDistance_: currentOffset,
+        animation: false });
+
+      var seriesData = getSeriesDataItem(this.opts.series, index);
+      if (seriesData.length !== 0) {
+        var _getMixToolTipData = getMixToolTipData(seriesData, this.opts, index, this.opts.categories, option),
+        textList = _getMixToolTipData.textList,
+        offset = _getMixToolTipData.offset;
+        offset.y = _touches$.y;
+        opts.tooltip = {
+          textList: option.textList ? option.textList : textList,
+          offset: option.offset !== undefined ? option.offset : offset,
+          option: option,
+          index: index };
+
+      }
+    }
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+  if (this.opts.type === 'candle') {
+    var index = option.index == undefined ? this.getCurrentDataIndex(e) : option.index;
+    if (index > -1) {
+      var currentOffset = this.scrollOption.currentOffset;
+      var opts = assign({}, this.opts, {
+        _scrollDistance_: currentOffset,
+        animation: false });
+
+      var seriesData = getSeriesDataItem(this.opts.series, index);
+      if (seriesData.length !== 0) {
+        var _getToolTipData = getCandleToolTipData(this.opts.series[0].data, seriesData, this.opts, index, this.opts.categories, this.opts.extra.candle, option),
+        textList = _getToolTipData.textList,
+        offset = _getToolTipData.offset;
+        offset.y = _touches$.y;
+        opts.tooltip = {
+          textList: option.textList ? option.textList : textList,
+          offset: option.offset !== undefined ? option.offset : offset,
+          option: option,
+          index: index };
+
+      }
+    }
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+  if (this.opts.type === 'pie' || this.opts.type === 'ring' || this.opts.type === 'rose' || this.opts.type === 'funnel') {
+    var index = option.index == undefined ? this.getCurrentDataIndex(e) : option.index;
+    if (index > -1) {
+      var opts = assign({}, this.opts, { animation: false });
+      var seriesData = this.opts._series_[index];
+      var textList = [{
+        text: option.formatter ? option.formatter(seriesData, undefined, index, opts) : seriesData.name + ': ' +
+        seriesData.data,
+        color: seriesData.color }];
+
+      var offset = {
+        x: _touches$.x,
+        y: _touches$.y };
+
+      opts.tooltip = {
+        textList: option.textList ? option.textList : textList,
+        offset: option.offset !== undefined ? option.offset : offset,
+        option: option,
+        index: index };
+
+    }
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+  if (this.opts.type === 'map') {
+    var index = option.index == undefined ? this.getCurrentDataIndex(e) : option.index;
+    if (index > -1) {
+      var opts = assign({}, this.opts, { animation: false });
+      var seriesData = this.opts._series_[index];
+      seriesData.name = seriesData.properties.name;
+      var textList = [{
+        text: option.formatter ? option.formatter(seriesData, undefined, index, this.opts) : seriesData.name,
+        color: seriesData.color }];
+
+      var offset = {
+        x: _touches$.x,
+        y: _touches$.y };
+
+      opts.tooltip = {
+        textList: option.textList ? option.textList : textList,
+        offset: option.offset !== undefined ? option.offset : offset,
+        option: option,
+        index: index };
+
+    }
+    opts.updateData = false;
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+  if (this.opts.type === 'word') {
+    var index = option.index == undefined ? this.getCurrentDataIndex(e) : option.index;
+    if (index > -1) {
+      var opts = assign({}, this.opts, { animation: false });
+      var seriesData = this.opts._series_[index];
+      var textList = [{
+        text: option.formatter ? option.formatter(seriesData, undefined, index, this.opts) : seriesData.name,
+        color: seriesData.color }];
+
+      var offset = {
+        x: _touches$.x,
+        y: _touches$.y };
+
+      opts.tooltip = {
+        textList: option.textList ? option.textList : textList,
+        offset: option.offset !== undefined ? option.offset : offset,
+        option: option,
+        index: index };
+
+    }
+    opts.updateData = false;
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+  if (this.opts.type === 'radar') {
+    var index = option.index == undefined ? this.getCurrentDataIndex(e) : option.index;
+    if (index > -1) {
+      var opts = assign({}, this.opts, { animation: false });
+      var seriesData = getSeriesDataItem(this.opts.series, index);
+      if (seriesData.length !== 0) {
+        var textList = seriesData.map(function (item) {
+          return {
+            text: option.formatter ? option.formatter(item, _this2.opts.categories[index], index, _this2.opts) : item.name + ': ' + item.data,
+            color: item.color };
+
+        });
+        var offset = {
+          x: _touches$.x,
+          y: _touches$.y };
+
+        opts.tooltip = {
+          textList: option.textList ? option.textList : textList,
+          offset: option.offset !== undefined ? option.offset : offset,
+          option: option,
+          index: index };
+
+      }
+    }
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+  }
+};
+
+uCharts.prototype.translate = function (distance) {
+  this.scrollOption = {
+    currentOffset: distance,
+    startTouchX: distance,
+    distance: 0,
+    lastMoveTime: 0 };
+
+  var opts = assign({}, this.opts, {
+    _scrollDistance_: distance,
+    animation: false });
+
+  drawCharts.call(this, this.opts.type, opts, this.config, this.context);
+};
+
+uCharts.prototype.scrollStart = function (e) {
+  var touches = null;
+  if (e.changedTouches) {
+    touches = e.changedTouches[0];
+  } else {
+    touches = e.mp.changedTouches[0];
+  }
+  var _touches$ = getTouches(touches, this.opts, e);
+  if (touches && this.opts.enableScroll === true) {
+    this.scrollOption.startTouchX = _touches$.x;
+  }
+};
+
+uCharts.prototype.scroll = function (e) {
+  if (this.scrollOption.lastMoveTime === 0) {
+    this.scrollOption.lastMoveTime = Date.now();
+  }
+  var Limit = this.opts.touchMoveLimit || 60;
+  var currMoveTime = Date.now();
+  var duration = currMoveTime - this.scrollOption.lastMoveTime;
+  if (duration < Math.floor(1000 / Limit)) return;
+  this.scrollOption.lastMoveTime = currMoveTime;
+  var touches = null;
+  if (e.changedTouches) {
+    touches = e.changedTouches[0];
+  } else {
+    touches = e.mp.changedTouches[0];
+  }
+  if (touches && this.opts.enableScroll === true) {
+    var _touches$ = getTouches(touches, this.opts, e);
+    var _distance;
+    _distance = _touches$.x - this.scrollOption.startTouchX;
+    var currentOffset = this.scrollOption.currentOffset;
+    var validDistance = calValidDistance(this, currentOffset + _distance, this.opts.chartData, this.config, this.opts);
+    this.scrollOption.distance = _distance = validDistance - currentOffset;
+    var opts = assign({}, this.opts, {
+      _scrollDistance_: currentOffset + _distance,
+      animation: false });
+
+    drawCharts.call(this, opts.type, opts, this.config, this.context);
+    return currentOffset + _distance;
+  }
+};
+
+uCharts.prototype.scrollEnd = function (e) {
+  if (this.opts.enableScroll === true) {
+    var _scrollOption = this.scrollOption,
+    currentOffset = _scrollOption.currentOffset,
+    distance = _scrollOption.distance;
+    this.scrollOption.currentOffset = currentOffset + distance;
+    this.scrollOption.distance = 0;
+  }
+};
+
+if ( true && typeof module.exports === "object") {
+  module.exports = uCharts;
+  //export default uCharts;//建议使用nodejs的module导出方式，如报错请使用export方式导出
+}
+
+/***/ }),
+
+/***/ 516:
+/*!******************************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/uni_modules/qiun-data-charts/js_sdk/u-charts/config-ucharts.js ***!
+  \******************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/*
+ * uCharts®
+ * 高性能跨平台图表库，支持H5、APP、小程序（微信/支付宝/百度/头条/QQ/360）、Vue、Taro等支持canvas的框架平台
+ * Copyright (c) 2021 QIUN®秋云 https://www.ucharts.cn All rights reserved.
+ * Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
+ * 复制使用请保留本段注释，感谢支持开源！
+ * 
+ * uCharts®官方网站
+ * https://www.uCharts.cn
+ * 
+ * 开源地址:
+ * https://gitee.com/uCharts/uCharts
+ * 
+ * uni-app插件市场地址：
+ * http://ext.dcloud.net.cn/plugin?id=271
+ * 
+ */
+
+// 主题颜色配置：如每个图表类型需要不同主题，请在对应图表类型上更改color属性
+var color = ['#1890FF', '#91CB74', '#FAC858', '#EE6666', '#73C0DE', '#3CA272', '#FC8452', '#9A60B4', '#ea7ccc'];
+
+module.exports = {
+  //demotype为自定义图表类型
+  "type": ["pie", "ring", "rose", "word", "funnel", "map", "arcbar", "line", "column", "area", "radar", "gauge", "candle", "mix", "demotype"],
+  "range": ["饼状图", "圆环图", "玫瑰图", "词云图", "漏斗图", "地图", "圆弧进度条", "折线图", "柱状图", "区域图", "雷达图", "仪表盘", "K线图", "混合图", "自定义类型"],
+  //增加自定义图表类型，如果需要categories，请在这里加入您的图表类型例如最后的"demotype"
+  "categories": ["line", "column", "area", "radar", "gauge", "candle", "mix", "demotype"],
+  //instance为实例变量承载属性，option为eopts承载属性，不要删除
+  "instance": {},
+  "option": {},
+  //下面是自定义format配置，因除H5端外的其他端无法通过props传递函数，只能通过此属性对应下标的方式来替换
+  "formatter": {
+    "yAxisDemo1": function yAxisDemo1(val) {return val + '元';},
+    "yAxisDemo2": function yAxisDemo2(val) {return val.toFixed(2);},
+    "seriesDemo1": function seriesDemo1(val) {
+      return val + '元';
+    },
+    "tooltipDemo1": function tooltipDemo1(item, category, index, opts) {
+      if (index == 0) {
+        return '随便用' + item.data + '年';
+      } else {
+        return '其他我没改' + item.data + '天';
+      }
+    },
+    "pieDemo": function pieDemo(val, index, series) {
+      if (index !== undefined) {
+        return series[index].name + '：' + series[index].data + '元';
+      }
+    } },
+
+  //这里演示了自定义您的图表类型的option，可以随意命名，之后在组件上 type="demotype" 后，组件会调用这个花括号里的option，如果组件上还存在opts参数，会将demotype与opts中option合并后渲染图表。
+  "demotype": {
+    //我这里把曲线图当做了自定义图表类型，您可以根据需要随意指定类型或配置
+    "type": "line",
+    "color": color,
+    "padding": [15, 10, 0, 15],
+    "xAxis": {
+      "disableGrid": true },
+
+    "yAxis": {
+      "gridType": "dash",
+      "dashLength": 2 },
+
+    "legend": {},
+
+    "extra": {
+      "line": {
+        "type": "curve",
+        "width": 2 } } },
+
+
+
+  //下面是自定义配置，请添加项目所需的通用配置
+  "pie": {
+    "type": "pie",
+    "canvasId": "",
+    "canvas2d": false,
+    "background": "none",
+    "animation": true,
+    "timing": "easeOut",
+    "duration": 1000,
+    "color": [
+    "#1890FF",
+    "#91CB74",
+    "#FAC858",
+    "#EE6666",
+    "#73C0DE",
+    "#3CA272",
+    "#FC8452",
+    "#9A60B4",
+    "#ea7ccc"],
+
+    "padding": [
+    5,
+    5,
+    5,
+    5],
+
+    "rotate": false,
+    "errorReload": true,
+    "fontSize": 13,
+    "fontColor": "#666666",
+    "enableScroll": false,
+    "touchMoveLimit": 60,
+    "enableMarkLine": false,
+    "dataLabel": true,
+    "dataPointShape": true,
+    "dataPointShapeType": "solid",
+    "legend": {
+      "show": true,
+      "position": "bottom",
+      "float": "center",
+      "padding": 5,
+      "margin": 5,
+      "backgroundColor": "rgba(0,0,0,0)",
+      "borderColor": "rgba(0,0,0,0)",
+      "borderWidth": 0,
+      "fontSize": 13,
+      "fontColor": "#666666",
+      "lineHeight": 11,
+      "hiddenColor": "#CECECE",
+      "itemGap": 10 },
+
+    "extra": {
+      "pie": {
+        "activeOpacity": 0.5,
+        "activeRadius": 10,
+        "offsetAngle": 0,
+        "customRadius": 0,
+        "labelWidth": 15,
+        "border": true,
+        "borderWidth": 3,
+        "borderColor": "#FFFFFF",
+        "linearType": "none" },
+
+      "tooltip": {
+        "showBox": true,
+        "showArrow": true,
+        "showCategory": false,
+        "borderWidth": 0,
+        "borderRadius": 0,
+        "borderColor": "#000000",
+        "borderOpacity": 0.7,
+        "bgColor": "#000000",
+        "bgOpacity": 0.7,
+        "gridType": "solid",
+        "dashLength": 4,
+        "gridColor": "#CCCCCC",
+        "fontColor": "#FFFFFF",
+        "splitLine": true,
+        "horizentalLine": false,
+        "xAxisLabel": false,
+        "yAxisLabel": false,
+        "labelBgColor": "#FFFFFF",
+        "labelBgOpacity": 0.7,
+        "labelFontColor": "#666666" } } },
+
+
+
+  "ring": {
+    "type": "ring",
+    "color": color,
+    "padding": [5, 5, 5, 5],
+    "rotate": false,
+    "dataLabel": true,
+    "legend": {
+      "show": true,
+      "position": "right",
+      "lineHeight": 25 },
+
+    "title": {
+      "name": "应打卡",
+      "fontSize": 15,
+      "color": "#666666" },
+
+    "subtitle": {
+      "name": "70%",
+      "fontSize": 25,
+      "color": "#7cb5ec" },
+
+    "extra": {
+      "ring": {
+        "ringWidth": 30,
+        "activeOpacity": 0.5,
+        "activeRadius": 10,
+        "offsetAngle": 0,
+        "labelWidth": 15,
+        "border": true,
+        "borderWidth": 3,
+        "borderColor": "#FFFFFF" } } },
+
+
+
+  "rose": {
+    "type": "rose",
+    "color": color,
+    "padding": [5, 5, 5, 5],
+    "legend": {
+      "show": true,
+      "position": "left",
+      "lineHeight": 25 },
+
+    "extra": {
+      "rose": {
+        "type": "area",
+        "minRadius": 50,
+        "activeOpacity": 0.5,
+        "activeRadius": 10,
+        "offsetAngle": 0,
+        "labelWidth": 15,
+        "border": false,
+        "borderWidth": 2,
+        "borderColor": "#FFFFFF" } } },
+
+
+
+  "word": {
+    "type": "word",
+    "color": color,
+    "extra": {
+      "word": {
+        "type": "normal",
+        "autoColors": false } } },
+
+
+
+  "funnel": {
+    "type": "funnel",
+    "color": color,
+    "padding": [15, 15, 0, 15],
+    "extra": {
+      "funnel": {
+        "activeOpacity": 0.3,
+        "activeWidth": 10,
+        "border": true,
+        "borderWidth": 2,
+        "borderColor": "#FFFFFF",
+        "fillOpacity": 1,
+        "labelAlign": "right" } } },
+
+
+
+  "map": {
+    "type": "map",
+    "color": color,
+    "padding": [0, 0, 0, 0],
+    "dataLabel": true,
+    "extra": {
+      "map": {
+        "border": true,
+        "borderWidth": 1,
+        "borderColor": "#666666",
+        "fillOpacity": 0.6,
+        "activeBorderColor": "#F04864",
+        "activeFillColor": "#FACC14",
+        "activeFillOpacity": 1 } } },
+
+
+
+  "arcbar": {
+    "type": "arcbar",
+    "color": color,
+    "title": {
+      "name": "百分比",
+      "fontSize": 25,
+      "color": "#00FF00" },
+
+    "subtitle": {
+      "name": "默认标题",
+      "fontSize": 15,
+      "color": "#666666" },
+
+    "extra": {
+      "arcbar": {
+        "type": "default",
+        "width": 12,
+        "backgroundColor": "#E9E9E9",
+        "startAngle": 0.75,
+        "endAngle": 0.25,
+        "gap": 2 } } },
+
+
+
+  "line": {
+    "type": "line",
+    "color": color,
+    "padding": [15, 10, 0, 15],
+    "xAxis": {
+      "disableGrid": true },
+
+    "yAxis": {
+      "gridType": "dash",
+      "dashLength": 2 },
+
+    "legend": {},
+
+    "extra": {
+      "line": {
+        "type": "straight",
+        "width": 2 } } },
+
+
+
+  "column": {
+    "type": "column",
+    "color": color,
+    "padding": [15, 15, 0, 5],
+    "xAxis": {
+      "disableGrid": true },
+
+    "yAxis": {},
+
+    "legend": {},
+
+    "extra": {
+      "column": {
+        "type": "group",
+        "width": 30,
+        "meterBorde": 1,
+        "meterFillColor": "#FFFFFF",
+        "activeBgColor": "#000000",
+        "activeBgOpacity": 0.08 } } },
+
+
+
+  "area": {
+    "type": "area",
+    "color": color,
+    "padding": [15, 15, 0, 15],
+    "xAxis": {
+      "disableGrid": true },
+
+    "yAxis": {
+      "gridType": "dash",
+      "dashLength": 2 },
+
+    "legend": {},
+
+    "extra": {
+      "area": {
+        "type": "straight",
+        "opacity": 0.2,
+        "addLine": true,
+        "width": 2,
+        "gradient": false } } },
+
+
+
+  "radar": {
+    "type": "radar",
+    "color": color,
+    "padding": [5, 5, 5, 5],
+    "legend": {
+      "show": true,
+      "position": "right",
+      "lineHeight": 25 },
+
+    "extra": {
+      "radar": {
+        "gridType": "radar",
+        "gridColor": "#CCCCCC",
+        "gridCount": 3,
+        "opacity": 0.2,
+        "labelColor": "#666666",
+        "max": 200 } } },
+
+
+
+  "gauge": {
+    "type": "gauge",
+    "color": color,
+    "title": {
+      "name": "66Km/H",
+      "fontSize": 25,
+      "color": "#2fc25b",
+      "offsetY": 50 },
+
+    "subtitle": {
+      "name": "实时速度",
+      "fontSize": 15,
+      "color": "#1890ff",
+      "offsetY": -50 },
+
+    "extra": {
+      "gauge": {
+        "type": "default",
+        "width": 30,
+        "labelColor": "#666666",
+        "startAngle": 0.75,
+        "endAngle": 0.25,
+        "startNumber": 0,
+        "endNumber": 100,
+        "labelFormat": "",
+        "splitLine": {
+          "fixRadius": 0,
+          "splitNumber": 10,
+          "width": 30,
+          "color": "#FFFFFF",
+          "childNumber": 5,
+          "childWidth": 12 },
+
+        "pointer": {
+          "width": 24,
+          "color": "auto" } } } },
+
+
+
+
+  "candle": {
+    "type": "candle",
+    "color": color,
+    "padding": [15, 15, 0, 15],
+    "enableScroll": true,
+    "enableMarkLine": true,
+    "dataLabel": false,
+    "xAxis": {
+      "labelCount": 4,
+      "itemCount": 40,
+      "disableGrid": true,
+      "gridColor": "#CCCCCC",
+      "gridType": "solid",
+      "dashLength": 4,
+      "scrollShow": true,
+      "scrollAlign": "left",
+      "scrollColor": "#A6A6A6",
+      "scrollBackgroundColor": "#EFEBEF" },
+
+    "yAxis": {},
+
+    "legend": {},
+
+    "extra": {
+      "candle": {
+        "color": {
+          "upLine": "#f04864",
+          "upFill": "#f04864",
+          "downLine": "#2fc25b",
+          "downFill": "#2fc25b" },
+
+        "average": {
+          "show": true,
+          "name": ["MA5", "MA10", "MA30"],
+          "day": [5, 10, 20],
+          "color": ["#1890ff", "#2fc25b", "#facc14"] } },
+
+
+      "markLine": {
+        "type": "dash",
+        "dashLength": 5,
+        "data": [
+        {
+          "value": 2150,
+          "lineColor": "#f04864",
+          "showLabel": true },
+
+        {
+          "value": 2350,
+          "lineColor": "#f04864",
+          "showLabel": true }] } } },
+
+
+
+
+
+  "mix": {
+    "type": "mix",
+    "color": color,
+    "padding": [15, 15, 0, 15],
+    "xAxis": {
+      "disableGrid": true },
+
+    "yAxis": {
+      "disabled": false,
+      "disableGrid": false,
+      "splitNumber": 5,
+      "gridType": "dash",
+      "dashLength": 4,
+      "gridColor": "#CCCCCC",
+      "padding": 10,
+      "showTitle": true,
+      "data": [] },
+
+    "legend": {},
+
+    "extra": {
+      "mix": {
+        "column": {
+          "width": 20 } } } },
+
+
+
+
+  "point": {
+    "type": "point",
+    "color": color,
+    "padding": [15, 15, 0, 15] },
+
+  "bubble": {
+    "type": "bubble",
+    "color": color,
+    "padding": [15, 15, 0, 15] } };
+
+/***/ }),
+
+/***/ 524:
+/*!************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/components/wyb-table/js/characterToPinyin.js ***!
+  \************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /*!
+                                                                                                     author:kooboy_li@163.com
+                                                                                                     MIT licensed
+                                                                                                     */
+
+var base = 19968,
+middle = (40896 - base) / 2;
+var EMPTY = '';
+var COMA = ',';
+var chars = function () {
+  var a = [];
+  for (var i = 33; i < 127; i++) {
+    if (i != 34 && i != 92 && i != 45) {
+      a.push(String.fromCharCode(i));
+    }
+  }
+  return a.join(EMPTY);
+}();
+var SDB = {
+  "a": {
+    "yi": "!]#R$!$q(3(p)[*2*g+6+d.C.q0[0w1L2<717l8B8E9?:8;V;[;e;{<)<+<S<]=9>.>4??@~A`BbC:CGC^CiDMDjDkF!H/H;JaL?M.M2MoNCN|OgO|P$P)PBPyQ~R%R.S.T;T<TBTqT|UQUXU}V[WCXgYCYDY_YdYuZ9Zs];]j]p]q^.^@^S^w^x_,_T`H`J`ga)a8aQb9budJddgoh9hqi2itj&jEjRj]jzk>k^l$l<mLmdnDoEoMoQoop3p5pWp`qSr.u'uLv]wIxXy_y~{z}`~r-$=-$X-$Y-%!-%0-%j-&^-&s-'t-(<-)2-*n-+6-+f-/M-/N-0.-2|-3u-4b-4c-4m-5E-5N-5Z-5l-6&-6+-7*-70-73-8F-8R-8g-:*-:5",
+    "ding": "!2%%&_&x'u=:=h@NC`H?LQNkQ3Xo^Gn?osrUsNvAwKxKy9-!T-$6-$v-%O-&b-(+-9%-9(",
+    "zheng": "!S#(#D/]031$456+=L?OIzYM[']I^g_.eUl}m~qJsHulwuxU-!?-,d-3D",
+    "kao": "<dLWr5x7-!J-,7-/Y-/s-2'",
+    "qiao": "#+$4&.&1'7'Y'z($(),B,{0c7y8<:H<8<YE{F0GdKYMCZP]Y_8_zd.d/d{e5fGfHfUmKmrmvp#t>t?uJv$vMyE|R}a-!}-#&-#8-#L-#b-$Q-%?-+q-,6-,8",
+    "yu": "#V$l%S&9&I('(7(=)))m*#*$*B+2+F+v,0,b,i.W0.1F232L2a3(384>6P8n;';i;y<1>(>)>]@iB<B?BDBEC'C*CoCpELE^HIHJHTIpJIJ`KXL&L1LxMbMqNXNqPdPsQ<RFT?U(URV7WnX:Z?ZT[6[H]!]~_7_J_``Za#eXg;h#hVhuiyj!j#k9kDkMl#lClUlmmUnFoAp(pzqnrSsSt0vJwszp{_|N}!}$}I}t~(~,~.~w-$D-$]-%^-&j-';-'k-(3-(H-(v-*1-*Z-+#-+d-+{-.1-.2-.<-.K-.[-.e-/d-0=-0P-1:-1m-39-3`-3b-3e-41-5e-5}-6/-6;-6p-7:-7Z-:(-:2-:F",
+    "qi": "!8%&%>&X&m&s'2'X'd'f(9(c(i(j)@)l+'+M.).+1y1{2=3K4c6&6'6)606<6B6`9`9{:a<g>`?`AgCLCuD%D2F2GyH&H1I;K~LkLuM&MYO0O3O9P8PbPcQqR5S2SCU0U~V%XYY&Z}[G^P`7cUc}dEeNgOj$j)l?m:n4p,sOuRv.y'{/|i}1~P-$B-%Y-)|-)}-*K-+G-+H-,m-.@-.M-/|-0y-2D-2c-4W-4`-4h-7a-7p-9c-9i",
+    "shang": ")Y6V9cJvR8UqXJXa])asbQc,s,uSvz-#+-.;",
+    "xia": "#Y#w&,&;'''I)1.u/j7=:[<'B[ByCtL'NmNyQOR([0`(cLh[iRkVt/t_u4uezFzM|W|{~d-&)-*4-.}-0a-5;-8S",
+    "han": "#,.m/h:l<P>MFrGXJqNrOUPCPqPrQ|]@`+`2h1lBlZnXp*r;rWrkz9{4{B}x-#c-#y-$;-$l-$y-%Q-%n-(i-(x-)i-/!-3*-5B-9V",
+    "wan": "#=$0&o.]0F4@5X5b6*628u9p<K?e?h@IChFqG!G7H2HHJzL=O5Q'RQ`;a:b<bGeHh&h)rMr^s'slu!-$E-%V",
+    "mo": "!`#$#&#y$%%P'e(T*N3v5$517`8R=6?XA5E6FZF~JLM;MgP+RTRcU6]'](_j`s`x`y`za+qkuDyR|G-!e-'g-($-(U-*R-+k-,(-.U-.k-.{-8/-80-8K-8L",
+    "zhang": "#~(#.:2o3N>k@,JhR`b$b`knmtujz'z0}<-#+-'I-*Q-16-7m",
+    "san": "3T3q3w3x7~uJuwzA-'n-([-,s",
+    "ji": "#r%''l'y)3)d)o*Z+'+9+G+M+T+Z+^+g+x._.c/R090d1S1W2;43484J4R5C5w6)6C6`7f7s878H8t8w9J9X9Z9{;8;<;B;C=(=2>6?YA$B+CHD0D8DbE:EQF2I*I|JEJnKKL)L:LkLzMdN'N5N:NiQ6QyRrUWVcVnWPWQWtX6XEXYXuY(ZAZ|[/]O]e^F^J^U^~`)b#b0c*ckc}dee!e$e9e>eyf+fXfrg)hFhriMjZlrqmr)sRt%uov3vevw|@};}N}g~!~+~F~{-!&-!u-#N-$%-&a-'u-(,-*x-+]-,W-.?-.V-._-.d-.g-/+-0$-0H-1%-1/-10-1^-1o-2/-2@-3'-4)-4o-5>-5H-5U-6,-6J-7/-7P-9e-9g-9h-9i-9j-:l",
+    "bu": "0$192,FKJgT=UYZ^e+hhjmm8mFoGpGp}sjw]w{-'7-'E-/m-3#-4.-6=",
+    "fou": "4I:L:O:Q~1-3:",
+    "mian": "!G!d#4$U$W$]3Y5X6A6_6o9g9w@qB/CkG!H_Q;-!L-!M-!P-/_-7y-7z-8'-8,-8q-8r",
+    "gai": "):5=5LD,ErI!J1Z'_/`TaYaac!lnpcw[|O}1",
+    "chou": "!+#n$N+0/y0}2:4e5/6#9jB*B.GNLfUmZ+^3^5_4e%e4fWkan]nbo.o6oU}u~$~*-.X-/>",
+    "zhuan": "%H'S'V.K0k1B1H1r2?7Z<r@RA7IDRsVk[J]Tb3b<c8gThai'mp-%+-%u-'p-(]-14",
+    "qie": "%>+7+f,8.#.|0K0p2O>#DNE1P.ccd]eMlpt8y>-0&",
+    "ju": "!Z$L$w%R*W,c,l/e1~3&3J8#:t=#=`=k@FBGC0DlD}FeGAIaIkJbMrN[OVP`RDTlU|W>Y`[$^Z`Ua*ccc{dWd]dae#e@eFeff8fSg*g<guh~l'lXmIoOq(rps%vXw_x|y;zb|m}o-#/-#:-&4-&Q-)<-)?-)d-*z-+0-/.-/:-3[-48-4S-4k-5.-9H-9K-9x-:@",
+    "pi": "#M%D'C(5(6)L*F*K+;.n1C4M8}:y;/;2;A<,<{>a@'@2@KA%C|DQO+O]O^PvR!REScU'UfZw]m`l`na'i[l_m;p<pYpyqCqyr*s1s;trx4{8|*|=|p}F-!!-#,-)@-,H-.p-/#-/3-2#-3>-4F-6'-63-91",
+    "shi": "!E!Q!e#?$p%$&+'$([(](q*^.&/5/n0[1w204z<gBNBQG)I:ISIUJ3NlN{Q>QQR9VYW2W@W^X2XNYxY{ZI[:[<[v]X^l^{^}_p`DaDbmgqi8ixjdk!kNkpl(lkntoMo^ocoeofp5ppq%q&q*q4qbr=t9x/-&^-&_-&}-'<-'@-(*-(8-)!-)H-+,-/<-0?-0d-0o-0p-2:-2O-3+-38-57-6M-9C-9E",
+    "qiu": "*6*7+a0r3k4D5]6j>7CaCeF`HEJXMhNgNjONP;QMQ_RfSWUUX?XUXqXrajc$d'jpjskXl]n@o.oup:r?-#5-#6-$8-/'-/k-0W-0X-1,-2Z-4v-7&-9U-:Y-:Z-:]",
+    "bing": "!n)F*4+/,>.75@DsOcZ7l`puqar||>-!:-!q-#,-#G-''-'C-(D-/O",
+    "ye": "$>$E(0,a6g=;@?HfSb[]_]lUlfn(oip=rmtDtTtevTx?-!O-!R-$5-%N-'F-'e-(T-*o-4Y-61",
+    "cong": "$'&Y1>8==g=l=p=vDIE=I2JUK0LsRZZk]$a}a~sKtBuKu_-*)-*V-+Y",
+    "dong": "&&.r0b5D?7?C@JD|G;I#KwQ([&jV~^-)T-/=-0)-4g-5/-6T-9,",
+    "si": "'?(b)^)g)p*+.</#40415O6i8l9~;.<|<}>+>0KxL+NLP7PiQnReS&W_`tp1pvp{qTqnr8r`tIuzyB-&6-&R-&^-&c-&s-&{-(:-)L-)q-*8-+.-0.-5j-6`-9N-:o",
+    "cheng": "#0$,$P&W*O*[*w+A+{,O,v/l5[7#:`?}FQOoS(UKZV_#cHcJk#m$nhrxtkuxv@vWx=xB|2-!A-$h-'w-)o-*>-+B-/u",
+    "diu": "r2xL-&&",
+    "liang": "3A3D3{6K@0CRF{Q%Up[,_Oe1h!h2hCiBiHojss-!=-)h-.J-.O",
+    "you": "(r)O*I7o8W;L;f=5=M>VDKFoFsFwG/KaOOOSPSQLY8ZN_;`qh%hMjWjnk6kPlYmEn3n>ncodp~r3x&x<-),-.y-/1-1p-1z-7N-8P-9D",
+    "yan": "##%F%L&%&F&T&v(Z,j/u1?2$5t7V;!;h?<@@AsCVCYCZD3FmGpH.JlN_PVQAT$UxV9WUX/XkXmXnY?Z3[U^1^C^E_e_~`B`C`RbDbPc;g/g7kIm#mNmsn5nHnsnyoPoVo`x+z7zkzmzn{A{`{e|}}2}b-%'-%,-%B-%v-'0-(#-)~-*$-*F-*j-*s-+C-.4-.H-.Y-0V-3$-3*-3B-3n-5#-5G-5u-7K-7r-8T-8W-8_-8`-8a-8d-8j-9L-9Q-9w-:1-:N",
+    "sang": "'EVNts-%2-%{",
+    "gun": "#<&#'U6F6z9dJ>JpTFTwUu]4h<iF-/2-/g-2<",
+    "jiu": "+E,*42464]8mB:BCBHBMH7cQnGz){Z-#}-#~-,l-./-01-3!-5w-6I-79-7c-:$",
+    "ge": "&!/30*4?8r>:?B@}AbB3BwECHxJ1NwOrP'U9UPXM[X[hhLhmq`tetlu.xSyUzTzU{W}4-!S-!s-#F-#`-#j-%f-(A-*%-+t-.3-/K-/U-1u-3T-3z-6g",
+    "ya": "#B%C&{'I*{,a.g=UDEKqO;T1WEWGY.^[g=i!j4lUp=s=v7x;}f-3C-3c-4U-6O-6V-9o-:;",
+    "pan": "!&!>!?!H!o'L'x2A76=F>R?$AIH<IrRoT{WBY[d[e{f0rvtpw=zx-#E-$J-4D",
+    "zhong": "#%(n*8+>+m/V2T4{6b99>j@`BnEkK*O:OBP^R2RKSzTKTNTO[@e^f>ohparHtQv5wbyF-3_-9@",
+    "jie": "#S%@&{(.*d+=.G0e4J5,599D;k=(@/CfD,G#G`J[LzOFP&P:PTQ=SKSQSqT/TITPTlU4U7UPVQXOXSX}Z%ZWZh]/^K^~_5ckdve=j^qGtNtXz,|1}.-!m-!u-$U-%c-&v-+i-.l-/@-2&-4{-5$",
+    "feng": "!@%N'40m5v7R:3C$FdHnN.PFSaWI[R^c`?b.c5k'n+n;r[u5uXxs-!$-!4-&%-&J-&L-(w-3(-3,-3F-8)",
+    "guan": "!'$b$j$k(W)B,Y/f0E6:9&:]:gBVFqIEWSW{X+X.a?bifMh?kmsUu>w7zOzS{,{2}{-'K-(N-0q-1N-1j-2e-2z-6D-7A",
+    "kuang": "!Y!z$Y%1%r%w(G+}/O/z5'538V8vZ<ZG^y_=aNbpgHgRgXg`j+lHlhn/qUrevy-4>-8>",
+    "chuan": ",40jA7BYB`BhBxEvale[hIkJp%wQ-5+",
+    "chan": "&6'W)K)q1N6D7$8*8A8[8_:6;xCODJIHKQQ2RGR_R{S1UeW!W`X3ZMZy]B^+^7_N_bfbi|n2n6o@rTr]uWw3xYz%ze{7{g-#Q-%D-%~-(%-(S-+Z",
+    "lin": "$B&['t0:393O5{8!<WA?B%GsKEMOaWb{fEf]fgfxhlh}iVk{lgn$utzg|9}C~[-*a-1G-2t-7_-7n",
+    "zhuo": "#'&Q)a+l,%,V,]102E2`8?:J;&=NE.HtJ:L|SJSsZx[+]6_Fd!nArfvLvOy|-4J-5d-:x",
+    "zhu": "!a$6$h%^%v'f)!)/*h,@.4.S.T.[.w/P/o0]0n141=1a4n4q5.9+:s;W<EBrD/DVDpE_EmFYHtJQKZMMO`O{QTS>S]SrU;V<YLYoZ;[S_$_B`[aCbhdVdjfRggjMjrk1ljq6q{r}vbwExIx`|x-&r-(~-)=-)]-+2-/H-0E-11-3s-6(-7T-7V-8x",
+    "ba": "%#.a3#:y;2;N<z>sD5E4GTO$WNYk`LdDdNgjozp?wr~~-!a-&.-.D-.`-/&-/0-1t-1v-1}-9=",
+    "dan": "!K%$%5)r,S0N1h4V8A=A=B=H=~>q@9ATAVH*JDOkPUTLV?VoXGX~ZK_'a|bBc3f{mHn&nKn~~t-$I-'G-'s-)*-)a-,C-3Z-8H-8b-8i",
+    "wei": "#o$M%}&0'#'D'M6/6p6r7+8y9f;6>n@gC+D!DOE+FCGBH)I&I(I4INJ]K$KJL7LdMDN0PwQ$QDQHR?T3T6V`WkX$Z)[#[^^*^4_I_^e;fefig@hbj>k<k[m}nvs~t4uGzz{G}&}'}7}Y~n-!#-#Z-#a-#i-#q-#v-#z-$T-&7-'J-'X-'z-+a-+b-+c-.P-/,-/F-/P-0N-0O-2(-2W-2p",
+    "jing": "#C*?*u,2.8.9.A.E.P.R042v3F3Q5(5q6!9@=_>g?:?k@<E;EtExFiG8HlS/Z`]ge(jTjwrhuYyi|+-!=-!@-!C-!D-!F-$N-$m-%b-*m-03-2M-4:-4a-4d-7e-7o-9I",
+    "li": "!!!0#A#E%7%_%m%q'|(K(L(Q(^)u)y*%*H,&.$.J.{/c1.1:2Z3$303G3b4)5}7T8Q8g:7;4@*C%DPDbEEF%FDFWF[GUI[I`JFKIM1MKN4OWOnP#PNPlQaR[S*S:STSVS_ULU_VWXhYY]&^,`9`}cPdbf`hzh{i5jDk+l7l;m6n=oBoNogokqAqururzs3tludvuxjyU}V}W}X~&~8-!+-!5-*}-+A-,^-.3-/p-/v-07-1W-1b-1k-26-29-2x-2~-3Q-4X-5I-6F-6l-7f-7k-8A-8Z",
+    "pie": "$2DmW]u~",
+    "fu": "%8%[(u(v)U)j*k*o+:.'/$///_0$0=1j3C3d4a4j4u5B5k5p6q7B8L939<:0:o:}<&>N?#@!@D@E@nA3C!CWC}D*DFE'E,E]EpFFF|GKHKHjJXKsNSODOGOXOwPIPMQEQIQWTETsTvU.V(V6ViW+WKWMXpYS[C^H`Va4a{b4bXc(c7cRd=dZegh*hPhRiAiLlIm(m*mmnQowo|pFq<q@t#t5{s{t|?-#]-#x-$`-&(-&.-(n-)F-+/-,P-.5-/)-/8-/X-0^-1|-2[-2}-3%-34-3N-4H-4}-7x-7{-8#-8*-8o-8p",
+    "nai": "<p<q?L@=CcH4R'VHj[o}sk-9'",
+    "wu": "$A%*&l)+,D,o0a2tAMB]D#D<EPFSKvMVPLQzS#Z>ZYZZ]U_6_9d9fYj6j~lWm)mep)rQrbrctvwkxc{y|U}6~?~C~`~m-!Z-*'-+R-/j-0j-3i-4/-4@-5,-5f-6j-6s-7)-9G-9W-9X",
+    "tuo": "%U%V&z0L2J4v?{@$F_H6MUTbT~Y'Yc^QdHdQnVq+r`x1{{|;|<-&d-(.-(z-({-)1-)J-)K-*:-*e-*p-+$-+3-.b-/%-/[-0b-3O-4,-6_-8}-9$-9?",
+    "zhe": "#'%+%E'P2f2|<f=VHtJ~NoP4PKR9RRRSU%VXW<Yq]*]:^%^0_ucKe`h(h0hei@iUj:j{kurAtMy!-({-/f-5W-75",
+    "ma": "#X%3'8(e)h;0GsK?N}R+RTRUkku/z2-(u-)N-+!-+9-,r-0n-5P-8.-80",
+    "me": "-8/-80",
+    "yao": "!T$R'T(g,3,:,=,F,I,J,e,f/C0^4<7o8Q8s<a>_@eB>CADvFAI0I>J:L]M:M~TgWHWfY/Ya[|[}^6_ngmi6k`kll*l9r!tdwhxRzv}!-!j-%=-&9-&T-'(-'=-*&-0u-1I-2f-3;-3]-5F-5Y-7+-9T-:%",
+    "zhi": "!7!t$s%=(J(i(k(s(y)2)I)Z*2*>*A*T*^*c+(+)+J+Y,G/k4Q4b5T5W5s6~7^7|9(98;(<0=E=Q=b=}>L>|?+?QA<AJB1B2B5B6CzD$D?E8GeM7N/O3P1P]R@RhTQTTTxTyU{W.WgXCX[XcY9ZB^l`@`A`haAb!b=bbbwdAdYdueTeWf,f_fag6glg}i1i:jDlqm6neoyqrr=r_vsxAy3|)|Z}R}[}j-)!-))-)Q-*?-*L-*Y-+O-0:-31-3S-3m-5+-5^-6a-8m-8y",
+    "zha": "!l%Q0>4^4g=0D{OPOZX]Yb[(]G]W^ng=o;t*xHzI{N~J-&t-/9-/a-1{-22-9]-9`",
+    "hu": "(1(~.j0Z1M3!3^545r757G?0AMCtCxD<E$GxI+K%K;NGNHNPNWQ^R)T2X`Xd]<]x^^``gVi3mqo)snt+tK}Z}q~B-$4-$k-'O-,j-.s-0<-0c-1`-2v-32-4?-4x-5)-52-5?-65-6n-7!-7?",
+    "fa": "#k%O/'/N:q;*;3EeKkLvo1oKstzV{V-,F-,J",
+    "le": "%f.U1_>5C_{u-$*-'1-(A-1!-1d-2i",
+    "yue": "$S%!(a){0^0|242S2_373H4<8sAlM{O,O.ZaZc_>cid2dCdFfZgApDqBw2whw}zczd{[-,V-6:-6B-8Y-:^-:m",
+    "lao": "&)'n,71s3<5>9M<b<c=&=3F'HYP3Rvg.g4hin`oDr(v/x8xa-%8-,9-/W",
+    "yin": "&#&j'a)Q*a,^/B2{5G6{7V?3DJEGEcF=FHIRK4K8MuO2RLRzU=Y$Y*Y2Zu[M^9cXczh'monipNp]qer/xFx^z{{||/|l|w|~}0}@}Q~W~f~p-!b-!r-$&-$2-&m-&q-(6-)^-+:-/I-5h-9p-:!-:?-:E",
+    "ping": "%b&'.H0W1Q:T=f>~CXE%F$H(JWMaOQP%Yg^jgrh>mAqa-$^-(w-/(-1w",
+    "pang": "!o'A1+=/>R?$?=A/B|QmWsd@jf~6~|-0k-2g-:K-:M",
+    "guai": "0,;%",
+    "sheng": "!D!^...t7*7q859e=[=x?*E(KM]^aMb1q2t2|#|Y|u-4_-9B",
+    "hao": "*:.,25<x=ZEMJ$L3L5LWLtNYO<SG[0]z`Y`ym,mhu#y]-%>-%|-0i",
+    "mie": "!`(D1G1dJxL>SNS~W]vt-1e-3M",
+    "nie": "1&294(4,=G=|B)B0E!GDMlSX^=e)e?eAezforAs$sJu*vfw9wByVyY{&|c}(-%L-%x-:#",
+    "xi": "!>#6$3$d%/&(&g'J's(!)P)n*l+7,,,n313z434i5j6H7?7W81878g979U;V;n<2<5<6>c>d@>A6BABBB}FUG]HeI9IbIwJ+JVKzL2NdPjQoQqRYRqSiT!U)UzW9WFWiWlX7XfXjXlZH[K[m]5]F_@`.`/`W`_a(cCcGcfcwesf)fulGlplwm&m4m_n:oIokp2p7pbqLqMqvsYu+ufv&w6wSxJy,z[{5{b}9}?}P}U~#~2~q-!%-&?-'2-'`-'r-(1-(C-*C-*O-*{-.)-/x-0_-1+-1J-2X-2q-46-6*-8I-9O",
+    "xiang": "!;)*+50U5Q6Y8b9u:U;E;J<4APC{HGHvL<N~RbS4T.VgVsZ(_0`PdqmGmYmZmfqiq|v(w4z&zXzt|H-$3-$9-%R-&g-'+-'{-(&-(?-(b-*w-+_-/C-/~-1<-1L-1g-23-7g",
+    "shu": "*V*x.0.D2B4#4K5%5^6s9/;,@[BPF(GuIBIeK7LUL`MLNePDShT*UHW'W0`=bOc+e%e0gIhOiOjQmSqIs_u[|I}!~Y-/A-1Z-1a-4G-4p-8@-98-99-:e",
+    "dou": "$#,[,}1E@#FEKCOI_E`5jym%mMnMpCrIwpzH{.{~|]-'9-(F-.%-.&-.*-.,-..",
+    "nang": "Sd-(&-()-(^-9b",
+    "jia": "+L/23l=!?)?u@jF+FuI.P5P>TaU4UI`]a$a]bxdRjGl{m/q#qOrXu,x$x>y`-$a-$e-%c-%d-)B-+5-3J-3q-4(-7i",
+    "mao": "!M#i$i*:/66e:u<eDDE/E2E3HVJOQ9QNRXT}WY`|a&aSbrgPmkn!nJq>qcsVx,y%-,B-,O-4|",
+    "mai": "?W?XF>K^LgS{aKaxj(l+~g~h-!'-5{-7t-7u",
+    "luan": ";D?dAzA{L=NDW~o{r7w@-4'-6G-6h-:y",
+    "ru": "/M7F8G:1>AEgIYJ6KlLhQJSHU:VGW,inlEm`oSr+x_-%E-&!-1]-3)-3K-3x",
+    "xue": "$?,(A=C@E@IGLKStTnXd[p_[coe,hdibig~/-!_-#M-18-2k-6%-6^",
+    "sha": "%4&G052u4O8F8~<<<CFaG`H+K<U]t}xPzazi~S-,[-.h-/q-/r-2=",
+    "na": "*0.u.x4E9#>WIYIuTJU!Zt`m`pgNlNlypHu7wcyZ~0-!d-.x",
+    "qian": "'K.(/~0A0t1'2*2D2R2p6+7[8J8q:G;h>b@vA~CnD(EIElF:I%IjK>KLNNO&O8P}VR[*[u]u_q`!`&gSh;i~kjk~p9pEpOq;q?r6sPtYukvqwPwgwtwvx+{x-#U-$z-*+-*/-*=-+U-,y-,z-0x-37-4M-6z-8G-8M",
+    "suo": "#*1Z1^4Z797U:?;cFaFbJ7P{VJcuk)tatju3u9xi-/b",
+    "gan": "!3%)*1*t.Y/x1*1}3%4s91>GCmE#T>Y^bJbTcAcTcti}nE-+e-.Q-1T-2w-3*-:i",
+    "gui": "!q#o$.$C%x%})0)s,E/?1K1T?NERJ;N%P/R*RpU<V{WVX0XPZ!_*aHbod<dng>gEi#lilxuyvlzY{P|M~#-#K-*;-.7-.:-.=-/S-1F-1U-2%-2r-34-:Y-:]",
+    "jue": "$Z$l$o%6,%525S8#9NA^D=KiKtNnO6RwRxU!WWWbX%X5X>XBXZXiY4Zj]N^f_}a0c[chd<fCfDfwpKv)v:wCyo-)0-,$-2r-3<-3=-5g",
+    "liao": "$:,A,m,x1g7n8%:@:C=OA#ADJcM(RnRv`1b8f$fJizl&mnopv,wNypz.-&@-&G-,)-5t-77",
+    "er": "3><m<p=8=T?HEyLoS|U8Z6aBaGbjd3gshtjJl2q_x9|L}M-'/-(=-)Y-,Q-,R-/D-2)-3j-6b",
+    "chu": "$e%s(/)M.%.)114y9=<~=%A_DCG=IdIoMMNOPQS'XRXe[/`E`Oa,cmf=fTfcmaq3rnxlzW|`}p}|-59-8O-9|-:)-:9",
+    "kui": "#f#o$C'D,Z,p0v1m22=m=o=s={?NAFI6IJKnLyN1N;NbQY[edpf*fvk;mXt;tJ{0}7-$A-$d-%6-'a-'o-(P-(`-*6-+P-.B",
+    "yun": "!F'N*;/`/|0y4T6z7!7<7C8z9|<y=?@_D@FLG7IAIVIyK_K|L#L0MIM`QcV@a3b)b@bYc=j1kQm!m7mVmgnRo0o8pVrO|'|d}5~7~i-#?-#g-#n-#{-$(-$/-'N-(p-)'-:'-:0",
+    "sui": "!q#G#J%G&f)$)t+R+h+p5m7>7h7x8D9V:4AQCyFOFPNxV}Zm]c_QazkFkHl.uqv!vF}*}/}G}H}w-#$-#r-+|-,/",
+    "gen": "CQEHdc",
+    "xie": "';(f*&3c4k5+595I5h6g6v7&8>8T92:B:M<3>l?T?V?ZA&LRLTM0Q7QKS+S@SBStTRV*V^W4XKXOXS[B[y^<_Z_mflfnl,lU-!i-!v-#1-#D-#h-$#-%c-/S-2%-9Z-9q-9t-9~-:b",
+    "zhai": "%X)3,92q<?a@b]q=-9c-9d-9i",
+    "tou": "4G6sMyjqrItA-$b-&r-+h-8;",
+    "wang": "!664:h:i:j:k:mFvGmO>P*Q,Znh5iGj+jM-.N",
+    "kang": "%<+U2v3tg1lJpgugwmz={L-17",
+    "da": "!W.u/(/S84;H=<EsF*LHS0VCYldzi{j0j7j;k?kZt]tqvZ-!g-!|-#R-:S-:U",
+    "jiao": "$y$}'~+k,A,K.`/I1o5;8?8]9O:J?E?j@hA9AKB(CaEZE[KTM5NZP!RkR|WWWbX%X5X>Xs]Q]fa`d0dhe3gvh_hfi;i?lvnkoHo]p#q]v*xW-'%-(B-*h-+;-/Q-1>-20-3|-5k-5s-78-:a",
+    "hai": "5L?Aj9l/lnnro<-'!-'~-)Z-)b-+>-+p",
+    "heng": "?J?mMZT9vc-3o-4$-6e",
+    "peng": "%c&'&S'+'Z+,.V1+1@5@8P>~AACgE%FdJRMkRiRjU3eSgbh:s9v{zL-$+-$0-):-*A-,X-,b-,q-4K-6y",
+    "mu": "!1#N%]+V7`7n:@?.C5DeF~G%O=e/qKqPx!~3~G-#9",
+    "ting": "/s5l<t=j=z>%>&?qC)FnI7PWQ8ZJ[El=rUxKz`~K-!~-$g-%e-9F",
+    "qin": "$j$k*'*Q.d5c=>>MD1DAGZG^GkMRO8Q}RJS7TVWJWrZQc]pXpkriwix{}c-!]-$~-)f-+E-/c-33-4L",
+    "qing": "&/&Z'i046+60:ZDaHzQ#Wr[%]%_Agph+i7m<s4vi-!;-!<-!B-$7-%P-/}-2B-8X",
+    "bo": "%h&^'x(B(U*L+l081c2%2,3~4m:S>;>t?fA!BuC,DrGWH=I'J{L4MmO^U+U,U6VrW5ZL[d]Rd8d_eKf@m3pxq5qFrVtow0wxw|x(yT-'4-'^-(E-(V-(d-(g-).-)[-*^-+)-+~-,$-/0-1=-1}-42-6k",
+    "lian": "'K+D2+2P2V6w7b8k94;s<T=Y=n=q=t=u@+AZAcG(G,HLJTKDLELOMsMtQtS=U`UaVUW#We]0f2j?k(n0oPsZsyt`u@vKxfy}-,n-0U-0}-27",
+    "duo": "&U5|:!BtU0Uncrdfdid~eYg!g#g5plvUx5|E|J}*}3}S-&~-(;-(z-)1-,i-4]",
+    "men": "#{$*+XGRNEsuwVz1z6{>{M-#!",
+    "ren": "(o*,*e+#4A4U5)5y8x9$>?@AD)E}FGGDTUU2Y!ZC^I^Vg&gFi&p/p;pRqp-!W-![-#[-#w-&i-'#-(2-.^-3{",
+    "shen": "!U![$8$r$u%j)#)9,12e2g3T3U3q3w4l96:p:~>i>m?t@BFkHwH}JGK!LCPGPHUNX)Y1YHZ*[2^)_%_L_S_VfylPqRrj-$W-)W-.m-/z-0@-0|-1)-2N-4A-8b",
+    "ze": "#R#}$n(+*p/,0J1I=0BsKAS?Vz[(].a@b7b]c:jO-&t-6.-9s-:,",
+    "jin": "!#$j$k%M)8)G.U.m/J4W4`6L70:/B6F&F;GcGkJYM!TWW%WzX<X@]9_sb&bIc#j2j<k8olomp>sTwGy2-!^-'m-(Y-)$-7D-88-::",
+    "pu": "$5*k+j0$8LBTBUFXGGGaH~IsIt[D]]_|bEfInprtupv=xbyqyu|[-/m",
+    "reng": "(_DGiu|z",
+    "zong": "&Y'h+?3P3]4$5z6E6Q6n6x7(7M7X7e7t9%9n<J@MI=J=QU`eePeRf1t!v_-)z-*5-+K-,`-,f-.8-09-0G",
+    "lun": "&n'k*|6:9&='@4D:GLPk[1^`eBhAi)s.|k-04",
+    "cang": "15B$BpC<DUI~M#R3b/w8-50-6P",
+    "zi": "!i!j%()R*/*X*b+E/)2l354F4d6I6W8O9s<u>z?!?MB'CwE5E7ENE`F4GHHuJbL;NsXHYOYP[I_caFa[bzb~cZcpd(h3hQiJmbp&pmsGtRtuy=yO-$s-$t-,I-/{-0r-2P-4e-9)-9f-9i-9u-:D",
+    "zai": "#^7HGHb+g|i9n^",
+    "ta": "(d)i2~VAZr]wdBe7etfFfOfpkdkiq+sBt]tex1{'{5{;{={R{o-!s-#*-#B-/?-0t-2d",
+    "xian": "!:!O#5$<&#(F(h)X*3+D/D0V2k3B4%4|5A5c5t6,6]7J7r8Z8c8q90:%;];d;h?&@oAnA~B;BvDSDwFzG,LOM'M*MpOKO_O}PJT+T0V_W:WRX,ZXZo[O]d`>awbKb^cYdgd}f;fhgBhHnfo'oPqvr#r$rFrqs<sps{uww'xJxMy4zBzC{H|K|a|e|s|v}J~v-#T-$!-$$-%.-%H-'D-(M-(o-/T-1l-21-55-5x-5y-6$-6q-7G-7h-8$-9P",
+    "cha": "'0*049B=C9CjD}EYEdTAYyY}_1enr't7t[vryDz!-!U-'Z-(O",
+    "hong": "&*&8.*.>0o334=4P4f5i8o8{;z<!<==CDyF?HoHpL*LXNtXtXy^L`'`*`,gUhNhwi+p[q[rGrYt:z?zXzrzt{I~U~e-!n-.(-.a-3v-6i-8<-8?",
+    "tong": "!r$@%o&>*]+m.?/Q/i345D5N5`9PA@EjJPO1T,Z,cFj|ndq:qYqjxC-')-/L-2*",
+    "dai": "0,1n4x7%9AC?OMQ]TdW=Yd^xa7aLbqdff'gCgLg[i%jIk4p0~z-!0-)E-/>-3I-8N-8e",
+    "ling": "%d)D*M++.5/+4p6@9];K;U<.=KBqD[GiJJJmL%M|OiT(TcUjYVdLgZh/n8oWpts0x)zN|q~;~O~]~a~c-!2-$L-%`-)C-/$-05-2C-3L-6Y-7E-7q-9z-9{-:A-:T",
+    "chao": "!k,h,r2u6?9b;5<wXDY=]?cdh`mlpSwa-7w-8v-9#",
+    "chang": ">J@mA+DTGMH!UlUqZfs&sWy+z'z(z0zh{1{a-#d-.0-02-1X-2H-2T-92-:d",
+    "sa": "8g?^HDK{LYY@fnpQuwwS}A-!c-!s-&,-&P-)&",
+    "fan": "%0(M/1/40i2A2d6R7i8$;o<[AIBcBfE0KNLPM>N!SOVqXva=bcf<gEg_hThkj5p'v#v?wT-&=-&Z-&n-&o-(5-1E-5r",
+    "miao": "!J#m*=.10s6e6u7n9z:@D`M$l3-4s-6u",
+    "yang": "!R#!(C)Y*R4t;E;J;P?5OxQ/YX[T_0gahGqDswt,wX{}|.|y~:~}-!p-&8-&M-&k-',-)G-0]-3a-3t-62-6X",
+    "ang": ">Xo:-+g",
+    "wo": "#l&A,R,_6}>I@OAlB!G*HQLgP[Qbe:-(p-:4-:I-:L",
+    "jian": "!%#9#`$<$D$I&N&b','r'}(&(<(X+D.p/9/g0#0/0Q181k262I3_5U6Z788(899v:9<F>$>S@fB4BoCICSCTETE~G<GrHiI{K5K]L!LVLwN=RGSEU5UcVjVlWAWRW}X#X,YT[.[F[c],][]}^!_Y_v`K`Racaybkc|d?dKdye8ecephvp/p;qXrMrZs(tFtHu!ubv4vDvNvovpw.w1w5xwy:zCzD{J}d-!V-#;-#>-#O-#X-'A-'S-(7-(k-,h-0Y-0`-0h-1(-28-2h-37-40-4R-5@-71-7F-7I-7J-7W",
+    "fen": "#|%A*9./2x3=3r4S9';M;q;~ARD4IxKmO?O@TGY,`^`ff|hjnOpUvY}K~5-'W-'}-(c-(r-.w-1M-2Q-35-85-8n-9.-9:",
+    "bin": "%A8I::A)AiNc`X`cahailKvjya~l-$p-%G-%k-,'-,1-,E-,_-,p-.!",
+    "di": "!u#/%W')'.'{)<)_*U.v/*1=2c4+6c:);X<?=b>;@WDXD_FMG9G_ICJMJrJwJ|M6Q+QVR<TtX*X8XIYW[:[A^q_f`dcee_f/gYjKjtjukLkekwldp0qNuIyj|5}#-!X-#=-$H-(y-+n-,>-0>-69",
+    "fang": "!I!n(l4Y9*>TBjD;O!Y;^ed@lLp@siwn|,-,?-.v-1s-3E-51",
+    "pei": ">Q?(JBSwUrUsauc2hyiPnBn{s5y7|%|f~M-)#",
+    "diao": "$#&a,C,k.B1]5FJML|NhOaXxZ8Zv_M`ro~p_r!r:s*s[vawUxExR}v~D-.c-//-0%-2L-2{-3&-4O-9>",
+    "dun": "!<!A%J'3(%Pxd;eZf?fKfVjikGkvpLw`-$G-%X-*c",
+    "wen": "+C+`+z4B4C5X7!7<839)9|=d>^?gD'G!O'O(R/RO`ahShWiNu6zlzqzw{<{D{Q{c~4-#?-#{-%(-'f-)(-)4-.r-0g-0z-2V-36-3G-9<",
+    "xin": "!=(F?zBID7FkLZSyVtY3Y<gBiWlOo[pIrNv1w,xtyn{w-%/-(q-(t-)$",
+    "ai": "$F$|%l%~&e'M(:5=CbKGL6MN[K]k]{b2g(r9tWv^yK}1}8~s-!.-!3-'U-(m-1[-3l",
+    "xiu": "**3h5g7u8,9T;Y?i?yB*B7DuQ{ToV0V1`ur%rBtSu=u^uvxp-&K-'l-(X-,@-,U-/Z-13-3}-6d-9^",
+    "xu": "!$!*!4!Z#j$l%;)W+@+H3[5K5e5x6T6X6s7)8X9[9_=X=e?4D/IeJ)JXJfKrLxM/NQNTNUO[P$Q:UDX|YBYJYs[8[Z]C^^_3_ia^lUmwnLo*qovn~E-$<-$>-%T-%U-*[-,w-.G-.W-1_",
+    "tang": "$f'@)f0{3V3j3o;l=)@zA4J4LJQSR$RAcMc~eef&g+m]o=tiu)uTv'wDx[yWyd{1}:-#I-']-'h-5:-96",
+    "huo": "!V$S$^(*)>)S*Y*_*`+|,W10=$=4AuCJG.IhMTSI[g`0a<bacnlTpesrvhwoy6yyz5}y~R-!,-#S-*0",
+    "hui": "#J#[$G)N*i+s1;5R8.869I9}<9<:<L<^CxEbF1K2KeL8L9MFN,NuO7OtOuPZR*RyT_V:Z$Z2Z_[L]S]n^#^X_!_<`FaXbyh4iEjUk*qouqvI{6{j}3}S-!Q-$c-%C-%l-'R-/V-1#-81",
+    "kuai": "/w3}?]AWIJIql|n*-)0-1P-2.",
+    "cui": "'g,w2z3L4[697>:4<%<@?R?U@.AEANAhG{THVmd#uQ}Y-$|",
+    "che": "$;%I&?&@=JFjP@g<h~jA-$M",
+    "chen": "#t&M&t'`*[+A+{5{>FA}EKFRFcK:LmRBTDW6Y7Zz[Q[o^;_V`$arb;c`cad>dKeagKimjHmDo@pAt(|C|o~H-5T-7]-9l-9m-:=",
+    "xun": "!x$Q*p,^4;8MAjEnF:KLKSL[LaMcRzS%XwY#Y)Yt^R^T_+j%jajlkclsmzoTv`-%A-(}-)U-+%-1?-1H-24-5A",
+    "chi": "!]!y$).X.y/A0+02133,5W<#<$<D<H<|=@>>?2?D@SE9E|GeO%OHORR;U/U0UkVMYFZ9Zq[t`8aRcBc^d+dfeGj@jBkKkfkrkyl7q7q^qusx~9-&l-(4-(|-+&-.R-3Y-4!-4r-4w-4y-5]-6Z-8(-8C-9k-9v-:<",
+    "xuan": "!m!x#d$['5)k0R5?7J7d7w9K<G<_HMHNJ8K#L/MQMfPEQ?S<T)U$[;[W]_^&_abRgDi$jkl!q,ratLu?x0yl-#'-&2-)U-)k-0f",
+    "nu": "%a/.?;-)>-+4",
+    "bai": "+&.;3;3M51L^W3b:b_-#k",
+    "gu": "!/$J'B)A*~+P.z010?0u3g75:r:v;Q>K@(AfE)G>GhJ,LSOdOjSeXFYR^h`%a]bxgdgehYi,iXk,nYprpws]wwy.}h-%@-%W-'Y-(Q-+`-/;-0'-2I-3^-5?-6S-7%-9*-9+",
+    "ni": "!h#P*G2m73=i>$>}@pABA{DqLpOLP.Q!XXZt`~d`h.jhmCpnx3}L~X-(e-0,-2J-7`-:+",
+    "ban": "*E2s5!9;>PBgBkQ*QvVKd[iciipPqEwfzx|$-!h-$F-%Z-.n-35",
+    "zhou": "!+#U$x&y062.2@2C3+384:777o8p9:<B>B>o?#B^F@GoI$LfY][a]y^r_4_Manc0gkg{h,i0i<k7m>nCqg~Q-);-)`-)t-*r-+[-0(-3~-6f",
+    "qu": "$L'o(}.2.F/@2U3?4o5#<1<U<~>u?/AxDlG:HhKbM}O[OfOpQdRDRlSkSpT'T:U&WxX!X&X=YeYjZj^tcjcld%d*fqf}g2gWw<zfzu{i|4-)3-)5-*W-+'-,S-.~-1'-1;-3W-4l-6E-6[-7}-7~-8&-8+-8U-8u-9A-:/-:H",
+    "ci": "'=(A)%353a5579ESEUG6L;OsQpS3Yp^saqc.c_dSiYiZiaij}m-&y-'*-+l-,%-/+-3V-5C-5D-7'-:6",
+    "beng": "(l5@657k9iGnO*dtf3jYk2uiygz>-#)",
+    "ga": "g=onsfwH-.A",
+    "dian": "&p'v,j1iIiKRPXdXeVewq!x%|8~@-!E-%3-%4-%z-*g-8Q-:8",
+    "tian": "!:#;'1'H,j4w6D>v@:BRBXGvWmX9atnTr#rFsXx%xM{%{n-!>-!G-'$-3f-5J-5S-8:",
+    "bi": "#L#M'!(w)L*@*C+;.n.o/E/Y0(0)1/1<2r2y4M4m6>7Q8@8};7<,=a>a>r@lA[BlC|E*F.FJG~H:J<JdKHLLPPR!TiUfVhW$W)X^Yh^v`<a!aEaUbMblc/d|e~fPfQi[kBl)l^mjmym{q1truFvQx2z8z9z:zP{B{C|V-#,-#G-#p-&u-'j-(f-)I-*X-+x-,N-.T-/*-0Z-2S-45-4}-5b-5n-8~-9S",
+    "zhao": "#'$K.e00:V;#;?>*>1>2GdYf^ucScxorp<q.t6wL-)8-/G-3&",
+    "shao": "#+*y/r4r6%9>C&CqD^FyHSK}Tjh$la-#&-$)-,Z-/`",
+    "zuo": "(|*S+!+n/,/p4*7{?'D{F^H`HaJ?Th[(nWp||7-&t",
+    "ti": "!g#e')'?)Z)|*v/8285f6|9Y9y:{DXF!KgLIUzV&V'[qd)d2eJemexf~g8jxk=kLo&rDt)xy-%$-%r-*2-+m-,0-,L-,]-,a-/^-0B-2U-4;-4w-4y-5L-5M-5i-6r",
+    "zhan": "$H&b.33*6=9oGQLMN2N`NaOeWyYQZ/]h]l^B`#cghUhgiSl0n|zK~V-%~-&*-&N-&e-'|-*b-*l-.Z-1S-2y-37-60-7=-8i-:h",
+    "he": "&c()*(0z2i3@4?8r<N<ODdFIGFGzJ1R(SMTmV2WOYGYIYw[z^i`x`yaTbtcIloovq0vgzRzU{){X{m}Z-!7-!8-!9-#7-$P-%f-'&-(@-.|-1u-5$-52-58-6?-7#-72-7v-9n-:>-:`",
+    "she": "'y(`BJBKBLJuNpOgP(S5Y>^dagakc'cDg~{!{^-#h-)u-7l",
+    "die": "!g!t&w5M9G<k<l>pB5C6D~PmQ`R@V,V]YU[7_WcbdOdXdreigojNz+-#1-0S-2R-3d",
+    "gou": "/01%2)3g6t:&<h<i<jD>DhO[U#VBWwX;YNY~_(`ob5bgk_pMqHwl}k-#A-#m",
+    "kou": "!P!Z#r$$,P.2/W1OD+K=KFp$-5K",
+    "ning": "$P=R>!DpLevm-,~-64",
+    "yong": "%p&>A]DcIPP=Yre2e]l@mJmio9rHuVyh}n}~-%*-%s-'x-/y-0w-15-2A-2o-5`",
+    "wa": "%K,),?,E,`=N@r@xOyTuW1lc-#W-#^-#t-8w",
+    "ka": "?8U@qV",
+    "bao": ",<.~6h?,DgGYHcK`L4MJN^OJTeUdV4V5Vf`ib*d8q/w%x.zs~>-!6-&x-&|-(9-)/-+j-,M-/7-1~-3/-3A-6Q-9r-:B",
+    "huai": "=7N3N8VDVSeE-:f",
+    "ming": "!C!w#zEDJ'R,WuZ0m^n_q}xT-3.-6L",
+    "hen": "Y|-!y",
+    "quan": "$b%u/K0B5<6$7:9mEqI3NAP|SlXLZ#_)dkeIgzi=o5qxv%xO{#-#_-%M-&$-)V-*3-,e-0L-2^-9}",
+    "tiao": "!~(t),,J,g/!3/4.5F=S?PCdD^H0J@JMJNPnWdZ8Zv_McqdwjCr!rdtyxR-#%-,G-/o-1&-2;-9y-:C",
+    "xing": "!D#Z&$0Y0g6J@YApBFEuF7FhHrP9T#XVX_[_lMluo+pBqZqwrhwZx6|D|S-'V-(/-)p-+D-/5-0D",
+    "kan": "!N$=$g%?'^.QG&T%h8ho{4{q-%)-.+-:R-:X",
+    "lai": "#8#F/X0%2/2MG'H%MSW7Zqaob,c&c4k.mBsgxd-$q-$w-)y-0*-4B-4f-8%",
+    "kua": "50?>B~Z=d9dlq~-+s",
+    "gong": "'91*44474=8o;z>[OBXQXba6bZfzg$gtrG-!z-,T-:L-:Q-:W-:u",
+    "mi": "!s#p$A(w)')w*C1d2b2}3p407c;>;F?bClH{J#K'K/L}N#N6PaU*WZW[WcX1Z.[j[l_g_rjXo4oXoYo_r,z/-!K-66-7X-7Y-7j-82-9&",
+    "an": "!(!.;)?I@XEzGlHWHgJSUxZS[N_d`k`{r1s:x]zy}+~=-!w-!x-$1-(l-/E-4I-4u-6v-8c",
+    "lu": "!)#Q$_%|&L&d'])E)J*}+[+o071X1v2!2#2G2H3I6S8^9q:f?9A,AtBmBzCFCMCND.G@JcJeJtKcM[N<NINVR>SYXh[~aVb|d$dseCf#gxh^h|i/i>iTk5nwpis2sascu8uMumvGw&w+yr|A|t~x-%J-%_-)+-)r-*N-,3-.q-.t-00-1i-1r-1y-3w-4E-4P-6!-6>-6U-7;-7C-7M-7b-8l",
+    "mou": "!|7n:@Oq[[_Ue6t=-#9-3y-8!",
+    "cun": ".N2nA>lS",
+    "lv": "$()(*r+~0`5Z5~6S7_7j9q:*@wA(A8A;HkM,NKV=VZm'rJw#xDz_{T-*u-+*-5a",
+    "zhen": "!X!b!c!}%Y'%)5)T)b+I.A0X264N4w5Y7D7L9,:2=I?%B9H5I5IWJ&LnTpUSWaYKZb^pa2afbWc%g^hZi4iqkOnNoxq$r~s`tOu$u%wJyS|0|_~L-)D-,o-1f-3@-6R-8d",
+    "ce": "/%/U/^/t0G1W36F/H3HPJA",
+    "chai": ")&>HCjEJNzS9T[Xz`jp4wY",
+    "nong": ")v*j+q8C?cAXL,V~]iioipoL-,{-9a",
+    "hou": "#c$t0q3Z<M<UEVHq`MjgltmWq|t@-'T-+r-/B-0C-1O-2!-2,-9Y",
+    "jiong": ",M4~5uB#B&MeMjVIjFjjqi-$}-%h-)6-)X",
+    "tui": "+y=N@tJ^MAM^P?PYQkVL^.eof7jb}D-$n-$o-$r-%m-)l-+u-.L",
+    "nan": "@^G$HOQe[PcEk]}_~'",
+    "xiao": "#+&4&:+i,N.l/q0!0O0c1(1b1u5a9R<;>@AGFyHCKyL2LtNBNMP<RPR^S!S[Y5YzZUZl[ke*jom9r@xh~I-&3-*`-+8-+q-,!-,+-.I-3X-3p-5Q-6W",
+    "bian": "%`&}+8,;/=0S2A2W3W6k6y:$:+B/C4DLHUL{QBV+WTW}[5^/aJbfi^idieifihikiliviwkSl4l5oatPzO-##-#<-0I-0J-2`-3R-5&",
+    "pian": "0l6y:$<I?K@5WX[9_haIaZdtejsq-)O-)v-*(-**-+?-+N-+w-.z-5&",
+    "cu": "1P3)7S?xK)XAZDcjcvd%d*eOehf%fAfBo$-%<-7O-7R-7T-7s-8t",
+    "e": "#3%:%B%Z%y'<(9@bDRF}HXKfO#PBQ)WpY+ZF[?]L^2^___`NgMgii(j8kRkUl%mRpJpjrrt&w*xoyCzn{f|!|3|:-$?-$R-$S-%%-%&-%t-%w-'6-'L-(G-)n-.f-0[-0v-1h-2Y-4&-4<-4=-4z-6o-7$-9[-:3",
+    "guang": "%w?@B#B&EWgwj}r0-89",
+    "ku": "%,&5*D,@,T5:9E>{DoU1UbVTdPllnm-+o-/R-:p",
+    "jun": "&].=/`0<0CFlGCI1O/PeTXWhaeg?m1p^qfr&t'wj|Q}^}l-$j-'8-(J-)m-+F-/]-2?-43-44-47-7U-7^-7d-:Y-:]",
+    "zu": "(x*J+10H4}95GqHbIkYm^kd6eLtdu2u;yk|6-!f",
+    "hun": "!F#O#W#]F6I8JyXT[=_2hczo{d-'>-(L-.C-9J",
+    "su": "';+1+3+],X1U3.324X7K7U:?>,>/@{DWFwJsM+M]MiXWYE[r^o_lcyf(k$khksnZrR-':-*_-+L-/i-1@-5p-6~",
+    "pai": "0'1z1|IOhBjLtV",
+    "biao": "'c,!1D@3A,A1AoJoM=T@UoVa[3]#b?seuZw$ycz#-&&-&+-&5-&D-&E-&F-&H-&O-&W-&X-*~-+@-+W-,;-2j-7Q",
+    "fei": "%[//1!6M9a<A>O>e>r>z>{@GDFGjH$KhP_PuRuUtZp_GaObsvEyP|g~T-!/-!H-!I-&Y-&[-&]-'H-(j-*!-*,-0+-2F-9;",
+    "bei": "&i&r)`0'3f>wA[DfJ9M8PAU'V;ZLZwa1bVgch@iDlbm5mQqWrPv[wd|=-!l-#,-#C-+k-4N-6x",
+    "dao": ")=)H)x+B+K005F8h<B<`B_C7GwR7T4T7Umeqg9iwkYoq|b}=}O-.]-1n",
+    "tan": "'/6D8A:_:eBOBSGtM@TkW(WJZ~]Z]a_R_xa.a>bdm?n~o,oJqQsMx#y8-$x",
+    "chui": "&U0D@8GPsFtny0|n-$u-:_",
+    "kong": "%.&V,/0@;gg,sA-#(-4[",
+    "juan": "!{#2#H5J5V7Z9S:|;=?w@7AaG[K3SfUM^&mTrZras6u0vHy5yXzt}^}l-#'-&k-'.-6m-:w",
+    "luo": "%T&!&='n/>0M2]5>8f9M:n;@@)@UAwF8H9HYJ5N9OrRHS6UvW~X'Z1dbf`g'kAl:uEw>y/yf}s-$f-('-)_-*P-*k-+=-+X-/K-4#-6)",
+    "song": "&P.@===yGOY0Z]^b_?jcu1-$@-%[-'[-)e-,c",
+    "leng": "#>&h++L@eD",
+    "ben": "/&<(DxRuaUblk/sIy&",
+    "cai": "#T677P8aGSK+U>a5b[dxeQob",
+    "ying": "!R$v&C&|(P)c+_2K2^6U7/8`9^:>:X:Y:c=?A:ASDzEAF7F9G0G1H@HAHBHZJKLqMwOmQ0QPQiR0S8SgVPWv[i]M]|adbHc@g:j/m2twv8vky?~_-##-$.-$i-%g-%o-%p-1V-3g-4q-5*-53-5o-5~-67-6C-74-7>",
+    "ruan": "&u(>6^<o@QgQhDi*|(",
+    "chun": "#_0_4L8|>U?sA7C~G3G}HRITJZQgSUb(hKn}o/sL|T-0#-0Q-4i-4~-6{",
+    "ruo": "0P1#DnI}mP-0e-0{-5<",
+    "dang": "!,#s%2'((2/[1f2&CDF3GbKuN(S)UCW&]b^A_kd&kEvWxB{9~A-8[",
+    "huang": "'w+e0f1q7O>=C1F#H|Q@RtSuYv[V[f_Xd,kWt3txu}yI},-$,-'P-*.-0T-1A-2]-5q-86-87",
+    "duan": "${'&.I1`2X6a:#<r@kI/V/fdt.tGyG",
+    "ou": "*$=*@VA*KPM)MG]3^Yu:-3H-5[-6N",
+    "zan": ")},'1A1t1x3`W?^'^?apbCc<d4d5e}n1n7n<smuaubv2v<-((-4C",
+    "za": "%k4^4gAvA|Vpj*q8}r}}~)-$'-.u",
+    "lou": "$(0x1V=+=1C>IMK(QfRI]1a*g3kxu]yN|F~x-#J-+}-,*-5a",
+    "sou": "#v2BC;IQJ(L_M?Qum[o3t~uAyH-&:-&<-&S-'c-(R-*<",
+    "yuan": "!9!f)V.i0F6f7':.;m>CD3DYE?I?I_InLGLdO5PRPzQFQXQrT&TYUiUuV3VF[xa3bYh]iQj=k@kgl8lRnPphs'u(|^-%1-)9-*G-.o-30-3U-4V-5%-54-6K-6]-6}-8s-9!-90-95",
+    "rong": "+Q+S5E7@9C;^>FEFEfF5J/QhQwQxSDVEghthyb-)R",
+    "jiang": "(43u3|5P8:9L:F<>=.A2EaH^ILK.LAQjRM[w]=^W`6ngo>oF|H-#P-%5-12-2_",
+    "bang": "&<'A+%5_749B@uC8IcO!O*OvPt[s_olQlVt^y^-#3-,#",
+    "shan": "#:'m)K)q+W.s7g7}:D;p;r?pALATBaD&DtR}S,TCWjY%[b]r^ObFc?cVd^gGlAn#p!qtvBwRz4z5z;{@|P|X-'q-*J-+V-/l-1C-1D-2s-2y",
+    "que": "&5&E&g'6'7(1(N:P:RI]O6c}z}{*{l{p}a-4Q-6t",
+    "nuo": "+<+u3e3y4&<oU/U0[Y_DelkCt<y#}_~'",
+    "can": "+W1A3ELBO4Q.SjSn]2uJ-&`-'3-*T-+M-8^-8f",
+    "lei": "$X'F'b(,(H(I)7)~2j4h5H7Y8S8Y8j:=:d;t<s>5JiKWL.M4N*N+N7N@SPZ:^(^zhxnoqls?vPvvw:yz~<-!*-$O-$_-%7-%}-1Y-6<-9R",
+    "zao": ",y,~1R3sC#LlMPOC]`d1f4fNk%ktoCwA",
+    "cao": "3m>9C=C[EwJ_R:VbV|n)uc-*D-94",
+    "ao": "!T'Y<Q<V<Z=wC]DBK&R=T]Vy]7]8g]kom9uBuMuNz*}>}I-*S-+S-0~-2b-5X-8{",
+    "cou": "@ThJiK",
+    "chuang": "'_,H,L,q{+{E",
+    "piao": "$+).1D7a:;<RF|LiRCo?{3-%9-&A-&B-&V-*U-+W-.S-1.",
+    "man": "#{$*$c5X7]:<JkJzN)P2R6R]SoVw]>_tmuuCuUye-#!-%;-%y-'i-(Z-,t-,u-1*-2m",
+    "zun": "8':^U5]Pk|qqv+-1B-2u-4n-5|",
+    "deng": "$7'q.M/H1pCCW|`:f9l>mxv6yx}E",
+    "tie": "=VH8OhaPbndXq'qzv>vRx'-&z-'Q-*i",
+    "seng": "-,v",
+    "zhuang": "3:3nF)F]UBUZ",
+    "min": "!B%9&`.}/<1l6O6d:,:wDiSSb'pqs7tEzEzZ{K{S-1$-2n-3P-8q-8r",
+    "sai": "2'@cb6c9-%#-0_-2X",
+    "tai": "0+27>h>yB8BeD]GeLjdIl[nSpfw^-&/-)E-+7-/6-2$",
+    "lan": "17212Q4/8K8i9x;+I<JCL~N$N&VVVxW*W;WDWoX(X4]K^:_{fknxw/wFytz~{h-#Y-%K",
+    "meng": "$/$T$`(?C.CKFgH'IZKONvPgQZRaSFn'n,rKsby<~?~k-!(-!)-%F-(!-,O-/t-08-68-7@-8q-8r-8z",
+    "qiong": "#@#x,+,.,d,|/:/FB{EBM%MBP,P0cWdolFqs",
+    "lie": "5}=]?oEOOzU?csf^j`-&0-,x-.#-/J-1c-3r",
+    "teng": "2>2F7I@sAHM9N?R1Z@[`l1~u-)S-*B-*v-0s-97",
+    "long": "!p$a%n&=(R(S,u.!.6/;1*162N=P>'?6E<MxS^S`W8`4bSffu`w)|B}%}T~y-!1-*t-6@-:J-:O-:P-:V",
+    "rang": ")z+t,$8bMn]s^8^Nfm-.$",
+    "xiong": "?F?GCrY:YiZ4^a^mb'}e",
+    "chong": "*86b;:;|B@CBEhNfQRS$T5V)f!ohqhxZ||",
+    "dui": "&k'O(m5nLb]H]vhsj_v0v9ys{v|j})-$[-3h",
+    "rui": "#h.h6N8+D6E(KUKVKpMWMXO)P~r<rwuqxx",
+    "ke": "#u%T&5&~'B'Q(*(;*<+.,U,r6[9t<7C3DdHFLFOTQ5S}TmZi_Hd:gni.o2psqds/wyxQy)zM-$Z-${-%i-%q-){-+I-+y",
+    "tu": "*)*.*x,6/a@dFNG+GVHsIfcbe&j,jvnjp6porIs!s}wO-(h-)j-4*-49-4T-5!-5O-5z-9M",
+    "nei": "?~@;lNsE-'5-(I-/e-0!",
+    "liu": "&B&d'>'[,A6;9l;1;;</IgJ*MERWUTe|kbs#tctzuHu{xuy[ym~%~j-&>-&@-&C-&U-'b-(W-)M-)c-*@-*d-+T-.9-0m-5=-5_-7.-76-7[",
+    "shou": "6.9h@yC2uA-(_-:s",
+    "ran": "7v>ZDZIFOEOYTST`Tz-,A-,K",
+    "gang": "%.&q/{639!:N:W:x>Ep+s)ttwe",
+    "gua": "506}:z;%>xU<V#Z5[>^|cnedr#rFxM-&'-&1-*9-3k-6c",
+    "zui": "#G)C+15&8d;$KjRdXHi]nInqo!s$s8",
+    "qia": "%{'I?1HyU4dUnU-!{-+z",
+    "mei": "!L!_#)#a({)]+X0h3p;I;T?S?r@PE&FfI@QGTZdMg0mOnlrKtUtZyMyQ~N-#^-.>-.F-5(-7(-8V-8h",
+    "zhun": "+$,56(>UT8YAZ{_Pj.",
+    "du": "#K#b*f.T.^1,>DCsFBR&SZSmUyWqZd^$^D_E`3b%bNc)mMo(sDs|v}yL{!{^-!Y-#V-#s-#u-*E-,,-8]-8k",
+    "kai": "II`7gysvtbt{vCxGxvy@z<{({U-&;",
+    "hua": "%;&K'B3S8/BWD9D:GgIKK[MzR#XKZ&Ze[4[>]A]o_&`0p(p)rbsdunxN-*]-+<-5m-8=",
+    "bie": "FTNFObRmVuf6-19-2l-8|-:[",
+    "pao": "%e(@(O,!?|H>M=TeTfV>dDdTgfq/x.-!N-!o-7Q-7S-7|",
+    "geng": "56575d6m7,9Q;j;u<v=DFVGfavc1m0-%b-+v-/h-25-4j-6|",
+    "shua": "<nZR",
+    "cuo": "#1$z'G79?nFpFtImJ2J}NR[(erk0kzn7o7rEs^t[xqy$-7H-7L",
+    "la": "%_'R<*@>AbArG?HYM3PfQ4Q[SRi_i`l6v|z$-#0-,k-0F",
+    "pou": "0$UO",
+    "tuan": "1H4'V8a%u<-5V-6#",
+    "zuan": "1B2Y808N8U8e:Kb3fjftq)vxw?w~",
+    "keng": "%t&3&RZOr>t1uOxg|&",
+    "gao": "#R#g)4)6)e*m+N+O/v0~3i7E:5;O;TA'B,GILrMHZ[_:m+ryu#xny]-#o-'_-,4-,5-5R-5v-93",
+    "lang": "&7*n/dC(F{IXJ.JHPOQlZEg%lzl~m.rLu&xzz^{]-)h",
+    "weng": "#q:b;}=rJ0L(Qstg-56-7,-9_",
+    "tao": ")?58617A7N9W9kG|PoUhX{Yn[{^MdwhXjPjenzs+|r-!k-!t-#@-#l-#|-&w-'d-'y-)P-)x-9/",
+    "nao": "%z&q'*?a@&@ZAkP6R~YZ]Ju|x@zJ{O-.'",
+    "zang": ";S?_AmAyB$I,K@M#abambLbUb}rC-)A-++-,.",
+    "suan": "(z.b/m0;1BI^nn",
+    "nian": "':*5*P1Y3*C/K6evf5f[h=iCiS-/4-0;-1x-2K-4%-8B",
+    "shuai": "7>:4RNTH",
+    "mang": "!5!6&<&D.ZCvEXEiG4G5M_OvRaSAlDp.rsx:-)g",
+    "rou": "*!2w3X>3?l@aHdQC]tekhEt$-#2-#f-*7-0R-4t",
+    "cen": "+W.m1A",
+    "shuang": "(V7;CPuh}z~b-*M-*y-+^-5c-6A-7B",
+    "po": "%g%i/70I3'7i<,IlK,jLn%n[o1oKotq9uswMwz|=-$K-%a-)7-,N-.E",
+    "a": "@@s@x}|:",
+    "tun": "AYAeC~OlVL`G`IgJ~Z-&h-(0-.j-1q-8J",
+    "hang": ".k/T5*9HBiDHOAT#UAa9j3lJ-$C-%]-.i",
+    "shun": "!x$&$1$9BZKo-$:-%S-,g",
+    "ne": "!vY6^]",
+    "chuo": "'j0^6?8&9bd!e'e<h6iIirisk:narfu;w!-'B-:&-:G",
+    "wai": ".O-%:",
+    "guo": "$Y1K3R68=W=c@6@LA.GJK9N]Q&Q1RVUwV!h7j'kTm=pZszvVxm-'?-(K-(a",
+    "qiang": "%.157p82;G;R;Z;a;g;w@HCEJjKBLDMvPhVd[ndGeuf.tkuPurx~yAyw-50",
+    "pen": "<XHm",
+    "pin": "$V%A(8+w=^LcMaSLa;be-%I-%k-&#-(s-*q",
+    "ha": "4_NyP'QOqdxQ",
+    "o": "/}",
+    "huan": "#.#x4!565b6l8;:(:I;b><EoH#H,I_M<^>`Q`b`va/hpj9k3l/lsn9tCvSyJy{{:{r}i}{-*|-,|-/n-0A-0K-2>-3?-4+-7<",
+    "ken": "&#>8>Y>fUFV$`S`wsh-:?-:E",
+    "chuai": "A0ACeb",
+    "pa": "/b<zBdDrI)Trd7wr",
+    "se": "+b+r,#3688CULD]Ehnr4tauuxVz[{5~2-&I",
+    "re": "Dn",
+    "sun": ".f/L0T1rF<J%L$LNt|}]-&f-&p-5A",
+    "hei": "-8D-8E",
+    "de": "OMsoy(",
+    "kuo": "*Y*_/GH[H]O~r#rFxMz|{k~o-#.-#H-#e-$V-,V-,}",
+    "ceng": ".Lf:-*f",
+    "ca": "(E(Ykq",
+    "zeng": "$~'p.L5z7H7z9n:E;9]DbAc>m|roxk-.6-1K",
+    "nin": "?[",
+    "kun": "#7&H);*s+*5oGEPpUEUJUgV.`wo%sCy*z]zj{Y-)w-,<-,=-,D-0/-2G-4^-5'-6w",
+    "qun": "0<;_;`UVU^e.k&-7U",
+    "ri": "TMp/p;pd-)%-+(",
+    "lve": "+4rgrlxr",
+    "zhui": "&U((.h66729r:'@C@|[!b>c6j_o#s>sQvdy1})}Y-)s-+J-4Z",
+    "sao": "$O7m8<:A:HAdR4-&<-*#-*I-+Q-,:-0l-1R-2a",
+    "en": "J!",
+    "zou": "0&6GG=[)_CcNcOlem@mcn.|h-*H-+1-/w-06-2E-83-:.-:7-:n",
+    "nv": "2h=TSvSxp8wW",
+    "nuan": "-'M",
+    "shuo": "$m&+'$0cIvZaZc_>qttmv~x*",
+    "niu": "4H9.FxpTwq-!`",
+    "rao": "+i8)9FF,KdVvk}}B-'v-(>",
+    "niang": "nuoRoZ",
+    "shui": "#I)7*q*z@1U[ZaZcZg_>_KzG",
+    "nve": "&ONJ",
+    "niao": "@%E>K1T^UGVO-2{-6H",
+    "kuan": ",s,tAqw(-,&-,2",
+    "cuan": ",',Q,s,t,z1)1[fLfsrZw;yv",
+    "te": "?vRgr{xe",
+    "zen": "]V_y",
+    "zei": "S;a_bv-0M-1Q-2+",
+    "zhua": "2(AU-,Y",
+    "shuan": "5<@]z3{?",
+    "zhuai": "#1dmi'",
+    "nou": ";v=,tfv;",
+    "shai": "/Z121J1e2[[K",
+    "sen": "Ve",
+    "run": "$1AOz@zQ{F",
+    "ei": "ZH_@",
+    "gei": "5C9J",
+    "miu": "7n:@]+_w",
+    "neng": "?LR'",
+    "fiao": "WL",
+    "shei": "Zg",
+    "zhei": "j:",
+    "nun": "-84" },
+
+  "m": {
+    "yi": "-:~-:<-:;-:4-:3-:#-:!-9~-9T-92-8u-8R-8N-8I-8+-8(-7O-7M-74-6l-6c-6L-5z-5)-40-2U-2Q-2>-11-0o-/_-..-,o-,B-,3-+q-+[-+<-)X-(o-(5-'w-'k-'=-'#-&6-$'-!?~=}E}1|x{Zz|zzxix6x.x%wKw,v%uPs_rurorEr8r)pppdpXojoioVnxn<mLm=l1j{jvjkj/j(i^i]i6h6gYg0g)g&g%fbf2f1f0f/etepd~dpd;c~c`c@bhbbbTaE_T_>_,^g]|]{]`]/[!Z=Y5XVVTTgT_T7T1SxSsR~RyR;QwQ0Q!PDP6NbN^N,MZMSLXLIL6L$J9I}IUIIHMG?EaEHE4D!CwCFBkBTBEB9B5@2?Y?K?I>K>H>'=a=R;m:~:48c8!7,5g4q3&2}2Y1j1f1`1M1/1'0t.O.K,_,,*x*f(c'G&.&&%b%Y%G%$$b$6$/#x#T!9",
+    "ding": "-:}-8q-)?-%!vipfkGiydzY2Ik6u+B&^&[%_",
+    "zheng": "-:}-9O-7L-0#{1{,yjuvsRm*lNlIi;eheZe8e4e3d/`x_v]3[+ZSY8Y2XlVFTYT#Q1C@A!4W3w07.),]%*#C",
+    "kao": "-:|n{k][#TbL>>R3p/,",
+    "qiao": "-:|-:(-6A-5v-4=-3(-2[-.@-,2-$H-$5-!q-!=y/y$xkx4rSm+m!k]k%j:iSi(hqbvaT_wVuV6V$T%KgGaF^FKFGEpDSBCBBB;8<2b1C1>.}#e",
+    "yu": "-:|-:p-9^-9P-9J-9H-80-7t-75-6'-5g-5b-5H-4U-3F-2l-20-1F-+K-)O-)+-(J-%a-$p-$K-$9-!7}]}W}5{7zizNzEvyvwv9v3tytjtetcsqsos@rsq|pyp+p%oQn6m%l8kyklk8jfgvguf%eGdWbtb(aLaKa:`1_1^:]e]d]KZOZ!YmXiTDS`SUS7RpQyNvLAKsJKJJJ;IAH|HmHVDVD:D*D#D!CrC[CDC,B*@K=Q<><<<1;h;_:v9G908=7M7I7A535#2{2R1b1:1(0;/q.(.&,1+G+9+7)n)h)F))(+&*%!$M$D$=#V!A!0",
+    "qi": "-:{-:r-9{-9E-9;-99-82-8$-5f-5(-3D-2{-1:-0G-.j-(Y-(A-(.-'v-'C-&%-%m-%I-%F-%E-%:-$D-#N-!Z-!B}$zvyHwbw;w1u~t[tFn;n3n$m~l^kkiBg/dpdTcKb<aBa&`3`2`'_b_)^K]OYRY@X?W1TgT1SkSjS1RxQ4PbO@N]MyMCL]LZKhKOJ~JcJ]J[J>J4GyGJE<E,CyCkCjC<AEABA6@a@7@$?+>W<Y<N;5;49h9*6f4x3D,m+N+8)a)](`'4&V&1%K!C",
+    "shang": "-:z-:t-7k-3C-%S{p{*y:oAo@c8aA`@]}Q^G.BxBZ@P:h9>8l1T",
+    "xia": "-:y-:s-9u-6I-5e-3w-+T-*+-(v-'m-%n-!!}({Mwtwpm/logkeB_3YST)P~M<Jm4X3z2i.L.,,}*C)1%V%J$8",
+    "han": "-:x-8S-7J-3>-1A-/j-/i-*P-*J-(^-&C-&9-$k}[{Xtrrbp,n8lJl%dqbm_c_L]cZ(VLV%T]R_R^QRQQPOK9IJCH@l@^@?=k=Z=?<l8k7X6'3I3@1Z01.g,t**&{!p",
+    "wan": "-:w-:E-5=-/S-.f-+)-+&-&1{0z*x=wlwkv6tJt3ptpen%iGf_f?d[b.b,]1Z9Y|YmY=QOQDQ@Q,NVNNK1J%G9B2@h<m:X7}7<5:3]+&)t)Z%z!n!7",
+    "mo": "-:w-:5-0z-.(-#S-!l~j~b}!yQy#v!r_rMr$qno}o?iji_hR_(^d[cVzVkVjUHTyR$O4M[FrFMC$C#B~?~?o?e8m640`.8,%#m!x",
+    "zhang": "-:v-8k-8]-8L-3=-1byErnkDimiIh}hsfnfmfXey`Q]hYEPRNeFt<y<p8Z8Y,$(V$`#}#u",
+    "san": "-:u-8d-7q-5p-3c-*Q-)m-)l-)k-)j-)ix:iHg#T5AeAdAZ7s/%",
+    "ji": "-:r-:O-:<-9p-99-8x-8w-8'-8$-6t-4W-41-2w-1:-12-10-0*-/l-/^-/W-/#-.d-.^-.0-,9-*z-*`-*U-)d-)P-)0-)#-'6-&c-%s-%d-$V-#x-!{~z|~|f|.zxz?z(z'xlw;v^vJuZuLs$qAp=p;oJnfnEn(l$l#kRjsj0iBhYh!gEf=f<eseMdxdaczbAb*a!_K_)^k^F^C]@ZRYCXHW1V`VBV$UtU^TgT1RnRmRlP]P[PCOAO@O$N9N5K,JNI*HrHhGoGTFfF3ExEXEPE8E'D[BdB:@O@B>y>]=x<`;t;(9.9(857&6{6d5m3D/;.j+?(>(!&8%{%t%4$X$,#H#>#'!w",
+    "bu": "-:q-7F-,M-*w-*t-(d-'K-&D{B{?{6zPtOm#izh'gfd,bi[rY}Y{YfQHM,C>C;C:'=",
+    "fou": "-:q-(cvCBj4H",
+    "mian": "-:o-42-1d-0w-,S-,H-$`tktQsZqpq#aDNWJ^E=D~@p?|;k;,7G/o",
+    "gai": "-:n-9w-6e-+u-+t|'uYm@dy^AW%T`QYNaHZGNGM:M8|'{&6!,",
+    "chou": "-:m-:l-8m-5_-4=-2A-(m~{t/r!iKhld$b3aS_%[_Y%W~N?N=LJJkI|E?B_0h/O.s.p&3&!%l#v!m",
+    "zhuan": "-:k-7o-3G-3+-2y-.I-)n-%+~EzRyPreq<oXoRc0V28t5%)5(f'.",
+    "qie": "-:j-7Q-/`-+P-*@-#uw1u{iCcpbkaia8`fZoOZL]I~>;<`,E%g#(",
+    "ju": "-:j-:?-9m-7n-62-5`-5S-4x-4j-2l-19-0%-.Z-.:-,.-+n-)H-'d-$|{/ztx_uct_tNt$o{nvnqnOnMmqmil`jYj9j7g+e%d<d3d(an`}_E^j];[I[C[;Z^Z@YdY$XMUdUVR3M^M9KxJyI{IzIrHSHDF:EcDPDCC8AqAi?b?L?(>:<g<I;[:o7)4L3o3<30/4/..P.A*e)m%5",
+    "pi": "-:i-8@-7|-7P-2Z-.R-.9-+>-(h-(c-%5-!.-!,~|~X}2|L{2xhvCs<rwnumblFk7hWcibx_U]G[q[eXcUgS+OXN3N2HPB&B%<@8>7*6e4n2x.Q.G,n)Q'(%k%h%@$p#R!U",
+    "shi": "-:h-:g-9q-9l-9N-9M-8t-8_-7R-6k-6]-1X-0m-,^-,:-+_-+6-++-*>-);-()-'{-',-%.-#t-#7-!W-!>{>z|y{x<wQvqunu<r4pbpap[pVpMp*oun~ninhm;m7l0l/kQi{iuiQg!f}f|eCdodTc_c[aU^*[.ZyXYS6RXRUQ{QzQhMWLxLrLlL5HiH[H,ELBiAJ>n=}:{:s:W:5:'9v7C7?6n4=4%28.3.+.#,0)$&3$}",
+    "qiu": "-:f-:^-8m-6#-)u-)9-&+~*|FyTsQl4j2j1cFc&]rWkO%KIHeF8BpAn@s@b?J=o;^:l:k:j2D/T.k+D*'([!P!(",
+    "bing": "-:e-:W-8h-8b-6u-5B-4T-3Y-1;-0a-0[{mp1ngnZhbhah&cm[vY,W5R0QpN/MQLQLLJnJbGXE:@~4E)r%,",
+    "ye": "-:d-9z-9.-9&-4e-2_-0U-)7-(u-'%-$W-#,-!]{:zIxqxdwgoVm$jxjw[hZzZ!YyY;X:X6UhUcUUUSURQUPxP@P?P,OmOkMYMXIQHsHpCXBh>i<o8q7w753l3M2N1H0M0,0)).(T'b$V!a",
+    "cong": "-:c-8f-+r-)K}w}ptPq6eUeTeReJdZcnbUbIa3`^`.PTMxJ`HyG2FgF[D?<G9!8v8L8D8#5V3+1n0H)X(e(a",
+    "dong": "-:b-6R-4n-3,-0`-0P-0>-,u-,G-,/-'I|/{)y&u^tXr*mSm>lKl?eNc3_H^LZhX<QrNILfJGA8A+>L<j:n4#18.0",
+    "si": "-:a-9B-7T-7R-7N-6H-5f-5X-4,-3y-2+-1[-03-*#-)x-)5-'F-#m-!u-!M~)ugtdsJqDoaj.gUd%cHa2VMSDNOMeL{J~I/H!C'@X?O?8?*>^>J=,7[6?1</R",
+    "cheng": "-:`-:%-:$-68-4_-2z-0K-0C-(@{H{A{,zYz#ywu*pSlth%eZb^al`(_v^t^U]A[zZFYPXDWQW,VRVQVFQJQ)N}MnLtJPJ@IyF=F<F9EeETA!?0>e=_=G<8:?7f7d6/05/f*6*2)c%x!'",
+    "diu": "-:_-:[",
+    "liang": "-:]-:Y-9)-5x-5[-5>-5%-1G-0B-&J-%y-%7-$Ly2bWY7Q*KJIwG%<e:_",
+    "you": "-:Z-9#-7w-7=-7'-6X-4;-2*-0t-*p-)f-)c-):-'~-&u-&>~n}bvRuAq=pZo8o6m1lyh[hZh(d]d$c|cqbY`,^xXkTaS4OVM;LAKGK=H{GFD}DJ@8@(?V?>=g;C:b976B/j/i/O.b.D,?,>+Z+Q&g&d%O%!",
+    "yan": "-:X-9d-5]-4]-4O-3;-1u-1Z-1Y-.a-.[-+:-*O-*F-*/-*$-){-)z-'%-&=-&2-%'-$N-$G-!L~~~a~Q~5{GzAydy7xLx@wMw>vPv>uFu@titfrgr?r9qwqfqWpKmhlEl'kuktk0jUjKjJjIjGg<g*f'f&c$a7_5^~^8]w]?Y3Y'XhXPT3R8QZQ.P`P/O}OrJsJ<IFIEI5FeF'E^E.D`D3C_BhBG@,?P>M<V<&;K;D:i:H9R8y8S5O5I56544k4j3u3X3J3B3?3!2~2U1t1E140Q/U,w,g,d*Q*()V'$!3",
+    "sang": "-:V-$J-#}WgK{KzGV",
+    "gun": "-:Ub6JY9W93",
+    "jiu": "-:T-:8-:7-9|-9v-5A-2p-.H-+|-+e-+]-+A-*(-'U-$wvdo(gogdgc`IZ2XkXBXAW9TGRhO#NTM+LsKwFxD;BW@v@Q5$/b+:%X",
+    "ge": "-:S-9Q-8R-7!-6|-59-.O-+l-)(-)$-(e-(D-'4-&Y-&?-#s-#`-#J}6yhfLaO^^^R^=]_ZkX*WHULTML4GsE!CW9l9`/T.f,C+k%Y!,",
+    "ya": "-:R-9>-9<-9:-7m-5K-0W-.$-*H-*G-*A-*?-(s-(H-&n-&'-%;}L}@}9{j{5zbxTuBu3t%q2n,lVlUhKh?[`[ZZZY:XLN'KlIsIFA0A,<r9,8//g.^,[,E+/)}'b%h%J$x$K",
+    "pan": "-:Q-0S-/B-)R|Ys3i1[O[AW]U=MMGu?t>}>k:c9s84684l0$/w&C&/&,!*",
+    "zhong": "-:P-8A-83-7x-4Z-0j-/C-$Tz8ysx$vMvHs^o)i)eqe0dddYS`MKC2@=?G4w2k.T$F!>",
+    "jie": "-:N-8i-8<-5$-4~-4W-4!-3j-2]-/@-/?-/)-,r-,a-*j-*i-(e-&c-%d-%H-$m-$8-#q~zzKz7vevOuit>sasVsCs(qSpIoJnpnln*m|lCkvkbjrjqjgjbhihIeEbr^S^;]_[,YZY+X{XwX?W_UmUOUJS9RINXNJL0KxKoI~I1HqHgHfH8EOB,>j>;:z9b882?/'.6+0)H)8&K&J%g%]%M%##D!~",
+    "feng": "-:M-8:-5L-4N-2Y-0]-0&-0!-/{-/y-%p{Rz9z5w}w9v7odoYl}l|l5W4MkKPI.E[?m?h=S;Y;#:R8e5Z4i3V3*2g1h/1,O)u%C$B",
+    "guan": "-:L-58-1=-0l-*vphb@b?af`LXqW*SRJ+G*D(B2>w<v<W8G5Q0E)W(4'e$_$0#Y",
+    "kuang": "-:L-22-0V-,b-+V-+N-*v-&o}&xNwFm_dJcW^z^y]>RWQkP#L)?N>=0X.X.U",
+    "chuan": "-:K-7o-3G-2t-.K-$]}Tz3jFjDPMIRIDCbA?@i,H+<)7",
+    "chan": "-:J-91-2y-2R-1~-1/-/:-.k-.J-.*-*~-%$-$F-!n~P~@xBszr>q3l>kJkCkBjXh{hpgWdu^r^lXsX+W;VqVhU#S9RYJsJXDEB#=v:^967o7n71655d5B2V1I,#&v&u",
+    "lin": "-:I-9U-2g-0e-00-0/-)v-(l-%PxDlbk,gIgHc=bob)_=_6[MVGS?Q+PGN!FIEmED<U7j7H5h3819+u)S(I'+%o$Z#M#K",
+    "zhuo": "-:H-4t-.`-.<-+#-)X-%U-%T-!G}+y@v,tYeu[BZ,Y~V3UxU[StSHSESBSAS>Q>L#JuJfJ3J,IoGcDh@j=|=h<b<J7%6S5[4}4N3_3#1>.h)e)N",
+    "zhu": "-:G-:B-9]-7d-7G-7?-6Z-.&-,t-,n-#T-!z~4|=xpx3qVq!ploNnWnIl*i>[[[WT&StS;OqO1O0O.N>M#LzLFGWFmF,DhDbD^D0BH?&>Q;b7t7Z6s5x5>4V4A3y2^2@1+0x0?,K*K%B$J",
+    "ba": "-:F-8l-7`-1E-)^-)@-(b-&M-&I|_{[x>wCv0mumIj,fq]o]I]6]#[GZ)O+M'D,5?4R0+.m+@%N#/#!",
+    "dan": "-:D-8~-7{-7H-2r-2J-/V-,,-+G-*~-*{-'f-&2-%C-%B-$v-$F-!m-!b~[vTsjiofTfOfEb$aga>_q_P]4[VXuV@V?UjRiM/BeBSA*@)>r<?7.1I.@+#'O''%f%:$H#`#N!F",
+    "wei": "-:C-8{-7p-7e-7A-4s-4V-4Q-3~-2x-2$-*h-*b-*O-)O-'q-%q-%k-$s-$S-$@~.}o}m}S}7y1xJueu7u$snsUsHoqoQnxn_m9m2lHl7kskZk=jljTiniEi9gme=e:avaPaM`?_JYnYUXbX1VEV1S^PuO5L*JqIOINHkD@?g>c>C=n=$;S;N;0:N:08?837i6R6G5|4]4>4$2]2O2F1]0u02/$.r,[,P,I*~)h);'f&H%!$N#X#U",
+    "jing": "-:A-9C-9+-9'-5r-5%-3A-2O-1N-0K-0C-/9-.~-,y-,k-,[|i|g|cyIvQt:t8t+pojAh|fdfZeeeWb/___NUoT+S&S%Q:Q3PIP0KZJpEvBsBn@I@H>m>%=><87]6#,r,'(^(B(<%($u",
+    "li": "-:@-6_-5u-5k-5Z-3s-2&-1z-08-/Q-/=-.o-.G-.'-.%-,l-,&-*L-*I-*:-*.-*!-)|-)Z-)X-(z-(2-&U-&0-%g-$C~g~`~A~>|`yrxEu+tat#rjqYq,nAmkm5m.lzjag@b]bXbRbB`l^&]q]gWYU@U3TsTlSpP_P>P%O&NmN^MqMSLnLcLYLUK!JoJdJMG1ECDuDjD_D8D.C/C+?k?[?Z=Y=U=/:/8z7@6C6$5H0a0U/>/=/#.z,~,u*V*$)z(t(_'x'u'l'W%R%F$l#P#A!Y",
+    "pie": "-:>rVV]V[PHAD8>",
+    "fu": "-:=-9c-8[-8#-7z-73-5y-5m-5j-5U-46-3v-0d-/|-/J-.R-+h-(=-(6-'[-'S-&E-!s|<|!{]wvwWvVvRuru'tDt,sbr5qJq/pmp3oWmgmFi~ifi7hzh;fwfkeje?c{ct^w]l]J]&]%[Y[QZ+YfV7S}SLS)ORN+M]MGM)M'L1KWJ2IYIPHKA:>~>Y=W<w9c7T4S3d3/0.+2*t*!()&m&b&N&G&@#h!)",
+    "nai": "-::-6v-4iw:vhv)qxq(g6WVV{M$AC;<%`",
+    "wu": "-:9-:1-9D-97-8>-8%-6;-5|-4k-2k-2:-1q-.T-,|-,C-+y-+/-*V-(U-(T-(J-(?-(+-&)-%K-#v}4|^zLykxvvxv4u%tjthsurTownkn9n+lmkzk_j6hFgQfudbd`d@c'b[bZbKat_]^[]e]d]]Z4WGTTS7RoROQENvNtNoM&K#FLCVC=B3@[@Z@S?{>T>*=V;^:,874(3C322*1w/V/A+3*4*3(|(P')$h",
+    "tuo": "-:6-8X-77-6h-6.-'a-'G-%[-%$|Sz;v8sNrRmck'gzet]i]`[H[F[EZMYuV1NgN^MTM8ITI+GbFBF0AvA_@d?`?_?^<k.K",
+    "zhe": "-:6-9[-*K-&L-%9-$o-#T~h{Er^bp`6]H]'W_ViQGQFNgM=JWFwC%=m<E",
+    "ma": "-:5-9Q-3o-(r-&!-$%-#4-#3vUs1rWqNhR[cVzNQH2:2/&.c,4+5(x$[$Z",
+    "me": "-:5~t~j~UhR6I",
+    "yao": "-:5-:,-8;-6D-5@-4?-3_-2q-+m-)&-'7-$b-$2{}zBwUvGu_svs=pro3o,n/m,l,k#j~h^e;e.cqcRa%[oX2WrW@VdV$PkP'NGN#LuI;HBH9G5C!BA:B9J444&1|0f0(.E,;+r*D(~(l%S$%!t",
+    "zhi": "-:2-9Y-6f-5^-5C-4|-4d-44-3y-2,-/}-/0-.U-.+-,v-*e-*>-)C-(W-'v-'8|||{|T|:z~z{yFy@x$v%uNtsrGp&m7l0j+iridiahyh5h3ggf5eYeKe4e3dmdUcU`6`*_$^{^E]Y]F]E[u[HZtZpZ]Y{XvWpWVW2V{VvVtUKUJU>TjSMRwRgQ`Q/NOMyMcM2LqLhL6K~K7JjIuI]I*H+GHF_D|DnCAC6BiAJ@t@O@N?v?T?3>V>3<L<!9e9S9B8}8@7~6>4`1_/9,x,^(R'w'[&3%c%;%7${$z$k$E",
+    "zha": "-:0-48-.N-.=-*C-(w-'X-'?-&K-$j-$O-$Aw/pNd6]s[m[XZdX4WIW#O2M7M1M0LvLlI?H4Fv;X:67u5#4@2N/p&d%.!M!H",
+    "hu": "-:/-:'-9j-9F-5E-0Z-+U-+L-'h-'W-%n-%Z-$_-$4-$1-#>-#2~k}v|;x1x0x,uGt4sEr]r[oxm[iphxfxfgdFd*d)cGa{^V^6^4^3^/^.^,^']y]9[xWWW$SXRFR<OjN(L8I%I$GEGCCR@9@&?f?7=t<.<+;$9E99986Y5s483S2;1a.J,S)b)+']'['I",
+    "fa": "-:.-8!-6y-3Z-0R-)]|A{vy)uwm4fKL@FO?X?:=z5R*[)L%8#.#+",
+    "le": "-:,-9R-8r-,J-)2-#1d}]qH`G5@z??/b+A",
+    "yue": "-:,-1g-1e-1`-/P-&j-&@-%A-!DvAqrn1m^jec,bubS^]]g]8Y_U@OpOoOWN8LcH`G5FTDj?'5e0J+*",
+    "lao": "-:,-6~-3!-,j-,i-,>-'$-&N-%z-#p-!}uSr`ljk/cY_f_eYtVZO:L=G5F!=O='8%7a3{/^./*<$f#c",
+    "yin": "-:+-7}-6^-0t-0;-*c-(j-(V-%o-$d-!T-!+~l~+~$}`}$|&{w{YzXz:w_u=t0t&p:n}lnlLl<jdg^g>fya@`i`B_u_t_0SMO[L:KKEkE@E1DKCwC_BYBGA5>l>d>U<5;~:}:i9}9V6^6]4).],|,j*I(U$7#k#_#:",
+    "ping": "-:*-5i-0]-/z-/s-'u|Qz1u/ngnZmTi[iJi4heh&`0_zMfEU?6>6=A<D3)*v'F';&_",
+    "pang": "-:)-*B-#ww}r|o2h9h*ere<S2@<?y9p4i",
+    "guai": "-:&-)_wVcuc>[KMbLw",
+    "sheng": "-:%-:$-4H-.X-.Q-,?-+0-(9}=x{x7u*k}_VS[RGQJQIOeMuIyG~E{BzBF?%;k;@:q7G2u/M.N*h)i&y&s&`!'",
+    "hao": "-:!-65-3k-2)-)6-'j-&_-#k-!t-!Y-!#~xxRvacOblRDR'QBPePaPWP7J!A~Ao=]<Q9j9U7S6c5N5@,/,)+}!y!q!h!f!c!_",
+    "mie": "-9}-),-':-&Hq7hk^uWeDr9m64504!",
+    "nie": "-9}-%*-#e-!O~m~D~5~2}#q'q&mFkTjujLivZ&YVY5X[WCVsT|T<MVG@DW=@:Z%+",
+    "xi": "-9y-6&-5l-3i-3#-1B-0,-+?-+*-*n-*R-(P-'x-'>-'6-&/-%]-$X-$:-!p-![~T~8y?xWwnw'tgs;rCr@nsncn`nRnHkgk9jpj`jZiqiOeceOe9djd_dEcscgcZcKc/bqbeb8ay`r`p_s_r^V^6^4^3]_]O]HW%R:QKQ9Q6PEOzNON)MdLZKSIdIGG{GUFkFRE|EjCzCuCmCMCJA4@e>X>S=f<[;i:+9h9)8p8/8,7N3e3R3K343&2Y2+2)2%1q1P1O1N0}0P/E/?/*.{.t.#+p*r)|(#'h$1!k",
+    "xiang": "-9x-9,-9(-6}-3*-1}-,4-,$-*0-(x-&r-%L~Ww~uXk5j)h7gqe'abQXP5LWH^F1DH;!8:*E'g'T",
+    "shu": "-9s-61-5g-55-54-1|-1F-)Y-'3yNyGu[tGq4oNoCnWnIg}gxdWchcgcIbt^X].Z.Z#Y>WBU9T'S|PvPtP*OhO1O0O.N[NBMtL`JtFuFYEpBuBKAaA`?c<O8[8H7m7Z6m5q3Q1k)f(i('%h%e%d#O",
+    "dou": "-9r-61-1T-1P-(~-(N-&&-%|])S]SPN&J}EwAm=d;n6<.$$v",
+    "nang": "-9o-1s~d~;~1_QWwU{TkOwD+<n5b5;",
+    "jia": "-9n-8<-7Q-6w-4X-3X-2]-,}-)S-&?-&4-#F|}{MwIwDsrs,pvpImei,e[eBd^cA^J^G]L[d[Z[,ZWZ8UhSYSVM`M_K/ILHNH:G^ENAz?H>&=L/3,E,B*n*d&f%0$8",
+    "mao": "-9k-1,-1(-0|-0z-*dzLwksLmOkzi?a=_?^(S/QvPrN4M@I'B!AcAW?9;F/Y/#,J)E#$",
+    "mai": "-9i-7I-,{-,*-*}-#${Kx5",
+    "luan": "-9h-9Y-9V-*^}C}Bvmu0qXq:q$m)jOZ[TvOuL2D69K5J59#4#3",
+    "ru": "-9f-6K-2C-1K-(N-#{-!$vkv[s7qyq)jciX]kZgUTP+NzL(E0@W>7;Q9u6b+^",
+    "xue": "-9e-.x-(Q-!9|Bxbq>q+mmmMjzf=ckT/SlKvFc?!>u9j7>5y1&.B%L%<",
+    "sha": "-9b-4c-3?-2H-/,-.t-*+-%t-%^-%H-%4-$R-$0iCgkZEZDW<N{NrK`H?FlCaC3BDAl?w6{2P,v$g",
+    "na": "-9a-1*-*|-(R-(8-&T-#_v=tx]0[LZxZgYWWL",
+    "qian": "-9`-9Z-9W-8T-8B-7l-7(-5q-4w-4^-3g-31-2<-/r-/[-.u-+4-)}-&4-#u}/}.zaySy4xZvgt7seqtq`q5n'n!k{kVdObgbLaN`f`<]Z]N[J[1ZCYLY=Y!X7WSVgVbVUU,U+U)O_NwJ_IbH3GiGPF%E7DzD'C~CeCZC7@]@M>$<%81806O5S4B2Z/J/B/2+%!l",
+    "suo": "-9_-9=-3]-&8-%x-$&-#j-#gu&s(as^$ZEZDW:PjKaJz:E9y+|)w)v)!(]",
+    "gan": "-9Z-8S-7J-5&-0=-/u-'c|Ro'o%o#o!hfh_dqa5U~T]T6R_NuMDKLH6FNEd@??;<:8f7_7/55+;*w'#%?!T",
+    "gui": "-9X-6q-3{-/(-/&-.7-.5-+Q-+J-+I-+F-*%}3{zv2u;s?rhrIp|k$jpj`iLhLh,gmf;cMVxVVTiThRCQ2O%M9L.KeIeI`GTGAG<G;FWEQE)DXDQC*@v;;:H4t,Q*A(r(D'q#X#0!|",
+    "jue": "-9S-50-3f-0X-/R-.?-+@-*,-)X-(Q-!a-!R-!9~I{PxbvAqRqQnLnJlPl@k$j}fmf>_k_Z^b]7Z`Y~Y9V^V;TnSgKTF7F6D[CvAG@:?!5P2|1d1>0S0G000/+z+M+)+'*](n(G%L$3",
+    "liao": "-9R-2|-!rrLovomo<o5o4nKkLk+k*g]gG`/_^W9VaV9S{SZPLO~FxFA8Q8%4f1;0V0R+q(H%[#g",
+    "er": "-9L-6v-6T-1r-1a-1_-/1-'B-%hoHoGoFmAg$f~NiLCLBK6FaAt>[>90%*F",
+    "chu": "-9K-5N-3d-3R-2K-2!-0$-/m-/Y-/I-,t-*)-!o{$x!s>n5hjgXcj`g_SWxW$VoTNS=NEIjI&HoHQF|E}EsESE#DsDdCzCG?@9r9q6x4N/+*+(,&;",
+    "kui": "-9I-3{-/4-+I-+F-$U-$;-!xwow4s/rBo*mQjVjHb]a.a,_y^BXgQdPyI2I0E&BV:S7x2l.q!/",
+    "yun": "-9G-7r-3q-1p-+}-+x-(0-&^-$^}xwEvsvEqOb}aca4a)`c]2[yRNQTP}MwHWF@BmBaA&A%@0=3=!:!7W2h2:202(2$1b.Y+(&P",
+    "sui": "-9A-5#-&F-#U{3wytvr1nwn4kpRqEWC1C0Ab=H9[7+6z5}2C1g0~(/'p",
+    "gen": "-9@-9?-&pX=X'L7",
+    "xie": "-9=-9!-7[-4J-4A-4/-39-1{-0s-0c-,w-,+-+'-+!-*k-*Z-)7-$(-!C~e{ry_wrw8w1u)sOq]opnenVnNm$jrgJeFcT`z`p_BZ~ZWZ8X9WnWMV*UiUFT}SWRePXMZLIK@JwI,HOH?H/FlC]?K>p>A;P9h7B695{5!4Q4P3b3E2,0w0s0O,C+k+e)8",
+    "zhai": "-9;-6B-4f-4*-3E-*K-*C-&c~zw{p{os[u[2YxW/UwU>SiSfH#EL#t",
+    "tou": "-98-4'-4&{$wNv'sqs@aK]*T0SQ",
+    "wang": "-97-8v-87-1JvYo7o1o0o/eoeiefe[dldJa}]>RTQ(OEODO=N1JD@J6;+E",
+    "kang": "-96-8)-+X}|rmkKg|dG`8]f](G=8_4d.a",
+    "da": "-95-.N-+f-'f-'R-&m-#~-!J{hxrw[v*d'ag_q]nWZVJ@f?}:<4Y0p&@&4$#",
+    "jiao": "-94-6n-6D-2q-2j-2I-.B-.6-,6-)B-(<-$H-#M-#K-#?-#(-!^-!=~IuUu1r=r6qcm+m(k1k%k!e.e+cJbl_~_i_KZjZTZ5X&W9VlVCV(ToTJT?T,SwSuSgSSQbPgP2LOIpG!>!:l:k9Y8w8<7b5[5C443,2b1>1*.9+l*X(5#e!v!^!V",
+    "hai": "-93-'V-'0-$#-#h~ey]vOq;pL[!A3=N3[,C",
+    "heng": "-90-&B-%QuJcXcLbaVKL/FiF&<|42*B",
+    "peng": "-90-5,-3J-.F-+o-!~zgyqyYfUe|cyc+`%[tZ?Z6YkXpWvW4OTKCJLIlIWGGFn?6<R<D8e8]7Y3Z1h$a!u",
+    "mu": "-9/-8H-/~-,=|Ey9usuSu%m<i&i!`[`Z[TPVPUO7O'I(FrFqB1AwApAX@#4h/a/_/X/L.S&U&Q&E&:&9&(",
+    "ting": "-9*-68-60-4C-*M-*7-(]}>t}sxk~hVhJh)gBg?g;dzZ<K]KHH~H(@u=6;]6u453`3^*.&^&[",
+    "qin": "-9%-64-1^-,8-(g-(f-&#-#f-!Q|w{Fshs.p.p(o~oyogkmkVk2k)hOgbdO`C_G_F]N]5YlX,X$V/UlS@R=J|E`Cg@3:$7'6(*J)R)M#l",
+    "qing": "-9%-4b-3<-2(-0A-.b-,O-*S-%1}V{1wfp7hQgwgeb4`9YLUpUoQ5PsJ'G/EME/DcBnBFA7A.A(<';w;B916X&x",
+    "bo": "-9$-8Q-7`-73-6,-2v-2f-.e-.]-,Y-*y-*w-&M-%#-!h~oxbq*k3ibeu`s^|[3ZJWyV=V5UgUfMFM'KYHKEVEUDFBj?E?,=e;};W:L2//l.?,9*q'`'^#2#1!Y!8",
+    "lian": "-8}-34-.;-+E-+D-#V-!XzUwAvusMrKr/iegjd&cS`F_{^fW.T=SrJhI#GiGSE7DfCHBlBP=%;6:C8j8A777$6p5p5l4<2f1y0z)x)3(X",
+    "duo": "-8|-8X-02-/2-/$-.c-.V-'`-&y-&e-$O~}~S{|{{z}z]xzxywiwhwHvtvlsNo+lOh1ae_oZrZqYJTET>T8T.O)O(NfN^MrMTMSM&KuIRAh?`?^&D$i",
+    "men": "-8{-8G-53d8bcbCaz_9_&]VYgS^PZIh@>3=1,+((W",
+    "ren": "-8z-8y-8s-8U-8F-88-/d-/cx;vSu`n:n2d|dwdv]XO,NiLPLMK6J7/]",
+    "shen": "-8t-7V-6i-6/-5d-1Q-)l-)k-)j-)i-(V-'i-&}z^u|u>ttsys.qmp_pHorn7lui(fp`t`b]b]4WPTFR4P9P3M:J7J(IHHRA9@+=D<0</;f;e9?671?*g&~&w&q&e$G#{",
+    "ze": "-8p-6B-4*-/M-.{-'X-%d-%2-%.-#9rcl:iAi#hU[~[2Z$UwRKR7G)C.@q?n?A>n:(9U7C5[!e",
+    "jin": "-8o-8j-8d-7}-6<-35-2^-2=-01-,y-,k-,[-*X-*'-%o-!F~y{Fzkz6y<xPvFt7rfr9q~p(nyj'j!gbb+`CWfSOQaQ_N7HEG8CTB[>E=q=M:I9$6~6g3h2M0i*Y)y)K(z(d(@(*",
+    "pu": "-8n-3$-+k-!S}^}O}<{BzPy(]p[rY{V0UvTeTdQ;PiPPP&O*M,FZE_AS=`:17k6T614r3a+v(C$m",
+    "reng": "-8g]m",
+    "zong": "-8f-5:-4y-43-3KzFpikxkrkNeJcdaraVY^XXX(W&Q|O>MxJQIKG28L8D8#3+1n1c0{,b,R%E#w",
+    "fo": "-8e-8;-73|IJl",
+    "lun": "-8c-7i-6S-4u}l}Y{.t*lSlRb9[{YMJa?j<6:3",
+    "cang": "-8a-89-7h-5;-3e-07-+OkeD<?i9n6J,**{(p",
+    "zi": "-8`-4m-17-.h-)%-(W-'t-'r-';-%@-#r-#cupuoudu9qTqNqMqHq1q.l;k[c;NnLKK8InH=Ez?s>W<];o:Y9g9_8a7;/G+J(!&Y&7",
+    "zai": "-8`-3V-2G-1!-&v}8pOl.]j]>L3>f;>:.4|4{3~&Y&7",
+    "ta": "-8^-6E-3^-#~-!&~Kz$yyy6vep}lc[HZXW`V&HCG}EqA[?}<c:<9w8^7(6w/`.3+d+V",
+    "xian": "-8Z-8Y-7b-7,-30-2m-2d-2b-1i-0O-)o-'c-'E-'*-&O-&2-%6-#u-#:{`{!ycxXv`v&uKu>u.t`tZs~r~rOrNr9q`pUo;o:nBmylxlhjthhgCfhf+dI_a_X_R_'ZPYQXsWnWiVhVXVSU6U'QlQNPKNFMhGiFFEtDRC~ArA@>S=E=7:]:C7Q6*574*0l.=,s,G+f+c+U+O*|*s*T*,'3$c#b#Z",
+    "cha": "-8X-6Q-4D-/,-.t-)e-$A-$$~s{yvbu?o|m}kqj3]a]OZ7Z.XZX5WJW1NsM0LvK?I?GjEB@k,<%s",
+    "hong": "-8W-)w-).-(X-(K-(;-&{-%}-$)~i{kvXu6pqpjn=j[fvfBa*``XeVNQ[@E?y?<>@=b=S;J;B:R8J7U5(3|31+>+4'T",
+    "tong": "-8V-7/-6R-4Z-2h-,/-(}-&|-#Z}o|/mNm>m3h:f(c%`P`)Z1Q]P<O<K|KUG+F+AV=P7l4C4#18.~.0+s%%$s",
+    "dai": "-8P-6G-3W-)g-(B-(4|3{(w[m`ikiViMiFg[edd!_/^1PAMJJCC)ByB+5c,2*y)?'!",
+    "ling": "-8O-7X-0?-/D-)G-(#}h|>wwuqtKqdmdmVlQjhekY<R)OQMRJeJ5DND)?/<77=5'4O0v0=.I*z){'H!z",
+    "chao": "-8M-8D-.B-.6-,6-(S-!yjQj?j>ffd9]<VlQiOBGFG!C{9+7z4g303#22/v",
+    "chang": "-8L-8J-7j-5D-5+-5!-3|-2~-26-1b-*P-)~-%i-#8~v}%z=yZtWrdo=iDgReLd>bDaxT:RBQtPcIiAT<T<P2t,`+6)^)4(h'B&z&R%w",
+    "sa": "-8K-+2W<VPU:Dw?'>X7s5L",
+    "fan": "-8E-0)-0(-0'-,1-+R-)a-!hy%v_tDr;r:iwhwdi_h]l[ARvRtNpMLKXJrJAG,FD@w@g?4955t5_3n2E15.l.[(A&O&/&,!.",
+    "miao": "-8D-,m-)v-$?vDscrPh>gtgSX^NP<#;A+K",
+    "yang": "-8C-7<-6{-3[-15-,f-,@-*g-'Z|J{xwTukswmrl6l3e`d4cEaA`m^}]T[lXRU<T*RVR2PmNRMHL9I7HvG`FpB|A=A2A'>z>`8N6A4y4D4.2B+6*O)4%Q$|$@#F",
+    "ang": "-8C-*gn.RLQoN0!5",
+    "wo": "-8?-4s-4L-*l-(/-'&-%q-$atCtBsfi8^TZYYbYSXKV#SRN8I>@1=#<m<h;V;U7!6`3.,N'|",
+    "jian": "-8=-6J-5W-5P-4g-4:-3g-2s-2i-2L-14-0L-0<-.q-._-.W-.P-.4-.3-./-.,~6~'|bzmzaz2xovfuRuQp4oDiHhcg8fNfHeDaq^Z^Q^<^9[8Z>YqXmXjX7WmV!UGU'R{PpO_MoM(LEK3JgIfIJICI)HEG]FhFCEKE2DLC&BMBLA]>a>$<z;l;a;&;%:Q8T7P6H625k5f5a2a1l1Q/u/Q/2,g+%*W)<)6!2",
+    "fen": "-86-3}-2n-/a-(`|v|q|]xuw7vpv;n&ithog,dDa0_gR>OYOSN.K&J*J)F)A>@66}5i4v391=16+{+.",
+    "bin": "-86-3S-2EpAe}W?UNShJnImGXE:B^BO@r9I6q6Q6M6,+.(j((",
+    "di": "-85-7@-5a-4F-3:-*D-'}-&t-&$-%R-%&-#O-!(}0|h|d|@{Q{L{8zMyFy;x|w?tqsmrimUkIjoi`hBg:fofjeld#`7]g[g[=YFX]XGW2TLT!R[NfN(MrM3KAK:JCHiG7AI=g<};T9f9=3F/K.V+=*5'1%c##",
+    "fang": "-84-4}-+^|r{Qzcv5er^%TZS:S(RER6N/@<<M/Z'P",
+    "pei": "-81-7$-5o-'lzyvZvCuCtOs_k7iid7[eU5S5S,M'LyJUAj?u=F<@.`*=)d",
+    "diao": "-8/-0@-/f-/G-)1-)!w$njfzfYe~]gYHI|@m)U#p!?",
+    "dun": "-8.-(a-!2}}|sy!x~x}hNdPb2_mVYV.T2HnF>@'8*4c1@/!+m",
+    "wen": "-8,-/X-(M-(C-(&-%Jy`vNf)dfde]:X.WRSmQsKNHWH)C$B`@>;z;R:*4s+1*8(}(&$;$.",
+    "xin": "-8*-7f-5d-5G-!3-!0~%v<r,qFgTe$e#dHawa>SCR9N@N%D$C^4a3$",
+    "ai": "-8&-2W-09-)h-'!-&q-&5-%Y-$'-#]-#E-!;{SzIyfxUtgtUrxr'kaa9_7_,ZNYaT&T$QqP^P.CxClB.:%9t6U3.03(k(;#]!s!j!]",
+    "xiu": "-7~-5c-5V-''-$/~|p@mfmPh2N~G09~9F8I4+*P*#(N",
+    "xu": "-7~-7Y-6Y-6!-49-0x-,F-,E-*Y-)T-)+-'p-$e-$Q-#7-!o-!W}7{Wy,x+v&uxspsArFhHeXckcKc:b(`g^YY4XMTKT@RbRZR!QcP{O^OOLGI9GfC|CtCiCOCKBw@5@4>?=t<>;+;):P9r998W8B433W2H0m+t*N*?&;%T",
+    "tang": "-7y-5+-4M-3l-3U-1v-.2-&.-${-#.|XzpyukdilaA^cW^V~OsJFH%F{F<@P<T:h:G8n5D3i23100A(u",
+    "huo": "-7v-6r-5T-.Y-.1-(p-'W-'D-$e-!%~V~Fw^vouWf.f,b'^OZ/Y4UPU4RkO|E9@%>/:f8U6y6Y6+525127+_#@",
+    "hui": "-7u-7#-2u-1{-+H-+.-'/-&j-$[-#=-!f-!U-!D~p~,~&}u}Fz]xztEsgr7q]onn?n>i*gmg7g5f6f4f3e,e*cDcCc<c(bfau`H_x^sZ|ZQX>VEQSQCP|PQO]KeIOI3GRF4EiEZEQDqBVB>B=B7@n?D>h>g=y;+:S9X897x796y6:5,5)3t3q3k2h0y0q+h*9)G(=(2$~$)",
+    "kuai": "-7u-6@-2M-/p-&f-!8}:|ez&y'jEgMdXUkRrO]Cq=y79.*+g(2",
+    "cui": "-7s-5?-3N-04-%I-%>y8lYlWkhdSbE`TV|IxH*GHAg<48P6a331g)p(b%I$L!d",
+    "che": "-7n-5`-4I-,%-'y-&*|?vln|nGene/]QY.XcVsV>V<7`3r3b3E0C",
+    "chen": "-7h-4_-3e-2'-#|~ZyWyAw]pGoBdRa>[aY]THS~QAP$L[K_K'J(HUG3D]@+@*2n05)l%P$?$$",
+    "xun": "-7g-6O-4.-,Q-,A-,)-,(-+5-'3-!k-!P~u|y{=yixYxAw#uHqKq9o`oOmEj@j&j#g=ebe>c]`uXUTfRcP(NqL_KbF`BvB@Au@Y>5=r=l8+7y6V583O2h1{1D130j0Y0Q.5+b*H(L&T",
+    "chi": "-7c-7M-6b-6P-5E-3@-,W-,K-+_-*]-)<-)3-))-(:-&W-$z-$I-#l-!g-!=|@|)yLw/vBs6n|fsf$eweve6cBc9`X`7_|_2]`[f[!ZvZ/W+TxTCSNNcMPM3G1ChC6C4BX@T?Y;:8g4~4;3U1K.O'A$Y$U$E$2#G",
+    "xuan": "-7b-2N-/.-)o-)'-'(-$Y-$Mz)wsv&sWrqr.p]f[cobMaQaI_I^nX_SyS'RAR,QeQ$Q#PNK@HxHwEf?#;I8d4M3x2e+L*s*)*&)B(Z'~%/#E#<",
+    "nu": "-7a-3r-,svjq?ilfed1Wo",
+    "bai": "-7`-6z-(1-&:hJ[?[>ZwYeX}WAUfUCTAMFLN,n'D#*#)",
+    "gu": "-7_-3T-2e-0F-)I-'s-'N-&<-&;-%G-#y-#@}gzfx#uhrUq@o&lXl=j5j4d*`~]_]9TSNaM.K<JIHFGzF$D{B<@K?R?=<X6P6./P/@$Q!L!G",
+    "ni": "-7^-7]-7.-4v-2>-27-+8-(%|Nzsznv/v)t<rkqkq0nznbnEcvb5`{_,]0[i[<Y5UQS$QuQ7PSMPJ&E6@y?)<=9x6o.F,l%b",
+    "ban": "-7Z-.!-+,|z|Yutn0d2]R]M[OW]W[T[ScSbRJOSN;MM:c/x*>'Y'R$*#[",
+    "zhou": "-7W-6M-2X-0{-'|-'z-'Q-'5-%X-$i-!G~{v.t/pgjCiceIY%QnQLQ<I|>8<S494'*S'9%W!R!I",
+    "qu": "-7U-7E-7+-/H-,q-+S-+=-+7-)t-)s-)W-'e|Vt^nnm{m]k?e%`&^0[^SzSIOnOOD=D4CzAL>)<3;[5U3G2o0D(K(8#9",
+    "ci": "-7T-7B-6m-47-17-/+-/'-'t-'r-%@|*q}j3h<`hN|MILHD&C??56Z*p*k'E'6%=!{",
+    "beng": "-7S-#w-#+{R{#zgyXw!lBkYX0>v)d)[',&k&j$a",
+    "ga": "-7Q-'M-#A-#/-!4wIwDoEo>o.RaOM+C",
+    "dian": "-7K-7:-3m-18-**~M|P{lyBxfw6v~t6t!kXj]jNjMh@ao^!YOTrTWT9I_GqG_FPF5B?<a9k764?*u)s&c&`%1$W$$#L#=#6",
+    "tian": "-7K-56-1>-(7-%`ylybwYvit=nodgc2b:Y#WPQ?LSB{?U<A<$;2)g(q(.&}&|&h&`&L&F$W",
+    "bi": "-7D-78-73-5F-45-+c-(h-']-&k-%?-#Y|jzVxgwLvnv:u}twt1r3qonrlFi|huhthPgLg'fRfQfJeme!crciaJaF[YT;SqS+OXO!MUM!K;I<HPB)B(B'B$A|Af?x?C:u9Z9D7q6e2`1p.%+y+x*`(:&W&V&G&5%^%H$T$S#'!o",
+    "zhao": "-7C-1k-)A-%X-%T-!y|#v+j*]B[@S!Q}P8OBM{J,E*?S6S4T2G0r0:09.7(m!F",
+    "shao": "-7C-,p-+~-*a-)A-&Vu,oIf^Z'R|NhM?K(7v3m2s17*m",
+    "zuo": "-7>-72-66-4E-'L-&,-#!|lmtmsj;h0d6YTV4R%M7M&)e",
+    "ti": "-7;-5N-5'-4R-/!-.n-*;-%H-$y-$3~w~rw?smsPnmnYnVl2foeCe6bnbjb#b!aU^)ZHY*X]XGU>OaONL$JxJCCQB]=0;T8O*5)A'r",
+    "zhan": "-7:-4>-2y-*s-!IrQnamRl>l)kCkBk.j|d+b0^M^?^5W|SJSGS0RsMjLiL<KmJ?HLFCDEAyAQAO?Q:|)q!F!4!$",
+    "he": "-79-,_-)$-(v-(/-'o-'Y-'W-'&-&R-%<-$Y-$W-$1-#d-!c-!!|,xVuyp6mJb&[jTROiOZMNL8I@CsA^?]<i;M7R3P2m2'2&0k0e.8,C#^!W!<!:!6!1!,",
+    "she": "-76-*E-*9w/v|oVfP`_`;^h]'ZyZbYjX:WEWCT|EEDACJ?@=<<f;s9Q5Y,W&*&)&$",
+    "die": "-74-)M-'>-&t-%H-$j{szSmDl/kIi3c}cPa`^IZbX:QwP!M2HsGUBcAK?I0*/}/n'_&#%q%j%i",
+    "gou": "-71-3p-0y-+z-)H-'p-%W|C{uwdwcuTs0mnfM[CX%VcN6M^Gm?q:925.C*o%2",
+    "kou": "-71-0f-.C-,g-)J-)DpCp8fId3]^[|VpTV9@",
+    "ning": "-70-6>-4a-29-0.-'H-!)r%q!p2p)p'p!ot[4UMM5F/E5?17J6k.<+a&i",
+    "yong": "-7*-5t-3M-,U-,T-'T-$t-$+-!:{Oz!yCxcrlkUg{gAe{ceb{bzapaC`w`n`:[6XTU}M4LaGQ@}>x=9:p947:5T/{/i&p&l%)#S#8",
+    "wa": "-7)-/n-,e-(/-'P-'&-&x-%h-%A-#y-#nu5tbt3sGnCije[ZaWUTq>.:;8h'V'D'>&A",
+    "ka": "-7&-*r-'O-'M-'4-$u{g",
+    "bao": "-7%-5h-21-/>-.e-.]-,!-+{-+s~ozPzOz@sBqBpcpMp$ohoee&d:[w[kPPP1P&M]614J2<0_.u.h*G",
+    "huai": "-7#-',|mx^xIe_dC_:^oGhDX<25z",
+    "ming": "-6x-0g-06-(|-'guEs&`aXxR@PhOFH<>0:7,8",
+    "hen": "-6s-&p-!3eac6[0.:$y",
+    "quan": "-6p-1H-/.-.#-,5-,#-%%}X}Q{4w5u:t;q[m?jRf`c0b_b%['Y`WKNxJ:I[H_GLFjD>?F>F:a5841/I/H/7.o.n.m.O)2&I%'",
+    "tiao": "-6o-%Xr#pWmjmWh4cRZfSQRdQjOLO'NYK.Fo",
+    "xing": "-6j-5.-1<-/U-&g|0{auft{t5qljAh`f*cxb>aZUYR/P4Nl>Z<u9d2d.N,L)@![",
+    "kan": "-6g-4G-0r-/r-/]-,D|n{!zGyDlkl)k{b7^D]ELRG]E2CeCc",
+    "lai": "-6d-5Y-5<-%_u!t2lil_h$eSeHU2NUJiJ0DT=&<)6r5v5r,i)k%R#P#J#?",
+    "kua": "-6a-'.{iwJuGcGZiQcI:",
+    "gong": "-6`-6N-1D-1?-,~-+g-+d-)w-%}-$)yepTpQj<j8i2g4f{c1a*``[)[(T^N`L?@V7U1u*R",
+    "mi": "-6[-0v-0n-0b-'9-#'yzqZpmpDp9m6i:i.hrfifafAcb^dVnU_TyTON2HIG$E6E+@L?{?Z?C>G<9;H9<8o6o6l5n5G1z0B,a+T'h",
+    "an": "-6W-5J-4<-2D-*P-*J-')-%e-$x{b{&z_sYpwn@n8mXm:hXg~ZnXNQ.PnL'L&A1>M.g*w$V",
+    "lu": "-6V-33-1C-.H-,N-,<-*q-*o-!N~q~_};|G|5yVyUxMtVmChGgZgFf9f8^7XzW)V)UzUAU/O{MpLeJ#G&FyEuDvDaARAM>s<K<;;p9:9'8.7L6@6)4p1m0T+W+H)Y(Q()'m&n!%",
+    "mou": "-6U-,c-)x-($-&azLcVTTMEKs/a",
+    "cun": "-6J-/Z-(~x'qLocdn[%Nj7^!O",
+    "lv": "-6F-63-4#-38-23-,'-*x-(t-(F-&G|+nTnSnPl(e^`A`5ZcZ*YwS.K*HTDsDoAYA)9M6D3A0]+I",
+    "zhen": "-6C-67-4)},ygybuMs*p5ndiUiRi<fc[nZlZGXWWOSTR*OJN$MhLVKjK_IHHuHLHAG_FVBb=~:y:$8$72,+*_*^({(q'8&Z&<%9",
+    "ce": "-6B-4*-1%-1#-*=-*2wZgrc!aY_jZ}TQLl={;O&8",
+    "chai": "-6?-2@-$h~?j3[UL}.i$'",
+    "nong": "-6=-2S-0p-&b-!Eg.ZmZAElDG=s7#0o#W",
+    "hou": "-6:-5*-*8-({-(L-(K-'p-$l|%zQi=e]>b._,A$C",
+    "jiong": "-69-3'-1.-1$-0}}z|K{;]~]}?M=J7e4t4I3c2T2S1W1.",
+    "tui": "-6.-6(-3&y'tmo$ftfodrY(F>24",
+    "nan": "-6+-*|-$r~'~#v=tzstrb^e[sXfPqN*M6H}:d29&a&?",
+    "xiao": "-6*-5v-5R-3a-.x-,d-'j-'1-&l-&P-$}-$1-#D-#?-#&-!|-!v~c~J~CuUtHqGpPpJoKlGh/fFcJ_iX;V:TPT/SoSnQVQ'P;MiMaLOK+DOCYCLBAB4>B===8<Z8E6!5+5*4,3L2&1L,o+r+o$t$o!i!b",
+    "bian": "-6)-+9-*u-)UwzmKg1eAdVaX^#]=XSR#@A@@4Z26/o,@+`+,':%8",
+    "pian": "-6)-4P}ysI^#I=Ht/y/0,@+`(j((",
+    "cu": "-6%-+$-!csFegd(_YEsB},X$I#z!H",
+    "e": "-6$-4K-2k-+j-*T-*N-(_-(E-(*-'A-')-&X-!j-!A}s{nzhzIzCv$uzuBtotUtTtSn]n)mGm'm&l+gnc'bOata?^+]DWsWdWNUbTMM}DZCEC(>M=5;9*7)`$V$O!r",
+    "guang": "-5~-2}-1h-'@{~uIhXhTgOZsVKL+>28)5/4b4_4^3s.d+Y*U",
+    "ku": "-5}-/3-&Q-$6~R}PzrhDh+gN]dZiZ5OPMgL!I%3N.>$9",
+    "jun": "-5{-2T-0q-(n-(G|u{NuHollq_;Z3U5TzQPKMJH@F=l6V3G1B*1&'!Q!K!J",
+    "zu": "-5w-5?-+1-+$-&S-%rlYlAd(S#M1Ix0'*e",
+    "hun": "-5s-4o}_t9t'o9dMaz`oYDR?Q~JYJRBf=u<d<(;=:t:`9{3O36*9)G",
+    "su": "-5n-3x-2c-$*~9}/{3y}y|wjs#p@a(a'_lVnKKJ2H;G(F~F8DYBo?2>>=4:&9z828&+F*L(F&r",
+    "lia": "-5[-5>",
+    "pai": "-5Q-&sg9eP[NY?JU?p>+;j;8/t.w,q",
+    "biao": "-5O-36-2/yJtIryi%f!VfNhLjFzEG<.9C66511o0c,k#|",
+    "fei": "-5M-.m-+M-*4-(i-%8w%vZt@t?nXh8gpgPbH]xSdQxQ%P:OPNLLxJVH5FOF)Di?W<C;x6K.`.H,p%3$]#a",
+    "bei": "-5I-57-4B-4%-3b-37-,Y-+a-+%-(1-&:w|qIh#bdbGajaR`$X3RMNLNKLyK^K5JUJSIq3:/S/).R,y*/)T!@",
+    "dao": "-52-/g-/e-/6-)E-#K-!5xSo_oLmvlvk;k:jiiKhld{b=YoYcWqUZO'JkIaGZEIE?AA3;0g'd!+!&",
+    "tan": "-51-3^-3/-2R-)4-%$-#P-#I-!n-!m|o|a|U{'xxxsxaxKtAfTfOfEdtcfb$_p_W_OY/W=UDTuR5PJP=HYF5EnCUAk:w9H7|7{7.5E4K1G(3$}$^#~#7",
+    "chui": "-5/-(O}T|9{Va|Y[WcKtJ6ItGl4o",
+    "kong": "-4{{+qPlfcNb;Y)Iv<n",
+    "juan": "-4z-,h-,P-,0-*[-((}X}Q{Iw<w5uVtut;jpj`j%iYf`byb%`4Z%Y`OGL%K@J:I[=2<^3M.!+j'C",
+    "luo": "-4r-1y-.|-'4-%(~<~/o^mHZ*YbW(U@U3U/T{TlOvI^D9>q>O>N;y8^6F3{/(,T+P*M#y#5!Y",
+    "song": "-4q-3I-0D-)'u8pulDk^kOgydYdAb`a3a$`D_MZ#XXW0N<N:MmM>K%J`HyEF<B9!6v",
+    "leng": "-4p-0T-%uzdz,lQa1J5I!",
+    "ben": "-4l-$E|q|pwSwPw.w(YXV8O3LQKXI4?B;|8]4v/8&=",
+    "cai": "-4h-4,-%N{%tLp?f#]t]qY0NkJZA},Y",
+    "ying": "-4`-3.-%1-$>-#*-!K~Oz%x#s{sXs9s%quqqq_q%kcj[jWhCgDexdha/_AVwV_U0U&R]R.Q:PwO?MHKpK]J{HvHdFbDMDI=_;E:U:K9d9O8K8F6j6i6N6=6&5~5o5j5M5A2w2r2_1x1)0b*:)*(y(S'i'5'%#j#;!B!;",
+    "ruan": "-4[zJxQsiVWOUE0):'}",
+    "chun": "-4Y-&7sda^RPR(PlOONDIBGrFQE(=T<,:[9N8u/6)C",
+    "ruo": "-4S-)[sskPf]Z:YUI8;y3'0^",
+    "dang": "-4M-2P-1V-/k-!1}*{fx]swpkl6kdf:aAZUUsTpKiEYD5@|8:7E5D*;(J(6'?%}",
+    "huang": "-4@-1L-/w-$PzDz.xtw&s[pEl9jBi0e@clcQa_a#`dXTQgQfPBOEHbH7D{@9:x9i8)4:2c2.1J0X+w)((E#i!}!g!Z",
+    "duan": "-4+-.Uz+s`SFS<IMBIB62j)0",
+    "ou": "-4(-+=-+7-(q-(K-(3-#;yTd?`EDpC}CSBJB8?l8s1Y'M'0",
+    "zan": "-4$-2.-1x-1o-'2-$c-!e~:p>[$XOVUU8U*TwR1Q&PYKrEy6E5K't'k'c",
+    "za": "-4$-+Z-'b-'X-'2-$c-!c~B~:~5i}]s[$NyKr?r?a",
+    "lou": "-4#-38-.}-$7-#ByMu4tRo{n[kjkEg_`5X)W'HaG#:O9&8~1i'2$5#o#n",
+    "sou": "-3z-0J-)Q-)N-#z-#R-#QgsghZ#YvWlW>W0V:U`UBJ/DgCn:#,5#s",
+    "yuan": "-3u-1n-1)-0h-.z-*3-*1-)y-(0-&^-$Y-!<}{}t}Z}R}N}M}D{t{_yawlv6v(sSs:s)qhpep<f[cwbyb,`qXoX8NNJ=HxH>H0ErDk@/<m<*;{;v;r;g:e:F:D5]04,M,6)/",
+    "rong": "-3t-3`-0u|ts8s'qzp~pFlwkokcjj^WX#WwOyLmHGH.H&GQAsAU9|6%3T1v0b.2)#",
+    "jiang": "-3p-2a-,7-+Y-+Wz/xew~w+vvvru]oToSkMfrfWfVfSfCVyVeKdGDEoDeBQ@U>P>#;L9A8M.|,&&B%y%n%m",
+    "bang": "-3n{^ypiNi5h~hme|Z?YrWvS2KEJTJSH@=j/m++",
+    "shan": "-3h-3)-2R-/F-/<-.a-.E-*~-$q-$F-#H}'{Gy+y*ulubr2nDj|i(f+]zZ;Y3XuXsWaVhV?UySvQ8NrL|LlIVFSEhCI@`7|7p7O5F4B2Z211~.4*b%U%1",
+    "que": "-3f-*_-*W{Pyty$lgbNa+`KX!T8T.JBH$@j4e0|)O#q!N",
+    "nuo": "-3Q-1w-$ftxa6_#_!ZLXnWoWbWLK0HJF2Am",
+    "can": "-3P-2F-)l-)k-)j-)i-$D-#H~:r(q3amah`W`V`U_[XsVqVhO_BtBg;/784z1!0L(9",
+    "lei": "-3O-24-1t-,J-)q-#1|(z0xOx?rrU|U;G'E]DyDxD/?$>I=+<F5X'z%u$)#Q",
+    "zao": "-3L-/h-&(-%w-$5-!@`JRfMsLkK>JO7F5&2>1#(](7#&#%",
+    "cao": "-3L-#GnGk@`v`k`^_DVAUqOgOfG:8x",
+    "ao": "-3H-/n-*&-#X-#W|H|4xnxkv}vyvwsDs2rZmxmakAjnga`O_@]I]![DVuUeTBM*K=?>9;7M741m1^0Z,!+~(Y",
+    "cou": "-3D-0:Hl;1",
+    "chuang": "-3B-/b-/K-/5-.s-.i-.L-$T-!dhvhMd=`|W7O<F+0#/r/k%D$+",
+    "piao": "-36-.D-,;-#Crteze7`]RuO*Br9/.v'Z!X",
+    "man": "-32{KyKujtlrpn^i'bc`M`=VrOdG9Fs:V9P928b7<701V,(",
+    "zun": "-3%-!ix}oPk&[%YzVILEFU5k",
+    "deng": "-2z-/t-!VxwrHk(_v^@E$7d6/5.1A(O#,",
+    "tie": "-2s-'yigd+",
+    "seng": "-2o",
+    "zhuang": "-2hx9x8x2w)vWv@tphvhShE^a^`^_VDKcKBG6:`8X3H.e.Z",
+    "min": "-2`-0Q-/E-,X-(&|1uumYl]dfded8bJaWaG`S_`[]YhTUTIT(RSRRPzAH>|;z;+:t8(+1*c)o)j)=$R!D",
+    "sai": "-2V-#b-#)-!/yod%a2XaAxAb",
+    "tai": "-2B-0_-)=}e|Mw[wXwOvzqvqCdodQdB`e[pU]SpR]MeE>@f@D@C>{:=4G4F1$*f",
+    "lan": "-2?-1@-)}-%P-!'~3|hx`xXt(qgqaqUmwkwhgb)_8_'^p[5X/UXU(TmSaS_PpLbHXDDD2D1=^9L8i7K6W5`5W5=5<46121%0n0d0I0@0>($'j",
+    "meng": "-2;-0k-,Lwaw`qEo2hnh*_._+^qXtUaP)O9K$F;EAANAF:A6h,Z+]'/&X#B!#",
+    "qiong": "-28-*fr.pza]`!K}F(3(3%2L1}*))J(G's'f",
+    "lie": "-25-0N-/O-,z-,w-,`-'<-&G{D{CuDjaj=djZeZ_YiUEL;JMA{>_=p403f2A1$0a0[.x,h,V+k+[",
+    "teng": "-2%i+9]8r1e%6%&",
+    "long": "-2#-'J-&]~^|7|6xHxGo2n=k6j_j^g.e([9U.QmOxO8LgKDGYDU>t:g9T9%5w0N*Z'n#f",
+    "rang": "-1}-,$~Nx[xC^mU$5b0K+S'X",
+    "xiong": "-1m-1j-/q-+v-+p-&zwsdLc?Sy@;>42w2r2#2!",
+    "chong": "-1l-0Y-#L{*p`oflelde0dc`+_dX<W8?z=K=98X0F*@%&",
+    "dui": "-1g-1e-1`-%L|$zlymobo]oMcc_n_m_*TET>T2NB6[6G5|5u$P",
+    "rui": "-1g-1e-1`-)LxFas]0M~KVF.@G)'&t",
+    "ke": "-1f-/*-.w-,]-,R-+;-)>-'o-'0-$!|Dzqx4u#p^oUmomIkvknjqc4bra<a;XJWsT4M%J1G|F}CcBCBBA/;u;G:>6U4U0!/N//*j%>$O",
+    "tu": "-1c-1]-0H-/o-(y-&3-%?}n}c}J}I}A}?zezZyvxipvnUlskikFh.gVeVc}bsZ.YYX@W2K?EL@R=C=::r7u(i$r$>",
+    "nei": "-1I-1*-&TtvA<A;=H",
+    "liu": "-1C-/N-.8~fy^s5qik`gl^vW9S4S*R}L~LpKnKQH'FHF#>(=w::8Q7V631r1[*a)~)%(v(?&S&>&%%r$(#d",
+    "shou": "-13-)`-)V-%l-!o{ox)x&pxo[]v]uYITcTN<t.1+n+X$e$&",
+    "ran": "-1+-1&-(!-##umsKMBF'2y1Z1F*i",
+    "gang": "-1'-0^-/L-.gzjz4mzmplT^a^`^_]fYKWDNZJEGe;L2z2v/W/:.a%Z",
+    "gua": "-0~-/8-.r-.S-.A-*m-)F-(/-'s-'&-%0|Ooz[/ZuY6LSK[C`2='a",
+    "zui": "-0i-*6-'d-#U-!w-!*k<jmQ=O`OGLDG[F]EgEbD@6a(%",
+    "qia": "-0M-+;-*r-'6})m0iZc.a<[j[7YAXJUhBq>,",
+    "mei": "-0I~j|vz>yRv#sks]sTs4r<p/l&k|e)[bZBU%S3R&M|LoKFHzHjGgDrBfB0B/?~?o?d=I;?;7;32Q2J11,=+$*0)D$w",
+    "zhun": "-0E-05-%L}5zwpnnFdPRQ<,:@",
+    "du": "-0+-.`-+B-)p-#0z<vKv1uTqjh1SsQ4PvN_IcDlBRBNB+=(;n;Z6</s/h/5.y..+i)I'y!E",
+    "kai": "-/x-/v-/%-.M-,I-#J{ey~w0n3kag2dEc#aB`y`r`GXCPfHfCxCu6U4m3}",
+    "hua": "-/T-.>-+b-+(-(_-(.-&h-#%{@wGuWs}s|rJrDlaWTV}V+NAMvKfIgGKFX9a7c,7&]&+%~",
+    "bie": "-/A-/;fGe2`#M'M!$!#I",
+    "pao": "-/>-+i-'^~o|2w=hA]$[P?.4J4H3d06.M'^%A!S",
+    "geng": "-/7-&A{TzHlrh=ZIOlK4IX=X2p&M",
+    "shua": "-//-%j",
+    "cuo": "-.y-.p-*5wukWkSh!ZKY&WuV4(o$j$'",
+    "kei": "-.woU",
+    "la": "-.v-%3-$n~L|8[RXFXEWnUEU2R`MOI6DT:T0['o$A",
+    "pou": "-.l-'_-&[{]twtO]+]&Z+YGJS/<",
+    "tuan": "-.I~!}~}K}HyPy&f7`>[}XIVmGLE;;.:m8t2[,F%v%p",
+    "zuan": "-.)XOTt",
+    "keng": "-,x-([|t|kvIZCXlVgBF/C",
+    "gao": "-,Z-(I-(>wRlpWjNHGxGwGdG>E~E3Dm,)!y!t",
+    "lang": "-,V-&J-$~{Jy[r{llgiSeOIOHO;KRHHG4Cp=[3Y,z*%(s",
+    "weng": "-,@-#oyxv{kfU!Pd9o'N'&",
+    "tao": "-+m-)E-'+-%DwPwMw*r}i/fl`j[oYBWXL,JkGtE?><=)<t<H9^6_(w",
+    "nao": "-+`-'n{cz[wqt.rzq8l{jyjSd0b~bPad_QZVW9VOKkFJ<J,D+Z+Q),",
+    "zang": "-+Oynw)g(/~",
+    "suan": "-+C,{$n",
+    "nian": "-+3-&i-%b{9uOhdg3dNbTa~[SYVVHV,U7HL=;<0:C2q",
+    "shuai": "-*xixiWW3+I&o",
+    "mang": "-*<-)*-&Zx(u(o2h*dkb|OENdNSAF@c=i8`/[/D.$$q",
+    "rou": "-)uslpsXdMAHc;d2K)>'v",
+    "cen": "-)l-)k-)j-)i{Un#kH@?=1",
+    "shuang": "-)byOqeq^`NDB>t8R5w5^0&",
+    "po": "-)8-&M-#6~]|ZvztMoZmlmZg9W]TXR+O*E%?E>q>o>D;*:J8;6F3v,9*l!`",
+    "a": "-(s-'o-%O-$0",
+    "tun": "-(k-(7-%L-!`}}|snFhNdP_mRQPFOC@x=335",
+    "hang": "-([{dwSvIj)dGS8NML/@.",
+    "shun": "-(ZHnF?",
+    "ne": "-(R-(8-(%-&T]0%a",
+    "chuo": "-(Q-&@-%=~Hu!t~t.ssqVa|^2Z}UuCC<q<J",
+    "wai": "-(/-'&-$gwml7C95z",
+    "guo": "-(/-'&-%)-$e-#<~.}r}k}f}d}a}U{<zTy>lMi@i$fDf@b1`Y_4XyW6TMMzJ$I:GOD{=#<W;U9#7!,c$<",
+    "qiang": "-(,-%f-%M-$.-#[y=y3xmrXr0k>gKfVfSfC^P^N^>[zWQW!VySKMlIvGkFdEJ:)8{4[1s/|/z,f,.*{(p%m",
+    "pen": "-('-$E-$=-!6CN;'6}'Q!=",
+    "pin": "-&~~Yuatnrvq{[AZ{H]@_/c+!)r",
+    "ha": "-&wvz",
+    "yo": "-&`-%c-$B",
+    "o": "-&X-$a-!H-!%",
+    "n": "-&)-#a",
+    "huan": "-%v-$Z-$Y~G}D{_zWw@w2r.q[pYp0okm8l!h]bVaH_I^iYpXQUnU1KyK2GBD%CPCB>1=c<~;c8V7D734/3>2I.[.;,3+R*})9(1'b$d$:",
+    "ken": "-%V{qxjc*_CX~*I",
+    "chuai": "-%=XIW}Ch",
+    "pa": "-%/vLisihd.]oX|NC@r8608)P#!",
+    "se": "-%,-$,yogK_<Z}VnUrLTGJC5C3>W<x;q7h7g6|6t60)p)&(0#r",
+    "re": "-$fa[YU;y3g1X",
+    "sun": "-$DqKq9]EYsW{WzW;H1Gv.',:",
+    "hei": "-#h-!l7r",
+    "dia": "-#^",
+    "de": "-#5}0hBeQe5e1c)bFakR[JW<_##",
+    "dei": "-#5eQ",
+    "kuo": "-!`g`]W[:[/ZsUI8U6L",
+    "ceng": "-!_ntnQk4OcObF*",
+    "ca": "~s~B[UUWU:",
+    "zeng": "~7y5y._}OcObF*1R(M'*",
+    "nin": "~(c^bQ[*",
+    "kun": "}q|Wzoz`x/x*t'l[lZbwZ0RHQMJv=B8C371U,e)_(g",
+    "qun": "}jwxpRl~iPCT",
+    "ri": "}iRjA=",
+    "lve": "}Go^Y1&2&0",
+    "zhui": "|[y0w#t]aaXIIt?s'<%|",
+    "sao": "zus+`k_D]UYNXrWtK(AP:8$4",
+    "en": "wBmBc5WF20",
+    "zou": "w3s>Y%X`W~J/J.Hl",
+    "nv": "vkc7OM@!",
+    "nuan": "vcPo;`:m2X2W",
+    "shuo": "v]a'WhT'S|OKGnCn>>470W+p",
+    "niu": "v?q=dKd0]S]![DN?@8@!4u/e/d.W",
+    "rao": "u2rA]PU?KkFJ",
+    "niang": "t|r&qb",
+    "shui": "t]iTZMYuA$A#@{=.=*",
+    "nve": "t)%S$%",
+    "nen": "sirarYc^",
+    "niao": "s!r+qsnwFq9x",
+    "kuan": "pBp#ooK)CoCfCd",
+    "cuan": "jPV'U*T~TwDtD7BU@o6E5K1S0<",
+    "te": "dsdr`R/F/9",
+    "zen": "d5VU",
+    "zei": "^H",
+    "den": "][]C",
+    "zhua": "],ZYV#ER0:09",
+    "shuan": "[&L^GL<s",
+    "zhuai": "Zz",
+    "nou": "WoGpE0+^",
+    "shai": "W<TsQWOt",
+    "sen": "J8ISGI",
+    "run": "FE<{8'",
+    "ei": "Cl",
+    "chua": "Ci" } };
+
+
+var DB = {
+  sToC: {},
+  cToS: {} };
+
+var sToC = DB.sToC,
+cToS = DB.cToS,
+ungroup = /-?.{2}/g,
+rg = /^-/,
+fromX = function fromX(str) {
+  var result = 0,
+  temp = 1;
+  for (var idx = str.length; idx--;) {
+    result += temp * chars.indexOf(str.charAt(idx));
+    temp *= 91;
+  }
+  return result;
+},
+fn = function fn(a, f) {
+  var p, gs, i, ch, num;
+  for (p in a) {
+    if (a.hasOwnProperty(p)) {
+      gs = a[p].match(ungroup);
+      for (i = 0; i < gs.length; i++) {
+        ch = gs[i].replace(rg, '#');
+        num = fromX(ch);
+        ch = String.fromCharCode(base + middle + (f ? -num : num));
+        if (sToC.hasOwnProperty(p)) {
+          sToC[p] += ch;
+        } else {
+          sToC[p] = ch;
+        }
+        if (cToS.hasOwnProperty(ch)) {
+          cToS[ch] += COMA + p;
+        } else {
+          cToS[ch] = p;
+        }
+      }
+    }
+  }
+};
+fn(SDB.m, 1);
+fn(SDB.a);
+SDB = null;var _default =
+{
+  getSpell: function getSpell(chars, polyphone, spliter) {
+    var cToS = DB.cToS;
+    var res = [],
+    pp = typeof polyphone == 'function'; //判断polyphone是否是函数
+    chars = String(chars).split(EMPTY);
+    for (var i = 0, ch, ss; i < chars.length; i++) {
+      ch = chars[i];
+      if (cToS.hasOwnProperty(ch)) {
+        ss = cToS[ch];
+        if (~ss.indexOf(COMA)) {
+          ss = ss.split(COMA);
+          ss = pp ? polyphone(ch, ss) : '[' + ss + ']';
+          res.push(ss);
+        } else {
+          res.push(ss);
+        }
+      } else {
+        res.push(ch);
+      }
+    }
+    return res.join(spliter || COMA);
+  },
+  getChars: function getChars(spell) {
+    var sToC = DB.sToC;
+    if (sToC.hasOwnProperty(spell)) {
+      return sToC[spell].split(EMPTY);
+    }
+    return [];
+  } };exports.default = _default;
+
+/***/ }),
+
+/***/ 525:
+/*!***************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/components/wyb-table/js/objEqual.js ***!
+  \***************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function isEqual(x, y) {
+  if (x === y) {
+    return true;
+  }
+  if (!(x instanceof Object) || !(y instanceof Object)) {
+    return false;
+  }
+  if (x.constructor !== y.constructor) {
+    return false;
+  }
+  for (var p in x) {
+    if (x.hasOwnProperty(p)) {
+      if (!y.hasOwnProperty(p)) {
+        return false;
+      }
+
+      if (x[p] === y[p]) {
+        continue;
+      }
+
+      if (typeof x[p] !== "object") {
+        return false;
+      }
+
+      if (!Object.equals(x[p], y[p])) {
+        return false;
+      }
+    }
+  }
+  for (p in y) {
+    if (y.hasOwnProperty(p) && !x.hasOwnProperty(p)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+module.exports = {
+  isEqual: isEqual };
 
 /***/ }),
 

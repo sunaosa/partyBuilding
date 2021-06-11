@@ -1,9 +1,9 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["pages/mine/mine"],{
 
 /***/ 60:
-/*!*****************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/main.js?{"page":"pages%2Fmine%2Fmine"} ***!
-  \*****************************************************************************************************/
+/*!******************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/main.js?{"page":"pages%2Fmine%2Fmine"} ***!
+  \******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17,9 +17,9 @@ createPage(_mine.default);
 /***/ }),
 
 /***/ 61:
-/*!**********************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/mine/mine.vue ***!
-  \**********************************************************************************/
+/*!***********************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/mine/mine.vue ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -58,9 +58,9 @@ component.options.__file = "pages/mine/mine.vue"
 /***/ }),
 
 /***/ 62:
-/*!*****************************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/mine/mine.vue?vue&type=template&id=dcbcfe34& ***!
-  \*****************************************************************************************************************/
+/*!******************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/mine/mine.vue?vue&type=template&id=dcbcfe34& ***!
+  \******************************************************************************************************************/
 /*! exports provided: render, staticRenderFns, recyclableRender, components */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -80,9 +80,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 63:
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/mine/mine.vue?vue&type=template&id=dcbcfe34& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/mine/mine.vue?vue&type=template&id=dcbcfe34& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns, recyclableRender, components */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -96,40 +96,49 @@ var components
 try {
   components = {
     uAvatar: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-avatar/u-avatar */ "uview-ui/components/u-avatar/u-avatar").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-avatar/u-avatar.vue */ 117))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-avatar/u-avatar */ "uview-ui/components/u-avatar/u-avatar").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-avatar/u-avatar.vue */ 295))
+    },
+    uDivider: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-divider/u-divider */ "uview-ui/components/u-divider/u-divider").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-divider/u-divider.vue */ 253))
     },
     uPopup: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-popup/u-popup */ "uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 124))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-popup/u-popup */ "uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 203))
+    },
+    uIcon: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-icon/u-icon */ "uview-ui/components/u-icon/u-icon").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-icon/u-icon.vue */ 189))
     },
     uButton: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-button/u-button */ "uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-button/u-button.vue */ 131))
-    },
-    uTabbar: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-tabbar/u-tabbar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-tabbar/u-tabbar")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-tabbar/u-tabbar.vue */ 110))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-button/u-button */ "uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-button/u-button.vue */ 232))
     },
     uCellGroup: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-cell-group/u-cell-group */ "uview-ui/components/u-cell-group/u-cell-group").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-cell-group/u-cell-group.vue */ 138))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-cell-group/u-cell-group */ "uview-ui/components/u-cell-group/u-cell-group").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-cell-group/u-cell-group.vue */ 210))
     },
     uCellItem: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-cell-item/u-cell-item */ "uview-ui/components/u-cell-item/u-cell-item").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-cell-item/u-cell-item.vue */ 145))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-cell-item/u-cell-item */ "uview-ui/components/u-cell-item/u-cell-item").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-cell-item/u-cell-item.vue */ 217))
     },
     uForm: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-form/u-form */ "uview-ui/components/u-form/u-form").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form/u-form.vue */ 152))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-form/u-form */ "uview-ui/components/u-form/u-form").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form/u-form.vue */ 302))
     },
     uFormItem: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-form-item/u-form-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-form-item/u-form-item")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form-item/u-form-item.vue */ 159))
+      return Promise.all(/*! import() | uview-ui/components/u-form-item/u-form-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-form-item/u-form-item")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form-item/u-form-item.vue */ 309))
     },
     uInput: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-input/u-input */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-input/u-input")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-input/u-input.vue */ 170))
+      return Promise.all(/*! import() | uview-ui/components/u-input/u-input */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-input/u-input")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-input/u-input.vue */ 224))
     },
     uActionSheet: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-action-sheet/u-action-sheet */ "uview-ui/components/u-action-sheet/u-action-sheet").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-action-sheet/u-action-sheet.vue */ 177))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-action-sheet/u-action-sheet */ "uview-ui/components/u-action-sheet/u-action-sheet").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-action-sheet/u-action-sheet.vue */ 319))
     },
     uToast: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-toast/u-toast */ "uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-toast/u-toast.vue */ 184))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-toast/u-toast */ "uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-toast/u-toast.vue */ 239))
     },
     uModal: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-modal/u-modal */ "uview-ui/components/u-modal/u-modal").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-modal/u-modal.vue */ 191))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-modal/u-modal */ "uview-ui/components/u-modal/u-modal").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-modal/u-modal.vue */ 326))
+    },
+    uTopTips: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-top-tips/u-top-tips */ "uview-ui/components/u-top-tips/u-top-tips").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-top-tips/u-top-tips.vue */ 333))
+    },
+    uTabbar: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-tabbar/u-tabbar */ "uview-ui/components/u-tabbar/u-tabbar").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-tabbar/u-tabbar.vue */ 274))
     }
   }
 } catch (e) {
@@ -159,6 +168,12 @@ var render = function() {
     color: "#969696",
     textAlign: "center"
   }
+  var a1 = {
+    fontSize: "50rpx",
+    fontWeight: "600",
+    color: "#969696",
+    textAlign: "center"
+  }
 
   if (!_vm._isMounted) {
     _vm.e0 = function($event) {
@@ -170,7 +185,8 @@ var render = function() {
     {},
     {
       $root: {
-        a0: a0
+        a0: a0,
+        a1: a1
       }
     }
   )
@@ -184,9 +200,9 @@ render._withStripped = true
 /***/ }),
 
 /***/ 64:
-/*!***********************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/mine/mine.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************/
+/*!************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/mine/mine.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -200,14 +216,100 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 65:
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/mine/mine.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/mine/mine.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 8));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var administer = function administer() {__webpack_require__.e(/*! require.ensure | components/administer */ "components/administer").then((function () {return resolve(__webpack_require__(/*! ../../components/administer.vue */ 198));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 8));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var administer = function administer() {__webpack_require__.e(/*! require.ensure | components/administer */ "components/administer").then((function () {return resolve(__webpack_require__(/*! ../../components/administer.vue */ 340));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var clockChart = function clockChart() {__webpack_require__.e(/*! require.ensure | components/clock-chart */ "components/clock-chart").then((function () {return resolve(__webpack_require__(/*! ../../components/clock-chart.vue */ 347));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -282,18 +384,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 {
-  onLoad: function onLoad() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var autoLoginId, personalInfor;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-              _this.list = _this.$store.state.list;
-              autoLoginId = uni.getStorageSync("idVerification");_context.next = 4;return (
+  onLoad: function onLoad() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var personalInfor;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+              _this.list = _this.$store.state.list;_context.next = 3;return (
                 _this.$myRequest({
                   url: "/users/myInformation",
-                  method: "post",
-                  data: { autoLoginId: autoLoginId } }));case 4:personalInfor = _context.sent;
+                  method: "post" }));case 3:personalInfor = _context.sent;
 
-              console.log(personalInfor);
               _this.name = personalInfor.data.name;
               _this.profile = personalInfor.data.profilePhotos;
               _this.identify = personalInfor.data.identity;
+              console.log(_this.identify);
               if (_this.name == null || _this.name == "") {
                 _this.name = "未实名";
               }
@@ -301,23 +401,39 @@ __webpack_require__.r(__webpack_exports__);
                 _this.YorN = true;
               } else {
                 _this.YorN = false;
-              }case 11:case "end":return _context.stop();}}}, _callee);}))();
-
+              }
+              _this.getClockResult();
+              // 获取打卡信息数据
+            case 11:case "end":return _context.stop();}}}, _callee);}))();
   },
   onReady: function onReady() {
     this.$refs.uForm.setRules(this.rules);
+    // this.$refs.updateQuestion.setRules(this.rules1)
   },
   data: function data() {
     return {
+      rotate: false,
+      clockData: [],
+      question: {
+        questionTitle: '',
+        questionChoice: '',
+        questionAnswer: '' },
+
       name: "",
       identify: "",
       YorN: false,
       show: false,
+      showChart: true,
       list: [],
       isshow: false,
       content: '',
       current: 2,
       showToast: false,
+      showAnnounce: false,
+      actrueCount: 0,
+      maxCount: 140,
+      announceValue: '',
+      isIssueLoading: false,
       insertInfor: {
         name: '',
         identify: '',
@@ -332,6 +448,7 @@ __webpack_require__.r(__webpack_exports__);
         text: '入党申请人' }],
 
 
+      showUpdateQuestion: false,
       rules: {
         name: [
         {
@@ -360,14 +477,39 @@ __webpack_require__.r(__webpack_exports__);
         {
           required: true,
           message: '请选择身份',
-          trigger: ['click'] }] } };
+          trigger: ['click'] }] },
+
+
+
+      rules1: {
+        questionTitle: [
+        {
+          required: true,
+          message: '请输入题目信息',
+          // 可以单个或者同时写两个触发验证方式 
+          trigger: ['blur'] }],
+
+
+        questionAnswer: [
+        {
+          required: true,
+          message: '请输入答案',
+          trigger: ['blur'] }],
+
+
+        questionChoice: [
+        {
+          required: true,
+          message: '请输入选项信息',
+          trigger: ['blur'] }] } };
 
 
 
 
   },
   components: {
-    administer: administer },
+    administer: administer,
+    clockChart: clockChart },
 
   computed: {
     profile: function profile() {
@@ -382,9 +524,26 @@ __webpack_require__.r(__webpack_exports__);
     } },
 
   methods: {
+    getClockResult: function getClockResult() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var clockResult;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
+                  _this2.$myRequest({
+                    url: '/video/clockCondition',
+                    method: 'post' }));case 2:clockResult = _context2.sent;
+
+                if (clockResult.statusCode === 200) {
+                  _this2.clockData = clockResult.data;
+                } else {
+                  console.log(clockResult);
+                }case 4:case "end":return _context2.stop();}}}, _callee2);}))();
+    },
+    refreshChart: function refreshChart() {var _this3 = this;
+      this.rotate = true;
+      setTimeout(function () {
+        _this3.rotate = false;
+      }, 2000);
+      this.getClockResult();
+    },
     showModel: function showModel() {
       console.log(this.YorN);
-      console.log(this.show);
       if (this.YorN == true) {
         this.show = true;
       } else {
@@ -393,6 +552,13 @@ __webpack_require__.r(__webpack_exports__);
           title: "没有管理员权限" });
 
       }
+    },
+    openPop: function openPop() {
+      this.showChart = false;
+    },
+    closePop: function closePop() {
+      console.log(this.show + 111);
+      this.showChart = true;
     },
     changeInfor: function changeInfor() {
       uni.navigateTo({
@@ -414,25 +580,25 @@ __webpack_require__.r(__webpack_exports__);
     cancle: function cancle() {
       this.showToast = false;
     },
-    confirm: function confirm() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var _yield$_this2$$myRequ, data;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:if (!(
-                _this2.insertInfor.identify === '' || _this2.insertInfor.name === '' || _this2.insertInfor.studentNumber === '')) {_context2.next = 3;break;}
-                _this2.$refs.uToast.show({
+    confirm: function confirm() {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var _yield$_this4$$myRequ, data;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:if (!(
+                _this4.insertInfor.identify === '' || _this4.insertInfor.name === '' || _this4.insertInfor.studentNumber === '')) {_context3.next = 3;break;}
+                _this4.$refs.uToast.show({
                   title: '内容不能为空',
-                  type: 'error' });return _context2.abrupt("return");case 3:_context2.next = 5;return (
+                  type: 'error' });return _context3.abrupt("return");case 3:_context3.next = 5;return (
 
 
 
-                  _this2.$myRequest({
+                  _this4.$myRequest({
                     url: '/selectMember/insert',
                     method: 'post',
-                    data: _this2.insertInfor }));case 5:_yield$_this2$$myRequ = _context2.sent;data = _yield$_this2$$myRequ.data;
+                    data: _this4.insertInfor }));case 5:_yield$_this4$$myRequ = _context3.sent;data = _yield$_this4$$myRequ.data;
 
-                _this2.isshow = true;
+                _this4.isshow = true;
                 if (data.result === 1) {
-                  _this2.content = '添加成功，是否继续';
+                  _this4.content = '添加成功，是否继续';
                 } else {
-                  _this2.content = '发生错误';
-                }case 9:case "end":return _context2.stop();}}}, _callee2);}))();
+                  _this4.content = '发生错误';
+                }case 9:case "end":return _context3.stop();}}}, _callee3);}))();
     },
     actionSheetCallback: function actionSheetCallback(index) {
       this.insertInfor.identify = this.actionSheetList[index].text;
@@ -444,15 +610,55 @@ __webpack_require__.r(__webpack_exports__);
     cancelOperate: function cancelOperate() {
       this.isshow = false;
       this.showToast = false;
+    },
+    goAnnounce: function goAnnounce(data) {
+      this.showAnnounce = data;
+      this.announceValue = '';
+    },
+    inputAnnounce: function inputAnnounce() {
+      this.actrueCount = this.announceValue.length;
+    },
+    handleIssue: function handleIssue() {var _this5 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var _yield$_this5$$myRequ, data;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
+                _this5.isIssueLoading = true;_context4.next = 3;return (
+                  _this5.$myRequest({
+                    url: '/issue/anounce',
+                    method: 'post',
+                    data: { announceValue: _this5.announceValue } }));case 3:_yield$_this5$$myRequ = _context4.sent;data = _yield$_this5$$myRequ.data;
+
+                if (data.text === '用户未实名') {
+                  _this5.$refs.uTips.show({
+                    title: '你还未实名',
+                    type: 'error',
+                    duration: '2300' });
+
+                  _this5.isIssueLoading = false;
+                } else {
+                  _this5.$refs.annouce.show({
+                    title: '发布成功',
+                    type: 'success' });
+
+                  _this5.showAnnounce = false;
+                  _this5.isIssueLoading = false;
+                }case 6:case "end":return _context4.stop();}}}, _callee4);}))();
+    },
+    handleUpdateQuestion: function handleUpdateQuestion(data) {
+      console.log(data);
+      this.showUpdateQuestion = data;
+    },
+    cancleUpdate: function cancleUpdate() {
+      this.showUpdateQuestion = false;
+    },
+    confirmUpdate: function confirmUpdate() {
+      this.showUpdateQuestion = false;
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
 /***/ 66:
-/*!********************************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/mine/mine.vue?vue&type=style&index=0&lang=scss& ***!
-  \********************************************************************************************************************/
+/*!*********************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/mine/mine.vue?vue&type=style&index=0&lang=scss& ***!
+  \*********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -466,9 +672,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 67:
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/mine/mine.vue?vue&type=style&index=0&lang=scss& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/mine/mine.vue?vue&type=style&index=0&lang=scss& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

@@ -8,7 +8,12 @@ var indexRouter = require('./routes/index');
 var users = require("./routes/users");
 var selectMembers = require("./routes/members")
 var valicate = require('./routes/valicate')
-
+var issue = require('./routes/issue')
+var video = require('./routes/video')
+var moment = require('./routes/moment')
+var reset = require('./routes/reset')
+var error = require('./routes/problems')
+var activity = require('./routes/activity')
 var app = express();
 
 // view engine setup
@@ -25,8 +30,13 @@ app.use('/', indexRouter);
 app.use('/users', users);
 app.use('/selectMember', selectMembers);
 app.use('/valicate', valicate)
-
-// catch 404 and forward to error handler
+app.use('/issue', issue)
+app.use('/video', video)
+app.use('/moment', moment)
+app.use('/reset', reset)
+app.use('/activity', activity)
+app.use('/error', error)
+    // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     next(createError(404));
 });

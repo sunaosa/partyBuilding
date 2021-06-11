@@ -1,15 +1,25 @@
 const list = [
 				{
 					iconPath: "home", 
-					selectedIconPath: "home-fill",
+					selectedIconPath: "home-fill", 
 					text: '首页',
+					midButton: false,
+					customIcon: false,
 					pagePath: '/pages/index/index'
 				},
 				{
-					iconPath: "https://cdn.uviewui.com/uview/common/min_button.png",
-					selectedIconPath: "https://cdn.uviewui.com/uview/common/min_button_select.png",
-					text: '发布',
-					midButton: true,
+					iconPath: "file-text",
+					selectedIconPath: "file-text-fill",
+					text: '题库',
+					midButton: false,
+					customIcon: false,
+					pagePath: '/pages/questionLibrary/questionLibrary'
+				},
+				{
+					iconPath: "moments",
+					selectedIconPath: "moments",
+					text: '活动圈',
+					midButton: false,
 					customIcon: false,
 					pagePath: '/pages/release/release'
 				},
@@ -17,7 +27,7 @@ const list = [
 					iconPath: "account",
 					selectedIconPath: "account-fill",
 					text: '我的',
-					isDot: false,
+					midButton: false,
 					customIcon: false,
 					pagePath: '/pages/mine/mine'
 				},								

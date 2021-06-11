@@ -25,7 +25,8 @@
 /* 透明度 */
 /* 文章场景相关 */
 view.data-v-0a44a200 {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 .u-tips.data-v-0a44a200 {
   width: 100%;

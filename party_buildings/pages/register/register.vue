@@ -146,7 +146,7 @@
 								title: "注册成功",
 								content: "点击确定返回登录页面",
 								success: () => {
-									uni.redirectTo({
+									uni.reLaunch({
 										url:"../login/login"
 									})
 								},
@@ -154,7 +154,7 @@
 							})
 						}
 					}
-				}	
+				}
 			}
 		}
 	}

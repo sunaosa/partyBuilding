@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-popup": "/uview-ui/components/u-popup/u-popup",
+    "u-switch": "/uview-ui/components/u-switch/u-switch",
+    "wyb-table": "/components/wyb-table/wyb-table",
+    "u-button": "/uview-ui/components/u-button/u-button"
+  }
+}

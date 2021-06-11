@@ -1,6 +1,73 @@
 
+page {
+	background-color: #F8F8F8
+}
 .video {
 	width: 200rpx;
 	height: 200rpx;
+}
+.header {
+	width: 100%;
+}
+.icon {
+	top: 15rpx;
+	background-color: #fdf6ec;
+	position: absolute;
+	right: 15rpx;
+}
+.issueContent {
+	position: relative;
+}
+.annouce-button {
+	text-align: center;
+	margin-top: 40rpx;
+}
+.issuer {
+	position: absolute;
+	bottom: 0rpx;
+	right: 30rpx;
+}
+.videoArea {
+	margin: auto;
+}
+.loading {
+	text-align: center;
+}
+.bgc1,
+.bgc2{
+	width: 500rpx;
+	height: 300rpx;
+	background-color: #007AFF;
+}
+.bgc2{
+	background-color: #18B566;
+}
+.title-style {
+	display: inline-block;
+	font: 28rpx "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","HeitiSC","WenQuanYi Micro Hei",sans-serif;
+	width: 90%;
+	line-height: 35rpx;
+}
+.card-style {
+	margin-top: 20rpx;
+	border: 1rpx solid #ccc;
+}
+.handle-refresh {
+	width: 80rpx;
+	height: 80rpx;
+	border: 1rpx solid #ccc;
+	line-height: 80rpx;
+	text-align: center;
+	right: 10rpx;
+	bottom: 200rpx;
+	-webkit-border-radius: 50rpx;
+	        border-radius: 50rpx;
+	background-color: #fff;
+	-webkit-box-shadow: 0 0 10rpx 2rpx #C0C0C0;
+	        box-shadow: 0 0 10rpx 2rpx #C0C0C0;
+	z-index: 1000000;
+}
+.activity {
+	bottom: 300rpx;
 }
 

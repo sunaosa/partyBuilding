@@ -1,6 +1,14 @@
 <template>
 	<view >
-		<view class="search clearfix">
+		<xuan-loading
+			ref="loading"
+			:shadeShow="true"	
+			:custom="false"
+			:shadeClick="false"
+			:type="2"
+		>
+		</xuan-loading>
+		<view class="search clearfix" >
 			<view class="search-name">
 				<u-search 
 					placeholder="学生姓名"
@@ -28,7 +36,7 @@
 				@click="click"
 				@open="open"
 				:options="options"
-				bg-color="#e2e2e2"
+				bg-color="#fdf6ec"
 			>
 				<view class="item u-border-bottom">
 					<image mode="aspectFill" :src="item.identify==='党员'?'/static/party_member.png':'/static/applicant.png'"  />
@@ -48,7 +56,7 @@
 			<u-loadmore :status="status" @loadmore = 'loadingData'/>
 		</view>	
 		<view>
-			<u-popup v-model="showToast" mode="center" width="700rpx" height="350px" border-radius="14">
+			<u-popup v-model="showToast" mode="center" width="700rpx" height="400px" border-radius="14">
 				<view class="changeForm">
 					<view class="form-title">
 						<u-cell-group>
@@ -56,6 +64,7 @@
 								title="党员信息修改" 
 								:title-style="{'fontSize': '50rpx','fontWeight':'600','color':'#969696','textAlign': 'center'}" 
 								:arrow="false" 
+								:label="label"
 							>
 							</u-cell-item>
 						</u-cell-group>
@@ -67,17 +76,15 @@
 							<u-input v-model="changeInfor.identify" type="select" @click="showAction = true" :select-open='showAction'/>
 							<u-action-sheet :list="actionSheetList" v-model="showAction" @click='actionSheetCallback'></u-action-sheet>
 						</u-form-item>
-						<u-form-item label="打卡" prop="count"><u-input v-model="changeInfor.count" /></u-form-item>
+						<u-form-item label="打卡" prop="count"><u-input v-model="changeInfor.count" disabled/></u-form-item>
 					</u-form> 
 					<view class="operate-button">
 						<u-button size="medium" @click="cancle">取消</u-button>
 						<u-button type="primary" size="medium" class="location" @click="confirm">确认</u-button>
 					</view>
-				</view>
-				
+				</view> 
 			</u-popup>
 		</view>
-		<u-loading size="36" :show="showLoading"></u-loading>
 	</view>
 </template>
 
@@ -85,14 +92,13 @@
 	// import wybTable from '@/components/wyb-table/wyb-table.vue'
 	export default {
 		onLoad() {
-			this.showLoading = true
 			if(Math.ceil(this.total/8) === this.i) {
 				this.status = 'nomore'
 			}
 			this.i = 1
 			this.selectMember()
 		},
-		onReachBottom() {
+		onReachBottom() { 
 			this.loadingData()
 		},
 		onReady() {
@@ -108,6 +114,7 @@
 				disabled: false,
 				btnWidth: 70,
 				show: false,
+				label: '',
 				options: [
 					{
 						text: '编辑',
@@ -200,8 +207,7 @@
 					{
 						label: '入党申请人',
 						value: '入党申请人'
-					}],
-					showLoading: false
+					}]
 				}
 			}
 		},
@@ -215,15 +221,17 @@
 				this.selectMember()
 			},
 			async selectMember() {
-				let {data} = await this.$myRequest({
+				this.$refs.loading.open();
+				let result = await this.$myRequest({
 					url:"/selectMember/selected",
 					method: 'post',
 					data: {page: this.i,identify:this.searchList.identify,name: this.searchList.name}
 				}) 
-				this.list = data.memberValues
-				this.total = data.total
-				console.log(data)
-				this.showLoading = false
+				if (result.statusCode === 200){
+					this.list = result.data.memberValues
+					this.total = result.data.total
+					this.$refs.loading.close()
+				}
 			},
 			async click(index, index1) {
 				if(index1 == 1) {
@@ -243,6 +251,18 @@
 					}
 					
 				} else {
+					let {data} = await this.$myRequest({
+						url:"/selectMember/otherInfor",
+						method: 'post',
+						data: {id: this.list[index].id}
+					}) 
+					if(data.r === 0){
+						this.label = '学生未注册'
+					} else if(data.r === 1){
+						this.label = '学生未实名'
+					} else {
+						this.label = '手机号：'+data.phoneNumber+' 班级：'+data.class
+					}
 					this.changeInfor.id = this.list[index].id
 					this.changeInfor.name = this.list[index].name
 					this.changeInfor.identify = this.list[index].identify
@@ -303,6 +323,9 @@
 </script>
 
 <style lang="scss">
+	page {
+		background-color: #fda73d;
+	}
 	.table {
 		width: 750rpx;
 	}
@@ -312,7 +335,7 @@
 	.search {
 		// display: flex;
 		// height: 40rpx;
-		margin-top: 20rpx;
+		margin-top: 10rpx;
 		// justify-content: space-between;
 	}
 	.search-name {
@@ -321,8 +344,9 @@
 		margin-left: 15rpx;
 	}
 	.search-identify {
-		
+		background-color: #f1f1f1;
 		display: inline-block;
+		border-radius: 15rpx;
 		width: 200rpx;
 		margin-left: 20rpx;
 		text {

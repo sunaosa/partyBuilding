@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "u-mask": "..\\u-mask\\u-mask",
+    "u-icon": "..\\u-icon\\u-icon"
+  },
+  "component": true
+}

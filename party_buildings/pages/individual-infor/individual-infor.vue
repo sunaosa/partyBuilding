@@ -41,21 +41,25 @@
 				<u-button type='primary' shape="circle" size="medium" @click="valicateMember" :loading='loading'>{{identify==='游客'?'认证':'保存'}}</u-button>
 			</view>
 			<u-top-tips ref="uTips"></u-top-tips>
-			<u-modal v-model="ifshow" :content="content"></u-modal>
+			<u-modal v-model="ifshow" :content="content" @confirm="confirm"></u-modal>
 			<u-toast ref="uToast" />
 		</view>
+		
+			<u-button @click="logOut" size="default" class="logout">退出登录</u-button>
 	</view>
 </template>
 
 <script>
-	export default {
+	export default { 
 		async onLoad(identity) {
 			console.log(identity)
 			this.identify = identity.identify
+			if(this.identify !== "游客") {
+				this.title = "个人信息"
+			}
 			let { data } = await this.$myRequest({
 				url: '/valicate/initialize',
-				method: 'post',
-				data:{id: uni.getStorageSync('idVerification')}
+				method: 'post'
 			})
 			this.valicateForm = data
 		},
@@ -66,15 +70,9 @@
 			return {
 				subTitle: '首次为认证，之后填写为更改信息',
 				title: '党员认证',
-				valicateForm: {
-					name: '',
-					studentNumber: '',
-					phoneNumber: '',
-					sex: '',
-					class: ''
-				},
+				valicateForm: {},
 				ifshow: false,
-				content: '',
+				content: '操作成功',
 				loading: false,
 				sexList: [
 					{text: '男'},
@@ -154,26 +152,48 @@
 				this.loading = true
 				this.$refs.valicateForm.validate(valid => {
 					if(!valid){
+						this.loading = false
 						return
 					}
-				})
-				let {data} = await this.$myRequest({
-					url: '/valicate/valicate-member',
-					method: 'post',
-					data: {valicateForm: this.valicateForm,id:uni.getStorageSync('idVerification')}
-				})
-				console.log(data)
-				if(data === 1) {
-					this.loading = false
-					
-				} else{
-					this.$refs.uToast.show({
-						title: '登录成功',
-						type: 'error',
-						url: '/pages/user/index'
+					this.$myRequest({
+						url: '/valicate/valicate-member',
+						method: 'post',
+						data: {valicateForm: this.valicateForm}
+					}).then(res=>{
+						let data = res.data
+						console.log(data)
+						if(data.updateInfor === 1) {
+							uni.removeStorageSync("myToken")
+							uni.setStorageSync("myToken", data.token)
+							this.loading = false
+							this.ifshow = true
+						} else{
+							this.$refs.uToast.show({
+								title: '认证失败',
+								type: 'error'
+							})
+							this.loading = false
+						}
 					})
-					this.loading = false
-				}
+					
+				})
+			},
+			confirm() {
+				uni.switchTab({
+					url: '/pages/mine/mine',
+					success(){
+						let page = getCurrentPages().pop();  //跳转页面成功之后
+						if (!page) return;  
+						page.onLoad(); //如果页面存在，则重新刷新页面
+					}
+				})
+				this.ifshow = false
+			},
+			logOut() {
+				uni.removeStorageSync("myToken")
+				uni.reLaunch({
+					url: '/pages/login/login'
+				})
 			}
 		}
 	}
@@ -194,5 +214,8 @@
 .button {
 	margin: 50rpx 0;
 	text-align: center;
+}
+.logout {
+	margin-top: 300rpx;
 }
 </style>

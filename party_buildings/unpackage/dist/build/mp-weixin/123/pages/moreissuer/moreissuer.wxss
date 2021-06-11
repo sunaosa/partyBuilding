@@ -1,0 +1,1 @@
+@import "../../common/main.wxss";page{background-color:silver}.body{margin-top:-50rpx}.clear-icon{position:absolute;top:20rpx;right:20rpx}

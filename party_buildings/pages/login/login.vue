@@ -1,8 +1,5 @@
 <template>
-	<view class="content">
-		<view class="bg">
-			<image src="../../static/login_bgc.png" class="background"></image>
-		</view>
+	<view class="content" >
 		<view class="login">
 			<view class="text">
 				<input type="text" v-model="users.username" placeholder="用户名"/>
@@ -15,7 +12,14 @@
 				<view class="bgc" @click="hidePassward" v-show="!ifHide">
 					<image src="../../static/notHide.png" ></image>
 				</view>
+			</view> 
+			<view class="all-valivate">
+				<view class="valicate">
+					<input type="text" v-model="users.valicateCode" placeholder="验证码"/>
+				</view>
+				<image :src="imgCode"  @click='changeImgCode'></image>
 			</view>
+			
 			<view class="login_btn" @click="login">
 				
 				登录
@@ -24,11 +28,19 @@
 				新用户，注册！
 			</view>
 		</view>
+		<u-toast ref="uToast" />
+		<u-tag 
+			text="忘记密码?"
+			type="info"
+			style="position: absolute; bottom: 20rpx;right: 50rpx;" 
+			shape="circleLeft"
+			@click="handleForgetPassword"
+		/>
 	</view>
 </template>
 
 <script>
-	export default {
+	export default { 
 		onLoad() {
 			
 			uni.hideHomeButton()
@@ -37,19 +49,19 @@
 			return {
 				users:{
 					username: "",
-					password: ""
+					password: "",
+					valicateCode: ''
 				},
 				hideOrNo: "",
 				type_password: "password",
 				type_text: "text",
 				ifHide: true,
-				
+				imgCode: 'http://192.168.137.1:3000/users/images'
 			}
 		},
 		
 		methods: {
 			hidePassward() {
-				console.log(1)
 				this.ifHide = !this.ifHide	
 			},
 			async login() {
@@ -58,7 +70,6 @@
 						title:'请输入账号',
 						image:"/static/error.png"
 					})
-					console.log(this.users.username)
 				}
 				else if(this.users.password==="") {
 					uni.showToast({
@@ -67,13 +78,11 @@
 					})
 				}
 				else {
-					console.log(this.users.username+"密码"+this.users.password)
 					var result = await this.$myRequest({
 						url:'/users/login',
 						method: "post",
 						data: this.users,
 					})
-					console.log(result.data);
 					if(result.data === "密码错误") {
 						uni.showModal({
 							title: "密码错误",
@@ -88,18 +97,33 @@
 						})
 					}
 					else {
-						console.log(result.data)
-						uni.setStorageSync("idVerification",result.data)
-						uni.switchTab({
-							url:"../index/index"
-						})
+						if(result.data === '验证码错误'){
+							this.$refs.uToast.show({
+								title: '验证码错误区分大小写',
+								type: 'error',
+							})
+						}
+						else{
+							uni.setStorageSync("myToken",result.data.token)
+							uni.switchTab({
+								url:"../index/index"
+							})
+						}
+						
 					}
 				}				
 			},
 			register() {
 				uni.navigateTo({
 					url:"../register/register"
-					
+				})
+			},
+			changeImgCode() {
+				this.imgCode = 'http://192.168.137.1:3000/users/images?' + Math.ceil(Math.random()*10)
+			},
+			handleForgetPassword() {
+				uni.navigateTo({
+					url:"../forgetPassword/forgetPassword"
 				})
 			}
 		}
@@ -111,28 +135,17 @@
 		height: 100%;
 		margin: 0;
 		padding: 0;
-		position: absolute;
+		background-image:url(https://www.yik.ink/sockets/union/uploadFile/607eec0092bea.png);
+		background-size: 100% 100%;
 	}
 	.content {
 		height: 100%;
 		width: 100%;
-		.bg {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-			overflow: hidden;
-			z-index: -9999;
-			.background {
-				height: 100%;
-				width: 100%;
-				position: absolute;
-				bottom: 0;
-			}
-		}
+		
 		.login {
 			width: 600rpx;
-			height: 500rpx;
-			margin-top: 400rpx;
+			height: 600rpx;
+			margin-top: 200rpx;
 			margin-left: 50%;
 			left: -300rpx;
 			position: absolute;
@@ -195,5 +208,31 @@
 				z-index: 1000;
 			}
 		}
-	} 
+	}
+	 .valicate {
+		 display: inline-block;
+		 width: 200rpx;
+		 // position: absolute;
+		 margin-left: 50rpx;
+		 height: 80rpx;
+		 margin-top: 65rpx;
+		 border-radius: 30rpx;
+		 background-color: #FFFFFF;
+		 input[type="text"] {
+		 	height: 100%;
+		 	width: 75%;
+		 	margin-left: 30rpx;
+		 }
+	 }
+	 image {
+		 display: inline-block;
+		 margin-left: 20rpx;
+		 right: 0rpx;
+		 // margin-right: 50rpx;
+		 height: 80rpx;
+		 width: 200rpx;
+	 }
+	 .all-valivate {
+		 position: relative;
+	 }
 </style>

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "u-input": "..\\..\\uview-ui\\components\\u-input\\u-input",
+    "u-action-sheet": "..\\..\\uview-ui\\components\\u-action-sheet\\u-action-sheet",
+    "u-button": "..\\..\\uview-ui\\components\\u-button\\u-button"
+  },
+  "component": true
+}

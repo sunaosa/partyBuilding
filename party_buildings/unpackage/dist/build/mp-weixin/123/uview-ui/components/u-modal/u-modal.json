@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "u-popup": "..\\u-popup\\u-popup",
+    "u-loading": "..\\u-loading\\u-loading"
+  },
+  "component": true
+}

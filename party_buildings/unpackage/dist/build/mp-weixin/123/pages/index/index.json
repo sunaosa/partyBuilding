@@ -1,0 +1,18 @@
+{
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-notice-bar": "..\\..\\uview-ui\\components\\u-notice-bar\\u-notice-bar",
+    "u-icon": "..\\..\\uview-ui\\components\\u-icon\\u-icon",
+    "u-swiper": "..\\..\\uview-ui\\components\\u-swiper\\u-swiper",
+    "u-popup": "..\\..\\uview-ui\\components\\u-popup\\u-popup",
+    "u-cell-group": "..\\..\\uview-ui\\components\\u-cell-group\\u-cell-group",
+    "u-cell-item": "..\\..\\uview-ui\\components\\u-cell-item\\u-cell-item",
+    "u-input": "..\\..\\uview-ui\\components\\u-input\\u-input",
+    "u-button": "..\\..\\uview-ui\\components\\u-button\\u-button",
+    "u-toast": "..\\..\\uview-ui\\components\\u-toast\\u-toast",
+    "u-tabs-swiper": "..\\..\\uview-ui\\components\\u-tabs-swiper\\u-tabs-swiper",
+    "u-divider": "..\\..\\uview-ui\\components\\u-divider\\u-divider",
+    "yfs-video": "..\\..\\components\\yfs-video\\yfs-video",
+    "u-tabbar": "..\\..\\uview-ui\\components\\u-tabbar\\u-tabbar"
+  }
+}

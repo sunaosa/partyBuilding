@@ -7,18 +7,26 @@
     "pages/individual-infor/individual-infor",
     "pages/release/release",
     "pages/selected/selected",
-    "pages/insert/insert",
-    "pages/change/change"
+    "pages/change/change",
+    "pages/moreissuer/moreissuer",
+    "pages/upload/upload",
+    "pages/newMoment/newMoment",
+    "pages/forgetPassword/forgetPassword",
+    "pages/submitError/submitError",
+    "pages/questionLibrary/questionLibrary",
+    "pages/releaseActivity/releaseActivity",
+    "pages/allActivity/allActivity",
+    "pages/activityDetail/activityDetail"
   ],
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "智 慧 · 党 建",
-    "navigationBarBackgroundColor": "#f4030a",
+    "navigationBarBackgroundColor": "#ff7d0b",
     "enablePullDownRefresh": true
   },
   "tabBar": {
-    "selectedColor": "#f4030a",
+    "selectedColor": "#ff9e15",
     "list": [
       {
         "pagePath": "pages/index/index"
@@ -28,9 +36,17 @@
       },
       {
         "pagePath": "pages/mine/mine"
+      },
+      {
+        "pagePath": "pages/questionLibrary/questionLibrary"
       }
     ]
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
   "usingComponents": {},
-  "sitemapLocation": "sitemap43.json"
+  "sitemapLocation": "sitemap.json"
 }

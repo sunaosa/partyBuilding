@@ -2,9 +2,10 @@
   "enablePullDownRefresh": false,
   "usingComponents": {
     "u-avatar": "/uview-ui/components/u-avatar/u-avatar",
+    "u-divider": "/uview-ui/components/u-divider/u-divider",
     "u-popup": "/uview-ui/components/u-popup/u-popup",
+    "u-icon": "/uview-ui/components/u-icon/u-icon",
     "u-button": "/uview-ui/components/u-button/u-button",
-    "u-tabbar": "/uview-ui/components/u-tabbar/u-tabbar",
     "u-cell-group": "/uview-ui/components/u-cell-group/u-cell-group",
     "u-cell-item": "/uview-ui/components/u-cell-item/u-cell-item",
     "u-form": "/uview-ui/components/u-form/u-form",
@@ -13,6 +14,9 @@
     "u-action-sheet": "/uview-ui/components/u-action-sheet/u-action-sheet",
     "u-toast": "/uview-ui/components/u-toast/u-toast",
     "u-modal": "/uview-ui/components/u-modal/u-modal",
-    "administer": "/components/administer"
+    "u-top-tips": "/uview-ui/components/u-top-tips/u-top-tips",
+    "u-tabbar": "/uview-ui/components/u-tabbar/u-tabbar",
+    "administer": "/components/administer",
+    "clock-chart": "/components/clock-chart"
   }
 }

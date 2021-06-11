@@ -1,0 +1,11 @@
+
+page{
+	background-color: #C0C0C0;
+}.body {
+	margin-top: -50rpx;
+}.clear-icon {
+	position: absolute;
+	top: 20rpx;
+	right: 20rpx;
+}
+

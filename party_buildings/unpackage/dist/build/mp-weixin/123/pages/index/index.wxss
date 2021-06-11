@@ -1,0 +1,2 @@
+@import "../../common/main.wxss";.video{width:200rpx;height:200rpx}.header{width:100%}.icon{top:15rpx;background-color:#fdf6ec;position:absolute;right:15rpx}.annouce-button{text-align:center;margin-top:40rpx}.issuer{position:absolute;bottom:180rpx;right:30rpx}.videoArea{width:700rpx;margin:auto}.loading{text-align:center}.bgc1,
+.bgc2{width:500rpx;height:300rpx;background-color:#007aff}.bgc2{background-color:#18b566}

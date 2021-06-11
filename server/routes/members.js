@@ -14,7 +14,7 @@ router.post('/selected', async function(req, res, next) {
     if (req.body.name === '' && req.body.identify !== '') {
         members = await models.partyMembers.findAll({
             attributes: ['id', 'name', 'studentNumber', 'identify', 'count'],
-            limit: 8 * req.body.page,
+            limit: 10 * req.body.page,
             where: {
                 identify: req.body.identify
             }
@@ -22,7 +22,7 @@ router.post('/selected', async function(req, res, next) {
     } else if (req.body.name !== '' && req.body.identify === '') {
         members = await models.partyMembers.findAll({
             attributes: ['id', 'name', 'studentNumber', 'identify', 'count'],
-            limit: 8 * req.body.page,
+            limit: 10 * req.body.page,
             where: {
                 name: {
                     [Op.like]: '%' + req.body.name + '%'
@@ -32,7 +32,7 @@ router.post('/selected', async function(req, res, next) {
     } else if (req.body.name !== '' && req.body.identify !== '') {
         members = await models.partyMembers.findAll({
             attributes: ['id', 'name', 'studentNumber', 'identify', 'count'],
-            limit: 8 * req.body.page,
+            limit: 10 * req.body.page,
             where: {
                 name: {
                     [Op.like]: '%' + req.body.name + '%'
@@ -43,7 +43,7 @@ router.post('/selected', async function(req, res, next) {
     } else {
         members = await models.partyMembers.findAll({
             attributes: ['id', 'name', 'studentNumber', 'identify', 'count'],
-            limit: 8 * req.body.page,
+            limit: 10 * req.body.page,
         })
     }
     let totalMembers = await models.partyMembers.findAll()
@@ -91,5 +91,37 @@ router.post('/insert', async function(req, res, next) {
     } else
         res.json({ result: 0 })
     console.log(insertResult.dataValues.name)
+})
+router.post('/otherInfor', async function(req, res, next) {
+    let studentNumber = await models.partyMembers.findAll({
+        attributes: ['studentNumber'],
+        where: {
+            id: req.body.id
+        }
+    })
+    let id = await models.users.findAll({
+        attributes: ['id'],
+        where: {
+            username: studentNumber[0].dataValues.studentNumber
+        }
+    })
+    if (id.length === 0) {
+        res.json({ r: 0 })
+    } else {
+        let otherInfor = await models.usersInformation.findAll({
+            attributes: ['phoneNumber', 'class'],
+            where: {
+                id: id[0].dataValues.id
+            }
+        })
+        if (otherInfor[0].dataValues.class === null) {
+            res.json({ r: 1 })
+        } else {
+            res.json(otherInfor[0].dataValues)
+        }
+        console.log(otherInfor[0].dataValues)
+    }
+
+    console.log(studentNumber[0].dataValues.studentNumber)
 })
 module.exports = router;

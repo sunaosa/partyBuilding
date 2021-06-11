@@ -1,16 +1,12 @@
-const BASIC_PATH="http://localhost:3000"
+const BASIC_PATH="http://192.168.137.1:3000"
 export const  myRequest=(options)=> {
 	return new Promise((resolve,reject)=>{
 		uni.request({
 			url: BASIC_PATH + options.url,
 			method: options.method || 'GET',
+			header:{Auhorization: uni.getStorageSync("myToken")},
 			data: options.data || {},
-			success: (res) => {
-				if(res.statusCode !== 200){
-					uni.showToast({
-						title:'获取数据失败'
-					})
-				} 
+			success: (res) => { 
 				resolve(res);
 			},
 			fail: (err) => {

@@ -1,0 +1,1 @@
+@import "../../common/main.wxss";.title{height:180rpx;overflow:hidden;width:700rpx;margin:auto;border-bottom:1px solid #dcdcdc}.content{width:700rpx;margin:30rpx auto}.button{margin:50rpx 0;text-align:center}.logout{margin-top:300rpx}

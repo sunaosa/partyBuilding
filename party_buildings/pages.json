@@ -15,7 +15,7 @@
 			"path": "pages/login/login", 
 			"style": {
 				"navigationBarTitleText": "登录",
-				"backgroundColorTop":"#f4030a"
+				"backgroundColorTop":"#ff9e15"
 			}
 		},
 		{
@@ -48,7 +48,7 @@
             "path" : "pages/release/release",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "活动圈",
                 "enablePullDownRefresh": false
             }
             
@@ -63,15 +63,6 @@
             
         }
         ,{
-            "path" : "pages/insert/insert",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
             "path" : "pages/change/change",
             "style" :                                                                                    
             {
@@ -80,15 +71,96 @@
             }
              
         }
+        ,{
+            "path" : "pages/moreissuer/moreissuer",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "公告",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/upload/upload",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "上传视频",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/newMoment/newMoment",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "新建",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/forgetPassword/forgetPassword",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/submitError/submitError",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "问 题 提 交",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/questionLibrary/questionLibrary",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "题库",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/releaseActivity/releaseActivity",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "活 动 发 布",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/allActivity/allActivity",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "活 动",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/activityDetail/activityDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "活动详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "智 慧 · 党 建",
-		"navigationBarBackgroundColor": "#f4030a",
+		"navigationBarBackgroundColor": "#ff7d0b",
 		"enablePullDownRefresh":true
 	},
 	"tabBar":{
-		"selectedColor":"#f4030a",
+		"selectedColor":"#ff9e15",
 		"list":[{
 			"pagePath":"pages/index/index"
 		},
@@ -97,6 +169,9 @@
 		},
 		{
 			"pagePath":"pages/mine/mine"
+		},
+		{
+			"pagePath":"pages/questionLibrary/questionLibrary"
 		}
 		]
 	}

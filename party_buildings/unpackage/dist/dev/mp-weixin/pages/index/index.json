@@ -1,6 +1,21 @@
 {
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "u-tabbar": "/uview-ui/components/u-tabbar/u-tabbar"
+    "xuan-loading": "/components/xuan-loading/xuan-loading",
+    "u-notice-bar": "/uview-ui/components/u-notice-bar/u-notice-bar",
+    "u-icon": "/uview-ui/components/u-icon/u-icon",
+    "u-swiper": "/uview-ui/components/u-swiper/u-swiper",
+    "u-popup": "/uview-ui/components/u-popup/u-popup",
+    "u-cell-group": "/uview-ui/components/u-cell-group/u-cell-group",
+    "u-cell-item": "/uview-ui/components/u-cell-item/u-cell-item",
+    "u-input": "/uview-ui/components/u-input/u-input",
+    "u-button": "/uview-ui/components/u-button/u-button",
+    "u-toast": "/uview-ui/components/u-toast/u-toast",
+    "u-tabs-swiper": "/uview-ui/components/u-tabs-swiper/u-tabs-swiper",
+    "u-divider": "/uview-ui/components/u-divider/u-divider",
+    "u-card": "/uview-ui/components/u-card/u-card",
+    "u-badge": "/uview-ui/components/u-badge/u-badge",
+    "u-tabbar": "/uview-ui/components/u-tabbar/u-tabbar",
+    "yfs-video": "/components/yfs-video/yfs-video"
   }
 }

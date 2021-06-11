@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "登录",
+  "backgroundColorTop": "#f4030a",
+  "usingComponents": {
+    "u-toast": "..\\..\\uview-ui\\components\\u-toast\\u-toast"
+  }
+}

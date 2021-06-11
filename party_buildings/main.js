@@ -4,6 +4,7 @@ import {myRequest} from './unit/api.js'
 import uView from "uview-ui"
 import store from 'store/index.js'
 
+
 Vue.prototype.$myRequest = myRequest
 Vue.config.productionTip = false
 Vue.prototype.$store = store

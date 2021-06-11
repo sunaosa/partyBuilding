@@ -1,42 +1,71 @@
 <template>
 	<view>
 		<view class="information" @click="changeInfor">
-			<view class="profile">
-				<u-avatar :src="profile"></u-avatar>
-			</view>
-			<view class="name">
-				{{name}}
-			</view>
-			<view class="identify">
-				{{identify}}
-			</view> 
-			<view class="users" v-show="YorN">
-				<image src="../../static/administer.png" mode=""></image>
-			</view>
-			<view class="users" v-show="!YorN">
-				<image src="../../static/user.png" mode=""></image>
+			<view class="information-box">
+				<view class="profile">
+					<u-avatar :src="profile"></u-avatar>
+				</view>
+				<view class="name">
+					{{name}}
+				</view>
+				<view class="identify">
+					{{identify}}
+				</view> 
+				<view class="users" v-show="YorN">
+					<image src="../../static/administer.png" mode=""></image>
+				</view>
+				<view class="users" v-show="!YorN">
+					<image src="../../static/user.png" mode=""></image>
+				</view>
 			</view>
 		</view>
+
+		
 		<view class="operation">
-			<view>
-				<u-popup  v-model="show" mode="left" border-radius="14" width="500rpx">
-					<view class="content">
-						<administer @handleInsert='getInsert'>
+			<u-divider margin-top="50" bg-color="#F8F8F8">打卡情况</u-divider>
+			<view class="clock-title" >
+				需打卡数{{clockData[0].value+clockData[1].value}}次
+			</view>
+			<view class="chart">
+				<clock-chart :clockData="clockData" v-show="showChart"></clock-chart>
+			</view>
+			<view >
+				<u-popup  v-model="show" mode="left" border-radius="14" width="500rpx" @close="closePop" @open="openPop">
+					<view class="content administer-pop">
+						<administer @handleInsert='getInsert' @handleAnnounce='goAnnounce' @handleUpdate='handleUpdateQuestion'>
 							
 						</administer>
 					</view>
 				</u-popup>
-				<u-button @click="showModel" type="default">管理员操作</u-button>
+				<view class="">
+					
+				</view>
+				<u-icon
+					name="reload" 
+					color="#2979ff" 
+					:style="{position: 'fixed', fontSize: '40rpx'}" 
+					:class="rotate?'handle-refresh rotate':'handle-refresh'" 
+					@click="refreshChart">
+				</u-icon>
+				<u-button
+					v-if="YorN"
+					color="#ccc" 
+					shape="circle"
+					:style="{position: 'fixed', fontSize: '60rpx',fontWeight: 'bold',width:'80rpx',bottom:'200rpx'}" 
+					class="handle-refresh" 
+					@click="showModel"
+					>
+					管
+				</u-button>
 			</view>
 		</view>
-		<u-tabbar v-model="current" :list="list" :mid-button="true" ></u-tabbar>
 		<view>
 			<u-popup v-model="showToast" mode="center" width="700rpx" height="350px" border-radius="14">
 				<view class="changeForm">
 					<view class="form-title">
 						<u-cell-group>
 							<u-cell-item
-								title="党员信息修改" 
+								title="增加党员信息" 
 								:title-style="{'fontSize': '50rpx','fontWeight':'600','color':'#969696','textAlign': 'center'}" 
 								:arrow="false" 
 							>
@@ -67,24 +96,79 @@
 			@cancel="cancelOperate" 
 			confirm-text='继续'>
 		</u-modal>
+		<view>
+			<u-popup v-model="showAnnounce" mode="center" width="700rpx" height="350px" border-radius="14">
+				<u-cell-group>
+					<u-cell-item
+						title="发布通知" 
+						:title-style="{'fontSize': '50rpx','fontWeight':'600','color':'#969696','textAlign': 'center'}" 
+						:arrow="false" 
+					>
+					</u-cell-item>
+				</u-cell-group>
+				<view class="announce">
+					<u-input v-model="announceValue" type="textarea" :border="true" :height="350" @input='inputAnnounce'/>
+					<view class="text-count" :style="{color: '#ccc'}">
+						<text>{{actrueCount}}</text>
+						<text>{{'/'+maxCount}}</text>
+					</view>
+				</view>
+				<view class="annouce-button">
+					<u-button type="primary" size="medium" :disabled="actrueCount===0?true:false" @click="handleIssue" :loading="isIssueLoading">发布</u-button>
+				</view>
+				
+				<u-top-tips ref="uTips"></u-top-tips>
+			</u-popup>
+		</view>
+		<u-toast ref="annouce" />
+		<!-- <u-popup v-model="showUpdateQuestion" mode="center" width="700rpx" height="400px" border-radius="14">
+			<view class="changeForm">
+				<view class="form-title">
+					<u-cell-group>
+						<u-cell-item
+							title="上传题库" 
+							:title-style="{'fontSize': '50rpx','fontWeight':'600','color':'#969696','textAlign': 'center'}" 
+							:arrow="false" 
+						>
+						</u-cell-item>
+					</u-cell-group>
+				</view>
+				<u-form :model="question" ref="updateQuestion">
+					<u-form-item label="题目" prop="questionTitle">
+						<u-input v-model="question.questionTitle" border/>
+					</u-form-item>
+					<u-form-item label="选项" prop="questionChoice">
+						<u-input type="textarea" v-model="question.questionChoice" placeholderStyle="color: #ccc" placeholder="选项之间通过','隔开" border/>
+					</u-form-item>
+					<u-form-item label="答案" prop="questionAnswer">
+						<u-input v-model="question.questionAnswer" type="textArea" border/>
+					</u-form-item>
+				</u-form>
+				<view class="operate-button">
+					<u-button size="medium" @click="cancleUpdate">取消</u-button>
+					<u-button type="primary" size="medium" class="location" @click="confirmUpdate">确认</u-button>
+				</view>
+			</view>	
+		</u-popup> -->
+		<u-tabbar v-model="current" :list="list"  active-color='#ff7d0b'></u-tabbar>
 	</view>
 </template>
 
 <script>
 	import administer from "../../components/administer.vue"
+	import clockChart from "../../components/clock-chart.vue"
+	
 	export default {
 		async onLoad() {
 			this.list = this.$store.state.list
-			var autoLoginId = uni.getStorageSync("idVerification")
 			var personalInfor = await this.$myRequest({
 				url:"/users/myInformation",
-				method: "post", 
-				data: {autoLoginId:autoLoginId}
+				method: "post"
 			})
-			console.log(personalInfor)
 			this.name = personalInfor.data.name
 			this.profile = personalInfor.data.profilePhotos
 			this.identify = personalInfor.data.identity
+			console.log(this.identify)
 			if(this.name == null||this.name == "") {
 				this.name = "未实名"
 			} 
@@ -93,22 +177,38 @@
 			} else {
 				this.YorN = false
 			}
+			this.getClockResult()
+			// 获取打卡信息数据
 			
 		},
 		onReady() {
 			this.$refs.uForm.setRules(this.rules);
+			// this.$refs.updateQuestion.setRules(this.rules1)
 		},
 		data() {
 			return {
+				rotate: false,
+				clockData: [],
+				question: {
+					questionTitle: '',
+					questionChoice: '',
+					questionAnswer: ''
+				},
 				name: "",
 				identify: "",
 				YorN: false,
 				show: false,
+				showChart: true,
 				list: [],
 				isshow: false,
 				content: '',
 				current: 2,
 				showToast: false,
+				showAnnounce: false,
+				actrueCount: 0,
+				maxCount: 140,
+				announceValue:'',
+				isIssueLoading: false,
 				insertInfor: {
 					name: '',
 					identify: '',
@@ -123,6 +223,7 @@
 						text: '入党申请人'
 					}
 				],
+				showUpdateQuestion: false,
 				rules: {
 					name: [
 						{ 
@@ -154,11 +255,36 @@
 							trigger: ['click']
 						}
 					]
+				},
+				rules1: {
+					questionTitle: [
+						{ 
+							required: true, 
+							message: '请输入题目信息', 
+							// 可以单个或者同时写两个触发验证方式 
+							trigger: ['blur']
+						},
+					],
+					questionAnswer: [
+						{
+							required: true,
+							message: '请输入答案',
+							trigger: ['blur']
+						}
+					],
+					questionChoice: [
+						{
+							required: true,
+							message: '请输入选项信息',
+							trigger: ['blur']
+						}
+					]
 				}
 			}
 		},
 		components:{
-			administer: administer
+			administer: administer,
+			clockChart: clockChart
 		},
 		computed:{
 			profile() {
@@ -173,9 +299,26 @@
 			}
 		},
 		methods: {
+			async getClockResult() {
+				let clockResult = await this.$myRequest({
+					url: '/video/clockCondition',
+					method: 'post'
+				})
+				if(clockResult.statusCode === 200) {
+					this.clockData = clockResult.data
+				} else {
+					console.log(clockResult)
+				}
+			},
+			refreshChart() {
+				this.rotate = true
+				setTimeout(()=>{
+					this.rotate = false
+				},2000)
+				this.getClockResult()
+			},
 			showModel() {
 				console.log(this.YorN)
-				console.log(this.show)
 				if (this.YorN == true) {
 					this.show = true
 				}else{
@@ -184,6 +327,13 @@
 						title: "没有管理员权限"
 					})
 				}
+			},
+			openPop() {
+				this.showChart = false
+			},
+			closePop() {
+				console.log(this.show+111)
+				this.showChart = true
 			},
 			changeInfor() {
 				uni.navigateTo({
@@ -235,6 +385,46 @@
 			cancelOperate() {
 				this.isshow = false
 				this.showToast = false
+			},
+			goAnnounce(data) {
+				this.showAnnounce = data
+				this.announceValue = ''
+			},
+			inputAnnounce() {
+				this.actrueCount = this.announceValue.length
+			},
+			async handleIssue() {
+				this.isIssueLoading = true
+				let {data} = await this.$myRequest({
+					url: '/issue/anounce',
+					method: 'post',
+					data: {announceValue: this.announceValue}
+				})
+				if(data.text === '用户未实名') {
+					this.$refs.uTips.show({
+						title: 	'你还未实名',
+						type: 'error',
+						duration: '2300'
+					})
+					this.isIssueLoading = false
+				}else {
+					this.$refs.annouce.show({
+						title: 	'发布成功',
+						type: 'success'
+					})
+					this.showAnnounce = false
+					this.isIssueLoading = false
+				}
+			},
+			handleUpdateQuestion(data) {
+				console.log(data)
+				this.showUpdateQuestion = data
+			},
+			cancleUpdate() {
+				this.showUpdateQuestion = false
+			},
+			confirmUpdate() {
+				this.showUpdateQuestion = false
 			}
 		}
 	}
@@ -243,11 +433,13 @@
 <style lang="scss"> 
 	page {
 		overflow: hidden;
-		background-color: #C8C7CC;
+		height: 1500rpx;
+		// background-color: #C8C7CC;
+		background-color: #F8F8F8;
 		.information {
-			height: 250rpx;
+			height: 350rpx;
 			width: 750rpx;
-			background-color: #f4030a;
+			background-color: #ff7d0b;
 			.profile  u-avatar{
 				height: 100rpx;
 				width: 100rpx;
@@ -280,8 +472,14 @@
 				width: 50rpx;
 			}
 		}
+		.information-box {
+			position: relative;
+			height: 200rpx;
+			top: 50%;
+			transform: translate(0,-50%);
+		}
 		.operation {
-			background-color: #F8F8F8;
+			// position: relative;
 			height: 1000rpx;
 			overflow: auto;
 			.border {
@@ -292,13 +490,6 @@
 				border-radius: 50rpx;
 				line-height: 100rpx;
 				overflow: hidden;
-				button {
-					float: left;
-					width: 300rpx;
-					height: 100rpx;
-					background-color: #4CD964;
-					color: #fff;
-				}
 			}
 			.line {
 				width: 700rpx;
@@ -310,7 +501,7 @@
 			.content { 
 				width: 100%;
 				height: 100%;
-				background-color: #fa3534;
+				background-color: #ff7d0b;
 			}
 			u-button {
 				position: absolute;
@@ -334,5 +525,49 @@
 	}
 	.location {
 		margin-left: 60rpx;
+	}
+	.annouce-button {
+		text-align: center;
+		margin-top: 40rpx;
+	}
+	.text-count {
+		position: absolute;
+		right: 28rpx;
+		bottom: 0rpx;
+	}
+	.chart {
+		margin: 20rpx auto;
+		height: 800rpx;
+		width: 700rpx;
+	}
+	.clock-title {
+		text-align: center;
+		color: #C0C0C0;
+	}
+	.handle-refresh {
+		width: 80rpx;
+		height: 80rpx;
+		border: 1rpx solid #ccc;
+		line-height: 80rpx;
+		text-align: center;
+		right: 50rpx;
+		bottom: 320rpx;
+		border-radius: 50rpx;
+		box-shadow: 0 0 10rpx 2rpx #C0C0C0;
+		z-index: 10000;
+	}
+	.default {
+		transition: all 2s;
+	}
+	.rotate {
+		transform: rotate(360deg);
+		transition: all 2s;
+	}
+	.administer-pop {
+		position: relative;
+		z-index: 1000000;
+	}
+	.announce {
+		position: relative;
 	}
 </style>

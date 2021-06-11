@@ -1,0 +1,18 @@
+{
+  "navigationBarTitleText": "党员信息",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-search": "..\\..\\uview-ui\\components\\u-search\\u-search",
+    "u-input": "..\\..\\uview-ui\\components\\u-input\\u-input",
+    "u-action-sheet": "..\\..\\uview-ui\\components\\u-action-sheet\\u-action-sheet",
+    "u-swipe-action": "..\\..\\uview-ui\\components\\u-swipe-action\\u-swipe-action",
+    "u-loadmore": "..\\..\\uview-ui\\components\\u-loadmore\\u-loadmore",
+    "u-popup": "..\\..\\uview-ui\\components\\u-popup\\u-popup",
+    "u-cell-group": "..\\..\\uview-ui\\components\\u-cell-group\\u-cell-group",
+    "u-cell-item": "..\\..\\uview-ui\\components\\u-cell-item\\u-cell-item",
+    "u-form": "..\\..\\uview-ui\\components\\u-form\\u-form",
+    "u-form-item": "..\\..\\uview-ui\\components\\u-form-item\\u-form-item",
+    "u-button": "..\\..\\uview-ui\\components\\u-button\\u-button",
+    "u-loading": "..\\..\\uview-ui\\components\\u-loading\\u-loading"
+  }
+}

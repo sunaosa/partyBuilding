@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "题库",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-button": "/uview-ui/components/u-button/u-button",
+    "u-icon": "/uview-ui/components/u-icon/u-icon",
+    "u-modal": "/uview-ui/components/u-modal/u-modal",
+    "u-top-tips": "/uview-ui/components/u-top-tips/u-top-tips",
+    "u-tabbar": "/uview-ui/components/u-tabbar/u-tabbar"
+  }
+}

@@ -1,0 +1,9 @@
+
+.upload_question {
+	position: absolute;
+	bottom: 40rpx;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	        transform: translateX(-50%);
+}
+

@@ -1,9 +1,9 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["pages/login/login"],{
 
 /***/ 52:
-/*!*******************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/main.js?{"page":"pages%2Flogin%2Flogin"} ***!
-  \*******************************************************************************************************/
+/*!********************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/main.js?{"page":"pages%2Flogin%2Flogin"} ***!
+  \********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17,9 +17,9 @@ createPage(_login.default);
 /***/ }),
 
 /***/ 53:
-/*!************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/login/login.vue ***!
-  \************************************************************************************/
+/*!*************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/login/login.vue ***!
+  \*************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -58,9 +58,9 @@ component.options.__file = "pages/login/login.vue"
 /***/ }),
 
 /***/ 54:
-/*!*******************************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/login/login.vue?vue&type=template&id=b237504c& ***!
-  \*******************************************************************************************************************/
+/*!********************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/login/login.vue?vue&type=template&id=b237504c& ***!
+  \********************************************************************************************************************/
 /*! exports provided: render, staticRenderFns, recyclableRender, components */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -80,9 +80,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 55:
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/login/login.vue?vue&type=template&id=b237504c& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/login/login.vue?vue&type=template&id=b237504c& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns, recyclableRender, components */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -93,6 +93,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    uToast: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-toast/u-toast */ "uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-toast/u-toast.vue */ 239))
+    },
+    uTag: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-tag/u-tag */ "uview-ui/components/u-tag/u-tag").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-tag/u-tag.vue */ 288))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -107,9 +133,9 @@ render._withStripped = true
 /***/ }),
 
 /***/ 56:
-/*!*************************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/login/login.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************/
+/*!**************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/login/login.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -123,14 +149,26 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 57:
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/login/login.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/login/login.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 8));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -169,43 +207,40 @@ var _default =
     return {
       users: {
         username: "",
-        password: "" },
+        password: "",
+        valicateCode: '' },
 
       hideOrNo: "",
       type_password: "password",
       type_text: "text",
-      ifHide: true };
-
+      ifHide: true,
+      imgCode: 'http://192.168.137.1:3000/users/images' };
 
   },
 
   methods: {
     hidePassward: function hidePassward() {
-      console.log(1);
       this.ifHide = !this.ifHide;
     },
     login: function login() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var result;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:if (!(
-                _this.users.username === "")) {_context.next = 5;break;}
+                _this.users.username === "")) {_context.next = 4;break;}
                 uni.showToast({
                   title: '请输入账号',
-                  image: "/static/error.png" });
+                  image: "/static/error.png" });_context.next = 12;break;case 4:if (!(
 
-                console.log(_this.users.username);_context.next = 15;break;case 5:if (!(
 
-                _this.users.password === "")) {_context.next = 9;break;}
+                _this.users.password === "")) {_context.next = 8;break;}
                 uni.showToast({
                   title: '请输入密码',
-                  image: "/static/error.png" });_context.next = 15;break;case 9:
+                  image: "/static/error.png" });_context.next = 12;break;case 8:_context.next = 10;return (
 
 
 
-                console.log(_this.users.username + "密码" + _this.users.password);_context.next = 12;return (
                   _this.$myRequest({
                     url: '/users/login',
                     method: "post",
-                    data: _this.users }));case 12:result = _context.sent;
+                    data: _this.users }));case 10:result = _context.sent;
 
-                console.log(result.data);
                 if (result.data === "密码错误") {
                   uni.showModal({
                     title: "密码错误",
@@ -220,18 +255,33 @@ var _default =
 
                 } else
                 {
-                  console.log(result.data);
-                  uni.setStorageSync("idVerification", result.data);
-                  uni.switchTab({
-                    url: "../index/index" });
+                  if (result.data === '验证码错误') {
+                    _this.$refs.uToast.show({
+                      title: '验证码错误区分大小写',
+                      type: 'error' });
 
-                }case 15:case "end":return _context.stop();}}}, _callee);}))();
+                  } else
+                  {
+                    uni.setStorageSync("myToken", result.data.token);
+                    uni.switchTab({
+                      url: "../index/index" });
+
+                  }
+
+                }case 12:case "end":return _context.stop();}}}, _callee);}))();
 
     },
     register: function register() {
       uni.navigateTo({
         url: "../register/register" });
 
+    },
+    changeImgCode: function changeImgCode() {
+      this.imgCode = 'http://192.168.137.1:3000/users/images?' + Math.ceil(Math.random() * 10);
+    },
+    handleForgetPassword: function handleForgetPassword() {
+      uni.navigateTo({
+        url: "../forgetPassword/forgetPassword" });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
@@ -239,9 +289,9 @@ var _default =
 /***/ }),
 
 /***/ 58:
-/*!**********************************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/login/login.vue?vue&type=style&index=0&lang=scss& ***!
-  \**********************************************************************************************************************/
+/*!***********************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/login/login.vue?vue&type=style&index=0&lang=scss& ***!
+  \***********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -255,9 +305,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 59:
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/login/login.vue?vue&type=style&index=0&lang=scss& ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/login/login.vue?vue&type=style&index=0&lang=scss& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

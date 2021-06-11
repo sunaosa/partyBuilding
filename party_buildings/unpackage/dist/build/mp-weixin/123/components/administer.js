@@ -1,0 +1,10 @@
+require('../common/runtime.js');require('../common/vendor.js');require('../common/main.js');(global["webpackJsonp_123"]=global["webpackJsonp_123"]||[]).push([["components/administer"],{"8e24":function(n,e,t){"use strict";t.r(e);var o=t("9e81"),u=t("fa42");for(var c in u)"default"!==c&&function(n){t.d(e,n,(function(){return u[n]}))}(c);var a,l=t("f0c5"),f=Object(l["a"])(u["default"],o["b"],o["c"],!1,null,null,null,!1,o["a"],a);e["default"]=f.exports},"9e81":function(n,e,t){"use strict";t.d(e,"b",(function(){return u})),t.d(e,"c",(function(){return c})),t.d(e,"a",(function(){return o}));var o={uCellGroup:function(){return t.e("uview-ui/components/u-cell-group/u-cell-group").then(t.bind(null,"bd5d"))},uCellItem:function(){return t.e("uview-ui/components/u-cell-item/u-cell-item").then(t.bind(null,"fb34"))}},u=function(){var n=this,e=n.$createElement,t=(n._self._c,{fontSize:"50rpx",fontWeight:"600",color:"#fff"}),o={color:"#fff"},u={color:"#fff"},c={color:"#fff"},a={color:"#fff"};n.$mp.data=Object.assign({},{$root:{a0:t,a1:o,a2:u,a3:c,a4:a}})},c=[]},a0c0:function(n,e,t){"use strict";(function(n){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0;var t={data:function(){return{showToast:!1,showAnnounce:!1}},methods:{goSelected:function(){console.log("111"),n.navigateTo({url:"/pages/selected/selected"})},goInsert:function(){this.showToast=!0,this.$emit("handleInsert",this.showToast)},announce:function(){this.showAnnounce=!0,this.$emit("handleAnnounce",this.showAnnounce)},upload:function(){n.navigateTo({url:"/pages/upload/upload"})}}};e.default=t}).call(this,t("543d")["default"])},fa42:function(n,e,t){"use strict";t.r(e);var o=t("a0c0"),u=t.n(o);for(var c in o)"default"!==c&&function(n){t.d(e,n,(function(){return o[n]}))}(c);e["default"]=u.a}}]);
+;(global["webpackJsonp_123"] = global["webpackJsonp_123"] || []).push([
+    'components/administer-create-component',
+    {
+        'components/administer-create-component':(function(module, exports, __webpack_require__){
+            __webpack_require__('543d')['createComponent'](__webpack_require__("8e24"))
+        })
+    },
+    [['components/administer-create-component']]
+]);

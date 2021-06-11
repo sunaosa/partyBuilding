@@ -1,9 +1,9 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["pages/individual-infor/individual-infor"],{
 
 /***/ 76:
-/*!*****************************************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/main.js?{"page":"pages%2Findividual-infor%2Findividual-infor"} ***!
-  \*****************************************************************************************************************************/
+/*!******************************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/main.js?{"page":"pages%2Findividual-infor%2Findividual-infor"} ***!
+  \******************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17,9 +17,9 @@ createPage(_individualInfor.default);
 /***/ }),
 
 /***/ 77:
-/*!**********************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/individual-infor/individual-infor.vue ***!
-  \**********************************************************************************************************/
+/*!***********************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/individual-infor/individual-infor.vue ***!
+  \***********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -58,9 +58,9 @@ component.options.__file = "pages/individual-infor/individual-infor.vue"
 /***/ }),
 
 /***/ 78:
-/*!*****************************************************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=template&id=27fc2386& ***!
-  \*****************************************************************************************************************************************/
+/*!******************************************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=template&id=27fc2386& ***!
+  \******************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns, recyclableRender, components */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -80,9 +80,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 79:
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=template&id=27fc2386& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=template&id=27fc2386& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns, recyclableRender, components */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -96,34 +96,34 @@ var components
 try {
   components = {
     uCard: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-card/u-card */ "uview-ui/components/u-card/u-card").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-card/u-card.vue */ 203))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-card/u-card */ "uview-ui/components/u-card/u-card").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-card/u-card.vue */ 260))
     },
     uForm: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-form/u-form */ "uview-ui/components/u-form/u-form").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form/u-form.vue */ 152))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-form/u-form */ "uview-ui/components/u-form/u-form").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form/u-form.vue */ 302))
     },
     uFormItem: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-form-item/u-form-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-form-item/u-form-item")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form-item/u-form-item.vue */ 159))
+      return Promise.all(/*! import() | uview-ui/components/u-form-item/u-form-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-form-item/u-form-item")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form-item/u-form-item.vue */ 309))
     },
     uInput: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-input/u-input */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-input/u-input")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-input/u-input.vue */ 170))
+      return Promise.all(/*! import() | uview-ui/components/u-input/u-input */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-input/u-input")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-input/u-input.vue */ 224))
     },
     uLine: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-line/u-line */ "uview-ui/components/u-line/u-line").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-line/u-line.vue */ 210))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-line/u-line */ "uview-ui/components/u-line/u-line").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-line/u-line.vue */ 354))
     },
     uActionSheet: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-action-sheet/u-action-sheet */ "uview-ui/components/u-action-sheet/u-action-sheet").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-action-sheet/u-action-sheet.vue */ 177))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-action-sheet/u-action-sheet */ "uview-ui/components/u-action-sheet/u-action-sheet").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-action-sheet/u-action-sheet.vue */ 319))
     },
     uButton: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-button/u-button */ "uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-button/u-button.vue */ 131))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-button/u-button */ "uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-button/u-button.vue */ 232))
     },
     uTopTips: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-top-tips/u-top-tips */ "uview-ui/components/u-top-tips/u-top-tips").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-top-tips/u-top-tips.vue */ 294))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-top-tips/u-top-tips */ "uview-ui/components/u-top-tips/u-top-tips").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-top-tips/u-top-tips.vue */ 333))
     },
     uModal: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-modal/u-modal */ "uview-ui/components/u-modal/u-modal").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-modal/u-modal.vue */ 191))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-modal/u-modal */ "uview-ui/components/u-modal/u-modal").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-modal/u-modal.vue */ 326))
     },
     uToast: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-toast/u-toast */ "uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-toast/u-toast.vue */ 184))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-toast/u-toast */ "uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-toast/u-toast.vue */ 239))
     }
   }
 } catch (e) {
@@ -162,9 +162,9 @@ render._withStripped = true
 /***/ }),
 
 /***/ 80:
-/*!***********************************************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************/
+/*!************************************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -178,9 +178,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 81:
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -234,17 +234,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var _default =
 {
   onLoad: function onLoad(identity) {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var _yield$_this$$myReque, data;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
               console.log(identity);
-              _this.identify = identity.identify;_context.next = 4;return (
+              _this.identify = identity.identify;
+              if (_this.identify !== "游客") {
+                _this.title = "个人信息";
+              }_context.next = 5;return (
                 _this.$myRequest({
                   url: '/valicate/initialize',
-                  method: 'post',
-                  data: { id: uni.getStorageSync('idVerification') } }));case 4:_yield$_this$$myReque = _context.sent;data = _yield$_this$$myReque.data;
+                  method: 'post' }));case 5:_yield$_this$$myReque = _context.sent;data = _yield$_this$$myReque.data;
 
-              _this.valicateForm = data;case 7:case "end":return _context.stop();}}}, _callee);}))();
+              _this.valicateForm = data;case 8:case "end":return _context.stop();}}}, _callee);}))();
   },
   onReady: function onReady() {
     this.$refs.valicateForm.setRules(this.rules);
@@ -253,15 +257,9 @@ var _default =
     return {
       subTitle: '首次为认证，之后填写为更改信息',
       title: '党员认证',
-      valicateForm: {
-        name: '',
-        studentNumber: '',
-        phoneNumber: '',
-        sex: '',
-        class: '' },
-
+      valicateForm: {},
       ifshow: false,
-      content: '',
+      content: '操作成功',
       loading: false,
       sexList: [
       { text: '男' },
@@ -337,39 +335,61 @@ var _default =
     actionSheetCallback: function actionSheetCallback(index) {
       this.valicateForm.sex = this.sexList[index].text;
     },
-    valicateMember: function valicateMember() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var _yield$_this2$$myRequ, data;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+    valicateMember: function valicateMember() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
                 _this2.loading = true;
                 _this2.$refs.valicateForm.validate(function (valid) {
                   if (!valid) {
+                    _this2.loading = false;
                     return;
                   }
-                });_context2.next = 4;return (
                   _this2.$myRequest({
                     url: '/valicate/valicate-member',
                     method: 'post',
-                    data: { valicateForm: _this2.valicateForm, id: uni.getStorageSync('idVerification') } }));case 4:_yield$_this2$$myRequ = _context2.sent;data = _yield$_this2$$myRequ.data;
+                    data: { valicateForm: _this2.valicateForm } }).
+                  then(function (res) {
+                    var data = res.data;
+                    console.log(data);
+                    if (data.updateInfor === 1) {
+                      uni.removeStorageSync("myToken");
+                      uni.setStorageSync("myToken", data.token);
+                      _this2.loading = false;
+                      _this2.ifshow = true;
+                    } else {
+                      _this2.$refs.uToast.show({
+                        title: '认证失败',
+                        type: 'error' });
 
-                console.log(data);
-                if (data === 1) {
-                  _this2.loading = false;
+                      _this2.loading = false;
+                    }
+                  });
 
-                } else {
-                  _this2.$refs.uToast.show({
-                    title: '登录成功',
-                    type: 'error',
-                    url: '/pages/user/index' });
+                });case 2:case "end":return _context2.stop();}}}, _callee2);}))();
+    },
+    confirm: function confirm() {
+      uni.switchTab({
+        url: '/pages/mine/mine',
+        success: function success() {
+          var page = getCurrentPages().pop(); //跳转页面成功之后
+          if (!page) return;
+          page.onLoad(); //如果页面存在，则重新刷新页面
+        } });
 
-                  _this2.loading = false;
-                }case 8:case "end":return _context2.stop();}}}, _callee2);}))();
+      this.ifshow = false;
+    },
+    logOut: function logOut() {
+      uni.removeStorageSync("myToken");
+      uni.reLaunch({
+        url: '/pages/login/login' });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
 /***/ 82:
-/*!*******************************************************************************************************************************************!*\
-  !*** C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=style&index=0&lang=css& ***!
-  \*******************************************************************************************************************************************/
+/*!********************************************************************************************************************************************!*\
+  !*** C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -383,9 +403,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 83:
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--6-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--6-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--6-oneOf-1-2!./node_modules/postcss-loader/src??ref--6-oneOf-1-3!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/小案例/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=style&index=0&lang=css& ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--6-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--6-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--6-oneOf-1-2!./node_modules/postcss-loader/src??ref--6-oneOf-1-3!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/sa/Desktop/demo/party-building/party_buildings/pages/individual-infor/individual-infor.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

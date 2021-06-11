@@ -1,0 +1,3 @@
+@import "../../common/main.wxss";page .title{margin-top:50rpx;margin-left:50rpx;font-size:40rpx}page .line{margin-top:20rpx;width:100%;height:1rpx;background-color:#000}page .register .text{margin-top:80rpx}page .register .text .uername,
+page .register .text .password{height:50rpx;width:700rpx;margin:0 auto;border-bottom:1rpx solid #ccc}page .register .text .uername input,
+page .register .text .password input{-webkit-transition:all 1s linear;transition:all 1s linear}page .register .text .show{margin-left:25rpx;margin-bottom:30rpx;font-size:40rpx;-webkit-transition:all 1s linear;transition:all 1s linear}page .register .register_btn{width:300rpx;height:100rpx;margin-top:40rpx;margin-left:475rpx;font-weight:600;font-size:60rpx;position:relative;z-index:1}

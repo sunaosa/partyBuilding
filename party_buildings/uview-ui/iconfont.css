@@ -222,6 +222,8 @@
 }
 
 .uicon-account-fill:before {
+	font-size: 50rpx;
+	color: #f0291f;
 	content: "\e614";
 }
 
@@ -234,6 +236,7 @@
 }
 
 .uicon-account:before {
+	font-size: 50rpx;
 	content: "\e628";
 }
 
@@ -266,10 +269,13 @@
 }
 
 .uicon-home-fill:before {
+	font-size: 50rpx;
+	color: #f0291f;
 	content: "\e964";
 }
 
 .uicon-home:before {
+	font-size: 50rpx;
 	content: "\e965";
 }
 

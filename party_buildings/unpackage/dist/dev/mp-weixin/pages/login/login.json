@@ -1,5 +1,8 @@
 {
   "navigationBarTitleText": "登录",
-  "backgroundColorTop": "#f4030a",
-  "usingComponents": {}
+  "backgroundColorTop": "#ff9e15",
+  "usingComponents": {
+    "u-toast": "/uview-ui/components/u-toast/u-toast",
+    "u-tag": "/uview-ui/components/u-tag/u-tag"
+  }
 }

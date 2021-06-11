@@ -1,0 +1,80 @@
+
+page {
+	background-color: #DBF1E1;
+	overflow: auto;
+}
+.head {
+	height: 400rpx;
+	width: 100%;
+	background-color: #eeeeee;
+}
+.body {
+	border: 3rpx solid #d0d0d0;
+	background-color: #fff;
+	margin-bottom: 100rpx;
+}
+.foot {
+	height: 100rpx;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	background-color: #e3ff7c;
+}
+.title-area {
+	padding-top: 50rpx;
+	padding-bottom: 50rpx;
+	width: 650rpx;
+	margin: auto;
+	border-top: 2rpx solid #CCCCCC;
+}
+.title-area:first-child{
+	border-top: 0rpx;
+}
+.title-style {
+	color: #000000;
+	font-size: 35rpx;
+	font-weight: bold;
+}
+.subTitle,
+.content{
+	float: left;
+	margin-top: 20rpx;
+	font-size: 25rpx;
+	color: #555555;
+}
+.content {
+	float: right;
+	margin-right: 60rpx;
+	font-weight: bold;
+	width: 465rpx;
+	overflow-wrap: break-word;
+	text-align: right;
+}
+.clearfix:after{/*伪元素是行内元素 正常浏览器清除浮动方法*/
+    content: "";
+    display: block;
+    height: 0;
+    clear:both;
+    visibility: hidden;
+}
+.activityContent {
+	margin-top: 20rpx;
+	font-size: 25rpx;
+	color: #555555;
+}
+.handle-refresh {
+	width: 80rpx;
+	height: 80rpx;
+	border: 1rpx solid #ccc;
+	line-height: 80rpx;
+	text-align: center;
+	right: 10rpx;
+	bottom: 200rpx;
+	-webkit-border-radius: 50rpx;
+	        border-radius: 50rpx;
+	background-color: #fff;
+	-webkit-box-shadow: 0 0 10rpx 2rpx #C0C0C0;
+	        box-shadow: 0 0 10rpx 2rpx #C0C0C0;
+	z-index: 1000000;
+}
+
